@@ -21,6 +21,7 @@
 	<util:properties id="provinceProperties" location="classpath:/province.properties"/>
 	<util:properties id="noticeProperties" location="classpath:/notice.properties"/>
 	<util:properties id="rewardimojiProperties" location="classpath:/rewardimoji.properties"/>
+	<util:properties id="inquireCodeProperties" location="classpath:/inquire-code.properties"/>
 	
 	<!-- 	ㅇ 어노테이션 기반 :: Spring Framework 사용. :: sub element 이해 할것 -->				
 	<context:component-scan base-package="com.nadri.service">
@@ -28,5 +29,6 @@
 		<context:include-filter type="annotation"	expression="org.springframework.stereotype.Repository" />
 		<context:exclude-filter type="annotation" 	expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>				
+
 				
 </beans>

@@ -31,6 +31,7 @@
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
 		<property name="dataSource" ref="dataSource"/>
 	</bean>	
+
 	
 	<!-- Transaction Advice 생성 
 			:: method : transaction 적용 Method
@@ -54,5 +55,6 @@
 		<aop:pointcut 	id="requiredTx" expression="execution(* com.nadri.service..*ServiceImpl.*(..) )" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx"  />
 	</aop:config>
+
 
 </beans>

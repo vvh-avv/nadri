@@ -8,81 +8,127 @@
 
 	<resultMap type="user" id="userMap">
 		<result property="userId" column="user_id" jdbcType="VARCHAR" />
-		<result property="userName" column="user_Name" jdbcType="VARCHAR" />
+		<result property="userName" column="user_name" jdbcType="VARCHAR" />
 		<result property="password" column="password" jdbcType="VARCHAR" />
-		<result property="role" column="role" jdbcType="VARCHAR" />
-		<result property="ssn" column="ssn" jdbcType="VARCHAR" />
-		<result property="phone" column="cell_phone" jdbcType="VARCHAR" />
-		<result property="addr" column="addr" jdbcType="VARCHAR" />
 		<result property="email" column="email" jdbcType="VARCHAR" />
+		<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+		<result property="sex" column="sex" jdbcType="VARCHAR" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="age" column="age" jdbcType="INTEGER" />	
+		<result property="introduce" column="introduce" jdbcType="VARCHAR" />
+		<result property="role" column="role" jdbcType="VARCHAR" />
 		<result property="regDate" column="reg_date" jdbcType="DATE" />
+		<result property="lastLogin" column="last_login" jdbcType="DATE" />
+		<result property="status" column="status" jdbcType="VARCHAR" />
+		<result property="ip" column="ip" jdbcType="VARCHAR" />
+		<result property="infoOption" column="info_option" jdbcType="VARCHAR" />
+		<result property="quitDate" column="quit_date" jdbcType="DATE" />
+		<result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+		<result property="userStatusCode" column="user_status_code" jdbcType="VARCHAR" />
+		<result property="emailCode" column="email_code" jdbcType="VARCHAR" />
 	</resultMap>
 
+	<!-- SQL: INSERT -->
 	<insert id="insertUser" parameterType="user">
-		INSERT
-		INTO users(user_id, user_name, password, role, ssn, cell_phone, addr, email, reg_date)
-		VALUES( #{userId}, #{userName}, #{password}, 'user' , #{ssn:VARCHAR}, #{phone:VARCHAR}, #{addr:VARCHAR}, #{email:VARCHAR}, SYSDATE )
+		INSERT 
+		INTO USER ( user_id, user_name, password, email, profile_img, sex, phone, age, 
+						introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason, user_status_code, email_code) 
+		VALUES (#{userId}, #{userName}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
+					#{phone:VARCHAR}, #{age:INTEGER}, #{introduce}, '0', CURDATE(), #{lastLogin}, '0',
+					#{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR}, #{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
 	</insert>
 
+	<!-- SQL: SELECT ONE -->
 	<select id="findUser" parameterType="string" resultMap="userMap">
 		SELECT
-		user_id, user_name, password, role, cell_phone, addr, email, reg_date
-		FROM users
+		user_id, user_name, password, email, profile_img, sex, phone, age, 
+						introduce, role, reg_date, last_login, status, ip, info_option, user_status_code, email_code
+		FROM user
 		WHERE user_id = #{value}
 	</select>
 
+	<!-- SQL: UPDATE -->
 	<update id="updateUser" parameterType="user">
-		UPDATE users
-		SET user_name=#{userName}, password=#{password}, cell_phone=#{phone}, addr=#{addr}, email=#{email}
+		UPDATE user
+		<set>
+		user_name = #{userName:VARCHAR}, email = #{email}, password = #{password},
+		phone = #{phone:VARCHAR}, age = #{age}, 
+		profile_img = #{profileImg}, introduce = #{introduce}
+		</set>
 		WHERE user_id = #{userId}
 	</update>
 	
-
-	<select id="getUserList" parameterType="map" resultMap="userMap">
+	<!-- SQL: SELECT LIST -->
+	<select id="getUserList" parameterType="search" resultMap="userMap">
 		SELECT *
 	 	FROM ( 	SELECT inner_table.*, ROWNUM AS row_seq
-	 			  	FROM (		SELECT
-									user_id , user_name , email FROM users
-									<where>
-										<if test="search.searchCondition!=null and search.searchKeyword!=''">
+	 			  	FROM (SELECT user_id , user_name , email 
+	 			  				FROM user
+									<if test="search.searchCondition!=null and search.searchKeyword!=''">
+										<where>
 											<if test="search.searchCondition==0">
 												user_id LIKE '%'||#{search.searchKeyword}||'%'
 											</if>
 											<if test="search.searchCondition==1">
 												user_name LIKE '%'||#{search.searchKeyword}||'%'
 											</if>
-											<if test="search.searchCondition==2">
-												user_email LIKE '%'||#{search.searchKeyword}||'%'
-											</if>
-										</if>
-									</where>
-									ORDER BY user_id ${sort}  ) inner_table
-		 			WHERE <![CDATA[ROWNUM <= ${search.currentPage*search.pageSize}]]> )
-	 	WHERE row_seq BETWEEN ${(search.currentPage-1)*search.pageSize+1} AND ${search.currentPage*search.pageSize}
+										</where>
+									</if>									
+									ORDER BY user_id ) inner_table
+		 			WHERE ROWNUM &lt;= #{endRowNum} )
+	 	WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
 	</select>
 	
+	<!-- SQL: SELECT ROW COUNT -->
 	<select id="getTotalCount" parameterType="search" resultType="int">
 		SELECT COUNT(*)
-		FROM (	SELECT
-					user_id , user_name , email FROM users
-					<if test="searchCondition!=null and searchKeyword!=''">
-						<if test="searchCondition==0">
-							WHERE user_id LIKE '%'||#{searchKeyword}||'%'
-						</if>
-						<if test="searchCondition==1">
-							WHERE user_name LIKE '%'||#{searchKeyword}||'%'
-						</if>
-						<if test="searchCondition==2">
-							WHERE user_email LIKE '%'||#{searchKeyword}||'%'
-						</if>
-					</if>  ) countTable
+		FROM (	SELECT user_id , user_name , email 
+						FROM user
+						<if test="searchCondition != null">
+							<where>
+								<if test="searchCondition == 0 and searchKeyword !='' ">
+						 			user_id = #{searchKeyword}
+								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+						 		user_name = #{searchKeyword}
+								</if>
+							</where>
+						</if> ) countTable			
 	</select>
 	
-
-	<delete id="deleteUser" parameterType="String">
-		DELETE
-		FROM users
+	<!-- SQL: QUIT USER -->
+	<delete id="quitUser" parameterType="String">
+		DELETE 
+		FROM user
 		WHERE user_id = #{value}
 	</delete>
+	
+	<!-- 인증키 관련 -->
+	<update id="createAuthKey">
+		UPDATE user SET auth_code = #{authCode} WHERE email = #{email}
+	</update>
+	
+	<!-- 이메일 인증 상태코드 변화 -->
+	<update id="updateStatusCode" parameterType="user">
+	 	UPDATE user
+	 	<set>
+	 		user_status_code = #{userStatusCode}
+	 	</set>
+	 	WHERE user_id = #{userId}
+		<if test="emailCode != null">
+	 	  AND email_code = #{emailCode}
+	 	</if>
+	 </update>
+	 
+	 <!--  아이디 찾기 -->
+	 <select id="findUserId" parameterType="user" resultMap="userMap">
+		SELECT 
+		user_id
+		FROM user
+		WHERE user_name=#{userName} AND email=#{email}
+	 </select>
+	 
+	 
+
 
 </mapper>

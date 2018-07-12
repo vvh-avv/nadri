@@ -21,10 +21,13 @@ public interface UserDao {
 	public void updateUser(User user) throws Exception ;
 	
 	// 회원 탈퇴
-	public void quitUser(User user) throws Exception;
+	public void quitUser(String userId) throws Exception;
 	
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
+	
+	//비밀번호 찾기
+	
 	
 	// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 	public int getTotalCount(Search search) throws Exception ;
@@ -45,7 +48,7 @@ public interface UserDao {
 	public Map<String, Object> getUserReportList(Search search) throws Exception;
 	
 	
-	/////////////////이메일 인증키 관련//////////////////////////
+	/////////////////이메일 관련//////////////////////////
 	
 	/*//인증키 발행
 	public void createAuthKey(String userEmail, String memberAuthKey) throws Exception;
@@ -55,6 +58,15 @@ public interface UserDao {
 
 	//인증 코드 상태 변화
 	public void updateStatusCode(User user) throws Exception;
+
+	//카카오 로그인
+	public User getCode(String authorize_code) throws Exception;
+
+
+
+	
+	
+
 
 
 

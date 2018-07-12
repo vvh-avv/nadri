@@ -1,5 +1,7 @@
 package com.nadri.service.spot;
 
-public class SpotService {
+
+public interface SpotService {
+	
 
 }

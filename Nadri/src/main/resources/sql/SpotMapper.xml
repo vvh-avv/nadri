@@ -3,5 +3,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="SpotMapper">
-
+	<resultMap id="spotSelectMap" type="spot">
+		<result property="spotNo" 			   		column="spot_no" 					jdbcType="NUMERIC"/>
+		<result property="spotCode"	     		column="spot_code" 			    jdbcType="VARCHAR" />
+		<result property="spotTitle"	     			column="spot_title" 		        jdbcType="VARCHAR" />
+		<result property="spotPhone" 			 	column="spot_phone" 		    jdbcType="VARCHAR"/>
+		<result property="spotAddress" 	        column="spot_address" 		jdbcType="VARCHAR" />
+		<result property="spotDetail" 	            column="spot_detail" 		    jdbcType="VARCHAR" />
+		<result property="spotX" 						column="spot_x" 					jdbcType="DECIMAL"  />
+		<result property="spotY" 						column="spot_y" 					jdbcType="DECIMAL"/>
+		<result property="spotImg" 					column="spot_img" 			    jdbcType="VARCHAR" />
+		<result property="spotCreateTime" 	column="spot_createtime"    jdbcType="DATE" />
+		<result property="spotModifyTime" 	column="spot_modifytime" 	jdbcType="DATE" />
+		<result property="spotProvince" 			column="spot_province" 		jdbcType="VARCHAR" />
+		<result property="spotDetailURL" 		column="spot_detailurl" 		jdbcType="VARCHAR" />
+		<result property="spotReadCnt" 		column="spot_readcnt" 			jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	 <select  id="getSpotList"  parameterType="Int" resultMap="spotSelectMap">
+	  	SELECT * FROM spot WHERE spot_code LIKE ${value}||'%'
+	 </select>
+	 
+	 <select  id="getRiverList"  parameterType="Int" resultMap="spotSelectMap">
+	  	SELECT * FROM spot WHERE spot_code LIKE '4%';
+	 </select>
+	 
 </mapper>

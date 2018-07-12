@@ -4,21 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserDao;
 import com.nadri.service.user.UserService;
-import com.nadri.web.mail.MailHandler;
-import com.nadri.web.mail.TempKey;
+
 
 //회원관리 서비스 구현
 @Service("userServiceImpl")
@@ -31,16 +25,19 @@ public class UserServiceImpl implements UserService{
 		this.userDao = userDao;
 	}
 	
-		
-	/*@Autowired
-	private JavaMailSender mailSender;*/
+	@Autowired
+	@Qualifier("kakaoLoginDaoImpl") 
+	private UserDao kakaoLoginDao;
+	public void setKakaoLoginDao(UserDao kakaoLoginDao) {
+		this.kakaoLoginDao=kakaoLoginDao;
+	}
+
 	
 	//Constructor method
 	public UserServiceImpl() {
 		System.out.println(this.getClass());
 	}
-	
-	
+
 	///Method
 	public void addUser(User user) throws Exception {
 		userDao.addUser(user);
@@ -57,8 +54,6 @@ public class UserServiceImpl implements UserService{
 		sendMail.setTo(user.getEmail());
 		sendMail.send();*/
 	}
-		
-
 
 	public User getUser(String userId) throws Exception {
 		return userDao.getUser(userId);
@@ -88,31 +83,35 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
-
+	//보상 목록
 	@Override
 	public Map<String, Object> getRewardList(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//게시물 목록
 	@Override
 	public Map<String, Object> getBoardList(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//일정 목록
 	@Override
 	public Map<String, Object> getScheduleList(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//일정 바구니, 장소 바구니 목록
 	@Override
 	public Map<String, Object> getCartList(Search search) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//신고내역 목록(회원이 신고한 내역)
 	@Override
 	public Map<String, Object> getUserReportList(Search search) throws Exception {
 		// TODO Auto-generated method stub
@@ -121,60 +120,57 @@ public class UserServiceImpl implements UserService{
 
 	//회원 탈퇴
 	@Override
-	public void quitUser(User user) throws Exception {
+	public void quitUser(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		userDao.quitUser(user);
+		userDao.quitUser(userId);
 	}
 
+	//회원 아이디 찾기
 	@Override
 	public User findUserId(User user) throws Exception {
 		// TODO Auto-generated method stub
 		return userDao.findUserId(user);
 	}
 
-	@Override
-	public void findPassword(User user) throws Exception {
-		// TODO Auto-generated method stub
-		/*//임시 비밀번호 생성	    
-	    String password = userDao.randomNumber(5);
-	    
-	    user=userDao.getUser(user.getUserId());
-	    
-	    user.setPassword(password);
-	    userDao.updateUser(user);
-	    
-	    System.out.println("비밀번호 바뀐 유저의 정보::" + user);
-	  
-	    //String content = "\n\n test :: 임시비밀번호보내기\n\n임시비밀번호는 \"" + password + "\" 입니다.\n반드시 로그인 후 비밀번호를 수정해주세요!";
-	    
-	    try {
-	      MimeMessage message = mailSender.createMimeMessage();
-	      MimeMessageHelper messageHelper 
-	                        = new MimeMessageHelper(message, true, "UTF-8");
-	 
-	      messageHelper.setFrom(setFrom); 												//보내는 사람
-	      messageHelper.setTo(user.getUserId());     
-	      messageHelper.setSubject(subject);											 //메일제목
-	      messageHelper.setText(contentPwd +password+content2);  	//메일 내용
-	     
-	      mailSender.send(message);
-	    } catch(Exception e){
-	     
-	    	System.out.println(e);
-	    }*/
-	}
 
+	
+
+	
+	
 	/*@Override
 	public void userAuth(String email) throws Exception {
 		// TODO Auto-generated method stub
 		userDao.userAuth(email);
 	}*/
-
-
+	
 	@Override
 	public void updateStatusCode(User user) throws Exception {
 		// TODO Auto-generated method stub
 		userDao.updateStatusCode(user);
 	}
+
+	@Override
+	public boolean findPassword(String email, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	//카카오 로그인
+	@Override
+	public User getCode(String authorize_code)throws Exception {
+		// TODO Auto-generated method stub
+		return kakaoLoginDao.getCode(authorize_code);
+	}
+
+	//아이디 중복체크
+	@Override
+	public boolean checkUserId(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+
 
 }

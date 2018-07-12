@@ -23,13 +23,14 @@ public interface UserService {
 	public boolean checkDuplication(String userId) throws Exception;
 
 	//회원탈퇴
-	public void quitUser(User user) throws Exception;
+	public void quitUser(String userId) throws Exception;
 	
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
 	
 	//비밀번호 찾기
-	public void findPassword(User user) throws Exception;
+	public boolean findPassword(String email, String userId) throws Exception;
+	
 	
 	//보상 리스트 
 	public Map<String, Object> getRewardList(Search search) throws Exception;
@@ -52,6 +53,12 @@ public interface UserService {
 
 	//이메일 관련: 상태 변화
 	public void updateStatusCode(User user) throws Exception;
+
+	//카카오 로그인
+	public User getCode(String authorize_code) throws Exception;
+
+	//아이디 중복체크
+	public boolean checkUserId(String userId) throws Exception;
 
 	
 }

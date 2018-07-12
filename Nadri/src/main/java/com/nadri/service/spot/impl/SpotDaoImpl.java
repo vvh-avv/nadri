@@ -1,5 +1,7 @@
 package com.nadri.service.spot.impl;
 
-public class SpotDaoImpl {
+
+public class SpotDaoImpl{
+	
 
 }

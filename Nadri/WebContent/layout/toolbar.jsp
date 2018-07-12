@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
 html, body {
@@ -153,8 +154,16 @@ html, body {
 	display: none;
 }
 </style>
-<script src="/javascript/toolbar.js"></script>
 
+<script src="/javascript/toolbar.js"></script>
+<<script type="text/javascript">
+$(function(){
+	
+	$("a.user-info").on("click",function(){
+		self.location.href="${param.uri}user/listUser?userId=${sessionScope.user.userId}";
+	});
+})
+</script>
 
 			<div id="admin">
 				<p>어드민페이지로 넘어간단다.</p>
@@ -163,16 +172,23 @@ html, body {
 				<div class="topmenus">
 					<span class="topele">저희는</span> <span class="topele">메뉴가</span> <span class="topele">됩니다</span>
 				</div>
-				<a href="">
-					<div class="title">TITLE</div>
+				<a href="/index.jsp">
+					<div class="title">너, 나들이demo</div>
 				</a> <input type="text" class="searcher">
-				<div class="sidemenu">
-					<img src="./image/test/bell.png" class="icons"> <img
-						src="./image/test/conversation.png" class="icons"> <img
-						src="./image/test/multiple-users-silhouette.png" class="icons">
-					<img
-						src="./image/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-						class="profile" title="let's go to Admin page">
+				<div class="dropdown">
+					<div class="sidemenu">
+						<img src="/images/test/bell.png" class="icons"> 
+						<img src="/images/test/conversation.png" class="icons"> 
+						<c:if test="${empty user}">
+							<a href="/user/loginView.jsp"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
+						</c:if>
+						<c:if test="${!empty user}">
+							<a href="/user/listUser.jsp"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
+						</c:if>
+						<img src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg" class="profile" title="let's go to Admin page">
+					</div>
 				</div>
-			</div>
+				</div>	
+
+
 

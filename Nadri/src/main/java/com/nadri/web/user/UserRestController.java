@@ -1,5 +1,6 @@
 package com.nadri.web.user;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.common.Page;
@@ -32,14 +34,17 @@ import com.nadri.service.user.UserService;
 @RequestMapping("/user/*")
 public class UserRestController {
 
+	//field
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
+	//constructor method
 	public UserRestController() {
 		System.out.println(this.getClass());
 	}
 	
+	//method
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login( @RequestBody User user, HttpSession session ) throws Exception{
 		System.out.println("/user/json/login : POST");
@@ -54,7 +59,6 @@ public class UserRestController {
 		if( user.getPassword().equals(returnUser.getPassword()) ){
 			session.setAttribute("user", returnUser);
 		}
-		
 		return returnUser;
 	}
 	
@@ -136,7 +140,7 @@ public class UserRestController {
 			MimeMessage message = new MimeMessage(session); 
 			message.setFrom(new InternetAddress(user)); 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiveMail));
-			message.setSubject("가입 인증 메일입니다."); // 메일 제목 
+			message.setSubject("가입 인증 메일입니다.");   		// 메일 제목 
 			
 			Multipart multiPart = new MimeMultipart();
 			MimeBodyPart multBodyPart = new MimeBodyPart();
@@ -169,4 +173,36 @@ public class UserRestController {
 		
 		return status;
 	}
+	
+	//회원 아이디 찾기
+	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
+	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
+		
+		System.out.println("RestController:: /json/findUserId : POST");
+		
+		//User user = new User();
+		user = userService.findUserId(user);
+		
+		
+		String userId = user.getUserId();
+		
+		//제이슨 데이터는 맵이나 도메인으로 
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		return map;
+	}
+	
+	//비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
+	@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
+	public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
+		
+		System.out.println("userId...."+ userId);
+		
+		System.out.println("restController - checkUserId : POST ");
+		
+		boolean result=userService.checkUserId(userId);
+		
+		return result;	
+	} 
+	
 }

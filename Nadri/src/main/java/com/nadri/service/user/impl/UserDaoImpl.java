@@ -1,9 +1,7 @@
 package com.nadri.service.user.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,6 @@ public class UserDaoImpl implements UserDao{
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
-	
-	private static String namespace = "UserMapper";
 	
 	//Constructor method
 	public UserDaoImpl() {
@@ -89,19 +85,21 @@ public class UserDaoImpl implements UserDao{
 
 	//회원 탈퇴
 	@Override
-	public void quitUser(User user) throws Exception {
+	public void quitUser(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.update("UserMapper.updateUser", user);
+		sqlSession.update("UserMapper.quitUser", userId);
 	}
 
+	//회원 아이디 찾기
 	@Override
 	public User findUserId(User user) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("UserMapper.findUserId", user);
 	}
 
+
 		
-	//인증키 관련
+	//이메일 관련
 	/*//인증키 발행
 	@Override
 	public void createAuthKey(String user_email, String authCode) throws Exception {
@@ -126,6 +124,22 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		sqlSession.update("UserMapper.updateStatusCode", user);
 	}
+
+	//카카오 로그인
+	@Override
+	public User getCode(String authorize_code) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
+	
+
+	
+	
 	
 	
 }
