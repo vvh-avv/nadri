@@ -21,11 +21,47 @@
 	</resultMap>
 	
 	 <select  id="getSpotList"  parameterType="Int" resultMap="spotSelectMap">
-	  	SELECT * FROM spot WHERE spot_code LIKE ${value}||'%'
+	  	SELECT * FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
 	 </select>
 	 
 	 <select  id="getRiverList"  parameterType="Int" resultMap="spotSelectMap">
-	  	SELECT * FROM spot WHERE spot_code LIKE '4%';
+	  	SELECT * FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
 	 </select>
 	 
-</mapper>
+	  <select  id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
+	  	<![CDATA[
+	  	SELECT * 
+	  	FROM spot 
+	  	WHERE spot_code LIKE #{keyword}
+	  	limit 0, 10;
+	  	]]>
+	 </select>
+	 
+	 <select id="infiniteScrollDown" resultMap="spotSelectMap">
+	 	<![CDATA[
+	  	SELECT * 
+	  	FROM spot 
+	  	WHERE spot_code LIKE '11'
+	  	limit #{spotNo}, 1;
+	  	]]>
+	 </select>
+	 
+	 <select id="getSpot"  parameterType="Int"  resultMap="spotSelectMap">
+      SELECT * FROM spot
+      WHERE spot_no = #{value}
+    </select>
+    
+    <select id="searchAround" parameterType="spot" resultMap="spotSelectMap">
+    <![CDATA[
+	    SELECT 
+		*,
+		( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+		+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+		FROM
+		spot
+		HAVING 
+		distance < 2
+		ORDER BY  distance
+	]]>
+		</select>
+	</mapper>
