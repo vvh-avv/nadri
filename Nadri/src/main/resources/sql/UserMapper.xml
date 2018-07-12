@@ -128,7 +128,79 @@
 		WHERE user_name=#{userName} AND email=#{email}
 	 </select>
 	 
-	 
+	<select id="getBoardLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT WEEKOFYEAR(b.board_time),MONTH(b.board_time),u.user_id, user_name,b.board_title, b.board_no, b.board_time
+		FROM user u
+		left outer join board b on u.user_id = b.user_id
+		WHERE u.user_id = #{userId}
+		<if test="duration.equals('week') || duration.equals('month')">
+ 			<if test="duration.equals('week')">
+				AND WEEK(b.board_time) = WEEKOFYEAR(CURDATE())
+			</if>
+			<if test="duration.equals('month')">
+				AND MONTH(b.board_time) = MONTH(CURDATE())
+			</if>
+	  	</if>
+	</select>
+	
+	<select id="getCommentLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT WEEKOFYEAR(c.comm_time),MONTH(c.comm_time),u.user_id, user_name, c.comment_no, c.board_no, c.comm_time
+		FROM user u
+		left outer join comment c on u.user_id = c.user_id
+		WHERE u.user_id = #{userId}
+		<if test="duration.equals('week') || duration.equals('month')">
+ 			<if test="duration.equals('week')">
+				AND WEEK(c.comm_time) = WEEKOFYEAR(CURDATE())
+			</if>
+			<if test="duration.equals('month')">
+				AND MONTH(c.comm_time) = MONTH(CURDATE())
+			</if>
+	  	</if>
+	</select>
+	
+	<select id="getLikesLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT WEEKOFYEAR(l.likes_time),MONTH(l.likes_time),u.user_id, user_name, l.likes_no, l.board_no, l.likes_time
+		FROM user u
+		left outer join likes l on u.user_id = l.user_id
+		WHERE u.user_id = #{userId}
+		<if test="duration.equals('week') || duration.equals('month')">
+ 			<if test="duration.equals('week')">
+				AND WEEK(l.likes_time) = WEEKOFYEAR(CURDATE())
+			</if>
+			<if test="duration.equals('month')">
+				AND MONTH(l.likes_time) = MONTH(CURDATE())
+			</if>
+	  	</if>
+	</select>
+	
+	<select id="getInquireLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT WEEKOFYEAR(i.inquire_time),MONTH(i.inquire_time),u.user_id, user_name, i.inquire_no, i.inquire_time
+		FROM user u
+		left outer join inquire i on u.user_id = i.user_id
+		WHERE u.user_id = #{userId}
+		<if test="duration.equals('week') || duration.equals('month')">
+  			<if test="duration.equals('week')">
+				AND WEEK(i.inquire_time) = WEEKOFYEAR(CURDATE())
+			</if>
+			<if test="duration.equals('month')">
+				AND MONTH(i.inquire_time) = MONTH(CURDATE())
+			</if>
+	  	</if>
+	</select>
+	
+	<select id="getReportedLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT WEEK(inquire_time),MONTH(inquire_time),reported_user_id, inquire_code,inquire_no, inquire_time
+		FROM inquire
+		WHERE reported_user_id = #{userId}
+		<if test="duration.equals('week') || duration.equals('month')">
+  			<if test="duration.equals('week')">
+				AND WEEK(inquire_time) = WEEKOFYEAR(CURDATE())
+			</if>
+			<if test="duration.equals('month')">
+				AND MONTH(inquire_time) = MONTH(CURDATE())
+			</if>
+	  	</if>
+	</select>	 
 
 
 </mapper>

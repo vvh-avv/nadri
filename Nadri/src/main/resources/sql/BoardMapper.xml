@@ -3,5 +3,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="BoardMapper">
-
+	
+	<resultMap type="board" id="boardMap">
+		<result property="boardNo" column="board_no" jdbcType="INTEGER"/>
+		<result property="boardDate" column="board_time" jdbcType="DATE"/>
+		<result property="boardTitle" column="board_title" jdbcType="VARCHAR"/>
+		<result property="boardContent" column="board_content" jdbcType="VARCHAR"/>
+		<result property="openRange" column="open_range" jdbcType="VARCHAR"/>
+		<result property="boardImg" column="board_img" jdbcType="VARCHAR"/>
+		<result property="hashTag" column="hashtag" jdbcType="VARCHAR"/>
+		
+		<association property="user" javaType="user">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<!-- Board -->
+	<insert id="insertBoard" parameterType="board">
+		INSERT
+		INTO BOARD (user_id, board_time, board_title, board_content, board_img, open_range, hashtag)
+		VALUES (<!--#{user.userId}-->'user06', NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
+	</insert>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE BOARD
+		SET board_title=#{boardTitle}, board_content=#{boardContent}, board_img=#{boardImg}, open_range=#{openRange}, hashtag=#{hashTag}
+		WHERE board_no=#{boardNo}
+	</update>
+	
+	<select id="getBoard" parameterType="int" resultMap="boardMap">
+		SELECT
+		board_no, user_id, board_time, board_title, board_content, board_img, open_range, hashtag
+		FROM BOARD
+		WHERE board_no=#{boardNo}
+	</select>
+	
+	<select id="getBoardList" parameterType="list" resultMap="boardMap">
+		SELECT
+		board_no, user_id, board_time, board_title, board_content, board_img, open_range, hashtag
+		FROM BOARD
+	</select>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE board_no=#{value}
+	</delete>
+	
+	<!-- Likes -->
+	<select id="getLikeCount" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM LIKES
+		WHERE board_no=#{value}
+	</select>
+	
+	<select id="getLikeFlag" parameterType="map" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM LIKES
+		WHERE board_no=#{boardNo} AND user_id=#{userId}
+	</select>
+	
+	<insert id="insertLike" parameterType="map">
+		INSERT
+		INTO LIKES (board_no, user_id, likes_time)
+		VALUES (#{boardNo}, #{userId}, NOW())
+	</insert>
+	
+	<delete id="deleteLike" parameterType="map">
+		DELETE
+		FROM LIKES
+		WHERE board_no=#{boardNo} AND user_id=#{userId}
+	</delete>
 </mapper>

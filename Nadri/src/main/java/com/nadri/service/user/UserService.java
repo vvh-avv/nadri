@@ -59,6 +59,9 @@ public interface UserService {
 
 	//아이디 중복체크
 	public boolean checkUserId(String userId) throws Exception;
+	
+	//회원 활동 불러오기
+	public Map<String,Object> getUserLog(String userId,int number,String duration);
 
 	
 }
