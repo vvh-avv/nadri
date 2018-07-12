@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper">
+
+	<resultMap type="user" id="userMap">
+		<result property="userId" column="user_id" jdbcType="VARCHAR" />
+		<result property="userName" column="user_Name" jdbcType="VARCHAR" />
+		<result property="password" column="password" jdbcType="VARCHAR" />
+		<result property="role" column="role" jdbcType="VARCHAR" />
+		<result property="ssn" column="ssn" jdbcType="VARCHAR" />
+		<result property="phone" column="cell_phone" jdbcType="VARCHAR" />
+		<result property="addr" column="addr" jdbcType="VARCHAR" />
+		<result property="email" column="email" jdbcType="VARCHAR" />
+		<result property="regDate" column="reg_date" jdbcType="DATE" />
+	</resultMap>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT
+		INTO users(user_id, user_name, password, role, ssn, cell_phone, addr, email, reg_date)
+		VALUES( #{userId}, #{userName}, #{password}, 'user' , #{ssn:VARCHAR}, #{phone:VARCHAR}, #{addr:VARCHAR}, #{email:VARCHAR}, SYSDATE )
+	</insert>
+
+	<select id="findUser" parameterType="string" resultMap="userMap">
+		SELECT
+		user_id, user_name, password, role, cell_phone, addr, email, reg_date
+		FROM users
+		WHERE user_id = #{value}
+	</select>
+
+	<update id="updateUser" parameterType="user">
+		UPDATE users
+		SET user_name=#{userName}, password=#{password}, cell_phone=#{phone}, addr=#{addr}, email=#{email}
+		WHERE user_id = #{userId}
+	</update>
+	
+
+	<select id="getUserList" parameterType="map" resultMap="userMap">
+		SELECT *
+	 	FROM ( 	SELECT inner_table.*, ROWNUM AS row_seq
+	 			  	FROM (		SELECT
+									user_id , user_name , email FROM users
+									<where>
+										<if test="search.searchCondition!=null and search.searchKeyword!=''">
+											<if test="search.searchCondition==0">
+												user_id LIKE '%'||#{search.searchKeyword}||'%'
+											</if>
+											<if test="search.searchCondition==1">
+												user_name LIKE '%'||#{search.searchKeyword}||'%'
+											</if>
+											<if test="search.searchCondition==2">
+												user_email LIKE '%'||#{search.searchKeyword}||'%'
+											</if>
+										</if>
+									</where>
+									ORDER BY user_id ${sort}  ) inner_table
+		 			WHERE <![CDATA[ROWNUM <= ${search.currentPage*search.pageSize}]]> )
+	 	WHERE row_seq BETWEEN ${(search.currentPage-1)*search.pageSize+1} AND ${search.currentPage*search.pageSize}
+	</select>
+	
+	<select id="getTotalCount" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM (	SELECT
+					user_id , user_name , email FROM users
+					<if test="searchCondition!=null and searchKeyword!=''">
+						<if test="searchCondition==0">
+							WHERE user_id LIKE '%'||#{searchKeyword}||'%'
+						</if>
+						<if test="searchCondition==1">
+							WHERE user_name LIKE '%'||#{searchKeyword}||'%'
+						</if>
+						<if test="searchCondition==2">
+							WHERE user_email LIKE '%'||#{searchKeyword}||'%'
+						</if>
+					</if>  ) countTable
+	</select>
+	
+
+	<delete id="deleteUser" parameterType="String">
+		DELETE
+		FROM users
+		WHERE user_id = #{value}
+	</delete>
+
+</mapper>

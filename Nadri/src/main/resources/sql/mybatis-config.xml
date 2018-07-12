@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+ 		 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ 		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<!-- 기타 설정정보 :: [MyBatis_Home]/mybatis-3.2.1.pdf 참조 -->
+	<settings>
+		<setting name="callSettersOnNulls" value="false"/>
+	</settings>	
+	
+	<typeAliases>
+		<typeAlias alias="search" type="com.nadri.common.Search" />
+		<typeAlias alias="board" type="com.nadri.service.domain.Board" />
+		<typeAlias alias="cart" type="com.nadri.service.domain.Cart" />
+		<typeAlias alias="chatroom" type="com.nadri.service.domain.ChatRoom" />
+		<typeAlias alias="comment" type="com.nadri.service.domain.Comment" />
+		<typeAlias alias="graph" type="com.nadri.service.domain.Graph" />
+		<typeAlias alias="inquire" type="com.nadri.service.domain.Inquire" />
+		<typeAlias alias="insta" type="com.nadri.service.domain.Insta" />
+		<typeAlias alias="notice" type="com.nadri.service.domain.Notice" />
+		<typeAlias alias="reward" type="com.nadri.service.domain.Reward" />
+		<typeAlias alias="schedule" type="com.nadri.service.domain.Schedule" />
+		<typeAlias alias="searchlog" type="com.nadri.service.domain.SearchLog" />
+		<typeAlias alias="spot" type="com.nadri.service.domain.Spot" />
+		<typeAlias alias="user" type="com.nadri.service.domain.User" />
+		<typeAlias alias="waypoint" type="com.nadri.service.domain.WayPoint" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="sql/AdminMapper.xml" />
+		<mapper resource="sql/BoardMapper.xml" />
+		<mapper resource="sql/CartMapper.xml" />
+		<mapper resource="sql/ChatRoomMapper.xml" />
+		<mapper resource="sql/NoticeMapper.xml" />
+		<mapper resource="sql/ScheduleMapper.xml" />
+		<mapper resource="sql/SearchLogMapper.xml" />
+		<mapper resource="sql/SpotMapper.xml" />
+		<mapper resource="sql/UserMapper.xml" />
+	</mappers>
+
+</configuration>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation=
+				"http://www.springframework.org/schema/beans 
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context 
+				http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/mvc
+				http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    
+   <!-- :: 공통적인 사항을 설정한 common-servlet.xml 사용. -->
+    
+    <!--  ㅇ 어노테이션 기반 :: Spring Framework 사용.
+    		ㅇ @Controller annotation 선언된 Bean 만 Wiring
+		   ㅇ @Service / @Repository  annotation 선언된 Bean 은 Scan 제외 -->
+	<context:component-scan base-package="com.nadri.web">
+		<context:include-filter 	type="annotation"	expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>            
+
+      
+	 <!-- ::  Annotation 지원 HandlerMapping 선언 -->
+	<mvc:annotation-driven />
+	 
+	 <!--  :: Interceptor 선언 : 로그인 유무확인.--> 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/**"/>
+			<bean class="com.nadri.common.web.LogonCheckInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
+	<!--  :: ViewResolver 선언 -->	
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" />
+	
+	<mvc:resources mapping="/css/**" location="/css/" />
+   	<mvc:resources mapping="/images/**" location="/images/" />
+   	<mvc:resources mapping="/javascript/**" location="/javascript/" />
+   	<mvc:resources mapping="/common/**" location="/common/" />
+   	<mvc:resources mapping="/chatFiles/**" location="/chatFiles/" />
+   	
+	<!-- :: FileUpload 기능 -->
+ 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="20971520"/> <!-- 20MB -->
+		<property name="maxInMemorySize" value="1048576"/> <!--  1MB -->
+	</bean>
+	
+	
+	<!-- 	:: exception resolver  선언 :: 서술적 / 선언적 예외처리 -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- <property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.NullPointerException">/common/nullError.jsp</prop>
+				<prop key="java.lang.NumberFormatException">/common/numberFormatError.jsp</prop>
+			</props>
+		</property> -->
+		<property name="defaultErrorView"	value="/common/error.jsp" />
+	</bean>
+
+</beans>
