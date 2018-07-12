@@ -1,14 +1,19 @@
 package com.nadri.service.comment;
 
-public class CommentDao {
+import java.util.List;
 
-	public CommentDao() {
-		// TODO Auto-generated constructor stub
-	}
+import com.nadri.common.Search;
+import com.nadri.service.domain.Comment;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public interface CommentDao {
 
-	}
-
+	public void addComment(Comment Comment) throws Exception;
+	
+	public void updateComment(Comment Comment) throws Exception;
+	
+	public List<Comment> getCommentList(Search search) throws Exception;
+	
+	public void deleteComment(int CommentNo) throws Exception;
+	
+	public int getCommentCount(int boardNo) throws Exception;
 }
