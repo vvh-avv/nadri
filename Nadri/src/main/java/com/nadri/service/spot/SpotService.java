@@ -25,4 +25,15 @@ public interface SpotService {
 	
 	// 6. 주변 장소 정보를 가져오는 메소드
 	public List<Spot> searchAround(Spot spot) throws Exception;
+	
+	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	// 3. 장소삭제 (admin only)
+	public void deleteSpot(String spotNo);
+	
+	// 0. 코드없이 전체 장소 조회(admin only)
+	public List<Spot> getSpotList() throws Exception;
+	
+	// 4. 장소추가 (admin only)
+	public void addSpot(Spot spot);
+	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 }

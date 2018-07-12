@@ -1,19 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<link rel="shortcut icon" href="/images/common/favicon.ico"> 
 
-<!-- Bootstrap CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<!-- jQuery CDN --> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+<!-- Bootstrap CDN --> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"> 
+<!-- common.js / common.css CDN --> 
+<script src="/javascript/common.js"></script> 
+<link rel="stylesheet" href="/css/common.css"> 
+<!-- toolbar.js CDN --> 
+<script src="/javascript/toolbar.js"></script> 
+<!-- juanMap.js CDN --> 
+<script src="/javascript/juanMap.js"></script> 
+<!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! --> 
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <html>
@@ -1218,13 +1228,6 @@ var markers = [];
 	json.push(item.longitude); 
 	locations.push(json); 
 	}); 
-
-	var iconBase = '/images/spot/icon/';
-	var icons = {
-	  bike: {
-	    icon: iconBase + 'bike.png'
-	  }         
-	};
 
 	function initMap() {
 		// 맵 스타일 속성에 필요한 배열 생성 
