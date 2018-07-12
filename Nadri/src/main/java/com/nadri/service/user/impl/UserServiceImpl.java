@@ -171,6 +171,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	
+	@Override
+	public Map<String, Object> getUserLog(String userId, int number, String duration) {
+		// TODO Auto-generated method stub
+		return userDao.getUserLog(userId, number, duration);
+	}
+
+	
 
 
 }

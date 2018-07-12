@@ -178,6 +178,9 @@
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="email" name="email" placeholder="example@example.com">
 				</div>
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-success">인증하기</button>
+				</div>
 			</div>
 			<br/>
 			

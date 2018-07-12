@@ -182,6 +182,12 @@ public class KakaoLoginDaoImpl implements UserDao{
 	    return user;
 	}
 
+	@Override
+	public Map<String, Object> getUserLog(String userId, int number, String duration) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 
