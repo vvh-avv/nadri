@@ -1,19 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<link rel="shortcut icon" href="/images/common/favicon.ico"> 
 
-<!-- Bootstrap CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<!-- jQuery CDN --> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+<!-- Bootstrap CDN --> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"> 
+<!-- common.js / common.css CDN --> 
+<script src="/javascript/common.js"></script> 
+<link rel="stylesheet" href="/css/common.css"> 
+<!-- toolbar.js CDN --> 
+<script src="/javascript/toolbar.js"></script> 
+<!-- juanMap.js CDN --> 
+<script src="/javascript/juanMap.js"></script> 
+<!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! --> 
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <html>
@@ -205,8 +215,7 @@ for (var i = 0; i < festival.length; i++) {
 			// 마커를 생성합니다
 			var marker = new google.maps.Marker({
 				map : map,
-				position : nowposition,
-				icon : icons['myplace'].icon
+				position : nowposition
 			});
 
 			var iwContent = message, // 인포윈도우에 표시할 내용
@@ -349,40 +358,28 @@ for (var i = 0; i < festival.length; i++) {
 		<body>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" onclick="getSpotList(0)">공원</button>
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
 			</span>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs" onclick="getFestivalList()">축제/전시</button>
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getFestivalList">축제/전시</a></button>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a></button>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-success btn-xs"  ><a href="/spot/getRestaurantList?spotCode=11">수요미식회</a></button>
 				</div>
 			</span>
 
 			<span class="dropdown">
-				<div class="dropdown-content">
-					<a href="#" onclick="getSpotList(10)">삼대천왕</a> 
-					<a href="#" onclick="getSpotList(11)">수요미식회</a>
-				</div>
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
 			</span>
 
-			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs"
-					onclick="getRiverList()">한강</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a> 
-					<a href="#">Link3</a>
-				</div>
-			</span>
-
-			<span class="dropdown">
-				<button class="btn btn-block btn-warning btn-xs"
-					onclick="getUtilList()">편의시설</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a>
-					<a href="#">Link 3</a>
-				</div>
-			</span>
 			<div id="map">
 				<br /> <br />
 			</div>
