@@ -18,15 +18,25 @@
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <html>
 <style>
-body {
-	height: 100%
-}
+	body {
+		height: 100%
+	}
+	
+	#map {
+		height: 80%;
+		width: 100%;
+		clear: both;
+	}
 
-#map {
-	height: 80%;
-	width: 100%;
-	clear: both;
-}
+	/* jumbotron 이미지를 넣는 부분 입니다!*/
+	.jumbotron {
+    margin-bottom: 0px;
+    background-image: url(/images/spot/422.jpg);
+    background-position: 0% 25%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+	}
 
 </style>
 
@@ -44,30 +54,86 @@ var infowindows = [];
 var contents = [];
 //마커 저장소
 var markers = [];
-
-	
+var data = ${a};
+var festival = data.response.body.items.item;
+for (var i = 0; i < festival.length; i++) {
+	obj = {
+		lat : parseFloat(festival[i].mapy),
+		lng : parseFloat(festival[i].mapx),
+		img : festival[i].firstimage,
+		title : festival[i].title,
+		tel : festival[i].tel,
+		addr : festival[i].addr1,
+		readcount : festival[i].readcount
+	};
+	locations.push(obj);
+/* 	$('.parkImg').append(function(i) {
+		// 변수를 선언합니다. 
+		var output = '';
+		output += ' <div class="col-lg-12"> ';
+		output += ' <div class="box box-danger"> ';
+		output += '<div class="box-header with-border">';
+		output += ' <div class="box-tools pull-right">';
+		output += '   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>';
+		output += '   </button>';
+		output += '    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>';
+		output += '   </button>';
+		output += '  </div>';
+		output += '   </div>';
+		output += '    <div class="box-body no-padding">';
+		output += '  <ul class="users-list clearfix">';
+		output += '     <li>';
+		if (typeof festival[i].firstimage == "undefined") {
+			output += '       <img src="../images/river/park01.png" height="100" width="100">';
+		} else {
+			output += '       <img src=" ' + festival[i].firstimage + ' " height="100" width="100">';
+		}
+		output += '       <a class="users-list-name" href="#"> 조회수 : '
+				+ festival[i].readcount
+				+ '</a>';
+		output += '       <span class="users-list-date">'
+				+ festival[i].tel
+				+ '</span>';
+		output += '     </li>';
+		output += '   </ul>';
+		output += '  <div class="box-body">';
+		output += ' <strong><i class="fa fa-book margin-r-5"></i> 행사 이름</strong>';
+		output += ' <p class="text-muted"> '+ festival[i].title+ '</p>';
+		output += ' <hr>';
+		output += '  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>';
+		output += '  <p class="text-muted">'
+				+ festival[i].addr1
+				+ '</p>';
+		output += '  <hr>';
+		output += '  <strong><i class="fa fa-pencil margin-r-5"></i> 태그</strong>';
+		output += ' <p>';
+		output += ' <span class="label label-danger">공원</span>';
+		output += '  <span class="label label-success">맛집</span>';
+		output += ' <span class="label label-info">축제/전시</span>';
+		output += '  <span class="label label-warning">한강</span>';
+		output += ' <span class="label label-primary">편의시설</span>';
+		output += ' </p>';
+		output += '  <hr>';
+		output += ' <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>';
+		output += ' <p><a href="javascript:void(0)" class="uppercase">장소 상세보기</a></p>';
+		output += ' </div>';
+		output += '    </div>';
+		output += '  <div class="box-footer text-center">';
+		output += '<a href="javascript:void(0)" class="uppercase">장소 상세보기</a>';
+		output += '</div>';
+		output += '</div>';
+		output += '</div>';
+		output += ' </div>';
+		return output;
+	}) */
+}
 	
 	// 구글 맵에서 쓸 아이콘을 세팅하는 장소입니다!
-	var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+	var iconBase = '/images/spot/icon/';
 	var icons = {
-		park : {
-			icon : iconBase + 'partly_cloudy_maps.png'
-		},
-		snackbar : {
-			icon : iconBase + 'snack_bar_maps.png'
-		},
-		info : {
-			icon : iconBase + 'info_maps.png'
-		},
-		parking : {
-			icon : iconBase + 'parking_lot_maps.png'
-		},
-		cycling : {
-			icon : iconBase + 'cycling_maps.png'
-		},
-		arts : {
-			icon : iconBase + 'arts_maps.png'
-		}
+		festival : {
+			icon : iconBase + 'festival.png'
+		}            
 	};
 
 	function initMap() {
@@ -85,7 +151,7 @@ var markers = [];
 			//최초 맵 로딩 시 위치 값 셋팅 
 			center : center,
 			// 줌 레벨 셋팅 
-			zoom : 11,
+			zoom : 12,
 			//스크롤 휠 페이지 검색
 			scrollwheel : false,
 			// 스타일 맵 적용 
@@ -139,7 +205,8 @@ var markers = [];
 			// 마커를 생성합니다
 			var marker = new google.maps.Marker({
 				map : map,
-				position : nowposition
+				position : nowposition,
+				icon : icons['myplace'].icon
 			});
 
 			var iwContent = message, // 인포윈도우에 표시할 내용
@@ -181,26 +248,15 @@ var markers = [];
 			//getAddress(event);
 			//zoomChange(event);
 		});
-		var data = ${a};
-		var festival = data.response.body.items.item;
-		for (var i = 0; i < festival.length; i++) {
-			obj = {
-				lat : parseFloat(festival[i].mapy),
-				lng : parseFloat(festival[i].mapx),
-				img : festival[i].firstimage,
-				title : festival[i].title,
-				tel : festival[i].tel,
-				addr : festival[i].addr1,
-				readcount : festival[i].readcount
-			};
-			locations.push(obj);
+
 			// 이부분은 마커를 추가해주는 부분입니다.
 			for (var i = 0; i < locations.length; i++) {
 				//마커 각각의 ID를 설정
 				//locationsfestival[i].index = i;
 				markers[i] = new google.maps.Marker({
 					position : locations[i],
-					map : map
+					map : map,
+					icon: icons['festival'].icon
 				});
 				//인덱스를 꺼내오기.. 중요!!
 				markers[i].index = i
@@ -241,229 +297,8 @@ var markers = [];
 				google.maps.event.addListener(markers[i],'rightclick', function() {alert("이곳의 위치가 궁금한가?!");
 				});
 			}
-			//obj = {lat : parseFloat(park[i].parkY), lng : parseFloat(park[i].parkX), detail : park[i].parkDetail }; 
-			// locations.push(obj);
-			$('.parkImg').append(function(index) {
-								// 변수를 선언합니다. 
-								var output = '';
-								output += ' <div class="col-lg-12"> ';
-								output += ' <div class="box box-danger"> ';
-								output += '<div class="box-header with-border">';
-								output += ' <div class="box-tools pull-right">';
-								output += '   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>';
-								output += '   </button>';
-								output += '    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>';
-								output += '   </button>';
-								output += '  </div>';
-								output += '   </div>';
-								output += '    <div class="box-body no-padding">';
-								output += '  <ul class="users-list clearfix">';
-								output += '     <li>';
-								if (typeof festival[i].firstimage == "undefined") {
-									output += '       <img src="../images/river/park01.png" height="100" width="100">';
-								} else {
-									output += '       <img src=" ' + festival[i].firstimage + ' " height="100" width="100">';
-								}
-								output += '       <a class="users-list-name" href="#"> 조회수 : '
-										+ festival[i].readcount
-										+ '</a>';
-								output += '       <span class="users-list-date">'
-										+ festival[i].tel
-										+ '</span>';
-								output += '     </li>';
-								output += '   </ul>';
-								output += '  <div class="box-body">';
-								output += ' <strong><i class="fa fa-book margin-r-5"></i> 행사 이름</strong>';
-								output += ' <p class="text-muted"> '
-										+ festival[i].title
-										+ '</p>';
-								output += ' <hr>';
-								output += '  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>';
-								output += '  <p class="text-muted">'
-										+ festival[i].addr1
-										+ '</p>';
-								output += '  <hr>';
-								output += '  <strong><i class="fa fa-pencil margin-r-5"></i> 태그</strong>';
-								output += ' <p>';
-								output += ' <span class="label label-danger">공원</span>';
-								output += '  <span class="label label-success">맛집</span>';
-								output += ' <span class="label label-info">축제/전시</span>';
-								output += '  <span class="label label-warning">한강</span>';
-								output += ' <span class="label label-primary">편의시설</span>';
-								output += ' </p>';
-								output += '  <hr>';
-								output += ' <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>';
-								output += ' <p><a href="javascript:void(0)" class="uppercase">장소 상세보기</a></p>';
-								output += ' </div>';
-								output += '    </div>';
-								output += '  <div class="box-footer text-center">';
-								output += '<a href="javascript:void(0)" class="uppercase">장소 상세보기</a>';
-								output += '</div>';
-								output += '</div>';
-								output += '</div>';
-								output += ' </div>';
-								return output;
-							})
-		}
-	}//end of initmap();	
 	
-	function getFestivalList() {
-		deleteMarkers()
-		// .parkImg를 비운다.
-		$('.parkImg').empty();
-		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=A&listYN=Y&eventStartDate=20180704&&_type=json";
-		$.getJSON(url,function(data) {
-							//var data = JSON.parse(JSON.stringify(data));
-							var festival = data.response.body.items.item;
-							for (var i = 0; i < festival.length; i++) {
-								obj = {
-									lat : parseFloat(festival[i].mapy),
-									lng : parseFloat(festival[i].mapx),
-									img : festival[i].firstimage,
-									title : festival[i].title,
-									tel : festival[i].tel,
-									addr : festival[i].addr1,
-									readcount : festival[i].readcount
-								};
-								locations.push(obj);
-								// 이부분은 마커를 추가해주는 부분입니다.
-								for (var i = 0; i < locations.length; i++) {
-									//마커 각각의 ID를 설정
-									//locationsfestival[i].index = i;
-									markers[i] = new google.maps.Marker({
-										position : locations[i],
-										map : map
-									});
-									//인덱스를 꺼내오기.. 중요!!
-									markers[i].index = i
-
-									contents[i] = '<div class="box box-primary">'
-											+ '<div class="box-body box-profile">'
-											+ '<img class="profile-user-img img-responsive img-circle" src=" ' + locations[i].img + ' " alt="User profile picture">'
-											+ '<h3 class="profile-username text-center">'
-											+ locations[i].title
-											+ '</h3>'
-											+ '<ul class="list-group list-group-unbordered">'
-											+ '<li class="list-group-item">'
-											+ '   <b>위치</b> <a class="pull-right">'
-											+ locations[i].addr
-											+ '</a>'
-											+ '</li>'
-											+ '  <li class="list-group-item">'
-											+ '<b>대표전화</b> <a class="pull-right">'
-											+ locations[i].tel
-											+ '</a>'
-											+ '</li>'
-											+ '<li class="list-group-item">'
-											+ ' <b>조회수</b> <a class="pull-right">'
-											+ locations[i].readcount
-											+ '</a>'
-											+ ' </li>'
-											+ ' </ul>'
-											+ '<span> '
-											+ ' <a href="#" id ="abc" class="btn btn-primary btn-block" onclick="aaa()"><b>상세보기</b></a>'
-											+ '<span>'
-											+ '<span> '
-											+ ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'
-											+ '</span>' + '</div>';
-
-									// 이벤트 정보 넣기
-									infowindows[i] = new google.maps.InfoWindow(
-											{
-												content : contents[i],
-												removeable : true
-											});
-
-									// 마커를 클릭했을때 이벤트 발생 시키기
-									google.maps.event.addListener(markers[i],'click',function() {
-														// 일단 마커를 모두 닫고
-														for (var i = 0; i < markers.length; i++) {
-															infowindows[i].close();}
-														infowindows[this.index].open(map,markers[this.index]);
-														map.panTo(markers[this.index].getPosition());
-													});
-
-									// 마커를 클릭했을때 이벤트 발생 시키기
-									google.maps.event.addListener(markers[i],'rightclick', function() {alert("이곳의 위치가 궁금한가?!");
-									});
-								}
-								//obj = {lat : parseFloat(park[i].parkY), lng : parseFloat(park[i].parkX), detail : park[i].parkDetail }; 
-								// locations.push(obj);
-								$('.parkImg').append(function(index) {
-													// 변수를 선언합니다. 
-													var output = '';
-													output += ' <div class="col-lg-12"> ';
-													output += ' <div class="box box-danger"> ';
-													output += '<div class="box-header with-border">';
-													output += ' <div class="box-tools pull-right">';
-													output += '   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>';
-													output += '   </button>';
-													output += '    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>';
-													output += '   </button>';
-													output += '  </div>';
-													output += '   </div>';
-													output += '    <div class="box-body no-padding">';
-													output += '  <ul class="users-list clearfix">';
-													output += '     <li>';
-													if (typeof festival[i].firstimage == "undefined") {
-														output += '       <img src="../images/river/park01.png" height="100" width="100">';
-													} else {
-														output += '       <img src=" ' + festival[i].firstimage + ' " height="100" width="100">';
-													}
-													output += '       <a class="users-list-name" href="#"> 조회수 : '
-															+ festival[i].readcount
-															+ '</a>';
-													output += '       <span class="users-list-date">'
-															+ festival[i].tel
-															+ '</span>';
-													output += '     </li>';
-													output += '   </ul>';
-													output += '  <div class="box-body">';
-													output += ' <strong><i class="fa fa-book margin-r-5"></i> 행사 이름</strong>';
-													output += ' <p class="text-muted"> '
-															+ festival[i].title
-															+ '</p>';
-													output += ' <hr>';
-													output += '  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>';
-													output += '  <p class="text-muted">'
-															+ festival[i].addr1
-															+ '</p>';
-													output += '  <hr>';
-													output += '  <strong><i class="fa fa-pencil margin-r-5"></i> 태그</strong>';
-													output += ' <p>';
-													output += ' <span class="label label-danger">공원</span>';
-													output += '  <span class="label label-success">맛집</span>';
-													output += ' <span class="label label-info">축제/전시</span>';
-													output += '  <span class="label label-warning">한강</span>';
-													output += ' <span class="label label-primary">편의시설</span>';
-													output += ' </p>';
-													output += '  <hr>';
-													output += ' <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>';
-													output += ' <p><a href="javascript:void(0)" class="uppercase">장소 상세보기</a></p>';
-													output += ' </div>';
-													output += '    </div>';
-													output += '  <div class="box-footer text-center">';
-													output += '<a href="javascript:void(0)" class="uppercase">장소 상세보기</a>';
-													output += '</div>';
-													output += '</div>';
-													output += '</div>';
-													output += ' </div>';
-													return output;
-												})
-							}
-						});// end of getJSON
-	} // end of dropFestival()
-
-	// marker animation으로 찍기!
-	function addMarkerWithTimeout(position, timeout) {
-		window.setTimeout(function() {
-			marker = new google.maps.Marker({
-				position : position,
-				//icon: icons[feature.type].icon,
-				map : map
-			}, timeout);
-		})
-	} // end of addMarkerWithTimeout
+	}//end of initmap();	
 	
 	// Sets the map on all markers in the array.
     function setMapOnAll(map) {
@@ -551,10 +386,39 @@ var markers = [];
 			<div id="map">
 				<br /> <br />
 			</div>
-			<div class="parkImg"></div>
-			<p></p>
-			<div id="dataInfo"></div>
-			<br />
-
+			<div class="jumbotron">
+  				<h1>축제</h1>
+  					<p>우리나라 축제를 검색해 보세요!</p>
+  					<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+			</div>
+			<table class="table table-hover" >
+				<tr class="starview">
+					<th class="text-center">No</th>
+					<th class="text-center">제목</th>
+					<th class="text-center">축제이미지</th>
+					<th class="text-center">축제장소</th>
+					<th class="text-center">전화번호</th>
+					<th class="text-center">열리는구</th>
+					<th class="text-center">조회수</th>
+				</tr>
+				<c:set var="i" value="0" />
+				<c:forEach var="festival" items="${a.response.body.items.item}">
+					<c:set var="i" value="${i+1}" />
+					<tr class="ct_list_pop">
+						<td align="center" valign="middle">${ i }</td>
+						<td align="center">${festival.title}</td>
+						<c:if test="${ !empty festival.firstimage}"> <!--  값이 있을때 -->
+						<td align="center"><img src="${festival.firstimage}" width="200" height="100" /></td>
+						</c:if>
+						<c:if test="${ empty festival.firstimage}">
+						<td align="center"><img src="/images/spot/festivaldefault.jpg" width="200" height="100" /></td>
+						</c:if>
+						<td align="center">${festival.addr1}</td>
+						<td align="center">${festival.tel}</td>
+						<td align="center">${festival.sigungucode}<span class="label label-info">축제/전시</span></td>
+					   <td align="center">${festival.readcount}</td>
+					</tr>
+				</c:forEach>
+			</table>
 		</body>
 </html>
