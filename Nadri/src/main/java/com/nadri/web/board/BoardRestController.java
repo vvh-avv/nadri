@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.service.board.BoardService;
-import com.nadri.service.domain.Board;
 
 @RestController
 @RequestMapping("/board/*")
