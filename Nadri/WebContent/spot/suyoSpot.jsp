@@ -69,6 +69,47 @@
 	      
       .normal { width : 15%; height:300px;}
       .small { width : 100px ; height:100px;}
+      
+      /*드랍다운 들어가는 css*/
+	.dropbtn {
+		    background-color: #4CAF50;
+		    color: white;
+		    padding: 16px;
+		    font-size: 16px;
+		    border: none;
+		}
+
+		span.dropdown {
+			width: 16.6%;
+			float: left;
+		}
+
+		.dropdown {
+		    position: relative;
+		    display: inline-block;
+		}
+
+		.dropdown-content {
+		    display: none;
+		    position: absolute;
+		    background-color: #f1f1f1;
+		    min-width: 160px;
+		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		    z-index: 1;
+		}
+
+		.dropdown-content a {
+		    color: black;
+		    padding: 12px 16px;
+		    text-decoration: none;
+		    display: block;
+		}
+		
+		.dropdown-content a:hover {background-color: #ddd;}
+		
+		.dropdown:hover .dropdown-content {display: block;}
+		
+		.dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 </style>
 
@@ -90,7 +131,6 @@
 	
 	//마커 담는 곳
 	var spot = ${a};
-	alert(JSON.stringify(spot));
 	for (var i = 0 ; i < spot.length; i++){
 		obj = {
 				lat : parseFloat(spot[i].spotY),
@@ -224,37 +264,37 @@
 <section class="content container-fluid">
 		<body>
 			<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" onclick="getSpotList(0)">공원</button>
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
 			</span>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs" onclick="getFestivalList()">축제/전시</button>
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getFestivalList">축제/전시</a></button>
 				</div>
 			</span>
-
+			
 			<span class="dropdown">
+				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
+					<div class="dropdown-content">
+					<a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a>
+					<a href="/spot/getRestaurantList?spotCode=11">수요미식회</a>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
 				<div class="dropdown-content">
-					<a href="#" onclick="getSpotList(10)">삼대천왕</a> 
-					<a href="#" onclick="getSpotList(11)">수요미식회</a>
+					<a href="/spot/getBabyList">수유실</a> 
+					<a href="/spot/bikeSpot.jsp">자전거</a>
+					<a href="/spot/carSpot.jsp">자동차</a>
 				</div>
 			</span>
-
+			
 			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" onclick="getRiverList()">한강</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a> 
-					<a href="#">Link 3</a>
-				</div>
-			</span>
-
-			<span class="dropdown">
-				<button class="btn btn-block btn-warning btn-xs" onclick="getUtilList()">편의시설</button>
-				<div class="dropdown-content">
-					<a href="#">Link 1</a> 
-					<a href="#">Link 2</a>
-					<a href="#">Link 3</a>
-				</div>
+				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/searchSpot.jsp">직접검색</a></button>
 			</span>
 			<div id="map">
 				<br /> <br />

@@ -23,11 +23,13 @@
 	 <select id="getSpotList" parameterType="Int" resultMap="spotSelectMap">
 		SELECT *
 		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+		ORDER BY spot_readcnt
 	</select>
 
 	<select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
 		SELECT *
 		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+		ORDER BY spot_readcnt
 	</select>
 
 	<select id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
@@ -88,5 +90,30 @@
 		VALUES
 		(#{spotCode},#{spotTitle},#{spotPhone},#{spotAddress},#{spotDetail},#{spotX},#{spotY},#{spotImg},NOW(),NOW(),#{spotProvince},#{spotDetailURL})
 	</insert>
+	
+	<update id="updateSpot" parameterType="spot" >
+	  UPDATE spot 
+      SET spot_title = #{spotTitle},
+          spot_code = #{spotCode},
+          spot_phone = #{spotPhone},
+          spot_address = #{spotAddress},
+          spot_detail = #{spotDetail},
+          spot_x = #{spotX},
+          spot_y = #{spotY},
+          spot_img = #{spotImg},
+          spot_modifytime = NOW(),
+          spot_province = #{spotProvince},
+          spot_detailurl = #{spotDetailURL}
+      WHERE spot_no = #{spotNo}
+	</update>
 	<!-- 예지누나 추가!!(20180712) -->
+	
+	<!-- 조회수 카운트 하는 메서드-->
+	<update	id="updateSpotReadCnt"	parameterType="spot" >
+	   	UPDATE spot
+	   	<set>
+	   		spot_readcnt 	= #{spotReadCnt}+1
+	   	</set>
+	  	 	WHERE spot_no = #{spotNo}
+	 </update>
 </mapper>
