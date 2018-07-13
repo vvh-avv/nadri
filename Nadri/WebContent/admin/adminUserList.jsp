@@ -21,43 +21,16 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<title>너나들이 관리자 페이지</title>
+<!-- admin index 전용 css  -->
+<link rel="stylesheet" href="/css/adminIndex.css">
+
+<title>너나들이 관리자 페이지 - 회원목록</title>
 
 </head>
-<style type="text/css">
-html, body {
-	margin: 0px;
-	width: 100%;
-	height: 100%;
-	font-size: 65px;
-}
-
-nav {
-	font-size: 0.2em;
-}
-
-.container-fluid {
-	padding: 0px;
-}
-
-.glyphicon-home {
-	font-size: 0.8em;
-	align: right;
-	margin-left: 95%;
-}
-
-.navbar {
-	display: flex;
-	align-items: center;
-}
-
-.adminmenus > div{
-	display:inline-block;
-	margin: 0px 15px;
-}
-</style>
 <script type="text/javascript">
 	$(function() {
+		
+		/* index page animation start */
 		
 		$('.adminmenus > div').on('click',function(){
 			var way = $(this).attr('class');
@@ -74,14 +47,8 @@ nav {
 			}
 		})
 		
-		$('.adminmenus > div').on('mouseover', function() {
-			$(this).css('cursor','pointer');
-			$(this).css('color','powderblue');
-		})
-		
-		$('.adminmenus > div').on('mouseleave', function() {
-			$(this).css('color','black');
-		})
+		/* index page animation end */
+
 	})
 </script>
 <body>

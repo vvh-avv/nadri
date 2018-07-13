@@ -22,6 +22,9 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
+<!-- admin index 전용 css  -->
+<link rel="stylesheet" href="/css/adminIndex.css">
+
 <title>안녀어어어어어엉</title>
 
 </head>
@@ -31,53 +34,6 @@ html, body {
 	width: 100%;
 	height: 100%;
 	font-size: 65px;
-}
-
-.container-fluid {
-	padding: 0px;
-}
-
-.topNavbar {
-	display: flex;
-	width: 100%;
-	height: 10vh;
-	border-bottom: 1px solid #ccc;
-	align-items: center;
-}
-
-.glyphicon-home {
-	font-size: 0.8em;
-	align: right;
-	margin-left: 95%;
-}
-
-.sidemenus {
-	display: flex;
-	flex-direction: row;
-}
-
-.accordion {
-	background-color: #eee;
-	color: #444;
-	cursor: pointer;
-	padding: 18px;
-	width: 25%;
-	border: none;
-	text-align: left;
-	outline: none;
-	font-size: 15px;
-	transition: 0.4s;
-}
-
-.active, .accordion:hover {
-	background-color: #ccc;
-}
-
-.panel {
-	padding: 0 18px;
-	display: none;
-	background-color: white;
-	overflow: hidden;
 }
 
 .tableset {
@@ -116,14 +72,7 @@ td {
 }
 
 .navbar {
-	display: flex;
-	align-items: center;
 	font-size: 0.2em;
-}
-
-.adminmenus>div {
-	display: inline-block;
-	margin: 0px 15px;
 }
 
 .inquireBody {
@@ -200,6 +149,8 @@ select, option {
 	});
 
 	$(function() {
+		
+		/* index page animation start */
 
 		$('.adminmenus > div').on('click', function() {
 			var way = $(this).attr('class');
@@ -215,15 +166,8 @@ select, option {
 				self.location = '/admin/listLog';
 			}
 		})
-
-		$('.adminmenus > div').on('mouseover', function() {
-			$(this).css('cursor', 'pointer');
-			$(this).css('color', 'powderblue');
-		})
-
-		$('.adminmenus > div').on('mouseleave', function() {
-			$(this).css('color', 'black');
-		})
+		
+		/* index page animation end */
 
 		$('.texts').on('mouseover', function() {
 			if ($(this).text() == '처리대기') {

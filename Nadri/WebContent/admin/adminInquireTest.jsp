@@ -22,6 +22,7 @@
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
 	$(function() {
+		
 		var inquireType = $('.inquireCode option:selected').val();
 
 		$('.inquireCode').on('change', function() {
@@ -31,10 +32,6 @@
 			} else {
 				$('.reportUser').css('visibility', 'hidden');
 			}
-		})
-
-		$('.reportUser').on('click', function() {
-			alert($('.inquireCode').val());
 		})
 
 		$(".btn-primary").on(
@@ -148,7 +145,7 @@
 			$(this).css('cursor', 'pointer');
 		})
 		
-		$('.boardReport').on('click', function() {
+		$('.inquireUser').on('click', function() {
 			var counter = $(this).attr('name');
 			$('.inquireLink').val(counter);
 			$('.inquireLink').attr('disabled', 'disabled');
@@ -275,10 +272,9 @@ select {
 			<span class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
+<!-- 신고 Modal content -->
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
-
-			<!-- 신고 Modal content -->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>

@@ -18,15 +18,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.spot.SpotService;
+import com.nadri.service.user.UserService;
 
 
 @Controller
@@ -41,6 +44,10 @@ public class AdminController {
 	@Autowired
 	@Qualifier("spotServiceImpl")
 	private SpotService spotService;
+	
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private UserService userService;
 
 	public AdminController() {
 		System.out.println(this.getClass());
@@ -137,7 +144,7 @@ public class AdminController {
 	@RequestMapping(value = "addSpot", method=RequestMethod.GET)
 	public String addSpotNav() {
 		System.out.println("addSpotNavigation -> controller 들어옴");
-		return "redirect:/admin/addSpot.jsp";
+		return "redirect:/admin/adminAddSpot.jsp";
 	}
 
 	@RequestMapping(value = "addSpot", method=RequestMethod.POST)
@@ -176,12 +183,54 @@ public class AdminController {
 		
 		model.addAttribute("spot",spot);
 		
-		return "forward:/admin/addSpotView.jsp";
+		return "forward:/admin/adminAddSpotView.jsp";
 	}
 
-	@RequestMapping(value = "updateSpot")
-	public String updateSpot() {
-		return "";
+	@RequestMapping(value = "updateSpot", method=RequestMethod.GET)
+	public String updateSpot(@RequestParam("spotNo") String spotNo,Model model) throws Exception {
+		System.out.println("updateSpot -> controller 들어옴");
+		System.out.println("들어온 장소의 번호 : "+spotNo);
+		Spot spot = spotService.getSpot(Integer.parseInt(spotNo));
+		model.addAttribute("spot",spot);
+		model.addAttribute("spotNo",Integer.parseInt(spotNo));
+		return "forward:/admin/adminUpdateSpot.jsp";
+	}
+	
+	@RequestMapping(value = "updateSpot", method=RequestMethod.POST)
+	public String updateSpotView(@RequestParam("file") MultipartFile file,@ModelAttribute("spot")Spot spot,Model model) throws Exception {
+		System.out.println("updateSpot -> controller 들어옴");
+		System.out.println("들어온 장소의 정보 : "+spot);
+		
+		String path = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\";
+		if(!file.isEmpty()) {
+		
+		    String fileOriginName=""; //각 원본파일명
+		      
+	        fileOriginName = file.getOriginalFilename();
+	         
+	        System.out.println("기존 파일명 : "+fileOriginName);
+	        SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS");
+	        Calendar now = Calendar.getInstance();
+	         
+	        String extension = fileOriginName.split("\\.")[1]; //확장자명
+	        fileOriginName = formatter.format(now.getTime())+"."+extension;
+	        System.out.println("변경된 파일명 : "+fileOriginName);
+			
+			System.out.println("FileUpload들어옴");
+			File file1 = new File(path+fileOriginName);
+			file.transferTo(file1);
+            spot.setSpotImg(fileOriginName);
+		}else {
+			Spot originalSpot = new Spot();
+			originalSpot = spotService.getSpot(spot.getSpotNo());
+			spot.setSpotImg(originalSpot.getSpotImg());
+		}
+		
+		adminService.updateSpot(spot);
+		model.addAttribute("spot",spot);
+		
+		
+		return "forward:/admin/adminUpdateSpotView.jsp";
 	}
 
 	@RequestMapping(value = "deleteSpot")
@@ -201,6 +250,10 @@ public class AdminController {
 
 	@RequestMapping(value = "listGraph")
 	public String getGraphList() {
+		
+		System.out.println("getGraphList -> controller 들어옴");
+		
+		
 		return "forward:/admin/adminGraphList.jsp";
 	}
 
@@ -210,7 +263,14 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "listUser")
-	public String getUserList() {
+	public String getUserList() throws Exception {
+		
+		System.out.println("getUserList -> controller 들어옴");
+		
+		Search search = null;
+		
+		Map<String, Object> map = userService.getUserList(search);
+		
 		return "forward:/admin/adminUserList.jsp";
 	}
 }

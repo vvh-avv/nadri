@@ -99,7 +99,7 @@ html, body {
 .sidemenu {
 	position: absolute;
 	right: 2vw;
-	top: 6.5vh;
+	top: 4vh;
 	display: flex;
 	transition: all 1s;
 	align-items: center;
@@ -155,22 +155,9 @@ html, body {
 }
 </style>
 
-<script src="/javascript/toolbar.js"></script>
-<<script type="text/javascript">
-$(function(){
-	
-	$("a.user-info").on("click",function(){
-		self.location.href="${param.uri}user/listUser?userId=${sessionScope.user.userId}";
-	});
-})
-</script>
-
-			<div id="admin">
-				<p>어드민페이지로 넘어간단다.</p>
-			</div>
 			<div class="topbar">
 				<div class="topmenus">
-					<span class="topele">저희는</span> <span class="topele">메뉴가</span> <span class="topele">됩니다</span>
+					<span class="topele">나들이백과</span> <span class="topele">게시판</span> <span class="topele">일정작성</span>
 				</div>
 				<a href="/index.jsp">
 					<div class="title">너, 나들이demo</div>
@@ -185,7 +172,9 @@ $(function(){
 						<c:if test="${!empty user}">
 							<a href="/user/listUser.jsp"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
 						</c:if>
+						<a href="/admin/adminIndex.jsp">
 						<img src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg" class="profile" title="let's go to Admin page">
+						</a>
 					</div>
 				</div>
 				</div>	

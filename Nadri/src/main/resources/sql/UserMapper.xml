@@ -60,23 +60,8 @@
 	
 	<!-- SQL: SELECT LIST -->
 	<select id="getUserList" parameterType="search" resultMap="userMap">
-		SELECT *
-	 	FROM ( 	SELECT inner_table.*, ROWNUM AS row_seq
-	 			  	FROM (SELECT user_id , user_name , email 
-	 			  				FROM user
-									<if test="search.searchCondition!=null and search.searchKeyword!=''">
-										<where>
-											<if test="search.searchCondition==0">
-												user_id LIKE '%'||#{search.searchKeyword}||'%'
-											</if>
-											<if test="search.searchCondition==1">
-												user_name LIKE '%'||#{search.searchKeyword}||'%'
-											</if>
-										</where>
-									</if>									
-									ORDER BY user_id ) inner_table
-		 			WHERE ROWNUM &lt;= #{endRowNum} )
-	 	WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+		SELECT profile_img, user_id, user_name, email, status, reg_date
+		FROM user
 	</select>
 	
 	<!-- SQL: SELECT ROW COUNT -->
@@ -135,7 +120,7 @@
 		WHERE u.user_id = #{userId}
 		<if test="duration.equals('week') || duration.equals('month')">
  			<if test="duration.equals('week')">
-				AND WEEK(b.board_time) = WEEKOFYEAR(CURDATE())
+				AND WEEKOFYEAR(b.board_time) = WEEKOFYEAR(CURDATE())
 			</if>
 			<if test="duration.equals('month')">
 				AND MONTH(b.board_time) = MONTH(CURDATE())
@@ -150,7 +135,7 @@
 		WHERE u.user_id = #{userId}
 		<if test="duration.equals('week') || duration.equals('month')">
  			<if test="duration.equals('week')">
-				AND WEEK(c.comm_time) = WEEKOFYEAR(CURDATE())
+				AND WEEKOFYEAR(c.comm_time) = WEEKOFYEAR(CURDATE())
 			</if>
 			<if test="duration.equals('month')">
 				AND MONTH(c.comm_time) = MONTH(CURDATE())
@@ -165,7 +150,7 @@
 		WHERE u.user_id = #{userId}
 		<if test="duration.equals('week') || duration.equals('month')">
  			<if test="duration.equals('week')">
-				AND WEEK(l.likes_time) = WEEKOFYEAR(CURDATE())
+				AND WEEKOFYEAR(l.likes_time) = WEEKOFYEAR(CURDATE())
 			</if>
 			<if test="duration.equals('month')">
 				AND MONTH(l.likes_time) = MONTH(CURDATE())
@@ -180,7 +165,7 @@
 		WHERE u.user_id = #{userId}
 		<if test="duration.equals('week') || duration.equals('month')">
   			<if test="duration.equals('week')">
-				AND WEEK(i.inquire_time) = WEEKOFYEAR(CURDATE())
+				AND WEEKOFYEAR(i.inquire_time) = WEEKOFYEAR(CURDATE())
 			</if>
 			<if test="duration.equals('month')">
 				AND MONTH(i.inquire_time) = MONTH(CURDATE())
@@ -189,18 +174,17 @@
 	</select>
 	
 	<select id="getReportedLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		SELECT WEEK(inquire_time),MONTH(inquire_time),reported_user_id, inquire_code,inquire_no, inquire_time
+		SELECT WEEKOFYEAR(inquire_time),MONTH(inquire_time),reported_user_id, inquire_code,inquire_no, inquire_time
 		FROM inquire
 		WHERE reported_user_id = #{userId}
 		<if test="duration.equals('week') || duration.equals('month')">
   			<if test="duration.equals('week')">
-				AND WEEK(inquire_time) = WEEKOFYEAR(CURDATE())
+				AND WEEKOFYEAR(inquire_time) = WEEKOFYEAR(CURDATE())
 			</if>
 			<if test="duration.equals('month')">
 				AND MONTH(inquire_time) = MONTH(CURDATE())
 			</if>
 	  	</if>
 	</select>	 
-
 
 </mapper>

@@ -48,15 +48,17 @@ public class AdminRestController {
 	}
 	
 	@RequestMapping(value = "addInquire/{reportUser}/{inquireCode}/{write_enc}/{title_enc}/{inquireLink}", method=RequestMethod.POST)
-	public String addInquire(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@RequestParam("file")MultipartFile file,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
+	public String addInquire(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@RequestParam("inquire_file")MultipartFile file,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
 		System.out.println("getInquire -> Restcontroller 들어옴");
 		System.out.println("들어온 fileName : "+file.getOriginalFilename());
 		System.out.println(reportUser+" / "+inquireCode);
+		System.out.println("inquireLink = "+inquireLink);
 		String inquireTitle = URLDecoder.decode(title_enc,"UTF-8");
 		String inquireWrite = URLDecoder.decode(write_enc,"UTF-8");
 		inquire.setInquireTitle(inquireTitle);
 		inquire.setInquireWrite(inquireWrite);
 		inquire.setReportUserId(reportUser);
+		inquire.setInquireLink(inquireLink);
 		String path = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\inquire\\";
 		if(!file.isEmpty()) {
 		      

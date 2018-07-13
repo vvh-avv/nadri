@@ -21,7 +21,10 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<title>너나들이 관리자 페이지</title>
+<!-- admin index 전용 css  -->
+<link rel="stylesheet" href="/css/adminIndex.css">
+
+<title>너나들이 관리자 페이지 - 나들이백과관리</title>
 
 </head>
 <style type="text/css">
@@ -30,53 +33,6 @@ html, body {
 	width: 100%;
 	height: 100%;
 	font-size: 65px;
-}
-
-.container-fluid {
-	padding: 0px;
-}
-
-.topNavbar {
-	display: flex;
-	width: 100%;
-	height: 10vh;
-	border-bottom: 1px solid #ccc;
-	align-items: center;
-}
-
-.glyphicon-home {
-	font-size: 0.8em;
-	align: right;
-	margin-left: 95%;
-}
-
-.sidemenus {
-	display: flex;
-	flex-direction: row;
-}
-
-.accordion {
-	background-color: #eee;
-	color: #444;
-	cursor: pointer;
-	padding: 18px;
-	width: 25%;
-	border: none;
-	text-align: left;
-	outline: none;
-	font-size: 15px;
-	transition: 0.4s;
-}
-
-.active, .accordion:hover {
-	background-color: #ccc;
-}
-
-.panel {
-	padding: 0 18px;
-	display: none;
-	background-color: white;
-	overflow: hidden;
 }
 
 .tableset {
@@ -112,17 +68,6 @@ td {
 
 .inquireTransaction>span {
 	margin: 0px 5px;
-}
-
-.navbar {
-	display: flex;
-	align-items: center;
-	font-size: 0.2em;
-}
-
-.adminmenus>div {
-	display: inline-block;
-	margin: 0px 15px;
 }
 
 .inquireBody {
@@ -188,6 +133,8 @@ h5 {
 <script type="text/javascript">
 	$(function() {
 
+		/* index page animation start */
+		
 		$('.adminmenus > div').on('click',function(){
 			var way = $(this).attr('class');
 			if(way=="inquire"){
@@ -202,15 +149,8 @@ h5 {
 				self.location = '/admin/listLog';
 			}
 		})
-
-		$('.adminmenus > div').on('mouseover', function() {
-			$(this).css('cursor', 'pointer');
-			$(this).css('color', 'powderblue');
-		})
-
-		$('.adminmenus > div').on('mouseleave', function() {
-			$(this).css('color', 'black');
-		})
+		
+		/* index page animation end */
 
 		$('td[colspan=5]').hide();
 
@@ -232,7 +172,7 @@ h5 {
 			}
 		})
 
-		$('.delete').on('click', function() {
+		$('.delete-spot').on('click', function() {
 			var titleNo = $(this).parent().attr('class');
 			console.log(titleNo);
 			var title = $('#inq' + titleNo + " > td:nth-child(2)").text();
@@ -258,6 +198,11 @@ h5 {
 		
 		$('#addSpot').on('click',function(){
 			self.location = "/admin/addSpot";
+		})
+		
+		$('.modify-spot').on('click',function(){
+			var no = $(this).attr('name');
+			self.location = "/admin/updateSpot?spotNo="+no;
 		})
 	})
 </script>
@@ -312,9 +257,9 @@ h5 {
 							</ul>
 							<img src="/images/spot/${spot.spotImg}">
 						</div>
-						<button class="btn btn-danger delete" data-toggle="modal"
+						<button class="btn btn-danger delete-spot" data-toggle="modal"
 							data-target="#modal2">삭제하기</button>
-						<button class="btn btn-defalut">수정하기</button>
+						<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
 					</td>
 				<tr>
 			</c:forEach>

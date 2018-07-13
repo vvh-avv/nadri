@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
+import com.nadri.service.domain.Spot;
 
 @Service("adminServiceImpl")
 public class AdminServiceImpl implements AdminService{
@@ -47,6 +48,12 @@ public class AdminServiceImpl implements AdminService{
 	public Inquire getInquire(int inquireNo) {
 		// TODO Auto-generated method stub
 		return adminDao.getInquire(inquireNo);
+	}
+
+	@Override
+	public void updateSpot(Spot spot) {
+		// TODO Auto-generated method stub
+		adminDao.updateSpot(spot);
 	}
 
 }

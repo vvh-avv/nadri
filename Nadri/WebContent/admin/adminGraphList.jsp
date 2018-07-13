@@ -21,7 +21,10 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<title>너나들이 관리자 페이지</title>
+<!-- admin index 전용 css  -->
+<link rel="stylesheet" href="/css/adminIndex.css">
+
+<title>너나들이 관리자 페이지 - 통계관리</title>
 
 </head>
 <style type="text/css">
@@ -32,14 +35,6 @@ html, body {
 	font-size: 65px;
 }
 
-nav {
-	font-size: 0.2em;
-}
-
-.container-fluid {
-	padding: 0px;
-}
-
 .glyphicon-home {
 	font-size: 0.8em;
 	align: right;
@@ -47,13 +42,7 @@ nav {
 }
 
 .navbar {
-	display: flex;
-	align-items: center;
-}
-
-.adminmenus>div {
-	display: inline-block;
-	margin: 0px 15px;
+	font-size: 0.2em;
 }
 
 #chart_div {
@@ -88,8 +77,8 @@ nav {
 		// Set chart options
 		var options = {
 			'title' : 'How Much Pizza I Ate Last Night',
-			'width' : 400,
-			'height' : 300
+			'width' : 650,
+			'height' : 700
 		};
 
 		// Instantiate and draw our chart, passing in some options.
@@ -100,6 +89,8 @@ nav {
 
 	$(function() {
 
+		/* index page animation start */
+		
 		$('.adminmenus > div').on('click',function(){
 			var way = $(this).attr('class');
 			if(way=="inquire"){
@@ -114,15 +105,9 @@ nav {
 				self.location = '/admin/listLog';
 			}
 		})
+		
+		/* index page animation end */
 
-		$('.adminmenus > div').on('mouseover', function() {
-			$(this).css('cursor', 'pointer');
-			$(this).css('color', 'powderblue');
-		})
-
-		$('.adminmenus > div').on('mouseleave', function() {
-			$(this).css('color', 'black');
-		})
 	})
 </script>
 <body>

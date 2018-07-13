@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.domain.Inquire;
+import com.nadri.service.domain.Spot;
 
 @Repository("adminDaoImpl")
 public class AdminDaoImpl implements AdminDao{
@@ -49,6 +50,12 @@ public class AdminDaoImpl implements AdminDao{
 		// TODO Auto-generated method stub
 		System.out.println("get in getInquire Dao");
 		return sqlSession.selectOne("AdminMapper.getInquire", inquireNo);
+	}
+
+	@Override
+	public void updateSpot(Spot spot) {
+		// TODO Auto-generated method stub
+		sqlSession.update("SpotMapper.updateSpot", spot);
 	}
 
 }
