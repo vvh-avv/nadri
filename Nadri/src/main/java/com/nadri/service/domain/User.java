@@ -32,11 +32,9 @@ public class User {
 
 	
 	
-
 	///Constructor method
 	public User(){
 	}
-
 	
 	///Method 
 	public String getUserId() {

@@ -4,7 +4,43 @@
 
 <mapper namespace="AdminMapper">
 
+	<resultMap type="inquire" id="inquireMap">
+
+		<result property="inquireNo" column="inquire_no" jdbcType="NUMERIC" />
+		<result property="userId" column="user_id" jdbcType="VARCHAR" />
+		<result property="reportUserId" column="reported_user_id" jdbcType="VARCHAR" />
+		<result property="inquireCode" column="inquire_code" jdbcType="VARCHAR" />
+		<result property="inquireChkCode" column="inquire_chk_code" jdbcType="VARCHAR" />
+		<result property="inquireTitle" column="inquire_title" jdbcType="VARCHAR" />
+		<result property="inquireWrite" column="inquire_detail" jdbcType="VARCHAR" />
+		<result property="inquireLink" column="inquire_link" jdbcType="VARCHAR" />
+		<result property="inquireFile1" column="inquire_file1" jdbcType="VARCHAR" />
+		<result property="inquireFile2" column="inquire_file2" jdbcType="VARCHAR" />
+		<result property="inquireFile3" column="inquire_file3" jdbcType="VARCHAR" />
+		<result property="inquireTime" column="inquire_time" jdbcType="DATE" />
+	</resultMap>
 	
+	<insert id="insertInquire" parameterType="inquire">
+		INSERT
+		INTO inquire(user_id, reported_user_id, inquire_code, inquire_title, inquire_link, inquire_detail, inquire_file1, inquire_time)
+		VALUES( #{userId}, #{reportUserId}, #{inquireCode}, #{inquireTitle} , #{inquireLink}, #{inquireWrite}, #{inquireFile1} ,NOW())
+	</insert>
 	
+	<select id="getInquireList" resultMap="inquireMap">
+		SELECT *
+		FROM inquire
+	</select>
+	
+	<select id="getInquire" parameterType="int" resultMap="inquireMap">
+		SELECT *
+		FROM inquire
+		WHERE inquire_no = #{value}
+	</select>
+	
+	<update id="updateInquire" parameterType="inquire">
+		UPDATE inquire
+		SET inquire_chk_code=#{inquireChkCode}
+		WHERE inquire_no = #{inquireNo}
+	</update>
 
 </mapper>

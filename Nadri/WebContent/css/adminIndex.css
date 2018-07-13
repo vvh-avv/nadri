@@ -1,0 +1,50 @@
+@charset "EUC-KR";
+
+html, body {
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	font-size: 65px;
+}
+
+nav {
+	font-size: 0.2em;
+}
+
+.container-fluid {
+	padding: 0px;
+	height:100%;
+}
+
+.glyphicon-home {
+	font-size: 0.8em;
+	align: right;
+	margin-left: 95%;
+}
+
+.navbar {
+	display: flex;
+	align-items: center;
+	height:5vh;
+}
+
+.adminmenus > div{
+	display:inline-block;
+	margin: 0px 15px;
+	padding-top:1.4vh;
+	height:100%;
+}
+
+.adminmenus{
+	height:100%;
+}
+
+.adminmenus > div:hover{
+	display:inline-block;
+	margin: 0px 15px;
+	border-bottom:2px solid powderblue;
+	padding-top:1.4vh;
+	color: powderblue;
+	cursor:pointer;
+	height:100%;
+}
