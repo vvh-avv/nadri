@@ -62,4 +62,31 @@ public class SpotDaoImpl implements SpotDao{
 	public List<Spot> searchAround(Spot spot) throws Exception {
 		return sqlSession.selectList("SpotMapper.searchAround", spot);
 	}
+	
+	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	@Override
+	   public List<Spot> getSpotList() throws Exception {
+	      // TODO Auto-generated method stub
+	      return sqlSession.selectList("SpotMapper.listSpot");
+	   }
+
+	   @Override
+	   public void deleteSpot(String spotNo) {
+	      // TODO Auto-generated method stub
+	      sqlSession.delete("SpotMapper.deleteSpot", Integer.parseInt(spotNo));
+	   }
+
+	   @Override
+	   public void addSpot(Spot spot) {
+	      // TODO Auto-generated method stub
+	      sqlSession.insert("SpotMapper.addSpot", spot);
+	   }
+	   /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	  
+	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	@Override
+	public void updateSpotReadCnt(Spot spot) throws Exception {
+		sqlSession.update("SpotMapper.updateSpotReadCnt", spot);
+	}
+	
 }

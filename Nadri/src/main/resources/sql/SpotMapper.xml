@@ -20,48 +20,100 @@
 		<result property="spotReadCnt" 		column="spot_readcnt" 			jdbcType="NUMERIC"/>
 	</resultMap>
 	
-	 <select  id="getSpotList"  parameterType="Int" resultMap="spotSelectMap">
-	  	SELECT * FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
-	 </select>
-	 
-	 <select  id="getRiverList"  parameterType="Int" resultMap="spotSelectMap">
-	  	SELECT * FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
-	 </select>
-	 
-	  <select  id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
+	 <select id="getSpotList" parameterType="Int" resultMap="spotSelectMap">
+		SELECT *
+		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+		ORDER BY spot_readcnt
+	</select>
+
+	<select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
+		SELECT *
+		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+		ORDER BY spot_readcnt
+	</select>
+
+	<select id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
 	  	<![CDATA[
 	  	SELECT * 
 	  	FROM spot 
 	  	WHERE spot_code LIKE #{keyword}
 	  	limit 0, 10;
 	  	]]>
-	 </select>
-	 
-	 <select id="infiniteScrollDown" resultMap="spotSelectMap">
+	</select>
+
+	<select id="infiniteScrollDown" resultMap="spotSelectMap">
 	 	<![CDATA[
 	  	SELECT * 
 	  	FROM spot 
 	  	WHERE spot_code LIKE '11'
 	  	limit #{spotNo}, 1;
 	  	]]>
-	 </select>
-	 
-	 <select id="getSpot"  parameterType="Int"  resultMap="spotSelectMap">
-      SELECT * FROM spot
-      WHERE spot_no = #{value}
-    </select>
-    
-    <select id="searchAround" parameterType="spot" resultMap="spotSelectMap">
-    <![CDATA[
-	    SELECT 
-		*,
-		( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
-		+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
-		FROM
+	</select>
+
+	<select id="getSpot" parameterType="Int" resultMap="spotSelectMap">
+		SELECT * FROM
 		spot
-		HAVING 
-		distance < 2
-		ORDER BY  distance
-	]]>
-		</select>
-	</mapper>
+		WHERE spot_no = #{value}
+	</select>
+
+	<select id="searchAround" parameterType="spot" resultMap="spotSelectMap">
+	    <![CDATA[
+		    SELECT 
+			*,
+			( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+			+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+			FROM
+			spot
+			HAVING 
+			distance < 2
+			ORDER BY  distance
+		]]>
+	</select>
+	
+	<!-- 예지누나 추가!!(20180712) -->
+	<select id="listSpot" resultMap="spotSelectMap">
+		SELECT * FROM spot
+	</select>
+
+	<delete id="deleteSpot" parameterType="Int">
+		DELETE FROM spot WHERE
+		spot_no = #{value}
+	</delete>
+
+	<insert id="addSpot" parameterType="Spot">
+		INSERT INTO spot (spot_code,
+		spot_title, spot_phone, spot_address,
+		spot_detail, spot_x, spot_y,
+		spot_img, spot_createtime,
+		spot_modifytime, spot_province,
+		spot_detailurl)
+		VALUES
+		(#{spotCode},#{spotTitle},#{spotPhone},#{spotAddress},#{spotDetail},#{spotX},#{spotY},#{spotImg},NOW(),NOW(),#{spotProvince},#{spotDetailURL})
+	</insert>
+	
+	<update id="updateSpot" parameterType="spot" >
+	  UPDATE spot 
+      SET spot_title = #{spotTitle},
+          spot_code = #{spotCode},
+          spot_phone = #{spotPhone},
+          spot_address = #{spotAddress},
+          spot_detail = #{spotDetail},
+          spot_x = #{spotX},
+          spot_y = #{spotY},
+          spot_img = #{spotImg},
+          spot_modifytime = NOW(),
+          spot_province = #{spotProvince},
+          spot_detailurl = #{spotDetailURL}
+      WHERE spot_no = #{spotNo}
+	</update>
+	<!-- 예지누나 추가!!(20180712) -->
+	
+	<!-- 조회수 카운트 하는 메서드-->
+	<update	id="updateSpotReadCnt"	parameterType="spot" >
+	   	UPDATE spot
+	   	<set>
+	   		spot_readcnt 	= #{spotReadCnt}+1
+	   	</set>
+	  	 	WHERE spot_no = #{spotNo}
+	 </update>
+</mapper>

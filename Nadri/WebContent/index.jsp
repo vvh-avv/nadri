@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="EUC-KR">
 <title>너,나들이</title>
 
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
@@ -62,7 +63,7 @@
 			<img src="/images/user/kakao_login_btn_small.png" />
 	    </div>
 	  </div>
-   	
+   	<script src="/javascript/toolbar.js"></script>
 </body>
 
 </html>

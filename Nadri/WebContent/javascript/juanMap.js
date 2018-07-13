@@ -11,7 +11,7 @@ var icons = {
 		icon : iconBase + 'delivery.png'
 	},
 	festival : {
-		icon : iconBase + 'food.png'
+		icon : iconBase + 'festival.png'
 	},
 	food : {
 		icon : iconBase + 'food.png'

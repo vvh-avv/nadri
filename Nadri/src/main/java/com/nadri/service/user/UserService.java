@@ -47,11 +47,7 @@ public interface UserService {
 	//신고 내역 확인 리스트
 	public Map<String, Object> getUserReportList(Search search) throws Exception;
 
-	
-	/*//이메일 인증 키 검증
-	public void userAuth(String email) throws Exception; */
-
-	//이메일 관련: 상태 변화
+	//상태 코드 변화
 	public void updateStatusCode(User user) throws Exception;
 
 	//카카오 로그인
@@ -59,6 +55,12 @@ public interface UserService {
 
 	//아이디 중복체크
 	public boolean checkUserId(String userId) throws Exception;
+	
+	////////////////////180712 예지 추가///////////////////////
+	//회원 활동 불러오기
+	public Map<String,Object> getUserLog(String userId,int number,String duration);
+
+
 
 	
 }

@@ -1,134 +1,190 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE mapper
-		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="UserMapper">
 
-	<resultMap type="user" id="userMap">
-		<result property="userId" column="user_id" jdbcType="VARCHAR" />
-		<result property="userName" column="user_name" jdbcType="VARCHAR" />
-		<result property="password" column="password" jdbcType="VARCHAR" />
-		<result property="email" column="email" jdbcType="VARCHAR" />
-		<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
-		<result property="sex" column="sex" jdbcType="VARCHAR" />
-		<result property="phone" column="phone" jdbcType="VARCHAR" />
-		<result property="age" column="age" jdbcType="INTEGER" />	
-		<result property="introduce" column="introduce" jdbcType="VARCHAR" />
-		<result property="role" column="role" jdbcType="VARCHAR" />
-		<result property="regDate" column="reg_date" jdbcType="DATE" />
-		<result property="lastLogin" column="last_login" jdbcType="DATE" />
-		<result property="status" column="status" jdbcType="VARCHAR" />
-		<result property="ip" column="ip" jdbcType="VARCHAR" />
-		<result property="infoOption" column="info_option" jdbcType="VARCHAR" />
-		<result property="quitDate" column="quit_date" jdbcType="DATE" />
-		<result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
-		<result property="userStatusCode" column="user_status_code" jdbcType="VARCHAR" />
-		<result property="emailCode" column="email_code" jdbcType="VARCHAR" />
-	</resultMap>
+   <resultMap type="user" id="userMap">
+      <result property="userId" column="user_id" jdbcType="VARCHAR" />
+      <result property="userName" column="user_name" jdbcType="VARCHAR" />
+      <result property="password" column="password" jdbcType="VARCHAR" />
+      <result property="email" column="email" jdbcType="VARCHAR" />
+      <result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+      <result property="sex" column="sex" jdbcType="VARCHAR" />
+      <result property="phone" column="phone" jdbcType="VARCHAR" />
+      <result property="age" column="age" jdbcType="INTEGER" />   
+      <result property="introduce" column="introduce" jdbcType="VARCHAR" />
+      <result property="role" column="role" jdbcType="VARCHAR" />
+      <result property="regDate" column="reg_date" jdbcType="DATE" />
+      <result property="lastLogin" column="last_login" jdbcType="DATE" />
+      <result property="status" column="status" jdbcType="VARCHAR" />
+      <result property="ip" column="ip" jdbcType="VARCHAR" />
+      <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
+      <result property="quitDate" column="quit_date" jdbcType="DATE" />
+      <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+      <result property="userStatusCode" column="user_status_code" jdbcType="VARCHAR" />
+      <result property="emailCode" column="email_code" jdbcType="VARCHAR" />
+   </resultMap>
 
-	<!-- SQL: INSERT -->
-	<insert id="insertUser" parameterType="user">
-		INSERT 
-		INTO USER ( user_id, user_name, password, email, profile_img, sex, phone, age, 
-						introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason, user_status_code, email_code) 
-		VALUES (#{userId}, #{userName}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
-					#{phone:VARCHAR}, #{age:INTEGER}, #{introduce}, '0', CURDATE(), #{lastLogin}, '0',
-					#{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR}, #{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
-	</insert>
+   <!-- SQL: INSERT -->
+   <insert id="insertUser" parameterType="user">
+      INSERT 
+      INTO USER ( user_id, user_name, password, email, profile_img, sex, phone, age, 
+                  introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason, user_status_code, email_code) 
+      VALUES (#{userId}, #{userName}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
+               #{phone:VARCHAR}, #{age:INTEGER}, #{introduce}, '0', CURDATE(), #{lastLogin}, '0',
+               #{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR}, #{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
+   </insert>
 
-	<!-- SQL: SELECT ONE -->
-	<select id="findUser" parameterType="string" resultMap="userMap">
-		SELECT
-		user_id, user_name, password, email, profile_img, sex, phone, age, 
-						introduce, role, reg_date, last_login, status, ip, info_option, user_status_code, email_code
-		FROM user
-		WHERE user_id = #{value}
-	</select>
+   <!-- SQL: SELECT ONE -->
+   <select id="findUser" parameterType="string" resultMap="userMap">
+      SELECT
+      user_id, user_name, password, email, profile_img, sex, phone, age, 
+                  introduce, role, reg_date, last_login, status, ip, info_option, user_status_code, email_code
+      FROM user
+      WHERE user_id = #{value}
+   </select>
 
-	<!-- SQL: UPDATE -->
-	<update id="updateUser" parameterType="user">
-		UPDATE user
-		<set>
-		user_name = #{userName:VARCHAR}, email = #{email}, password = #{password},
-		phone = #{phone:VARCHAR}, age = #{age}, 
-		profile_img = #{profileImg}, introduce = #{introduce}
-		</set>
-		WHERE user_id = #{userId}
-	</update>
-	
-	<!-- SQL: SELECT LIST -->
-	<select id="getUserList" parameterType="search" resultMap="userMap">
-		SELECT *
-	 	FROM ( 	SELECT inner_table.*, ROWNUM AS row_seq
-	 			  	FROM (SELECT user_id , user_name , email 
-	 			  				FROM user
-									<if test="search.searchCondition!=null and search.searchKeyword!=''">
-										<where>
-											<if test="search.searchCondition==0">
-												user_id LIKE '%'||#{search.searchKeyword}||'%'
-											</if>
-											<if test="search.searchCondition==1">
-												user_name LIKE '%'||#{search.searchKeyword}||'%'
-											</if>
-										</where>
-									</if>									
-									ORDER BY user_id ) inner_table
-		 			WHERE ROWNUM &lt;= #{endRowNum} )
-	 	WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
-	</select>
-	
-	<!-- SQL: SELECT ROW COUNT -->
-	<select id="getTotalCount" parameterType="search" resultType="int">
-		SELECT COUNT(*)
-		FROM (	SELECT user_id , user_name , email 
-						FROM user
-						<if test="searchCondition != null">
-							<where>
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			user_id = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 		user_name = #{searchKeyword}
-								</if>
-							</where>
-						</if> ) countTable			
-	</select>
-	
-	<!-- SQL: QUIT USER -->
-	<delete id="quitUser" parameterType="String">
-		DELETE 
-		FROM user
-		WHERE user_id = #{value}
-	</delete>
-	
-	<!-- 인증키 관련 -->
-	<update id="createAuthKey">
-		UPDATE user SET auth_code = #{authCode} WHERE email = #{email}
-	</update>
-	
-	<!-- 이메일 인증 상태코드 변화 -->
-	<update id="updateStatusCode" parameterType="user">
-	 	UPDATE user
-	 	<set>
-	 		user_status_code = #{userStatusCode}
-	 	</set>
-	 	WHERE user_id = #{userId}
-		<if test="emailCode != null">
-	 	  AND email_code = #{emailCode}
-	 	</if>
-	 </update>
-	 
-	 <!--  아이디 찾기 -->
-	 <select id="findUserId" parameterType="user" resultMap="userMap">
-		SELECT 
-		user_id
-		FROM user
-		WHERE user_name=#{userName} AND email=#{email}
-	 </select>
-	 
-	 
-
+   <!-- SQL: UPDATE -->
+   <update id="updateUser" parameterType="user">
+      UPDATE user
+      <set>
+      user_name = #{userName:VARCHAR}, email = #{email}, password = #{password},
+      phone = #{phone:VARCHAR}, age = #{age}, 
+      profile_img = #{profileImg}, introduce = #{introduce}
+      </set>
+      WHERE user_id = #{userId}
+   </update>
+   
+   <!-- SQL: SELECT LIST -->
+   <select id="getUserList" parameterType="search" resultMap="userMap">
+      SELECT profile_img, user_id, user_name, email, status, reg_date
+      FROM user
+   </select>
+   
+   <!-- SQL: SELECT ROW COUNT -->
+   <select id="getTotalCount" parameterType="search" resultType="int">
+      SELECT COUNT(*)
+      FROM (   SELECT user_id , user_name , email 
+                  FROM user
+                  <if test="searchCondition != null">
+                     <where>
+                        <if test="searchCondition == 0 and searchKeyword !='' ">
+                            user_id = #{searchKeyword}
+                        </if>
+                        <if test="searchCondition == 1 and searchKeyword !='' ">
+                         user_name = #{searchKeyword}
+                        </if>
+                     </where>
+                  </if> ) countTable         
+   </select>
+   
+   <!-- SQL: QUIT USER -->
+   <delete id="quitUser" parameterType="String">
+      DELETE 
+      FROM user
+      WHERE user_id = #{value}
+   </delete>
+   
+   <!-- 인증키 관련 -->
+   <update id="createAuthKey">
+      UPDATE user SET auth_code = #{authCode} WHERE email = #{email}
+   </update>
+   
+   <!-- 이메일 인증 상태코드 변화 -->
+   <update id="updateStatusCode" parameterType="user">
+       UPDATE user
+       <set>
+          user_status_code = #{userStatusCode}
+       </set>
+       WHERE user_id = #{userId}
+      <if test="emailCode != null">
+         AND email_code = #{emailCode}
+       </if>
+    </update>
+    
+    <!--  아이디 찾기 -->
+    <select id="findUserId" parameterType="user" resultMap="userMap">
+      SELECT 
+      user_id
+      FROM user
+      WHERE user_name=#{userName} AND email=#{email}
+    </select>
+    
+   <select id="getBoardLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT WEEKOFYEAR(b.board_time),MONTH(b.board_time),u.user_id, user_name,b.board_title, b.board_no, b.board_time
+      FROM user u
+      left outer join board b on u.user_id = b.user_id
+      WHERE u.user_id = #{userId}
+      <if test="duration.equals('week') || duration.equals('month')">
+          <if test="duration.equals('week')">
+            AND WEEKOFYEAR(b.board_time) = WEEKOFYEAR(CURDATE())
+         </if>
+         <if test="duration.equals('month')">
+            AND MONTH(b.board_time) = MONTH(CURDATE())
+         </if>
+        </if>
+   </select>
+   
+   <select id="getCommentLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT WEEKOFYEAR(c.comm_time),MONTH(c.comm_time),u.user_id, user_name, c.comment_no, c.board_no, c.comm_time
+      FROM user u
+      left outer join comment c on u.user_id = c.user_id
+      WHERE u.user_id = #{userId}
+      <if test="duration.equals('week') || duration.equals('month')">
+          <if test="duration.equals('week')">
+            AND WEEKOFYEAR(c.comm_time) = WEEKOFYEAR(CURDATE())
+         </if>
+         <if test="duration.equals('month')">
+            AND MONTH(c.comm_time) = MONTH(CURDATE())
+         </if>
+        </if>
+   </select>
+   
+   <select id="getLikesLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT WEEKOFYEAR(l.likes_time),MONTH(l.likes_time),u.user_id, user_name, l.likes_no, l.board_no, l.likes_time
+      FROM user u
+      left outer join likes l on u.user_id = l.user_id
+      WHERE u.user_id = #{userId}
+      <if test="duration.equals('week') || duration.equals('month')">
+          <if test="duration.equals('week')">
+            AND WEEKOFYEAR(l.likes_time) = WEEKOFYEAR(CURDATE())
+         </if>
+         <if test="duration.equals('month')">
+            AND MONTH(l.likes_time) = MONTH(CURDATE())
+         </if>
+        </if>
+   </select>
+   
+   <select id="getInquireLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT WEEKOFYEAR(i.inquire_time),MONTH(i.inquire_time),u.user_id, user_name, i.inquire_no, i.inquire_time
+      FROM user u
+      left outer join inquire i on u.user_id = i.user_id
+      WHERE u.user_id = #{userId}
+      <if test="duration.equals('week') || duration.equals('month')">
+           <if test="duration.equals('week')">
+            AND WEEKOFYEAR(i.inquire_time) = WEEKOFYEAR(CURDATE())
+         </if>
+         <if test="duration.equals('month')">
+            AND MONTH(i.inquire_time) = MONTH(CURDATE())
+         </if>
+        </if>
+   </select>
+   
+   <select id="getReportedLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT WEEKOFYEAR(inquire_time),MONTH(inquire_time),reported_user_id, inquire_code,inquire_no, inquire_time
+      FROM inquire
+      WHERE reported_user_id = #{userId}
+      <if test="duration.equals('week') || duration.equals('month')">
+           <if test="duration.equals('week')">
+            AND WEEKOFYEAR(inquire_time) = WEEKOFYEAR(CURDATE())
+         </if>
+         <if test="duration.equals('month')">
+            AND MONTH(inquire_time) = MONTH(CURDATE())
+         </if>
+        </if>
+   </select>    
 
 </mapper>

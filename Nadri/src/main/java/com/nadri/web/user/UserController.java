@@ -17,17 +17,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nadri.common.Page;
 import com.nadri.common.Search;
+import com.nadri.common.util.sendingMail;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
 
@@ -67,6 +66,7 @@ public class UserController {
 	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file	) throws Exception {
 		
 		System.out.println("/user/addUser : POST");
+		System.out.println("useradd - :" +user);
 		
 		//파일 업로드
 		String uploadPath = request.getRealPath("/images/profile");
@@ -368,8 +368,7 @@ public class UserController {
 
 		    session.setAttribute("user",user);
 			
-			modelAndView.addObject("user", user);
-			
+			modelAndView.addObject("user", user);	
 			
 			modelAndView.setViewName("forward:/view/user/addExtraUser.jsp");
 
@@ -380,6 +379,8 @@ public class UserController {
 		
         return modelAndView;
 	}
+	
+	
 	
 	
 }

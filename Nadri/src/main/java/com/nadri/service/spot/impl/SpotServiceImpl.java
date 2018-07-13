@@ -67,4 +67,29 @@ public class SpotServiceImpl implements SpotService{
 		return spotDao.searchAround(spot);
 	}
 	
+	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	@Override
+	   public List<Spot> getSpotList() throws Exception {
+	      // TODO Auto-generated method stub
+	      return spotDao.getSpotList();
+	   }
+
+	   @Override
+	   public void deleteSpot(String spotNo) {
+	      // TODO Auto-generated method stub
+	      spotDao.deleteSpot(spotNo);
+	   }
+
+	   @Override
+	   public void addSpot(Spot spot) {
+	      // TODO Auto-generated method stub
+	      spotDao.addSpot(spot);
+	   }
+	   /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+
+	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	@Override
+	public void updateSpotReadCnt(Spot spot) throws Exception {
+		spotDao.updateSpotReadCnt(spot);
+	}
 }

@@ -1,5 +1,7 @@
 package com.nadri.service.user.impl;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,8 +133,35 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
+	////////////////////180712 예지 추가///////////////////////
+	public Map<String, Object> getUserLog(String userId,int number,String duration) {
+		// TODO Auto-generated method stub
+		
+		Map<String,Object> condition = new HashMap<String,Object>();		
+		condition.put("userId", userId);
+		condition.put("duration", duration);
+		condition.put("number", number);
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		System.out.println("dao로 연결된 userID = "+userId);
+		List<Object> board_list = sqlSession.selectList("UserMapper.getBoardLog", condition);		
+		System.out.println("dao에서 확인하는 board로그 : "+board_list);
+		List<Object> comment_list = sqlSession.selectList("UserMapper.getCommentLog", condition);
+		System.out.println("dao에서 확인하는 comment로그 : "+comment_list);
+		List<Object> likes_list = sqlSession.selectList("UserMapper.getLikesLog", condition);
+		System.out.println("dao에서 확인하는 likes로그 : "+likes_list);
+		List<Object> inquire_list = sqlSession.selectList("UserMapper.getInquireLog", condition);
+		System.out.println("dao에서 확인하는 inquire로그 : "+inquire_list);
+		List<Object> report_list = sqlSession.selectList("UserMapper.getReportedLog", condition);
+		System.out.println("dao에서 확인하는 report로그 : "+report_list);
+		
+		map.put("작성글", board_list.size());
+		map.put("작성댓글", comment_list.size());
+		map.put("좋아요", likes_list.size());
+		map.put("문의", inquire_list.size());
+		map.put("누적신고", report_list.size());
+		return map;
+	}
 
 
 
