@@ -28,12 +28,12 @@
 	<mvc:annotation-driven />
 	 
 	 <!--  :: Interceptor 선언 : 로그인 유무확인.--> 
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/user/**"/>
 			<bean class="com.nadri.common.web.LogonCheckInterceptor" />
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 
 
 	<!--  :: ViewResolver 선언 -->	
