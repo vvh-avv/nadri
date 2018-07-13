@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
@@ -230,26 +228,30 @@
 		<body>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" href="/spot/parkSpot.jsp">공원</button>
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
 			</span>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs"  href="/spot/getFestivalList">축제/전시</button>
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getFestivalList">축제/전시</a></button>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs"  href="/spot/getRestaurantList?spotCode=10">삼대천왕</button>
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a></button>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs"  href="/spot/getRestaurantList?spotCode=11">수요미식회</button>
+				<button class="btn btn-block btn-success btn-xs"  ><a href="/spot/getRestaurantList?spotCode=11">수요미식회</a></button>
 				</div>
 			</span>
 
 			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" onclick="getRiverList()">한강</button>
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/bikeSpot.jsp">자전거</a></button>
 			</span>
 
 			<span class="dropdown">
