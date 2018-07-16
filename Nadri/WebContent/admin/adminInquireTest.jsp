@@ -21,6 +21,7 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
+
 	$(function() {
 		
 		var inquireType = $('.inquireCode option:selected').val();
@@ -34,70 +35,78 @@
 			}
 		})
 
-		$(".btn-primary").on(
-				"click",
-				function(e) {
+		$(".btn-primary").on("click",function(e) {
+			
+			var inquireFile = $('.file').val();
+			
+			if(inquireFile==""){
+				console.log("파일없음");
+				var formData = $("form");
+				var requestMapping = 'addInquireNoFile';
+			}else{
+				console.log("파일있음");
+				$('form').attr('enctype','multipart/form-data');
+				var requestMapping = 'addInquire';
+				var form = $("form");
+				// you can't pass Jquery form it has to be javascript form object
+				var formData = new FormData(form[0]);
+			}
 
-					var form = $("form");
+			//if you only need to upload files then 
+			//Grab the File upload control and append each file manually to FormData
+			//var files = form.find("#fileupload")[0].files;
 
-					// you can't pass Jquery form it has to be javascript form object
-					var formData = new FormData(form[0]);
+			//$.each(files, function() {
+			//  var file = $(this);
+			//  formData.append(file[0].name, file[0]);
+			//});
 
-					//if you only need to upload files then 
-					//Grab the File upload control and append each file manually to FormData
-					//var files = form.find("#fileupload")[0].files;
+			if ($('.inquireTitle').val() == '') {
+				alert("제목을 입력해주세요!");
+				$('.inquireTitle').focusin();
+				return;
+			} else if ($('.inquireWrite').val() == '') {
+				alert("내용을 입력해주세요!");
+				$('.inquireTitle').focusin();
+			} else {
 
-					//$.each(files, function() {
-					//  var file = $(this);
-					//  formData.append(file[0].name, file[0]);
-					//});
-
-					if ($('.inquireTitle').val() == '') {
-						alert("제목을 입력해주세요!");
-						$('.inquireTitle').focusin();
-						return;
-					} else if ($('.inquireWrite').val() == '') {
-						alert("내용을 입력해주세요!");
-						$('.inquireTitle').focusin();
-					} else {
-
-						$('body').addClass('waiting');
-						
-						var reportUser = $('.reportedUserId').val();
-						
-						if(reportUser==''){
-							console.log("유저신고가 아닙니다~");
-							reportUser = "null";
+				$('body').addClass('waiting');
+				
+				var reportUser = $('.reportedUserId').val();
+				
+				if(reportUser==''){
+					console.log("유저신고가 아닙니다~");
+					reportUser = "null";
+				}
+				
+				var inquireCode = $('.inquireCode').val();
+				
+				var title = $('.inquireTitle').val();
+				var title_enc = encodeURI(encodeURIComponent(title));
+				
+				var write = $('.inquireWrite').val();
+				var write_enc = encodeURI(encodeURIComponent(write));
+										
+				$.ajax({
+					type : "POST",
+					url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/1",
+					//dataType: 'json', //not sure but works for me without this
+					data : formData,
+					contentType: false,//this is requireded please see answers above
+					processData : false, //this is requireded please see answers above
+					//cache: false, //not sure but works for me without this
+					success : function(data, status) {
+						if (status == "success") {
+							$('body').removeClass('waiting');
+							$('form')[0].reset();
+							$('#myModal').modal('hide');
+							console.log(data);
 						}
-						
-						var inquireCode = $('.inquireCode').val();
-						
-						var title = $('.inquireTitle').val();
-						var title_enc = encodeURI(encodeURIComponent(title));
-						
-						var write = $('.inquireWrite').val();
-						var write_enc = encodeURI(encodeURIComponent(write));
-												
-						$.ajax({
-							type : "POST",
-							url : "/restAdmin/addInquire/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/1",
-							//dataType: 'json', //not sure but works for me without this
-							data : formData,
-							contentType: false,//this is requireded please see answers above
-							processData : false, //this is requireded please see answers above
-							//cache: false, //not sure but works for me without this
-							success : function(data, status) {
-								if (status == "success") {
-									$('body').removeClass('waiting');
-									$('form')[0].reset();
-									$('#myModal').modal('hide');
-									console.log(data);
-								}
-							}
-						});
 					}
-
 				});
+			}
+
+		});
 
 		$('img').on('mouseover', function() {
 			$(this).css('cursor', 'pointer');
@@ -149,10 +158,34 @@
 			var counter = $(this).attr('name');
 			$('.inquireLink').val(counter);
 			$('.inquireLink').attr('disabled', 'disabled');
+			$('.inquireCode').val('0').prop("selected", true);
+			$('.inquireCode').attr('disabled', 'disabled');
+			$('.reportUser').css('visibility', 'visible');
+			$('.reportLink').css('visibility', 'hidden');
+		})
+		
+		$('.inquireComment').on('click', function() {
+			var counter = $(this).attr('name');
+			$('.inquireLink').val(counter);
+			$('.inquireLink').attr('disabled', 'disabled');
+			$('.inquireCode').val('2').prop("selected", true);
+			$('.inquireCode').attr('disabled', 'disabled');
+			$('.reportUser').css('visibility', 'visible');
+			$('.reportLink').css('visibility', 'hidden');
+		})
+		
+		$('.inquireBoard').on('click', function() {
+			var counter = $(this).attr('name');
+			$('.inquireLink').val(counter);
+			$('.inquireLink').attr('disabled', 'disabled');
 			$('.inquireCode').val('1').prop("selected", true);
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'hidden');
 			$('.reportLink').css('visibility', 'visible');
+		})
+		
+		$('.countWrite').on('click',function(){
+			
 		})
 
 	})
@@ -255,23 +288,28 @@ select {
 		<div class="topbox">
 			<img
 				src="../images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-				alt="x" class="profile" data-toggle="modal" data-target="#myModal"
+				alt="x" class="profile inquireUser" data-toggle="modal" data-target="#myModal"
 				name="user01">
 			<h6>user01 (김고양이)</h6>
+			<button class="countWrite" name="">글쓰기</button>
+			<button class="inquireUnblock" name="user01">항의하기</button>
+			<button class="inquireComment" name="user03" data-toggle="modal" data-target="#myModal">항의하기</button>
 			<span name="user02" class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
 	<br />
 	<br />
+	
 	<div class="postbox">
 		<div class="topbox" id="12345">
 			<img
 				src="../images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
 				alt="x" class="profile" data-toggle="modal" data-target="#myModal">
 			<h6>user02 (김야옹이)</h6>
-			<span class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
+			<span class="glyphicon glyphicon-option-horizontal inquireBoard" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
+	
 <!-- 신고 Modal content -->
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
@@ -284,7 +322,7 @@ select {
 					</h4>
 				</div>
 				<div class="modal-body">
-					<form enctype="multipart/form-data">
+					<form>
 						신 고 종 류 <select class="inquireCode" name="inquireCode"
 							style="height: 30px;">
 							<option value="9">선택하세요</option>
@@ -295,11 +333,11 @@ select {
 							<option value="4">기타문의</option>
 						</select>
 						<span class="reportUser">
-							신고유저아이디 <input type="text" name="reportUserId"
+							유저아이디 <input type="text" name="reportUserId"
 								class="reportedUserId" value="">
 						</span>
 						<span class="reportLink">
-							신 고 링 크 <input type="text" name="inquireLink"
+							신 고 링 크<input type="text" name="inquireLink"
 								class="inquireLink" value="">
 						</span>
 						<hr />
@@ -319,7 +357,7 @@ select {
 							placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
 						</br/>
 						<p>
-							<input type="file" name="file" multiple="multiple">
+							<input type="file" class="file" name="inquire_file" multiple="multiple" value="" accept=".jpg,.jpeg,.png,.gif,.bmp">
 						</p>
 						</br/>
 					</form>

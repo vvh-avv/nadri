@@ -2,21 +2,19 @@ package com.nadri.web.admin;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +47,7 @@ public class AdminRestController {
 	
 	@RequestMapping(value = "addInquire/{reportUser}/{inquireCode}/{write_enc}/{title_enc}/{inquireLink}", method=RequestMethod.POST)
 	public String addInquire(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@RequestParam("inquire_file")MultipartFile file,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
-		System.out.println("getInquire -> Restcontroller µé¾î¿È");
+		System.out.println("addInquire -> Restcontroller µé¾î¿È");
 		System.out.println("µé¾î¿Â fileName : "+file.getOriginalFilename());
 		System.out.println(reportUser+" / "+inquireCode);
 		System.out.println("inquireLink = "+inquireLink);
@@ -80,6 +78,34 @@ public class AdminRestController {
             inquire.setInquireFile1(fileOriginName);
             
 		}
+		
+		inquire.setUserId("user02");
+		
+		if (reportUser.equals("null")) {
+			inquire.setReportUserId(null);
+		}
+		
+		if (inquireLink.equals("null")) {
+			inquire.setInquireLink(null);
+		}
+		
+		System.out.println("inquire : "+inquire);
+		adminService.addInquire(inquire);
+		
+		return "done";
+	}
+	
+	@RequestMapping(value = "addInquireNoFile/{reportUser}/{inquireCode}/{write_enc}/{title_enc}/{inquireLink}", method=RequestMethod.POST)
+	public String addInquireNoFile(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
+		System.out.println("addInquireNoFile -> Restcontroller µé¾î¿È");
+		System.out.println(reportUser+" / "+inquireCode);
+		System.out.println("inquireLink = "+inquireLink);
+		String inquireTitle = URLDecoder.decode(title_enc,"UTF-8");
+		String inquireWrite = URLDecoder.decode(write_enc,"UTF-8");
+		inquire.setInquireTitle(inquireTitle);
+		inquire.setInquireWrite(inquireWrite);
+		inquire.setReportUserId(reportUser);
+		inquire.setInquireLink(inquireLink);
 		
 		inquire.setUserId("user02");
 		
@@ -136,8 +162,26 @@ public class AdminRestController {
 		realMap.put("rows", map);
 		Gson gson = new Gson();
 		String json = gson.toJson(realMap, LinkedHashMap.class);
+		System.out.println("Àü´ÞµÇ´Â json = "+json);
 		return json;
 
+	}
+	
+	@RequestMapping(value="graphChange/{duration}", method=RequestMethod.GET)
+	public List graphChange(@PathVariable String duration) {
+		List<List<Integer>> graphList = new ArrayList<List<Integer>>();	
+		return null;
+	}
+	
+	@RequestMapping(value="blockUser/{userId}",method=RequestMethod.GET)
+	public String blockUser(@PathVariable String userId) {
+		System.out.println("blockUser -> Restcontroller µé¾î¿È");
+		int updated = adminService.blockUser(userId);
+		if (updated == 0) {
+			return "fail";
+		}else {			
+			return "success";
+		}
 	}
 
 }
