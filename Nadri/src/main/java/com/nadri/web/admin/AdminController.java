@@ -226,8 +226,259 @@ public class AdminController {
 
 		return "forward:/admin/adminSpotList.jsp";
 	}
+	
+	@RequestMapping(value="listGraph")
+	public String graphTest(Model model) {
+		
+		System.out.println("graphTest -> controller 들어옴");
+		Map<String, Object> pre_map1 = new HashMap<String, Object>();
+		Map<String, Object> pre_map2 = new HashMap<String, Object>();
+		Map<String, Object> pre_map3 = new HashMap<String, Object>();
+		Map<String, Object> pre_map4 = new HashMap<String, Object>();
 
-	@RequestMapping(value = "listGraph")
+		pre_map1.put("no", "board_no");
+		pre_map1.put("table", "board");
+		pre_map1.put("time", "board_time");
+
+		pre_map2.put("no", "comment_no");
+		pre_map2.put("table", "comment");
+		pre_map2.put("time", "comm_time");
+
+		pre_map3.put("no", "inquire_no");
+		pre_map3.put("table", "inquire");
+		pre_map3.put("time", "inquire_time");
+
+		pre_map3.put("no", "schedule_no");
+		pre_map4.put("table", "schedule");
+		pre_map4.put("time", "schedule_createtime");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("one", pre_map1);
+		map.put("two", pre_map2);
+		map.put("three", pre_map3);
+		map.put("four", pre_map4);
+		
+		Map<String, Object> findmap = adminService.getGraphLog((HashMap<String, Object>) map);
+		
+		System.out.println("찾은 Map = " + findmap);
+
+		SimpleDateFormat form_day = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat form_timeonly = new SimpleDateFormat("HH");
+		SimpleDateFormat form_week = new SimpleDateFormat("u");
+		SimpleDateFormat form_month = new SimpleDateFormat("dd");
+
+		Calendar cal = Calendar.getInstance(Locale.KOREA);
+		cal.getTime();
+
+		Date today_before = cal.getTime();
+		String today = form_day.format(today_before);
+		
+		int week = cal.getWeeksInWeekYear();
+		System.out.println("몇번째 주인지 표시 : "+week);
+
+		Map<String, Object> countermap = new HashMap<String, Object>();
+
+		int[] list_board_day = new int[24];
+		int[] list_comment_day = new int[24];
+		int[] list_inquire_day = new int[24];
+		int[] list_schedule_day = new int[24];
+		
+		int[] list_board_week = new int[7];
+		int[] list_comment_week = new int[7];
+		int[] list_inquire_week = new int[7];
+		int[] list_schedule_week = new int[7];
+		
+		int monthMaxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);	
+		System.out.println("이번달은 몇일일까요 : "+monthMaxDay);
+		
+		int[] list_board_month = new int[monthMaxDay];
+		int[] list_comment_month = new int[monthMaxDay];
+		int[] list_inquire_month = new int[monthMaxDay];
+		int[] list_schedule_month = new int[monthMaxDay];
+
+		for (int i = 0; i <= findmap.size(); i++) {
+
+			// day_data
+			if (i == 0) {
+				System.out.println("1번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_board_day");
+				for (Date day : list) {
+					String changeDate = form_timeonly.format(day);
+					list_board_day[Integer.parseInt(changeDate)]++;
+				}
+			} else if (i == 1) {
+				System.out.println("2번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_comment_day");
+				for (Date day : list) {
+					String changeDate = form_timeonly.format(day);
+					list_comment_day[Integer.parseInt(changeDate)]++;
+				}
+			} else if (i == 2) {
+				System.out.println("3번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_inquire_day");
+				for (Date day : list) {
+					String changeDate = form_timeonly.format(day);
+					list_inquire_day[Integer.parseInt(changeDate)]++;
+				}
+			} else if (i == 3) {
+				System.out.println("4번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_schedule_day");
+				for (Date day : list) {
+					String changeDate = form_timeonly.format(day);
+					list_schedule_day[Integer.parseInt(changeDate)]++;
+				}
+			}
+
+			// week_data
+			else if (i == 4) {
+				System.out.println("5번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_board_week");
+				for (Date day : list) {
+					String changeDate = form_week.format(day);
+					list_board_week[Integer.parseInt(changeDate)-1]++;
+				}
+			}
+			else if (i == 5) {
+				System.out.println("6번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_comment_week");
+				for (Date day : list) {
+					String changeDate = form_week.format(day);
+					list_comment_week[Integer.parseInt(changeDate)-1]++;
+				}
+			}
+			else if (i == 6) {
+				System.out.println("7번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_inquire_week");
+				for (Date day : list) {
+					String changeDate = form_week.format(day);
+					list_inquire_week[Integer.parseInt(changeDate)-1]++;
+				}
+			}
+			else if (i == 7) {
+				System.out.println("8번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_schedule_week");
+				for (Date day : list) {
+					String changeDate = form_week.format(day);
+					list_schedule_week[Integer.parseInt(changeDate)-1]++;
+				}
+			}
+			
+			// month_data
+			else if(i==8) {
+				System.out.println("9번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_board_month");
+				for (Date day : list) {
+					String changeDate = form_month.format(day);
+					list_board_month[Integer.parseInt(changeDate)-1]++;
+				}
+			}else if(i==9) {
+				System.out.println("10번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_comment_month");
+				for (Date day : list) {
+					String changeDate = form_month.format(day);
+					list_comment_month[Integer.parseInt(changeDate)-1]++;
+				}
+			}else if(i==10) {
+				System.out.println("11번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_inquire_month");
+				for (Date day : list) {
+					String changeDate = form_month.format(day);
+					list_inquire_month[Integer.parseInt(changeDate)-1]++;
+				}
+			}else if(i==11) {
+				System.out.println("12번째 for문이 돌고있습니다.");
+				List<Date> list = (List<Date>) findmap.get("list_schedule_month");
+				for (Date day : list) {
+					String changeDate = form_month.format(day);
+					list_schedule_month[Integer.parseInt(changeDate)-1]++;
+				}
+			}
+		}
+		
+		List<Object> list1 = new ArrayList<Object>();
+		List<Object> list2 = new ArrayList<Object>();
+		List<Object> list3 = new ArrayList<Object>();
+		List<Object> list4 = new ArrayList<Object>();
+		
+		List<Object> list5 = new ArrayList<Object>();
+		List<Object> list6 = new ArrayList<Object>();
+		List<Object> list7 = new ArrayList<Object>();
+		List<Object> list8 = new ArrayList<Object>();
+		
+		List<Object> list9 = new ArrayList<Object>();
+		List<Object> list10 = new ArrayList<Object>();
+		List<Object> list11 = new ArrayList<Object>();
+		List<Object> list12 = new ArrayList<Object>();
+		
+		List<Object> month = new ArrayList<Object>();
+		
+		for (int i : list_board_day) {
+			list1.add(i);
+		}
+		for (int i : list_comment_day) {
+			list2.add(i);
+		}
+		for (int i : list_inquire_day) {
+			list3.add(i);
+		}
+		for (int i : list_schedule_day) {
+			list4.add(i);
+		}
+		
+		for (int i : list_board_week) {
+			list5.add(i);
+		}
+		for (int i : list_comment_week) {
+			list6.add(i);
+		}
+		for (int i : list_inquire_week) {
+			list7.add(i);
+		}
+		for (int i : list_schedule_week) {
+			list8.add(i);
+		}
+		
+		for (int i : list_board_month) {
+			list9.add(i);
+		}
+		for (int i : list_comment_month) {
+			list10.add(i);
+		}
+		for (int i : list_inquire_month) {
+			list11.add(i);
+		}
+		for (int i : list_schedule_month) {
+			list12.add(i);
+		}
+		
+		int day = 1;
+		for(int z = 0; z < monthMaxDay; z++) {
+			month.add("'"+day+"일'");
+			day++;
+		}
+		
+		model.addAttribute("boardDay", list1);
+		model.addAttribute("commDay", list2);
+		model.addAttribute("inquireDay", list3);
+		model.addAttribute("scheduleDay", list4);
+		
+		model.addAttribute("boardWeek", list5);
+		model.addAttribute("commWeek", list6);
+		model.addAttribute("inquireWeek", list7);
+		model.addAttribute("scheduleWeek", list8);
+		
+		model.addAttribute("boardMonth", list9);
+		model.addAttribute("commMonth", list10);
+		model.addAttribute("inquireMonth", list11);
+		model.addAttribute("scheduleMonth", list12);
+		
+		model.addAttribute("month", month);
+		
+		return "forward:/admin/adminGraphList.jsp";
+	}
+
+	@RequestMapping(value = "sssslistGraph")
 	public String getGraphList(Model model) {
 
 		System.out.println("getGraphList -> controller 들어옴");

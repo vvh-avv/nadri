@@ -116,14 +116,10 @@
 			$('.textCounter1').text(currentLength - 1);
 		});
 		
-		$('.boardReport').on('mouseover', function() {
-			$(this).css('cursor', 'pointer');
-		})
-		
 		$('.inquireUser').on('click', function() {
 			var counter = $(this).attr('name');
-			$('.inquireLink').val(counter);
-			$('.inquireLink').attr('disabled', 'disabled');
+			$('.reportedUserId').val(counter);
+			$('.reportedUserId').attr('disabled', 'disabled');
 			$('.inquireCode').val('0').prop("selected", true);
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'visible');
@@ -132,15 +128,15 @@
 		
 		$('.inquireComment').on('click', function() {
 			var counter = $(this).attr('name');
-			$('.inquireLink').val(counter);
-			$('.inquireLink').attr('disabled', 'disabled');
+			$('.reportedUserId').val(counter);
+			$('.reportedUserId').attr('disabled', 'disabled');
 			$('.inquireCode').val('2').prop("selected", true);
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'visible');
 			$('.reportLink').css('visibility', 'hidden');
 		})
 		
-		$('.inquireBoard').on('click', function() {
+		$('.boardReport').on('click', function() {
 			var counter = $(this).attr('name');
 			$('.inquireLink').val(counter);
 			$('.inquireLink').attr('disabled', 'disabled');
@@ -150,15 +146,7 @@
 			$('.reportLink').css('visibility', 'visible');
 		})
 		
-		$('.inquireUnblock').on('click', function() {
-			var counter = $(this).attr('name');
-			$('.inquireCode').val('4').prop("selected", true);
-			$('.inquireCode').attr('disabled', 'disabled');
-			$('.reportUser').css('visibility', 'hidden');
-			$('.reportLink').css('visibility', 'hidden');
-		})
-		
-		$('.inquireCorrect').on('click', function() {
+		$('.inquireCorrect').on('click',function(){
 			var counter = $(this).attr('name');
 			$('.inquireLink').val(counter);
 			$('.inquireLink').attr('disabled', 'disabled');
@@ -166,4 +154,12 @@
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'hidden');
 			$('.reportLink').css('visibility', 'visible');
+		})
+		
+		$('.inquireUnblock').on('click',function(){
+			var counter = $(this).attr('name');
+			$('.inquireCode').val('4').prop("selected", true);
+			$('.inquireCode').attr('disabled', 'disabled');
+			$('.reportUser').css('visibility', 'hidden');
+			$('.reportLink').css('visibility', 'hidden');
 		})

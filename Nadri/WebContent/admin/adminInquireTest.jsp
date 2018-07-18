@@ -150,14 +150,11 @@
 			$('.textCounter1').text(currentLength - 1);
 		});
 		
-		$('.boardReport').on('mouseover', function() {
-			$(this).css('cursor', 'pointer');
-		})
 		
 		$('.inquireUser').on('click', function() {
 			var counter = $(this).attr('name');
-			$('.inquireLink').val(counter);
-			$('.inquireLink').attr('disabled', 'disabled');
+			$('.reportedUserId').val(counter);
+			$('.reportedUserId').attr('disabled', 'disabled');
 			$('.inquireCode').val('0').prop("selected", true);
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'visible');
@@ -166,15 +163,15 @@
 		
 		$('.inquireComment').on('click', function() {
 			var counter = $(this).attr('name');
-			$('.inquireLink').val(counter);
-			$('.inquireLink').attr('disabled', 'disabled');
+			$('.reportedUserId').val(counter);
+			$('.reportedUserId').attr('disabled', 'disabled');
 			$('.inquireCode').val('2').prop("selected", true);
 			$('.inquireCode').attr('disabled', 'disabled');
 			$('.reportUser').css('visibility', 'visible');
 			$('.reportLink').css('visibility', 'hidden');
 		})
 		
-		$('.inquireBoard').on('click', function() {
+		$('.boardReport').on('click', function() {
 			var counter = $(this).attr('name');
 			$('.inquireLink').val(counter);
 			$('.inquireLink').attr('disabled', 'disabled');
@@ -184,8 +181,22 @@
 			$('.reportLink').css('visibility', 'visible');
 		})
 		
-		$('.countWrite').on('click',function(){
-			
+		$('.inquireCorrect').on('click',function(){
+			var counter = $(this).attr('name');
+			$('.inquireLink').val(counter);
+			$('.inquireLink').attr('disabled', 'disabled');
+			$('.inquireCode').val('3').prop("selected", true);
+			$('.inquireCode').attr('disabled', 'disabled');
+			$('.reportUser').css('visibility', 'hidden');
+			$('.reportLink').css('visibility', 'visible');
+		})
+		
+		$('.inquireUnblock').on('click',function(){
+			var counter = $(this).attr('name');
+			$('.inquireCode').val('4').prop("selected", true);
+			$('.inquireCode').attr('disabled', 'disabled');
+			$('.reportUser').css('visibility', 'hidden');
+			$('.reportLink').css('visibility', 'hidden');
 		})
 
 	})
@@ -291,10 +302,10 @@ select {
 				alt="x" class="profile inquireUser" data-toggle="modal" data-target="#myModal"
 				name="user01">
 			<h6>user01 (김고양이)</h6>
-			<button class="countWrite" name="">글쓰기</button>
-			<button class="inquireUnblock" name="user01">항의하기</button>
-			<button class="inquireComment" name="user03" data-toggle="modal" data-target="#myModal">항의하기</button>
-			<span name="user02" class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
+			<button class="inquireCorrect" name="15" data-toggle="modal" data-target="#myModal">정정신청</button>
+			<button class="inquireUnblock" name="user05" data-toggle="modal" data-target="#myModal">항의하기</button>
+			<button class="inquireComment" name="user04" data-toggle="modal" data-target="#myModal">항의하기</button>
+			<span name="user03" class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
 	<br />

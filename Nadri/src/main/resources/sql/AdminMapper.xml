@@ -45,7 +45,7 @@
 	
 	<update id="updateInquire" parameterType="inquire">
 		UPDATE inquire
-		SET inquire_chk_code=#{inquireChkCode}
+		SET inquire_chk_code = #{inquireChkCode}
 		WHERE inquire_no = #{inquireNo}
 	</update>
 	
