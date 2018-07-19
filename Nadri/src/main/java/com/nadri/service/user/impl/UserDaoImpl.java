@@ -133,7 +133,8 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	////////////////////180712 예지 추가///////////////////////
 	public Map<String, Object> getUserLog(String userId,int number,String duration) {
 		// TODO Auto-generated method stub
 		

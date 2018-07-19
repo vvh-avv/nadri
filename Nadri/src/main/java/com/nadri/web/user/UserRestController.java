@@ -14,10 +14,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,7 @@ import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
+import com.nadri.common.util.sendingMail;
 
 @RestController
 @RequestMapping("/user/*")
@@ -205,4 +209,34 @@ public class UserRestController {
 		return result;	
 	} 
 	
+	//회원가입 시 이메일 전송
+	@RequestMapping( value="json/emailCheck", method=RequestMethod.POST )
+	public String emailCheck( Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		String userEmail = request.getParameter("userEmail") ;
+		
+		int authenticationNumber = new sendingMail().Sending(userEmail) ;
+		System.out.println("/emailCheck POST " + authenticationNumber );
+		model.addAttribute("authenticationNumber", (new Integer(authenticationNumber) ))  ;
+		//세션 호출 + 인증번호 심기
+		HttpSession session = request.getSession() ;
+		session.setAttribute("authenticationNumber", authenticationNumber);
+		return "forward:/common/True.jsp" ;
+	}
+		
+	//회원가입 시 이메일 전송 후 승인번호 확인
+	@RequestMapping( value="json/emailCheck2", method=RequestMethod.POST )
+	public String emailCheck2(HttpServletRequest request) {
+		String qualifiedNumber = request.getParameter("qulifiedNumber") ;
+		System.out.println("/emailCheck2 POST " + qualifiedNumber ) ;
+		System.out.println("/emailCheck2 POST " + request.getParameter("authenticationNumber") ) ;
+		
+		if(qualifiedNumber.equals(request.getParameter("authenticationNumber")) ) {
+			System.out.println("true") ;
+			return "0" ;
+		} else {
+			System.out.println("false") ;
+			return "1" ;
+		}
+	}
 }

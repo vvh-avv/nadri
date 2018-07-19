@@ -207,8 +207,8 @@
 		 	 	<br/><br/>
 				
 				<div class="jumbotron">	 	 	
-		 	 		<h1 class="text-center">로 &nbsp;&nbsp;그 &nbsp;&nbsp;인</h1>
-
+		 	 		<h2 class="text-center">U & ME - 너, 나들이test</h2>
+					<br/>
 			        <form class="form-horizontal">
 		  
 					  <div class="form-group">
@@ -235,7 +235,7 @@
 					  
 					  <div class="form-group">
 					    <div class="col-sm-offset-4 col-sm-6 text-center">
-							<img src="/images/kakao_login_btn_small.png" />
+							<img src="/images/user/kakao_login_btn_small.png" />
 					  		<img src="http://static.nid.naver.com/oauth/small_g_in.PNG" width="80" height="30" border="0"/>
 					    </div>
 					  </div>

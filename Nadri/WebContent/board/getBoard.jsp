@@ -90,25 +90,40 @@
          flex-direction: row;
       }
    }
-   .img-circle{   
+   #userProfile .img-circle{	
       cursor : pointer;
       height : 64px;
       width : 64px;
    }
-   .userModal{
-      /*text-align: center; /*안에 내용물 가운데정렬*/
-        padding-top : 20%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
+   .modalUserProfile .img-circle{
+     max-width:100%;
+	max-height:100%;
    }
-   .userModalInner-backdrop-bg{
-       opacity: 0.5;
+	.userModal{
+  		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
+	}
+	.userModalContent{
+		padding : 5% /*안에 내용물 여백*/
+	}
+	.modalUserProfile,
+	.modalUserButton{
+		text-align: center; /*안에 내용물(사진,버튼) 가운데정렬*/
+	}
+   .myFormControl{
+   		background-color: #eee; /*F0F0F0;*/
+    	opacity: 1;
+   	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    display: inline-block;
+	    width: auto;
+	    height: 34px;
+	    padding: 6px 12px;
+	    font-size: 14px;
+	    line-height: 1.42857143;
+	    color: #555;
    }
-   .userModalContent{
-      text-align: center; /*안에 내용물 가운데정렬*/
-      padding : 5% /*안에 내용물 여백*/
-   }
-   /*.userModalInner .modal-backdrop.in {
-       opacity: 0;
-   }*/
+   
+   
    
    /*  신고기능을 위한 admin css  */
    .inquireTitle {
@@ -247,17 +262,17 @@ $(function(){
    
    //*유저정보에서..
    $("#addFriend").on("click", function(){
-      
+	   alert("친구추가를 합시다..")
    })
    $("#inquireUser").on("click", function(){
-      var counter = $(this).attr('name');
-       $('.reportedUserId').val(counter);
-       $('.reportedUserId').attr('disabled', 'disabled');
-       $('.inquireCode').val('0').prop("selected", true);
-       $('.inquireCode').attr('disabled', 'disabled');
-       $('.reportUser').css('visibility', 'visible');
-       $('.reportLink').css('visibility', 'hidden');
-   })
+	   var counter = $(this).attr('name');
+	   $('.reportedUserId').val(counter);
+	   $('.reportedUserId').attr('disabled', 'disabled');
+	   $('.inquireCode').val('0').prop("selected", true);
+	   $('.inquireCode').attr('disabled', 'disabled');
+	   $('.reportUser').css('visibility', 'visible');
+	   $('.reportLink').css('visibility', 'hidden');
+	})
    
    
    //* Admin (신고기능)
@@ -339,16 +354,6 @@ $(function(){
 
             });
 
-/*       $('img').on('click', function() {
-         var counter = $(this).attr('name');
-         $('.reportedUserId').val(counter);
-         $('.reportedUserId').attr('disabled', 'disabled');
-         $('.inquireCode').val('0').prop("selected", true);
-         $('.inquireCode').attr('disabled', 'disabled');
-         $('.reportLink').css('visibility', 'hidden');
-         $('.reportUser').css('visibility', 'visible');
-      }) */
-
       $('.inquireTitle').on('click', function() {
          $('.count1 div').css('display', 'inline-block');
       })
@@ -397,7 +402,7 @@ $(function(){
    <span id="moreContent">
       <span class="moreDetail" id="modifyBoard">게시물수정</span><br>
       <span class="moreDetail" id="deleteBoard">게시물삭제</span><br>
-      <span class="moreDetail" id="inquireBoard" name="${board.boardNo}" data-toggle="modal" data-target="#inquireModal">게시물신고</span><br>
+      <span class="moreDetail" id="inquireBoard" name="${board.boardNo}" data-toggle="modal" data-target="#myModal">게시물신고</span><br>
       <span class="moreDetail" id="addCart">일정바구니 추가</span>
    </span>
                
@@ -405,7 +410,7 @@ $(function(){
       
       <div class="col-md-8"> <!-- 제목+이미지+내용 -->
          <form id="firstForm" class="form-horizontal">
-            <input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
+      		<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
             <!-- 제목 -->
             <div id="boardTitle" class="bg-warning">${board.boardTitle}</div>
             <br>
@@ -432,24 +437,27 @@ $(function(){
             <!-- 유저정보 -->
             <div class="userList">
                 <div id="userProfile"><img src="/images/user/${user.profileImg}" class="img-circle" data-toggle="modal" data-target=".userModal"></div>
-                   <!-- 프로필 클릭시 유저정보 모달창으로 띄움 시작 -->
-               <div class="modal modal-center fade userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-                 <div class="modal-dialog modal-sm userModalInner">
-                   <div class="modal-content userModalContent">
-                     <!-- 실제 들어갈 내용 -->
-                          <button type="button" class="close" data-dismiss="modal">&times;</button><br>
-                     <div class="modalUserProfile"><img src="/images/user/${user.profileImg}" class="img-circle"></div>
-                     <div class="modalUserName">이름 : ${user.userName}</div>
-                     <div class="modalUserId">아이디 : ${user.userId}</div>
-                     <div class="modalUserIntroduce">자기소개 : ${user.introduce}</div>
-                     <div class="modalUserButton">
-                        <button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
-                        <button type="button" class="btn btn-danger" id="inquireUser" name="${user.userId}" data-toggle="modal" data-target="#inquireModal">유저신고</button>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-               <!-- 프로필 클릭시 유저정보 모달창으로 띄움 끝 -->
+                	<!-- 프로필 클릭시 유저정보 모달창으로 띄움 시작 -->
+					<div class="modal modal-center fade userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-sm userModalInner">
+					    <div class="modal-content userModalContent">
+					      <!-- 실제 들어갈 내용 -->
+               			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+					      <div class="modalUserProfile"><img src="/images/user/${user.profileImg}" class="img-circle"></div>
+					      <div class="modalUserName">이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름 <input class="myFormControl" type="text" value="${user.userName}" readonly></div>
+					      <div class="modalUserId">아&nbsp;&nbsp;이&nbsp;&nbsp;디  <input class="myFormControl" type="text" value="${user.userId}" readonly>
+					      </div>
+					      <div class="modalUserIntroduce">자기소개  <input class="myFormControl" type="text" value="${user.introduce}" readonly>
+					      </div>
+					      <br>
+					      <div class="modalUserButton">
+					      	<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
+					      	<button type="button" class="btn btn-danger" id="inquireUser" name="${user.userId}" data-toggle="modal" data-target="#inquireModal">유저신고</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					<!-- 프로필 클릭시 유저정보 모달창으로 띄움 끝 -->
                <div class="userInfoAndBoardDate">
                   <div id="userInfo"><b>${user.userName}</b> (${user.userId})</div>
                   <div id="boardDate"><fmt:formatDate value="${board.boardDate}" pattern="yyyy년 MM월 dd일 hh:mm:ss"/></div>
@@ -503,14 +511,14 @@ $(function(){
             <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">
-                     신고하기<br>
+                  	신고하기<br>
                   <h6 style="color: lightgrey;">신고내용은 창을 닫아도 유지됩니다</h6>
                </h4>
             </div>
             <div class="modal-body">
                <form class="inquire_form" enctype="multipart/form-data">
-                  신 고 종 류
-                 <select class="inquireCode" name="inquireCode" style="height: 30px;">
+	               신 고 종 류
+	              <select class="inquireCode" name="inquireCode" style="height: 30px;">
                      <option value="9">선택하세요</option>
                      <option value="0">유저신고</option>
                      <option value="1">게시글신고</option>

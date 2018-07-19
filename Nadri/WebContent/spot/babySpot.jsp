@@ -33,7 +33,7 @@
 	}
 	
 	#map {
-		height: 85%;
+		height: 80%;
 		width: 100%;
 		clear: both;
 	}
@@ -105,79 +105,19 @@ var infowindows = [];
 var contents = [];
 //마커 저장소
 var markers = [];
-var data = ${a};
-var festival = data.response.body.items.item;
-for (var i = 0; i < festival.length; i++) {
+var spot = ${a};
+for (var i = 0; i < spot.length; i++) {
 	obj = {
-		lat : parseFloat(festival[i].mapy),
-		lng : parseFloat(festival[i].mapx),
-		img : festival[i].firstimage,
-		title : festival[i].title,
-		tel : festival[i].tel,
-		addr : festival[i].addr1,
-		readcount : festival[i].readcount
+		lat : parseFloat(spot[i].spotY),
+		lng : parseFloat(spot[i].spotX),
+		img : spot[i].spotImg,
+		title : spot[i].spotTitle,
+		tel : spot[i].Phone,
+		addr : spot[i].spotAddress
 	};
 	locations.push(obj);
-/* 	$('.parkImg').append(function(i) {
-		// 변수를 선언합니다. 
-		var output = '';
-		output += ' <div class="col-lg-12"> ';
-		output += ' <div class="box box-danger"> ';
-		output += '<div class="box-header with-border">';
-		output += ' <div class="box-tools pull-right">';
-		output += '   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>';
-		output += '   </button>';
-		output += '    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>';
-		output += '   </button>';
-		output += '  </div>';
-		output += '   </div>';
-		output += '    <div class="box-body no-padding">';
-		output += '  <ul class="users-list clearfix">';
-		output += '     <li>';
-		if (typeof festival[i].firstimage == "undefined") {
-			output += '       <img src="../images/river/park01.png" height="100" width="100">';
-		} else {
-			output += '       <img src=" ' + festival[i].firstimage + ' " height="100" width="100">';
-		}
-		output += '       <a class="users-list-name" href="#"> 조회수 : '
-				+ festival[i].readcount
-				+ '</a>';
-		output += '       <span class="users-list-date">'
-				+ festival[i].tel
-				+ '</span>';
-		output += '     </li>';
-		output += '   </ul>';
-		output += '  <div class="box-body">';
-		output += ' <strong><i class="fa fa-book margin-r-5"></i> 행사 이름</strong>';
-		output += ' <p class="text-muted"> '+ festival[i].title+ '</p>';
-		output += ' <hr>';
-		output += '  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>';
-		output += '  <p class="text-muted">'
-				+ festival[i].addr1
-				+ '</p>';
-		output += '  <hr>';
-		output += '  <strong><i class="fa fa-pencil margin-r-5"></i> 태그</strong>';
-		output += ' <p>';
-		output += ' <span class="label label-danger">공원</span>';
-		output += '  <span class="label label-success">맛집</span>';
-		output += ' <span class="label label-info">축제/전시</span>';
-		output += '  <span class="label label-warning">한강</span>';
-		output += ' <span class="label label-primary">편의시설</span>';
-		output += ' </p>';
-		output += '  <hr>';
-		output += ' <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>';
-		output += ' <p><a href="javascript:void(0)" class="uppercase">장소 상세보기</a></p>';
-		output += ' </div>';
-		output += '    </div>';
-		output += '  <div class="box-footer text-center">';
-		output += '<a href="javascript:void(0)" class="uppercase">장소 상세보기</a>';
-		output += '</div>';
-		output += '</div>';
-		output += '</div>';
-		output += ' </div>';
-		return output;
-	}) */
 }
+	
 	function initMap() {
 		
 		// 맵 스타일 속성에 필요한 배열 생성 
@@ -193,7 +133,7 @@ for (var i = 0; i < festival.length; i++) {
 			//최초 맵 로딩 시 위치 값 셋팅 
 			center : center,
 			// 줌 레벨 셋팅 
-			zoom : 12,
+			zoom : 15,
 			//스크롤 휠 페이지 검색
 			scrollwheel : false,
 			// 스타일 맵 적용 
@@ -295,18 +235,16 @@ for (var i = 0; i < festival.length; i++) {
 				markers[i] = new google.maps.Marker({
 					position : locations[i],
 					map : map,
-					icon: icons['festival'].icon
+					icon: icons['baby'].icon
 				});
 				//인덱스를 꺼내오기.. 중요!!
 				markers[i].index = i
 
 				contents[i] = '<div class="box box-primary">'
 						+ '<div class="box-body box-profile">'
-						+ '<img class="profile-user-img img-responsive img-circle" src=" ' + locations[i].img + ' " alt="User profile picture">'
 						+ '<h3 class="profile-username text-center">'+ locations[i].title+ '</h3>'+ '<ul class="list-group list-group-unbordered">'
 						+ '<li class="list-group-item">'
 						+ '   <b>위치</b> <a class="pull-center">'+ locations[i].addr+ '</a>'+ '</li>'+ '  <li class="list-group-item">'
-						+ '<b>대표전화</b> <a class="pull-right">'+ locations[i].tel+ '</a>'+ '</li>'
 						+ '<li class="list-group-item">'+ ' <b>조회수</b> <a class="pull-right">'+ locations[i].readcount+ '</a>'+ ' </li>'
 						+ ' </ul>'
 						+ '<span> '
@@ -424,38 +362,79 @@ for (var i = 0; i < festival.length; i++) {
 				<br /> <br />
 			</div>
 			<div class="jumbotron">
-  				<h1>축제</h1>
-  					<p>우리나라 축제를 검색해 보세요!</p>
+  				<h1>수유실</h1>
+  					<p>아이와 함께 나들이를 떠나보세요!</p>
   					<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
 			</div>
-			<table class="table table-hover" >
-				<tr class="starview">
-					<th class="text-center">No</th>
-					<th class="text-center">제목</th>
-					<th class="text-center">축제이미지</th>
-					<th class="text-center">축제장소</th>
-					<th class="text-center">전화번호</th>
-					<th class="text-center">열리는구</th>
-					<th class="text-center">조회수</th>
+			 <!-- table 위쪽 검색 Start /////////////////////////////////////-->
+		    <div class="row">
+		    
+			    <div class="col-md-2 text-left">
+			    	<p class="text-primary">
+			    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+			    	</p>
+			    </div>
+			    
+			    <div class="col-md-10 text-right">
+				    <form class="form-inline" name="detailForm">
+				    
+					  <div class="form-group">
+					    <select class="form-control" name="searchCondition" >
+							<option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
+							<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
+						</select>
+					  </div>
+					  
+					  <div class="form-group">
+					    <label class="sr-only" for="searchKeyword">검색어</label>
+					    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword"  placeholder="검색어"
+					    			 value="${! empty search.searchKeyword ? search.searchKeyword : '' }"  >
+					  </div>
+					  
+					  <button type="button" class="btn btn-default">검색</button>
+					  
+					  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+					  <input type="hidden" id="currentPage" name="currentPage" value="0"/>
+					  
+					</form>
+		    	</div>
+		    	
+			</div>
+			<!-- table 위쪽 검색 Start /////////////////////////////////////-->
+			
+			
+	      <!--  table Start /////////////////////////////////////-->
+	      <table class="table table-hover table-striped" >
+	      
+	        <thead>
+	          <tr>
+	            <th class="text-center">No</th>
+	            <th class="text-center">회원 ID</th>
+	            <th class="text-center">회원명</th>
+	            <th class="text-center">이메일</th>
+	            <th class="text-center">간략정보</th>
+	          </tr>
+	        </thead>
+	       
+			<tbody>
+			
+			  <c:set var="i" value="0" />
+			  <c:forEach var="spot" items="${list}">
+				<c:set var="i" value="${ i+1 }" />
+				<tr>
+				  <td align="center">${ i }</td>
+				  <td align="left" >${spot.spotTitle}</td>
+				  <td align="left">${spot.spotAddress}</td>
+				  <td align="left">${spot.spotProvince}<span class="label label-warning"></td>
+				  <td align="left">
+				  	<i class="glyphicon glyphicon-ok"></i>
+				  </td>
 				</tr>
-				<c:set var="i" value="0" />
-				<c:forEach var="festival" items="${a.response.body.items.item}">
-					<c:set var="i" value="${i+1}" />
-					<tr class="ct_list_pop">
-						<td align="center" valign="middle">${ i }</td>
-						<td align="center">${festival.title}</td>
-						<c:if test="${ !empty festival.firstimage}"> <!--  값이 있을때 -->
-						<td align="center"><img src="${festival.firstimage}" width="200" height="100" /></td>
-						</c:if>
-						<c:if test="${ empty festival.firstimage}">
-						<td align="center"><img src="/images/spot/festivaldefault.jpg" width="200" height="100" /></td>
-						</c:if>
-						<td align="center">${festival.addr1}</td>
-						<td align="center">${festival.tel}</td>
-						<td align="center">${festival.sigungucode}<span class="label label-info">축제/전시</span></td>
-					   <td align="center">${festival.readcount}</td>
-					</tr>
-				</c:forEach>
-			</table>
+	          </c:forEach>
+	        
+	        </tbody>
+	      
+	      </table>
+		  <!--  table End /////////////////////////////////////-->
 		</body>
 </html>

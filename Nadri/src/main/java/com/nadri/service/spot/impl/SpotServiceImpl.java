@@ -86,4 +86,10 @@ public class SpotServiceImpl implements SpotService{
 	      spotDao.addSpot(spot);
 	   }
 	   /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+
+	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	@Override
+	public void updateSpotReadCnt(Spot spot) throws Exception {
+		spotDao.updateSpotReadCnt(spot);
+	}
 }

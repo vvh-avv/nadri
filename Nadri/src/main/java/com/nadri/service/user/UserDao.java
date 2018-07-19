@@ -63,6 +63,7 @@ public interface UserDao {
 	public User getCode(String authorize_code) throws Exception;
 
 
+	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
 	public Map<String,Object> getUserLog(String userId,int number,String duration);
 	
