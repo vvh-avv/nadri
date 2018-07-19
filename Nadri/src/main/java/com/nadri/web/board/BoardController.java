@@ -1,8 +1,12 @@
 package com.nadri.web.board;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
 import com.nadri.service.comment.CommentService;
 import com.nadri.service.domain.Board;
+import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
 
@@ -46,6 +52,9 @@ public class BoardController {
 		System.out.println(this.getClass());
 	}
 
+	@Value("#{commonProperties['pageSize']}")
+	int pageSize;
+	
 	@Value("#{imgpathProperties['board']}")
 	String imgPath;
 	
@@ -54,7 +63,7 @@ public class BoardController {
 	public String addBoard() throws Exception{
 		System.out.println("/board/addBoard : GET");
 		
-		return "redirect:/board/addBoard.jsp";
+		return "forward:/board/addBoard.jsp"; //redirect 해도 되지만 URL 감추기 위해 사용!
 	}
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.POST)
@@ -105,9 +114,7 @@ public class BoardController {
 	public String updateBoard( @ModelAttribute Board board, Model model ) throws Exception{
 		System.out.println("/board/updateBoard : GET");
 		
-		Board boardVO = (Board) (boardService.getBoard(board.getBoardNo())).get("reBoard");
-		
-		model.addAttribute("board", boardVO);
+		model.addAttribute("board", boardService.getBoard(board.getBoardNo()));
 		
 		return "forward:/board/updateBoard.jsp";
 	}
@@ -179,26 +186,52 @@ public class BoardController {
 	public String getBoard(@RequestParam("boardNo") int boardNo, Model model) throws Exception{
 		System.out.println("/board/getBoard : GET / POST");
 
-		Map<String,Object> map = boardService.getBoard(boardNo);
+		Board board = boardService.getBoard(boardNo);
+		User user = userService.getUser(board.getUser().getUserId());
+		board.setUser(user);
+
 		int likeFlag = boardService.getLikeFlag(boardNo,"user05");
 		
-		User user = userService.getUser(((Board)map.get("reBoard")).getUser().getUserId());
-		int commentCount = commentService.getCommentCount(boardNo);
+		List<Comment> comment = commentService.getCommentList(boardNo);
+		for( int i=0; i<comment.size(); i++) {
+			comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+		}
+		board.setComment(comment);
 		
-		model.addAttribute("user", user);
-		model.addAttribute("board", map.get("reBoard"));
-		model.addAttribute("commentCount", commentCount);
+		String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+		board.setCommLastTime(commLastTime);
+		
+		model.addAttribute("board", board);
 		model.addAttribute("likeFlag", likeFlag);
-		model.addAttribute("likeCount", map.get("reLikeCnt"));
 		
 		return "forward:/board/getBoard.jsp";
 	}
 	
-	@RequestMapping(value="getBoardList")
+	@RequestMapping(value="listBoard")
 	public String getBoardList(@ModelAttribute("search") Search search, Model model) throws Exception{
 		System.out.println("/board/getBoardList : GET / POST");
 		
+		if(search.getCurrentPage()==0 ){
+			search.setCurrentPage(0);
+		}
+		search.setPageSize(pageSize);
+		
 		List<Board> list = boardService.getBoardList(search);
+		for( int i=0; i<list.size(); i++) {
+			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
+			list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), "user05") );
+			
+			//댓글이 있을 때만 수행
+			if( list.get(i).getCommCnt()>0 ) {
+				List<Comment> comment = commentService.getCommentList(list.get(i).getBoardNo());
+				for( int j=0; j<comment.size(); j++) {
+					comment.get(j).setUser( userService.getUser( (comment.get(j).getUser().getUserId()) ) );
+				}
+				list.get(i).setComment(comment);
+				String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+				list.get(i).setCommLastTime(commLastTime);
+			}
+		}
 		
 		model.addAttribute("list", list);
 		model.addAttribute("search", search);

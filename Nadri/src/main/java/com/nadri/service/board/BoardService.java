@@ -13,7 +13,7 @@ public interface BoardService {
 	
 	public void updateBoard(Board board) throws Exception;
 	
-	public Map<String, Object> getBoard(int boardNo) throws Exception;
+	public Board getBoard(int boardNo) throws Exception;
 	
 	public List<Board> getBoardList(Search search) throws Exception;
 	

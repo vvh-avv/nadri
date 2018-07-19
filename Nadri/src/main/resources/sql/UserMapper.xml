@@ -24,25 +24,23 @@
       <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
-      <result property="userStatusCode" column="user_status_code" jdbcType="VARCHAR" />
-      <result property="emailCode" column="email_code" jdbcType="VARCHAR" />
    </resultMap>
 
    <!-- SQL: INSERT -->
    <insert id="insertUser" parameterType="user">
       INSERT 
       INTO USER ( user_id, user_name, password, email, profile_img, sex, phone, age, 
-                  introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason, user_status_code, email_code) 
+                  introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason) 
       VALUES (#{userId}, #{userName}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
                #{phone:VARCHAR}, #{age:INTEGER}, #{introduce}, '0', CURDATE(), #{lastLogin}, '0',
-               #{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR}, #{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
+               #{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR})
    </insert>
 
    <!-- SQL: SELECT ONE -->
    <select id="findUser" parameterType="string" resultMap="userMap">
       SELECT
       user_id, user_name, password, email, profile_img, sex, phone, age, 
-                  introduce, role, reg_date, last_login, status, ip, info_option, user_status_code, email_code
+                  introduce, role, reg_date, last_login, status, ip, info_option
       FROM user
       WHERE user_id = #{value}
    </select>
@@ -93,7 +91,7 @@
       UPDATE user SET auth_code = #{authCode} WHERE email = #{email}
    </update>
    
-   <!-- 이메일 인증 상태코드 변화 -->
+   <!-- 이메일 인증 상태코드 변화
    <update id="updateStatusCode" parameterType="user">
        UPDATE user
        <set>
@@ -103,7 +101,7 @@
       <if test="emailCode != null">
          AND email_code = #{emailCode}
        </if>
-    </update>
+    </update> -->
     
     <!--  아이디 찾기 -->
     <select id="findUserId" parameterType="user" resultMap="userMap">

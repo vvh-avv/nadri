@@ -15,22 +15,38 @@
 		</association>
 	</resultMap>
 
-	<insert id="insertComment" parameterType="comment">
+	<!-- Rest에서 댓글 변경시 개수 리턴  -->
+	<select id="getCommentCount" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM COMMENT
+		WHERE board_no=#{value}
+	</select>
+	
+	<insert id="insertComment" parameterType="comment" useGeneratedKeys="true" keyProperty="commentNo">
 		INSERT
 		INTO COMMENT (user_id, board_no, comm_time, comm_content)
-		VALUES ( <!--#{user.userId}-->'user06', #{boardNo}, #{commentTime}, #{commentContent} )
+		VALUES ( #{user.userId}, #{boardNo}, NOW(), #{commentContent} )
 	</insert>
 	
 	<update id="updateComment" parameterType="comment">
 		UPDATE COMMENT
-		SET comm_time=#{commentTime}, comm_content=#{commentContent}
+		SET comm_time=NOW(), comm_content=#{commentContent}
 		WHERE comment_no=#{commentNo}
 	</update>
 	
-	<select id="getCommentList" parameterType="list" resultMap="commentMap">
+	<select id="getComment" parameterType="int" resultMap="commentMap">
 		SELECT
-		comment_no, board_no, user_id, comment_time, comment_content
+		comment_no, user_id, board_no, comm_time, comm_content
+		FROM comment
+		WHERE comment_no = #{value}
+	</select>
+	
+	<select id="getCommentList" parameterType="int" resultMap="commentMap">
+		SELECT
+		comment_no, user_id, board_no, comm_time, comm_content
 		FROM COMMENT
+		WHERE board_no = #{value}
 	</select>
 	
 	<delete id="deleteComment" parameterType="int">
@@ -39,10 +55,4 @@
 		WHERE comment_no=#{value}
 	</delete>
 	
-	<select id="getCommentCount" resultType="int">
-		SELECT
-		COUNT(*)
-		FROM COMMENT
-		WHERE board_no=#{value}
-	</select>
 </mapper>
