@@ -59,6 +59,6 @@ public class Comment {
 	@Override
 	public String toString() {
 		return "CommentVO : [commentNo] "+commentNo+" [boardNo] "+boardNo+
-				" [commentTime] "+commentTime+" [commentContent] "+commentContent;
+				" [commentTime] "+commentTime+" [commentContent] "+commentContent+" [user] "+user;
 	}
 }

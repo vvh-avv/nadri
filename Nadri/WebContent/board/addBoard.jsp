@@ -22,24 +22,28 @@
 <link rel="stylesheet" href="/css/common.css">
 
 <style>
+	.addBody{
+		padding-top:10px;
+	}
 	.well > div{
 		cursor : pointer;
 	}
-	#imgUpload{
+	#imgUpload,
+	#imgDelete{
+		 cursor : pointer;
 		 width : 35px;
 		 height : 35px;
-		 cursor : pointer;
 	}
-	#imgDelete{
+	#tsDataDelete{
 		cursor : pointer;
 	}
 	.thumb-image{
-		width : 180px;
+		width : auto; /*180px;*/
 		height : 180px;
 		pointer-events: none; /*마우스효과 비활성화 설정, 이 설정을 안하면 본문에 drag를 할 수 있게 된다*/
 	}
 	.imgPreview{
-		display:none;
+		display:none; /*update에서는 디폴트가 보여주는걸로 설정 */
 		height:200px;
 		white-space:nowrap; /*가로스크롤 사용 설정*/
 		overflow-x:scroll; /*가로스크롤 활성화 설정*/
@@ -54,14 +58,20 @@ function addContent(data){
 	if(data==null){
 		return;
 	} else{
-		$("#boardContent").val(data);
+		$("#boardContent").val(data.split("*")[0]); //[0]);
+		$("#boardTitle").val(data.split("*")[1]);
+		$(".imgPreview").css("display","block");
+		$(".imgPreview").append("<img class='thumb-image' src="+data.split('*')[2]+">");
 	}
 }
 
 $(function(){
+    
 	//*임시저장 버튼클릭
 	$("button[name='tempSave']").on("click", function(){
-		var tsData = $("#boardContent").val(); //임시저장 데이터
+		var tsData = $("#boardContent").val(); //임시저장 데이터(본문)
+		var tsDataT = $("#boardTitle").val(); //임시저장 데이터(제목)
+		var tsDataI = $(".thumb-image").attr("src"); //임시저장 데이터(이미지)
 		
 		//임시저장 횟수 제한(6개) //실제 뿌려질 수 있는 리스트가 몇개인지 체크
 		var realDataCnt = 0;
@@ -82,9 +92,9 @@ $(function(){
 			localStorage.clear(); //테스트용 코드
 			alert('임시저장할 내용이 없습니다.');
 		}else{
-			//1.key(현재시스템날짜)=value(본문내용) 형식으로 localStorage에 저장
+			//1.key(현재시스템날짜)=value(본문내용+제목+이미지) 형식으로 localStorage에 저장
 			var now = formatDate(new Date);
-			localStorage.setItem(now, tsData);
+			localStorage.setItem(now, tsData+"*"+tsDataT+"*"+tsDataI);
 			
 			//2.key(임시저장횟수)=value(현재시스템날짜) 형식으로 localStorage에 저장
 			if (localStorage.lsCount) { //localStorage에 lsCount가 존재하면 +1
@@ -97,7 +107,7 @@ $(function(){
 			//목록에 항목 바로 추가
 			$("#tempMsg").remove();
 			$(".well").prepend("<div id=temp"+localStorage.lsCount+">"+localStorage.getItem(localStorage.lsCount)+
-									"<img src='/images/board/delete.png' id=imgDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
+									"<img src='/images/board/delete.png' id=tsDataDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
 
 			alert("임시저장되었습니다.");
 		}
@@ -114,7 +124,7 @@ $(function(){
 					continue;
 				}else{
 					divTag += "<div id=temp"+[i]+">"+localStorage.getItem(i)+
-									"<img src='/images/board/delete.png' id=imgDelete"+i+" width='20' height='20' align='right'></div>";
+									"<img src='/images/board/delete.png' id=tsDataDelete"+i+" width='20' height='20' align='right'></div>";
 				}
 			}
 			$(".well").html(divTag);
@@ -190,6 +200,17 @@ $(function(){
 	$("#imgUpload").on("click", function(){
 		$("#file").click();
 	})
+	//*이미지없애는 버튼클릭
+	$("#imgDelete").on("click", function(){
+		if( $(".imgPreview").attr("css","display")=="none" ){
+			alert("삭제할 수 있는 이미지가 존재하지 않습니다.");
+		}else{
+			$("#file").attr("type","radio");
+			$("#file").attr("type","file");
+			$(".thumb-image").remove();
+			$(".imgPreview").hide();
+		}
+	})
 	
 	//*이미지업로드시 미리보기
 	$("#file").on('change', function(){
@@ -202,7 +223,10 @@ $(function(){
 </head>
 
 <body>
-	<div class="container">
+	<!-- 메인툴바 -->
+	<jsp:include page="/layout/toolbar.jsp"/>
+	
+	<div class="container addBody">
 		<div class="col-md-2"> <!-- 내 일정 목록 -->
 			<div id="cartList">
 				1<br>2<br>3<br>  <!-- 일정바구니 불러올 예정 ,,,,, -->
@@ -215,12 +239,13 @@ $(function(){
 					<!-- 제목 + 파일업로드 -->
 					<div class="row">
 						<!-- 제목 -->
-						<div class="col-xs-11 col-md-11">
+						<div class="col-xs-8 col-md-10">
 							<input class="form-control" type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력해주세요..">
 						</div>
 						<!-- 파일업로드 -->
-						<div class="col-xs-1 col-md-1" align="right">
+						<div class="col-xs-4 col-md-2" align="right">
 							<img src="/images/board/imgUpload.png" id="imgUpload" alt="이미지 업로드하기">
+							<img src="/images/board/imgDelete.png" id="imgDelete" alt="이미지 삭제하기">
 							<input multiple="multiple" class="form-control" type="file" id="file" name="file" style="display:none" accept=".gif, .jpg, .png, .jpeg">
 						</div>
 					</div>

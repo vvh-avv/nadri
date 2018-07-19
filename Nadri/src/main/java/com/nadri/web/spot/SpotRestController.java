@@ -1,6 +1,5 @@
 package com.nadri.web.spot;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.spot.SpotService;
 
-//==> 雀盔包府 RestController
+//==> 厘家包府 RestController
 @RestController
 @RequestMapping("/restspot/*")
 public class SpotRestController {
@@ -57,7 +56,7 @@ public class SpotRestController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("spot", spotService.getRiverList(spotCode));
+		map.put("spot", spotService.getAllSpotList(spotCode));
 		
 		return map;
 	}
@@ -66,10 +65,8 @@ public class SpotRestController {
 	public @ResponseBody List<Spot> infinityscrollDown(@RequestBody Spot spot) throws Exception{
 
 		System.out.println("/infinityscrollDown");
-		
-		int bnoToStart = spot.getSpotNo()+10;
-		
-		return spotService.infiniteScrollDown(bnoToStart);
+	
+		return spotService.infiniteScrollDown(spot);
 	}//end of infinityscroll
 	
 	@RequestMapping(value="/searchAround" , method=RequestMethod.POST)

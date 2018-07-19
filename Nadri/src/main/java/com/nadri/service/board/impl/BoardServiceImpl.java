@@ -39,19 +39,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public Map<String, Object> getBoard(int boardNo) throws Exception {
-		int reLikeCnt = boardDao.getLikeCount(boardNo);
-		Board reBoard = boardDao.getBoard(boardNo);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("reLikeCnt", reLikeCnt ); //좋아요개수
-		map.put("reBoard", reBoard); //게시물정보
-		
-		return map;
+	public Board getBoard(int boardNo) throws Exception {
+		return boardDao.getBoard(boardNo);
 	}
 
 	@Override
-	public List<Board> getBoardList(Search search) throws Exception {
+	public List<Board> getBoardList(Search search) throws Exception {		
 		List<Board> list = boardDao.getBoardList(search);
 		
 		return list;

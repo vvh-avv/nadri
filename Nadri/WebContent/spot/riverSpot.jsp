@@ -130,10 +130,87 @@ var contents = [];
 //마커 저장소
 var markers = [];
 
+//마커 담는 곳
+var spot = ${a};
+alert(spot);
+for (var i = 0 ; i < spot.length; i++){
+	// spotCode에 따라서 각기 다른 마커 이미지를 넣어주는 부분입니다.
+	// 공원
+      if(parseInt(spot[i].spotCode)>=4100 && parseInt(spot[i].spotCode) <4200){
+        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg };
+        obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'river'
+    	};
+        locations.push(obj); 
+      // 주차장
+      }else if (parseInt(spot[i].spotCode)>=4200 && parseInt(spot[i].spotCode) <4300){
+        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'parking', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+        obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'parking'
+    	};  
+        locations.push(obj);
+	     // 안내소
+      }else if (parseInt(spot[i].spotCode)>=4300 && parseInt(spot[i].spotCode) <4400){
+      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'info' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+		obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'info'
+    	};    
+      	locations.push(obj);
+		 // 자전거 대여소
+      }else if (parseInt(spot[i].spotCode)>=4400 && parseInt(spot[i].spotCode) <4500){
+      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+      	obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'bike'
+    	};    
+      	locations.push(obj);
+		 // 편의점
+      }else if (parseInt(spot[i].spotCode)>=4500 && parseInt(spot[i].spotCode) <4600){
+      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'store' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+      	obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'store'
+    	};        
+      	locations.push(obj);
+		 // 배달존
+      }else if(parseInt(spot[i].spotCode)>=4600 && parseInt(spot[i].spotCode) <4700){
+      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'food' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+		obj = {
+    			lat : parseFloat(spot[i].spotY),
+    			lng : parseFloat(spot[i].spotX),
+    			addr : spot[i].spotAddress,
+    			title : spot[i].spotTitle,
+    			img : spot[i].spotImg,
+    			type : 'store'
+    	};           
+      	locations.push(obj);    
+      };
+};
+
 function initMap() {
-	// 공원을 불러오는 메소드로 지도가 세팅되면서 함께 출력됩니다!
-	getSpotList(4)
-	
 	// 맵 스타일 속성에 필요한 배열 생성 
 	var styles = [];
 
@@ -244,10 +321,57 @@ function initMap() {
 		//getAddress(event);
 		//zoomChange(event);
 	});
+	
+	// 이부분은 마커를 추가해주는 부분입니다.
+	for (var i = 0; i < locations.length; i++) {
+		markers[i] = new google.maps.Marker({
+			position : locations[i],
+			map : map,
+			icon: icons[locations[i].type].icon
+		});
+		//인덱스를 꺼내오기.. 중요!!
+		markers[i].index = i
 
+		contents[i] = '<div class="box box-primary">'
+				+ '<div class="box-body box-profile">'
+				+ '<img class="profile-user-img img-responsive img-circle" src="/images/spot/ ' + locations[i].img + ' " alt="User profile picture">'
+				+ '<h3 class="profile-username text-center">'+ locations[i].title+ '</h3>'+ '<ul class="list-group list-group-unbordered">'
+				+ '<li class="list-group-item">'
+				+ '   <b>위치</b> <a class="pull-center">'+ locations[i].addr+ '</a>'+ '</li>'+ '  <li class="list-group-item">'
+				+ '<li class="list-group-item">'+ ' <b>조회수</b> <a class="pull-right">'+ locations[i].detail+ '</a>'+ ' </li>'
+				+ ' </ul>'
+				+ '<span> '
+				+ ' <a href="#" id ="abc" class="btn btn-primary btn-block" onclick="aaa()"><b>상세보기</b></a>'
+				+ '<span>'
+				+ '<span> '
+				+ ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'
+				+ '</span>' + '</div>';
+
+		// 이벤트 정보 넣기
+		infowindows[i] = new google.maps.InfoWindow(
+				{
+					content : contents[i],
+					removeable : true
+				});
+
+		// 마커를 클릭했을때 이벤트 발생 시키기
+		google.maps.event.addListener(markers[i],'click',function() {
+							// 일단 마커를 모두 닫고
+							for (var i = 0; i < markers.length; i++) {
+									infowindows[i].close();
+								}
+							infowindows[this.index].open(map,markers[this.index]);
+							map.panTo(markers[this.index].getPosition());
+						});
+
+		// 마커를 클릭했을때 이벤트 발생 시키기
+		google.maps.event.addListener(markers[i],'rightclick', function() {alert("이곳의 위치가 궁금한가?!");
+		});
+	}
+	
 }//end of initmap();	
 	
-	//장소를 불러오는 코드
+	/* //장소를 불러오는 코드
 	function getSpotList(spotCode) {  
 		deleteMarkers();
 		$('#masonry-container').empty();
@@ -302,17 +426,17 @@ function initMap() {
 
 	  	        contents[i] = '<div class="box box-primary">'+ 
 	            '<div class="box-body box-profile">'+ 
-	              '<img class="profile-user-img img-responsive img-circle" src="/images/spot/ ' + locations[i].spotImg + ' "height="200px" width="200px" >'+ 
-	              '<h3 class="profile-username text-center">' + locations[i].spotTitle + '</h3>'+  
+	              '<img class="profile-user-img img-responsive img-circle" src="/images/spot/ ' + locations[i].img + ' "height="200px" width="200px" >'+ 
+	              '<h3 class="profile-username text-center">' + locations[i].title + '</h3>'+  
 	              '<ul class="list-group list-group-unbordered">'+ 
 	                '<li class="list-group-item">'+ 
-	               '   <b>위치</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
+	               '   <b>위치</b> <a class="pull-right">' + locations[i].addr + '</a>'+ 
 	                '</li>'+ 
 	              '  <li class="list-group-item">'+ 
-	                  '<b>대표전화</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
+	                  '<b>대표전화</b> <a class="pull-right">' + locations[i].addr + '</a>'+ 
 	                '</li>'+ 
 	                '<li class="list-group-item">'+ 
-	                 ' <b>조회수</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
+	                 ' <b>조회수</b> <a class="pull-right">' + locations[i].addr + '</a>'+ 
 	               ' </li>'+ 
 	             ' </ul>'+ 
 	             '<span> '+
@@ -353,13 +477,13 @@ function initMap() {
 				      if(spot[i].spotImg != ""){
 					      output += '<div class="item big">';
 					       output += '<div class="thumbnail">';
-					      output += '<img src="/images/spot/ ' + spot[i].spotImg + ' " height="100px" width="100%"/>';
+					      output += '<img src="/images/spot/ ' + spot[i].img + ' " height="100px" width="100%"/>';
 					      output += ' <div class="caption">';
-					      output += '<h3>' + spot[i].spotTitle + '</h3>';
+					      output += '<h3>' + spot[i].title + '</h3>';
 						  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-						  output += '<p> ' + spot[i].spotAddress+'</p>';
+						  output += '<p> ' + spot[i].addr+'</p>';
 						  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-						  output += '<p> ' + spot[i].spotPhone+'</p>';
+						  //output += '<p> ' + spot[i].spotPhone+'</p>';
 						  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 						 output += ' <p>';
 						 output += ' <span class="label label-danger">공원</span>';
@@ -373,11 +497,11 @@ function initMap() {
 				    	  output += '<div class="item normal">';
 					       output += '<div class="thumbnail">';
 					      output += ' <div class="caption">';
-					      output += '<h3>' + spot[i].spotTitle + '</h3>';
+					      output += '<h3>' + spot[i].title + '</h3>';
 						  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-						  output += '<p> ' + spot[i].spotAddress+'</p>';
+						  output += '<p> ' + spot[i].addr+'</p>';
 						  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-						  output += '<p> ' + spot[i].spotPhone+'</p>';
+						  //output += '<p> ' + spot[i].spotPhone+'</p>';
 						  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 						 output += ' <p>';
 						 output += ' <span class="label label-danger">공원</span>';
@@ -394,9 +518,9 @@ function initMap() {
 	     }//end of for문 
 	  }//end of success 
 	});// end of ajax 
-	} // end of getSpotList()
+	} // end of getSpotList() */
 	
-	//장소를 불러오는 코드
+	/* //장소를 불러오는 코드
 	function getRiverList(spotCode) {  
 		$('#masonry-container').empty();
 		 $.ajax({ 
@@ -460,7 +584,7 @@ function initMap() {
 	     }//end of for문 
 	  }//end of success 
 	});// end of ajax 
-	} // end of getSpotList()
+	} // end of getSpotList() */
 	
 	// Sets the map on all markers in the array.
     function setMapOnAll(map) {
@@ -538,6 +662,21 @@ function initMap() {
 	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(43)">안내소</a><span>
 	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(44)">자전거</a><span>
 	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(45)">편의점</a><span>
+			</div>
+			<div class="parkImg">
+	<%-- 		<c:set var="i" value="0" />
+				<c:forEach var="spot" items="${list}">
+					<c:set var="i" value="${i+1}" />
+					<tr class="ct_list_pop">
+						<td align="center" valign="middle">${ i }</td>
+						<td align="center">${spot.spotTitle}</td>
+						<td align="center"><img src="/images/spot/${spot.spotImg}" width="200" height="100" /></td>
+						<td align="center">${spot.spotAddress}</td>
+						<td align="center">${spot.spotDetail}</td>
+						<td align="center">${spot.spotProvince}<span class="label label-info">축제/전시</span></td>
+						<br/>
+					</tr>
+				</c:forEach> --%>
 			</div>
 				<br/>
 	          <br/>

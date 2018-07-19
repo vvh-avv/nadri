@@ -25,13 +25,14 @@
 	.well > div{
 		cursor : pointer;
 	}
-	#imgUpload{
+	#imgUpload,
+	#imgDelete{
 		 width : 35px;
 		 height : 35px;
 		 align : right;
 		 cursor : pointer;
 	}
-	#imgDelete{
+	#tsDataDelete{
 		cursor : pointer;
 	}
 	.thumb-image{
@@ -61,7 +62,7 @@ function addContent(data){
 }
 
 $(function(){
-    //** 게시물 이미지가 있어도 보여지게끔 설정
+    //** 게시물 이미지가 없으면 안보여지게끔 설정
 	if( $("#boardImg").val()=="" || $("#boardImg").val()==null ){
 		$(".imgPreview").css("display","none");
 	}
@@ -104,7 +105,7 @@ $(function(){
 			//목록에 항목 바로 추가
 			$("#tempMsg").remove();
 			$(".well").prepend("<div id=temp"+localStorage.lsCount+">"+localStorage.getItem(localStorage.lsCount)+
-									"<img src='/images/board/delete.png' id=imgDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
+									"<img src='/images/board/delete.png' id=tsDataDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
 
 			alert("임시저장되었습니다.");
 		}
@@ -121,7 +122,7 @@ $(function(){
 					continue;
 				}else{
 					divTag += "<div id=temp"+[i]+">"+localStorage.getItem(i)+
-									"<img src='/images/board/delete.png' id=imgDelete"+i+" width='20' height='20' align='right'></div>";
+									"<img src='/images/board/delete.png' id=tsDataDelete"+i+" width='20' height='20' align='right'></div>";
 				}
 			}
 			$(".well").html(divTag);
@@ -197,6 +198,17 @@ $(function(){
 	$("#imgUpload").on("click", function(){
 		$("#file").click();
 	})
+	//*이미지없애는 버튼클릭
+	$("#imgDelete").on("click", function(){
+		if( $(".imgPreview").attr("css","display")=="none" ){
+			alert("삭제할 수 있는 이미지가 존재하지 않습니다.");
+		}else{
+			$("#file").attr("type","radio");
+			$("#file").attr("type","file");
+			$(".thumb-image").remove();
+			$(".imgPreview").hide();
+		}
+	})
 	
 	//*이미지업로드시 미리보기
 	$("#file").on('change', function(){
@@ -223,12 +235,13 @@ $(function(){
 					<!-- 제목 + 파일업로드 -->
 					<div class="row">
 						<!-- 제목 -->
-						<div class="col-xs-11 col-md-11">
+						<div class="col-xs-8 col-md-10">
 							<input class="form-control" type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력해주세요.." value="${board.boardTitle}">
 						</div>
 						<!-- 파일업로드 -->
-						<div class="col-xs-1 col-md-1" align="right">
+						<div class="col-xs-4 col-md-2" align="right">
 							<img src="/images/board/imgUpload.png" id="imgUpload" alt="이미지 업로드하기">
+							<img src="/images/board/imgDelete.png" id="imgDelete" alt="이미지 삭제하기">
 							<input multiple="multiple" class="form-control" type="file" id="file" name="file" style="display:none" accept=".gif, .jpg, .png, .jpeg">
 						</div>
 					</div>
