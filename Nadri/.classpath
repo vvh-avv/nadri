@@ -15,7 +15,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/Bit/Downloads/gson-2.8.5.jar"/>
-	<classpathentry kind="lib" path="D:/z.utillity/json_simple-1.1-all/lib/json_simple-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="D:/z.utility/json_simple-1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

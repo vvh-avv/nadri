@@ -20,6 +20,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
+	<link rel="stylesheet" href="/css/toolbar.css">
    <link href="/css/animate.min.css" rel="stylesheet">
    <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
     <!-- Bootstrap Dropdown Hover JS -->
@@ -152,7 +153,9 @@
 <body>
 	
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	<%@ include file="/layout/toolbar.jsp"%>
+
  	<!-- ToolBar End /////////////////////////////////////-->
  	
  <div class="col-sm-2" style="margin-left:3%">
@@ -160,7 +163,7 @@
   <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
   <h3><a href="/user/listUser">마이 페이지</a></h3><br/>
   <a href="/user/getUser.jsp">내 정보 보기</a><br/><br/>
-  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+  <a href="/user/updateUser.jsp">내 정보 수정</a><br/><br/>
   <a href="/friend/listFriend.jsp">친구 목록</a><br/><br/>
   <a href="#">작성한 글</a><br/><br/>
   <a href="#">작성한 일정</a><br/><br/>

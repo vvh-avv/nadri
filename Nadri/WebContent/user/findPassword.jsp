@@ -20,6 +20,8 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
+	<link rel="stylesheet" href="/css/toolbar.css">
+
 <style type="text/css">
 
 </style>
@@ -71,7 +73,8 @@ $(function(){
 <body>
 
    <!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	 <%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->

@@ -25,7 +25,6 @@ public class FriendServiceImpl implements FriendService {
 		this.friendDao = friendDao;
 	}
 	
-	
 	//constructor method
 	public FriendServiceImpl() {
 		// TODO Auto-generated constructor stub
@@ -107,25 +106,32 @@ public class FriendServiceImpl implements FriendService {
 		friendDao.cancelFriend(userId, friendId, status);
 	}
 
-
+	
 	@Override
 	public void updateStatus(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
 		friendDao.updateStatus(userId, friendId, status);
 	}
 	
-
+	//follow 확인
 	@Override
 	public int checkFollow(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
 		return friendDao.checkFollow(userId, friendId, status);
 	}
 
-	
+	//친구 수 
 	@Override
 	public List countFriend(String userId) throws Exception {
 		// TODO Auto-generated method stub
 		return friendDao.countFriend(userId);
+	}
+
+
+	@Override
+	public List<Friend> recommendFriend(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

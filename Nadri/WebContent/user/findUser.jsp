@@ -19,10 +19,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" href="/css/toolbar.css">
 
-<style type="text/css">
-
-</style>
+<style type="text/css"></style>
     
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
@@ -71,7 +70,8 @@ $(function(){
 <body>
 
    <!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	 <%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->
