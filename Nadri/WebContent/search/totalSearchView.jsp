@@ -69,9 +69,9 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
 						<li>
-							<form class="navbar-form" style="display:inline-block">
+							<form class="navbar-form" action="/searchLog/listSearchLog" method="post" style="display:inline-block">
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search">
+									<input type="text" class="form-control" placeholder="Search" name="searchKeyword">
 								</div>
 								<button type="submit" class="btn btn-default">Submit</button>
 							</form>
@@ -117,36 +117,43 @@
 					<div class="placeContent"></div>
 				</div>
 				<div class="col-md-6 col-xs-12">
-					<div class="placeImg" style="background-color:black; width:100%; height:300px;"></div>
+					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="placeImg" style="background-color:black; width:100%; height:300px;">
 				</div>
 			</div>
 		</div>
 		<div class="contents">
 				
-			<div class="col-md-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
+			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
 				<h3 style="display:inline-block; font-weight:700;">게시글</h3><div>더보기 >></div>
 			</div>
 			<hr/>
-			
+			<c:if test="${!empty list_board}">
 			<c:set var="i" value="0"/>
-			<c:forEach var="board" items="${list_all[0]}" end="2">
+			<c:forEach var="board" items="${list_board}" end="2">
 			<c:set var="i" value="${i+1}"/>
 				<div class="col-md-4 col-xs-6 board-box">
-					<img src="/images/board/${board.board_img1}" class="boardImg" style="width:100%; height:200px;">
+					<img src="/images/board/${board.board_img}" class="boardImg" style="width:100%; height:200px;">
 					<div class="boardBox">
 						<h3>${board.board_title}</h3>
 						${board.board_content}
 					</div>
 				</div>
 			</c:forEach>
+			</c:if>
+			<c:if test="${empty list_board}">
+				<div class="col-md-12 col-xs-12 board-box">
+					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="boardImg" style="width:100%; height:200px; opacity:0.5;">
+				</div>
+			</c:if>
 			
-			<div class="col-md-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
+			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
 				<h3 style="display:inline-block; font-weight:700;">일정</h3><div>더보기 >></div>
 			</div>
 			<hr/>
 			
+			<c:if test="${!empty list_schedule}">
 			<c:set var="i" value="0"/>
-			<c:forEach var="schedule" items="${list_all[2]}" end="3">
+			<c:forEach var="schedule" items="${list_schedule}" end="3">
 			<c:set var="i" value="${i+1}"/>
 				<div class="col-md-6 col-xs-12 board-box">
 					<img src="${schedule.img}" class="boardImg" style="width:100%; height:200px;">
@@ -156,9 +163,15 @@
 					</div>
 				</div>
 			</c:forEach>
+			</c:if>
+			<c:if test="${empty list_schedule}">
+				<div class="col-md-12 col-xs-12 board-box">
+					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="boardImg" style="width:100%; height:200px; opacity:0.5;">
+				</div>
+			</c:if>
 
 			
-			<div class="col-md-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
+			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
 				<h3 style="display:inline-block; font-weight:700;">인스타그램</h3><div>더보기 >></div>
 			</div>
 			<hr/>
@@ -175,43 +188,59 @@
 	<script>
 		// Initialize and add the map
 		function initMap() {
-			var locations = [
-			      ['Bondi Beach', -33.890542, 151.274856, 4],
-			      ['Coogee Beach', -33.923036, 151.259052, 5],
-			      ['Cronulla Beach', -34.028249, 151.157507, 3],
-			      ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-			      ['Maroubra Beach', -33.950198, 151.259302, 1]
-			    ];
-	
-		    var map = new google.maps.Map(document.getElementById('map'), {
-		      zoom: 10,
-		      center: new google.maps.LatLng(-33.92, 151.25),
-		      mapTypeId: google.maps.MapTypeId.ROADMAP
-		      
-		    });
+			var locations;
+			var size = ${spot_location.size()};
+			if(size==0){
+				locations = ['검색결과가 없습니다.',37.581095,126.977156];
+				var map = new google.maps.Map(document.getElementById('map'), {
+				      zoom: 15,
+				      center: new google.maps.LatLng(37.581095,126.977156),
+				      mapTypeId: google.maps.MapTypeId.ROADMAP
+				      
+				    });
+			}else{
+				locations = ${spot_location};
+				var map = new google.maps.Map(document.getElementById('map'), {
+				      zoom: 10,
+				      center: new google.maps.LatLng(locations[0][1], locations[0][2]),
+				      mapTypeId: google.maps.MapTypeId.ROADMAP
+				      
+				    });
+			}
+
 
 		    var infowindow = new google.maps.InfoWindow();
 
 		    var marker, i;
-
-		    for (i = 0; i < locations.length; i++) {  
-		      marker = new google.maps.Marker({
-		        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-		        map: map
-		      });
-
-		      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-		        return function() {
-		          infowindow.setContent(locations[i][0]);
-		          infowindow.open(map, marker);
-		          $('.placeTitle').text(locations[i][0]);
-		          $('.placeContent').text("information of selected place");
-		        }
-		      })(marker, i));
-		    }
 		    
-		    $('.placeTitle').text(locations[0][0]);
-	        $('.placeContent').text("information of selected place");
+		    if(size==0){
+		    	console.log('검색결과가 없습니다.');
+		    	$('.placeTitle').text("검색결과가 없습니다 ㅠㅠ");
+		        $('.placeContent').text("미아내오 준비하께오ㅜㅜㅜㅜㅠㅠㅠㅠㅠ");
+		        $('.placeImg').attr("src","https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
+		    }else{
+		    	for (i = 0; i < locations.length; i++) {  
+				      marker = new google.maps.Marker({
+				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				        map: map
+				      });
+	
+				      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				        return function() {
+				          infowindow.setContent(locations[i][0]);
+				          infowindow.open(map, marker);
+				          $('.placeTitle').text(locations[i][0]);
+				          $('.placeContent').text(locations[i][3]);
+				          $('.placeImg').attr("src","/images/spot/"+locations[i][4]);
+				        }
+				      })(marker, i));
+				    }
+				    
+			    $('.placeTitle').text(locations[0][0]);
+		        $('.placeContent').text("information of selected place");
+		    }
+
+		    
 		}
     </script>
 	<script async defer

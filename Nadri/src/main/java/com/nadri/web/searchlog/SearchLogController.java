@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -92,7 +93,7 @@ public class SearchLogController {
 			
 		}
 		
-		for(int i = 0; i < 8; i++) {
+		for(int i = 0; i < 12; i++) {
 			Insta insta = new Insta();
 			JSONObject node = (JSONObject) graphql.getJSONObject(i).get("node");
 			JSONObject likeCount = node.getJSONObject("edge_liked_by");
@@ -115,10 +116,30 @@ public class SearchLogController {
 		
 		List<Object> list_all = searchLogService.getSearchResult(searchKeyword);
 		
-		System.out.println("가져온 리스트의 결과 : "+list_all);
+		List<Object> list_board = (List<Object>) list_all.get(0);
+		List<Object> list_spot = (List<Object>) list_all.get(1);
+		List<Object> list_schedule = (List<Object>) list_all.get(2);
+		
+		List<List> array = new ArrayList<List>();
+		int i = 0;
+		for(Object obj2:list_spot) {
+			array.add(new ArrayList<Object>());
+			HashMap<String,Object> json2 = (HashMap<String, Object>) obj2;
+			array.get(i).add("'"+json2.get("spot_title")+"'");
+			array.get(i).add(json2.get("spot_y"));
+			array.get(i).add(json2.get("spot_x"));
+			array.get(i).add("'"+json2.get("spot_detail")+"'");
+			array.get(i).add("'"+json2.get("spot_img")+"'");
+			i++;
+		}
+		
+		System.out.println("가져온 스팟 리스트의 결과 : "+array);
 		
 		model.addAttribute("insta_list", insta_list);
-		model.addAttribute("list_all", list_all);
+		model.addAttribute("list_board", list_board);
+		model.addAttribute("list_spot", list_spot);
+		model.addAttribute("list_schedule", list_schedule);
+		model.addAttribute("spot_location", array);
 		
 		return "/search/totalSearchView.jsp";
 	}

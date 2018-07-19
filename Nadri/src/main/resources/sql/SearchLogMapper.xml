@@ -21,7 +21,7 @@
 		   spot_title,
 		   spot_address,
 		   spot_phone,
-		   spot_detail,
+		   replace(replace(spot_detail, char(13), ''), char(10), '') spot_detail,
 		   spot_x,
 		   spot_y,
 		   spot_img,
@@ -42,7 +42,7 @@
 		    schedule_modifytime,
 		    open_range,
 		    hashtag
-		FROM myamo_schema.schedule
+		FROM schedule
 		WHERE schedule_title LIKE '%${value}%'
 	</select>
 
