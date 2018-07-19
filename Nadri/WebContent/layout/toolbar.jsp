@@ -167,10 +167,10 @@ html, body {
                   <img src="/images/test/bell.png" class="icons"> 
                   <img src="/images/test/conversation.png" class="icons"> 
                   <c:if test="${empty user}">
-                     <a href="/user/loginView.jsp"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
+                     <a href="/user/login"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
                   </c:if>
                   <c:if test="${!empty user}">
-                     <a href="/user/listUser.jsp"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
+                     <a href="/user/listUser"><img src="/images/test/multiple-users-silhouette.png" class="icons"></a>
                   </c:if>
                   <a href="/admin/adminIndex.jsp">
                   <img src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg" class="profile" title="let's go to Admin page">

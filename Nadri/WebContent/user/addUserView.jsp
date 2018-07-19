@@ -23,9 +23,7 @@
 
 	</style>
 	
-	<script type="text/javascript">
-		var check = false;
-		
+	<script type="text/javascript">		
 		function fncAddUser() {
 			// Form 유효성 검증
 			var id=$('#userId').val();
@@ -172,7 +170,7 @@
 	</div>
 	
 	<form class="form-horizontal" enctype="multipart/form-data">
-		<div class="form-group">
+		<div class="form-group" >
 			<div class="row">
 				<label for="userName" class="col-sm-3 control-label">이름</label>
 				<div class="col-sm-3">
@@ -181,7 +179,7 @@
 				<span class="col-sm-6"></span>
 			</div>
 			<br/>
-		
+
 			<div class="row">
 				<label for="userId" class="col-sm-3 control-label">아이디</label>
 				<div class="col-sm-3">
@@ -189,6 +187,7 @@
 				</div>
 				<span id="helpBlock" class="help-block col-sm-6"></span>
 			</div>
+
 			<br/>
 			
 			<!-- <div class="row">
@@ -211,6 +210,7 @@
 				<span class="col-sm-6"></span>
 			</div>
 			<br/>
+
 			<div class="row">
 				<label for="passwordChk" class="col-sm-3 control-label">비밀번호확인</label>
 				<div class="col-sm-3">

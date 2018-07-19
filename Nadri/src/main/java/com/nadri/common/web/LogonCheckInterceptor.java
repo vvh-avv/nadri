@@ -1,4 +1,4 @@
-/*package com.nadri.common.web;
+package com.nadri.common.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.nadri.service.domain.User;
 
 
-
+/*
  * FileName : LogonCheckInterceptor.java
  *  ㅇ Controller 호출전 interceptor 를 통해 선처리/후처리/완료처리를 수행
  *  	- preHandle() : Controller 호출전 선처리   
@@ -19,7 +19,7 @@ import com.nadri.service.domain.User;
  *    
  *    ==> 로그인한 회원이면 Controller 호출 : true return
  *    ==> 비 로그인한 회원이면 Controller 미 호출 : false return
- 
+ */
 public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 
 	///Field
@@ -28,7 +28,8 @@ public class LogonCheckInterceptor extends HandlerInterceptorAdapter {
 	public LogonCheckInterceptor(){
 		System.out.println("\nCommon :: "+this.getClass()+"\n");		
 	}
-	
+}
+/*	
 	/////Method
 	public boolean preHandle(	HttpServletRequest request,
 			HttpServletResponse response, 
