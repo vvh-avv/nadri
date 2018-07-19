@@ -146,7 +146,34 @@ public class SpotController {
 		
         return "forward:/spot/suyoSpot.jsp";
         
-	}//end of infinityscroll
+	}//end of getRestaurantList
+	
+	@RequestMapping(value="getBabyList" , method=RequestMethod.GET)
+	public String getBabyList( Model model) throws Exception{
+
+		System.out.println("/getBabyList");
+		
+		List<Spot> list = spotService.getSpotList(30);
+		JSONArray jsonArray = new JSONArray();
+		
+		for(Spot a : list) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("spotX", a.getSpotX());
+			jsonObject.put("spotY", a.getSpotY());
+			jsonObject.put("spotAddress", a.getSpotAddress());
+			jsonObject.put("spotDetail", a.getSpotDetail());
+			jsonObject.put("spotTitle", a.getSpotTitle());
+			jsonObject.put("spotImg", a.getSpotImg());
+			jsonObject.put("spotProvince", a.getSpotProvince());
+			jsonArray.add(jsonObject);
+		}
+				
+		model.addAttribute("list", spotService.getSpotList(30));
+		model.addAttribute("a", jsonArray);
+		
+        return "forward:/spot/babySpot.jsp";
+        
+	}//end of getRestaurantList
 	
 	@RequestMapping( value="getSpot" , method=RequestMethod.GET)
     public String getProduct( @RequestParam("spotNo") int spotNo , Model model, HttpServletRequest request ) throws Exception {
@@ -155,6 +182,8 @@ public class SpotController {
       
       //Business Logic
       Spot spot = spotService.getSpot(spotNo);
+      
+      spotService.updateSpotReadCnt(spot);
       
       // Model °ú View ¿¬°á
       model.addAttribute("spot", spot);

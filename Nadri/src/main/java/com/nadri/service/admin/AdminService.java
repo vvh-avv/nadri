@@ -1,6 +1,8 @@
 package com.nadri.service.admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
@@ -16,5 +18,9 @@ public interface AdminService {
 	public Inquire getInquire(int inquireNo);
 	
 	public void updateSpot(Spot spot);
-
+	
+	public Map<String,Object> getGraphLog(HashMap<String, Object> map);
+	
+	public int blockUser(String userId);
+	
 }

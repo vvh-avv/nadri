@@ -35,4 +35,7 @@ public interface SpotDao {
 	 // 4. 장소추가 (admin only)
 	 public void addSpot(Spot spot);
 	 /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	 
+	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	public void updateSpotReadCnt(Spot spot) throws Exception;
 } 

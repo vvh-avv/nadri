@@ -57,6 +57,47 @@ body {
         line-height: 30px;
         padding-left: 10px;
       }
+      
+      /*드랍다운 들어가는 css*/
+	.dropbtn {
+		    background-color: #4CAF50;
+		    color: white;
+		    padding: 16px;
+		    font-size: 16px;
+		    border: none;
+		}
+
+		span.dropdown {
+			width: 16.6%;
+			float: left;
+		}
+
+		.dropdown {
+		    position: relative;
+		    display: inline-block;
+		}
+
+		.dropdown-content {
+		    display: none;
+		    position: absolute;
+		    background-color: #f1f1f1;
+		    min-width: 160px;
+		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		    z-index: 1;
+		}
+
+		.dropdown-content a {
+		    color: black;
+		    padding: 12px 16px;
+		    text-decoration: none;
+		    display: block;
+		}
+		
+		.dropdown-content a:hover {background-color: #ddd;}
+		
+		.dropdown:hover .dropdown-content {display: block;}
+		
+		.dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 </style>
 
@@ -341,20 +382,56 @@ body {
 <div class="content-wrapper">
 	<%-- Content Header (Page header) --%>
 	<section class="content-header">
-		<h1>판매지도보기</h1>
+		<h1>지도찾기</h1>
 		<ol class="breadcrumb">
 			<li><a href="#"><i class="fa fa-dashboard"></i> 판매관리</a></li>
 			<li class="active">판매지도</li>
 		</ol>
+		<span class="dropdown">
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
+			</span>
+
+			<span class="dropdown">
+				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getFestivalList">축제/전시</a></button>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
+					<div class="dropdown-content">
+					<a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a>
+					<a href="/spot/getRestaurantList?spotCode=11">수요미식회</a>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
+				<div class="dropdown-content">
+					<a href="/spot/getBabyList">수유실</a> 
+					<a href="/spot/bikeSpot.jsp">자전거</a>
+					<a href="/spot/carSpot.jsp">자동차</a>
+				</div>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/searchSpot.jsp">직접검색</a></button>
+			</span>
 	</section>
- 	<div id="floating-panel">
-      <input id="address" type="textbox" value="비트캠프">
-      <input id="submit" type="button" value="search">
-    </div>
 
 	<%-- Main content --%>
 	<section class="content container-fluid">
 		<body>
+		<div class="jumbotron">
+  				<h1>직접가고싶은 곳을 검색하세요!</h1>
+  					<div id="floating-panel">
+				      <input id="address" type="textbox" value="비트캠프">
+				      <input id="submit" type="button" value="search">
+				    </div>
+			</div>
 			<div id="map">
 				<br /> <br />
 			</div>

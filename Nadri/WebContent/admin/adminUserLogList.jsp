@@ -39,11 +39,9 @@
 			}else if(way=="spot"){
 				self.location='/admin/listSpot';
 			}else if(way=="graph"){
-				self.location='/admin/listGraph';
+				self.location='/admin/listGraph?duration=day';
 			}else if(way=="userList"){
 				self.location = '/admin/listUser';
-			}else if(way=="userLog"){
-				self.location = '/admin/listLog';
 			}
 		})
 		
@@ -57,7 +55,6 @@
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
-				<div class="userLog">회원활동</div>
 				<div class="graph">통계내역</div>
 				<div class="spot">백과관리</div>
 				<div class="inquire">문의관리</div>

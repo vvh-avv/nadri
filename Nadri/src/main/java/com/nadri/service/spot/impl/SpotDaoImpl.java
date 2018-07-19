@@ -82,5 +82,11 @@ public class SpotDaoImpl implements SpotDao{
 	      sqlSession.insert("SpotMapper.addSpot", spot);
 	   }
 	   /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
+	  
+	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	@Override
+	public void updateSpotReadCnt(Spot spot) throws Exception {
+		sqlSession.update("SpotMapper.updateSpotReadCnt", spot);
+	}
 	
 }

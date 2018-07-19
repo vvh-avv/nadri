@@ -5,7 +5,7 @@
 	
 		<h3> default Exception page</h3>
 		
-		<img src="../images/common/error.jsp">
+		<img src="/images/common/error.png">
 		<br>
 		
 		<%	Exception exception = (Exception)request.getAttribute("exception");	%>
