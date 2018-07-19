@@ -26,9 +26,6 @@
 <link rel="stylesheet" href="/css/commonfont.css">
 <!-- T-map 지도를 쓰기위한 선언 -->
 <script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
-<!-- Import materialize.min.js -->
-<script type="text/javascript" src="/javascript/materialize.min.js"></script>
-<link rel="stylesheet" href="/css/materialize.min.css">
 <script src="/javascript/juangeolocation.js?ver=2"></script>
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js"></script>
@@ -145,41 +142,12 @@ var options = {
      <div id="img" style='background-image: url(/images/spot/parkdefault.png)'> 
         <div class="content">  
            <h1>환영합니다 일정등록입니다!</h1>
-            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >섬네일 바꾸시기 원하시면 클릭하세요!</button> -->
-             <a class="waves-effect waves-light btn modal-trigger" href="#modal1">섬네일 바꾸시기 원하시면 클릭하세요!</a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >섬네일 바꾸시기 원하시면 클릭하세요!</button>
             <input style="display: none;" type="file" id="testfile" name="testfile" >
         </div> 
         <div id="img-cover"></div> 
     </div> 
 	<form>
-			<div class="form-group">
-  				<label for="usr">제목 :</label>
-  				<input type="text" class="form-control" name="scheduleTitle">
-			</div>
-			<div class="form-group">
-  				<label for="usr">작성자 :</label>
-  				<input type="text" class="form-control" name="userId">
-			</div>
-			<div class="form-group">
-  				<label for="usr">나들이가는 날짜 :</label>
-  				<input type="text" class="form-control" id="datepicker" name="scheduleDate">
-			</div>
-			<div class="form-group">
-  				<label for="usr">이미지명 :</label>
-  				<input type="text" class="form-control" name="scheduleImg">
-			</div>
-			<div class="md-form">
-				<label for="input_starttime">출발시간:</label>
-			    <input type="text" class="timepicker" id="timepicker" name="startHour"/>
-			</div>
-			<div class="form-group">
-					<label for="sel1">어떤교통수단을 이용하시겠어요? :</label>
-						<select class="form-control" name="transportationCode" id="transportationCode" onclick="hello();">
-					        <option value="0">자동차</option>
-					        <option value="1">도보</option>
-					        <option value="2">대중교통</option>
-					    </select>
-			</div>
 		<h2>경유지를 입력해주세요</h2>
 		<div id="map_div"></div>
 			<table border="1">
@@ -297,46 +265,60 @@ var options = {
 			</div>	
 			
 			
-			<!-- 댓글작성 modal 창 start --> 
+			<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
             <div class="modal fade" id="myModal" role="dialog"> 
                 <div class="modal-dialog"> 
                     <div class="modal-content"> 
                         <div class="modal-header"> 
                             <button type="button" class="close" data-dismiss="modal">&times;</button> 
                             <h4 class="modal-title">어느 피크닉 장소를 가세요?</h4> 
-                        </div> 
-                        <div class="modal-body"> 
-                            <div class="form-group"> 
-                                <label for="replyDetail">장소를 간단히 설명해주세요!!</label> 
-                                <input class="form-control" id="replyDetail" name="replyDetail" placeholder="댓글 내용을 입력해주세요"> 
-                            </div> 
-                            <div class="form-group"> 
-                                <label for="InputFile">썸네일로 쓰실 사진을 올려주세요</label> 
-                                <input type="file" id="InputFile"> 
-                            </div> 
-                        </div> 
-                        <div class="modal-footer"> 
+                        </div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="usr">제목</label> <input type="text"
+								class="form-control" name="scheduleTitle">
+						</div>
+						<div class="form-group">
+							<label for="replyDetail">장소를 간단히 설명해주세요!!</label> <input
+								class="form-control" id="replyDetail" name="replyDetail"
+								placeholder="댓글 내용을 입력해주세요">
+						</div>
+						<div class="form-group">
+							<label for="InputFile">썸네일로 쓰실 사진을 올려주세요</label> <input
+								type="file" id="InputFile">
+						</div>
+						<div class="form-group">
+							<label for="usr">나들이가는 날짜를 입력해주세요!</label> 
+							<input type="text" class="form-control" id="datepicker" name="scheduleDate">
+						</div>
+						<div class="form-group">
+							<label for="sel1">어떤교통수단을 이용하시겠어요? :</label> <select class="form-control" name="transportationCode" id="transportationCode">
+								<option value="0">자동차</option>
+								<option value="1">도보</option>
+								<option value="2">대중교통</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="usr">작성자 </label> 
+							<input type="text" class="form-control" name="userId">
+						</div>
+						<div class="form-group">
+							<label for="usr">이미지명 </label> 
+							<input type="text" class="form-control" name="scheduleImg">
+						</div>
+						<div class="form-group">
+							<label for="input_starttime">출발시간</label> 
+							<input type="text" class="timepicker" id="timepicker" name="startHour" />
+						</div>
+					</div>
+					<div class="modal-footer"> 
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">닫기</button> 
                             <button type="button" class="btn btn-danger modalModBtn">수정</button> 
                         </div> 
                     </div> 
                 </div> 
             </div>
-            
-            <!-- materialize 모달창 start -->
-            <div id="modal1" class="modal modal-fixed-footer">
-			   <div class="modal-content">
-			     <h4>Modal Header</h4>
-			     <p>A bunch of text</p>
-			   </div>
-			   <div class="modal-footer">
-			     <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-			   </div>
-			 </div> 
-			
-			
-			
-			
+	
 		<button type="button" class="btn btn-warning" id="hi">등록!!!</button>
 	</form>
 </body>
