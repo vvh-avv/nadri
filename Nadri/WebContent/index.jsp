@@ -20,6 +20,11 @@
 
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
+
+<!--  slick  -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	$(function() {
@@ -63,7 +68,18 @@
 	</div>
 	<div class="container-fluid">
 		<div class="middle-bar">
-			<div class=""></div>
+			<div class="popular-contents container">
+				<div class="col-md-3 col-xs-6">content1</div>
+				<div class="col-md-3 col-xs-6">content2</div>
+				<div class="col-md-3 col-xs-6">content3</div>
+				<div class="col-md-3 col-xs-6">content4</div>
+				<div class="col-md-3 col-xs-6">content5</div>
+				<div class="col-md-3 col-xs-6">content1</div>
+				<div class="col-md-3 col-xs-6">content2</div>
+				<div class="col-md-3 col-xs-6">content3</div>
+				<div class="col-md-3 col-xs-6">content4</div>
+				<div class="col-md-3 col-xs-6">content5</div>
+			</div>
 		</div>
 	</div>
 	
