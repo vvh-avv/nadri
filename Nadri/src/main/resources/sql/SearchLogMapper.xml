@@ -5,5 +5,45 @@
 
 <mapper namespace="SearchLogMapper">
 
+	<select id="boardSearchResult" parameterType="string" resultType="hashmap">
+		SELECT
+	    A.board_no board_no, A.board_title board_title, 
+	    A.board_content board_content,A.board_time board_time,A.board_img1 board_img1
+	    ,(SELECT COUNT(*) FROM comment B WHERE B.board_no=A.board_no) reply 
+		FROM board A
+		WHERE A.board_title LIKE '%${value}%'
+	</select>
+	
+	<select id="spotSearchResult" parameterType="string" resultType="hashmap">
+		SELECT
+		   spot_no,
+		   spot_code,
+		   spot_title,
+		   spot_address,
+		   spot_phone,
+		   replace(replace(spot_detail, char(13), ''), char(10), '') spot_detail,
+		   spot_x,
+		   spot_y,
+		   spot_img,
+		   spot_modifytime,
+		   spot_province,
+		   spot_detailurl,
+		   spot_readcnt
+		FROM spot
+		WHERE spot_title LIKE '%${value}%'
+	</select>
+	
+	<select id="scheduleSearchResult" parameterType="string" resultType="hashmap">
+		SELECT 
+			schedule_img,
+		    schedule_no,
+		    user_id,
+		    schedule_title,
+		    schedule_modifytime,
+		    open_range,
+		    hashtag
+		FROM schedule
+		WHERE schedule_title LIKE '%${value}%'
+	</select>
 
 </mapper>

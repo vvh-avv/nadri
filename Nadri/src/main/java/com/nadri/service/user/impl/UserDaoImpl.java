@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
@@ -46,6 +47,9 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	public List<User> getUserList(Search search) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		
 		return sqlSession.selectList("UserMapper.getUserList", search);
 	}
 
@@ -54,6 +58,19 @@ public class UserDaoImpl implements UserDao{
 		return sqlSession.selectOne("UserMapper.getTotalCount", search);
 	}
 
+	//회원 탈퇴
+	@Override
+	public void quitUser(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("UserMapper.quitUser", userId);
+	}
+	
+	//회원 아이디 찾기
+	@Override
+	public User findUserId(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("UserMapper.findUserId", user);
+	}
 
 	@Override
 	public Map<String, Object> getRewardList(Search search) throws Exception {
@@ -85,54 +102,11 @@ public class UserDaoImpl implements UserDao{
 		return null;
 	}
 
-	//회원 탈퇴
-	@Override
-	public void quitUser(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.update("UserMapper.quitUser", userId);
-	}
 
-	//회원 아이디 찾기
-	@Override
-	public User findUserId(User user) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("UserMapper.findUserId", user);
-	}
+	
 
 
-		
-	//이메일 관련
-	/*//인증키 발행
-	@Override
-	public void createAuthKey(String user_email, String authCode) throws Exception {
-		// TODO Auto-generated method stub
-		User user = new User();
-		user.setAuthCode(authCode);
-		user.setEmail(user_email);
-
-		sqlSession.selectOne(namespace + ".createAuthKey", user);
-	}
-
-	//인증키로 인한 유저 상태 변경
-	@Override
-	public void userAuth(String email) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.update(namespace + ".userAuth", email);
-	}*/
-
-	//이메일 인증 상태 변화
-	@Override
-	public void updateStatusCode(User user) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.update("UserMapper.updateStatusCode", user);
-	}
-
-	//카카오 로그인
-	@Override
-	public User getCode(String authorize_code) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	////////////////////180712 예지 추가///////////////////////
 	public Map<String, Object> getUserLog(String userId,int number,String duration) {
@@ -162,6 +136,8 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
+
+
 
 
 

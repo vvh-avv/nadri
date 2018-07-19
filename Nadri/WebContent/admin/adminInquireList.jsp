@@ -143,10 +143,9 @@ select, option {
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+
 	// 구글 챠트의 정보를 불러옵니다.
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
+	google.charts.load('current', {'packages' : [ 'corechart' ]});
 
 	$(function() {
 		
@@ -159,7 +158,7 @@ select, option {
 			} else if (way == "spot") {
 				self.location = '/admin/listSpot';
 			} else if (way == "graph") {
-				self.location = '/admin/listGraph';
+				self.location='/admin/listGraph?duration=day';
 			} else if (way == "userList") {
 				self.location = '/admin/listUser';
 			} else if (way == "userLog") {
@@ -241,286 +240,213 @@ select, option {
 			$(this).css('opacity', '1');
 		})
 
-		$('.userInqLog')
-				.on(
-						'click',
-						function() {
+		$('.userInqLog').on('click',function() {
+			$('.block-user').css('visibility','hidden');
+			
+			var id = $(this).attr('name');
+			console.log(id);
+
+			var duration = "all";
+			$('.userIdLog').text(id);
+
+			$.get("/restAdmin/userLog/" + id + "/" + duration,function(jdata, status) {
+				console.log(status);
+				console.log(jdata);
+				console.log(jdata.rows);
+
+				// 챠트의 정보를 담아줍니다(callback method 설정)
+				google.charts.setOnLoadCallback(drawChart);
+
+				function drawChart() {
+
+					// Create our data table out of JSON data loaded from server.
+					var data = new google.visualization.DataTable();
+					data.addColumn("string","activity");
+					data.addColumn("number","count");
+					$.each(jdata.rows,function(key,value) {
+						console.log('key:'+ key+ ' / '+ 'value:'+ value);
+						data.addRow([key,value ]);});
+
+					var options = {
+						chartArea : {
+							left : 10,
+							top : 10,
+							width : "100%",
+							height : "75%"
+						}
+					};
+
+					// Instantiate and draw our chart, passing in some options.
+					var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	
+					chart.draw(data, options);
+	
+				}
+	
+			});
+
+		});
+
+		$('.userReportLog').on('click',function() {
 							
-							$('.block-user').css('visibility','hidden');
+			$('.block-user').css('visibility','visible');
 							
-							var id = $(this).attr('name');
-							console.log(id);
+			var id = $(this).attr('name');
+			console.log(id);
 
-							var duration = "all";
-							$('.userIdLog').text(id);
+			var duration = "all";
+			$('.userIdLog').text(id);
 
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
+			$.get("/restAdmin/userLog/" + id + "/"+ duration,function(jdata, status) {
+				console.log(status);
+				console.log(jdata);
+				console.log(jdata.rows);
 
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
+				// 챠트의 정보를 담아줍니다(callback method 설정)
+				google.charts.setOnLoadCallback(drawChart);
 
-												function drawChart() {
+				function drawChart() {
+	
+					// Create our data table out of JSON data loaded from server.
+					var data = new google.visualization.DataTable();
+					data.addColumn("string","activity");
+					data.addColumn("number","count");
 
-													// Create our data table out of JSON data loaded from server.
-													var data = new google.visualization.DataTable();
-													data.addColumn("string",
-															"activity");
-													data.addColumn("number",
-															"count");
+					$.each(jdata.rows,function(key,value) {
+						console.log('key:'+ key+ ' / '+ 'value:'+ value);
+						data.addRow([key,value ]);
+					});
 
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		console
-																				.log('key:'
-																						+ key
-																						+ ' / '
-																						+ 'value:'
-																						+ value);
-																		data
-																				.addRow([
-																						key,
-																						value ]);
-																	});
+					var options = {
+						chartArea : {
+							left : 10,
+							top : 10,
+							width : "100%",
+							height : "75%"
+						}
+					};
 
-													var options = {
-														chartArea : {
-															left : 10,
-															top : 10,
-															width : "100%",
-															height : "75%"
-														}
-													};
+					// Instantiate and draw our chart, passing in some options.
+					var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	
+					chart.draw(data, options);
 
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
+				}
 
-													chart.draw(data, options);
+			});
 
-												}
+		});
 
-											});
+		$('.duration').on('change',function() {
 
+			var id = $('.userIdLog').text();
+			console.log(id);
+
+			var duration = $(this).val();
+			console.log(duration);
+
+			$.get("/restAdmin/userLog/" + id + "/"+ duration,function(jdata, status) {
+				console.log(status);
+				console.log(jdata);
+				console.log(jdata.rows);
+
+				// 챠트의 정보를 담아줍니다(callback method 설정)
+				google.charts.setOnLoadCallback(drawChart);
+
+				function drawChart() {
+
+					// Create our data table out of JSON data loaded from server.
+	
+					var checker = 0;
+	
+					$.each(jdata.rows,function(key,value) {
+						if (value > 0) {
+							checker++;
+							console.log(checker);
+						}
+					});
+	
+					if (checker > 0) {
+	
+						var data = new google.visualization.DataTable();
+						data.addColumn("string","activity");
+						data.addColumn("number","count");
+	
+						$.each(jdata.rows,function(key,value) {
+							console.log('key:'+ key+ ' / '+ 'value:'+ value);
+							data.addRow([key,value ]);
 						});
+	
+						var options = {
+							chartArea : {
+								left : 10,
+								top : 10,
+								width : "100%",
+								height : "75%"
+							}
+						};
+	
+					} else {
+	
+						var data = new google.visualization.DataTable();
+						data.addColumn("string","NoData");
+						data.addColumn("number","capacity");
+	
+						data.addRow(['데이터가 없습니다.',100 ]);
+	
+						var options = {
+							colors : [ '#ccc','grey' ],
+							chartArea : {
+								left : 10,
+								top : 10,
+								width : "100%",
+								height : "75%"
+							}
+						};
+	
+					}
+	
+					// Instantiate and draw our chart, passing in some options.
+					var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	
+					chart.draw(data, options);
 
-		$('.userReportLog')
-				.on(
-						'click',
-						function() {
-							
-							$('.block-user').css('visibility','visible');
-							
-							var id = $(this).attr('name');
-							console.log(id);
+				}
 
-							var duration = "all";
-							$('.userIdLog').text(id);
+			})
 
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
+		});
 
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
-
-												function drawChart() {
-
-													// Create our data table out of JSON data loaded from server.
-													var data = new google.visualization.DataTable();
-													data.addColumn("string",
-															"activity");
-													data.addColumn("number",
-															"count");
-
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		console
-																				.log('key:'
-																						+ key
-																						+ ' / '
-																						+ 'value:'
-																						+ value);
-																		data
-																				.addRow([
-																						key,
-																						value ]);
-																	});
-
-													var options = {
-														chartArea : {
-															left : 10,
-															top : 10,
-															width : "100%",
-															height : "75%"
-														}
-													};
-
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
-
-													chart.draw(data, options);
-
-												}
-
-											});
-
-						});
-
-		$('.duration')
-				.on(
-						'change',
-						function() {
-
-							var id = $('.userIdLog').text();
-							console.log(id);
-
-							var duration = $(this).val();
-							console.log(duration);
-
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
-
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
-
-												function drawChart() {
-
-													// Create our data table out of JSON data loaded from server.
-
-													var checker = 0;
-
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		if (value > 0) {
-																			checker++;
-																			console
-																					.log(checker);
-																		}
-																	});
-
-													if (checker > 0) {
-
-														var data = new google.visualization.DataTable();
-														data.addColumn(
-																"string",
-																"activity");
-														data.addColumn(
-																"number",
-																"count");
-
-														$
-																.each(
-																		jdata.rows,
-																		function(
-																				key,
-																				value) {
-																			console
-																					.log('key:'
-																							+ key
-																							+ ' / '
-																							+ 'value:'
-																							+ value);
-																			data
-																					.addRow([
-																							key,
-																							value ]);
-																		});
-
-														var options = {
-															chartArea : {
-																left : 10,
-																top : 10,
-																width : "100%",
-																height : "75%"
-															}
-														};
-
-													} else {
-
-														var data = new google.visualization.DataTable();
-														data.addColumn(
-																"string",
-																"NoData");
-														data.addColumn(
-																"number",
-																"capacity");
-
-														data.addRow([
-																'데이터가 없습니다.',
-																100 ]);
-
-														var options = {
-															colors : [ '#ccc',
-																	'grey' ],
-															chartArea : {
-																left : 10,
-																top : 10,
-																width : "100%",
-																height : "75%"
-															}
-														};
-
-													}
-
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
-
-													chart.draw(data, options);
-
-												}
-
-											})
-
-						});
-
-		$('.modal-close').on(
-				'click',
-				function() {
-
-					var chart = new google.visualization.PieChart(document
-							.getElementById('chart_div'));
-
-					chart.clearChart();
-				})
-	});
+		$('.modal-close').on('click',function() {
+			var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+			chart.clearChart();
+		})
+		
+		$('.block-user').on('click',function(){
+			var id = $('.userIdLog').text();
+			console.log("차단처리될 회원의 아이디는 "+id+"입니다.");
+			$('.blockedUser').text(id);
+			$('.blockedUserFine').val(id);
+		})
+		
+		$('.block-fine').on('click',function(){
+			$('#modal3').modal('hide');
+			var id = $('.blockedUserFine').val();
+			$.get('/restAdmin/blockUser/'+id,function(data){
+				console.log(data);
+				if(data == 'success'){
+					console.log('차단성공!');
+					$('.block-status').text('차단이 완료되었습니다.');
+					$('#modal4').modal('show');
+				}else{
+					console.log('차단실패!');
+					$('.block-status').text('차단이 실패하였습니다.');
+					$('#modal4').modal('show');
+				}
+			})
+		})
+		
+	}); // javaScript function 끝
 </script>
 <body>
 
@@ -528,7 +454,6 @@ select, option {
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
-				<div class="userLog">회원활동</div>
 				<div class="graph">통계내역</div>
 				<div class="spot">백과관리</div>
 				<div class="inquire">문의관리</div>
@@ -675,13 +600,48 @@ select, option {
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger block-user"
-						data-dismiss="modal">유저차단하기</button>
-					<button type="button" class="btn btn-default modal-close"
-						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">유저차단하기</button>
+					<button type="button" class="btn btn-default modal-close"data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 
+
+		</div>
+	</div>
+	
+	<!-- 신고처리 Modal content-->
+	<div class="modal fade" id="modal3" role="dialog">
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h5>
+					<span class="blockedUser"></span>회원을 정말로 차단하시겠습니까?
+				</h5>
+				<div
+					style="justify-content: space-evenly; display: flex; padding: 5%;">
+					<button type="button" class="btn btn-danger block-fine">차단하기</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">취소하기</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<!-- 신고처리 Modal content-->
+	<div class="modal fade" id="modal4" role="dialog">
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h5 class="block-status">
+					<input type="hidden" class="blockedUserFine" value="">
+				</h5>
+				<div
+					style="justify-content: space-evenly; display: flex; padding: 5%;">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
 
 		</div>
 	</div>

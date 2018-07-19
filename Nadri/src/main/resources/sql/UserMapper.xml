@@ -24,25 +24,23 @@
       <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
-      <result property="userStatusCode" column="user_status_code" jdbcType="VARCHAR" />
-      <result property="emailCode" column="email_code" jdbcType="VARCHAR" />
    </resultMap>
 
    <!-- SQL: INSERT -->
    <insert id="insertUser" parameterType="user">
       INSERT 
       INTO USER ( user_id, user_name, password, email, profile_img, sex, phone, age, 
-                  introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason, user_status_code, email_code) 
-      VALUES (#{userId}, #{userName}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
+                  introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason) 
+      VALUES (#{userId}, #{userName:VARCHAR}, #{password}, #{email:VARCHAR}, #{profileImg}, #{sex},
                #{phone:VARCHAR}, #{age:INTEGER}, #{introduce}, '0', CURDATE(), #{lastLogin}, '0',
-               #{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR}, #{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
+               #{ip:VARCHAR}, '0', #{quitDate:DATE}, #{quitReason:VARCHAR})
    </insert>
 
    <!-- SQL: SELECT ONE -->
    <select id="findUser" parameterType="string" resultMap="userMap">
       SELECT
       user_id, user_name, password, email, profile_img, sex, phone, age, 
-                  introduce, role, reg_date, last_login, status, ip, info_option, user_status_code, email_code
+                  introduce, role, reg_date, last_login, status, ip, info_option
       FROM user
       WHERE user_id = #{value}
    </select>
@@ -59,10 +57,9 @@
    </update>
    
    <!-- SQL: SELECT LIST -->
-   <select id="getUserList" parameterType="search" resultMap="userMap">
-      SELECT profile_img, user_id, user_name, email, status, reg_date
-      FROM user
-   </select>
+	<select id="getUserList" parameterType="search" resultMap="userMap"> 
+	SELECT profile_img, user_id, user_name, email, status, reg_date 
+	FROM user </select>
    
    <!-- SQL: SELECT ROW COUNT -->
    <select id="getTotalCount" parameterType="search" resultType="int">
@@ -87,23 +84,14 @@
       FROM user
       WHERE user_id = #{value}
    </delete>
+   <!-- <update id="quitUser" parameterType="user">
+   		UPDATE user
+   		<set>
+   		status = 2
+   		</set>
+   		WHERE user_id = #{userId}
+   </update> -->
    
-   <!-- 인증키 관련 -->
-   <update id="createAuthKey">
-      UPDATE user SET auth_code = #{authCode} WHERE email = #{email}
-   </update>
-   
-   <!-- 이메일 인증 상태코드 변화 -->
-   <update id="updateStatusCode" parameterType="user">
-       UPDATE user
-       <set>
-          user_status_code = #{userStatusCode}
-       </set>
-       WHERE user_id = #{userId}
-      <if test="emailCode != null">
-         AND email_code = #{emailCode}
-       </if>
-    </update>
     
     <!--  아이디 찾기 -->
     <select id="findUserId" parameterType="user" resultMap="userMap">
@@ -113,6 +101,11 @@
       WHERE user_name=#{userName} AND email=#{email}
     </select>
     
+ 
+
+
+    
+    <!-- //////////////////////////0712 예지 추가////////////////////////// -->
    <select id="getBoardLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
       SELECT WEEKOFYEAR(b.board_time),MONTH(b.board_time),u.user_id, user_name,b.board_title, b.board_no, b.board_time
       FROM user u

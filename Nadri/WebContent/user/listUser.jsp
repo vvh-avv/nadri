@@ -1,9 +1,5 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
-
-<!--  ///////////////////////// JSTL  ////////////////////////// 
-	이건 마이페이지로 써먹자-->
-	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -15,27 +11,7 @@
 	
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<!-- autocomple -->
-	<!-- <link rel="stylesheet" href="/css/admin.css" type="text/css"> -->
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<style>
-		.ui-autocomplete {
-			max-height: 100px;
-			overflow-y: auto;
-			/* prevent horizontal scrollbar */
-			overflow-x: hidden;
-		}
-		
-		/* IE 6 doesn't support max-height
-		 * we use height instead, but this forces the menu to always be this tall
-		 */
-		
-		* html .ui-autocomplete {
-			height: 100px;
-		}
-	</style>
+
 	
 	<!--  Bootstrap, jQuery CDN  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
@@ -54,31 +30,26 @@
   
   <!-- jQuery UI toolTip 사용 JS-->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-	
-    </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
 		//=============    검색 / page 두가지 경우 모두  Event  처리 =============	
-		function fncGetUserList(currentPage) {
+		function fncGetList(currentPage) {
 			$("#currentPage").val(currentPage)
 			$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
 		}
 		function fncListPage(currentPage){
 			$("#searchCondition").val("${search.searchCondition}");
 			$("#searchKeyword").val("${search.searchKeyword}");
-			fncGetUserList(currentPage);
+			fncGetList(currentPage);
 		}
 		
 		//============= "검색"  Event  처리 =============	
 		 $(function() {
 			 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			 $( "button.btn.btn-default" ).on("click" , function() {
-				fncGetUserList(1);
+				fncGetList(1);
 			});
 		 });
 		
@@ -187,10 +158,10 @@
  <div class="col-sm-2" style="margin-left:3%">
 
   <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-  <h3><a href="/user/listUser.jsp">마이 페이지</a></h3><br/>
+  <h3><a href="/user/listUser">마이 페이지</a></h3><br/>
   <a href="/user/getUser.jsp">내 정보 보기</a><br/><br/>
-  <a href="/user/updateUser.jsp">내 정보 수정</a><br/><br/>
-  <a href="#">친구 목록</a><br/><br/>
+  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+  <a href="/friend/listFriend.jsp">친구 목록</a><br/><br/>
   <a href="#">작성한 글</a><br/><br/>
   <a href="#">작성한 일정</a><br/><br/>
   <a href="#">일정 바구니</a><br/><br/>

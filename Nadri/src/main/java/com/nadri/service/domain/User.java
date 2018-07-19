@@ -10,7 +10,7 @@ public class User {
 	private String password;						//비밀번호
 	private String email;								//이메일
 	private String profileImg;						//프로필 사진
-	private String sex;									//성별
+	private String sex;									//성별(0: 남, 1: 여)
 	private String phone;							//휴대전화 번호
 	private String phone1;							//전화번호 첫 번째 세 자리
 	private String phone2;							//전화번호 두 번째 세 자리
@@ -25,10 +25,6 @@ public class User {
 	private String infoOption;					//검색시 정보 공개 여부(0: 공개, 1: 비공개)
 	private Date quitDate;							//탈퇴일
 	private String quitReason;					//탈퇴 사유
-	//private String authCode;						//인증 코드
-	
-	private String userStatusCode;			//이메일 인증 상태 코드(1: 인증, 3: 미인증)
-	private String emailCode;						//이메일 코드
 
 	
 	
@@ -234,35 +230,6 @@ public class User {
 		this.quitReason = quitReason;
 	}
 
-
-	/*public String getAuthCode() {
-		return authCode;
-	}
-	
-	public void setAuthCode(String authCode) {
-		this.authCode = authCode;
-	}*/
-
-	public String getUserStatusCode() {
-		return userStatusCode;
-	}
-
-
-	public void setUserStatusCode(String userStatusCode) {
-		this.userStatusCode = userStatusCode;
-	}
-
-
-	public String getEmailCode() {
-		return emailCode;
-	}
-
-
-	public void setEmailCode(String emailCode) {
-		this.emailCode = emailCode;
-	}
-
-
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
@@ -270,7 +237,7 @@ public class User {
 				+ ", phone2=" + phone2 + ", phone3=" + phone3 + ", age=" + age + ", introduce=" + introduce
 				+ ", regDate=" + regDate + ", role=" + role + ", lastLogin=" + lastLogin + ", status=" + status
 				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
-				+ ", userStatusCode=" + userStatusCode + ", emailCode=" + emailCode + "]";
+				+ "]";
 	}
-
+	
 }

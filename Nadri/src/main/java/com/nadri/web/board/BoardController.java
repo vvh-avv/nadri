@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,6 @@ import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
 import com.nadri.service.comment.CommentService;
 import com.nadri.service.domain.Board;
-import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
 
@@ -98,19 +98,18 @@ public class BoardController {
 			
 		boardService.addBoard(board);
 		
-		return "forward:/board/listBoard.jsp";
+		return "redirect:/board/listBoard.jsp";
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.GET)
 	public String updateBoard( @ModelAttribute Board board, Model model ) throws Exception{
 		System.out.println("/board/updateBoard : GET");
-		System.out.println("*보드 : " + board);
 		
-		//Board boardVO = (Board) (boardService.getBoard(boardNo)).get("board");
+		Board boardVO = (Board) (boardService.getBoard(board.getBoardNo())).get("reBoard");
 		
-		//model.addAttribute("board", boardVO);
+		model.addAttribute("board", boardVO);
 		
-		return "redirect:/board/updateBoard.jsp";
+		return "forward:/board/updateBoard.jsp";
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.POST)
@@ -124,7 +123,7 @@ public class BoardController {
 		String fileMultiName=""; //최종 파일명(들)
 		
 		//업로드된 기존파일 삭제
-		if(board.getBoardImg().contains(",")) {
+		if( board.getBoardImg().contains(",") ) {
 			for( String fileName : board.getBoardImg().split(",")) {
 				new File(uploadPath+fileName).delete();
 				System.out.println(fileName+" 삭제완료");
@@ -134,11 +133,13 @@ public class BoardController {
 			System.out.println(board.getBoardImg()+" 삭제완료");
 		}
 		
+		boolean fileFlag = true;
 		for(int i=0; i<file.length; i++) {
 			fileOriginName = file[i].getOriginalFilename();
 			
 			//파일이 존재하지 않으면
 			if(fileOriginName=="") {
+				fileFlag = false;
 				break;
 			}
 			
@@ -160,12 +161,18 @@ public class BoardController {
 			}
 		}
 		
-		System.out.println("최종 파일명(들) : "+fileMultiName);
-		board.setBoardImg(fileMultiName);
-			
+		//파일이 존재하지않으면 널스트링말고 널을 넣기위해서 //DB엔 그렇게 되어있어서 맞추려고
+		if(!fileFlag) {
+			System.out.println("파일이 존재하지 않아서 null로 들어갑니다.");
+			board.setBoardImg(null);
+		}else {
+			System.out.println("최종 파일명(들) : "+fileMultiName);
+			board.setBoardImg(fileMultiName);
+		}
+		
 		boardService.updateBoard(board);
 		
-		return "forward:/board/listBoard.jsp";
+		return "redirect:/board/listBoard.jsp";
 	}
 	
 	@RequestMapping(value="getBoard")
