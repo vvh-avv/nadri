@@ -21,14 +21,18 @@
 	</resultMap>
 	
 	 <select id="getSpotList" parameterType="Int" resultMap="spotSelectMap">
+	 <![CDATA[
 		SELECT *
 		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
 		ORDER BY spot_readcnt
+		limit 0, 10;
+		]]>
 	</select>
 
-	<select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
+	<select id="getAllSpotList" parameterType="Int" resultMap="spotSelectMap">
 		SELECT *
-		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+		FROM spot 
+		WHERE spot_code LIKE CONCAT(#{keyword},'%')
 		ORDER BY spot_readcnt
 	</select>
 
@@ -45,7 +49,7 @@
 	 	<![CDATA[
 	  	SELECT * 
 	  	FROM spot 
-	  	WHERE spot_code LIKE '11'
+	  	WHERE spot_code LIKE CONCAT(#{spotCode},'%')
 	  	limit #{spotNo}, 1;
 	  	]]>
 	</select>

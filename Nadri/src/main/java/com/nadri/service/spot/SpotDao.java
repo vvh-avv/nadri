@@ -7,22 +7,19 @@ import com.nadri.service.domain.Spot;
 
 public interface SpotDao {
 	
-	// 1. 장소 전체를 보여주는 메소드
-	public List<Spot> getSpotList(int spotCode) throws Exception;
+	// 1. 장소 10개를 보여주는 메소드
+		public List<Spot> getSpotList(int spotCode) throws Exception;
+		
+	// 2. 장소 전체를 보여주는 메소드
+	public List<Spot> getAllSpotList(int spotCode) throws Exception;
 	
-	// 2. 한강 리스트를 보여주는 메소드
-	public List<Spot> getRiverList(int spotCode) throws Exception;
+	// 3. 스크롤을 내렸을때 무한 스크롤을 만들어 주는 메소드
+	public List<Spot> infiniteScrollDown(Spot spot) throws Exception;
 	
-	// 3. 맛집 리스트를 전체 보여주는 메소드
-	public List<Spot> getRestaurantList(int spotCode) throws Exception;
-	
-	// 4. 스크롤 다운했을때
-	public List<Spot> infiniteScrollDown(int bnoToStart) throws Exception;
-	
-	// 5. 장소 상세보기를 보여주는 메소드
+	// 4. 장소 상세보기를 보여주는 메소드
 	public Spot getSpot(int spotNo) throws Exception;
 	
-	// 6. 주변 장소 정보를 가져오는 메소드
+	// 5. 주변 장소 정보를 가져오는 메소드
 	public List<Spot> searchAround(Spot spot) throws Exception;
 	
 	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
@@ -36,6 +33,6 @@ public interface SpotDao {
 	 public void addSpot(Spot spot);
 	 /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 	 
-	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	// 6. 게시판을 클릭했을때 조회수가 1씩 증가
 	public void updateSpotReadCnt(Spot spot) throws Exception;
 } 

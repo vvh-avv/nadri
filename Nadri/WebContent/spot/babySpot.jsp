@@ -110,9 +110,7 @@ for (var i = 0; i < spot.length; i++) {
 	obj = {
 		lat : parseFloat(spot[i].spotY),
 		lng : parseFloat(spot[i].spotX),
-		img : spot[i].spotImg,
 		title : spot[i].spotTitle,
-		tel : spot[i].Phone,
 		addr : spot[i].spotAddress
 	};
 	locations.push(obj);
@@ -245,11 +243,7 @@ for (var i = 0; i < spot.length; i++) {
 						+ '<h3 class="profile-username text-center">'+ locations[i].title+ '</h3>'+ '<ul class="list-group list-group-unbordered">'
 						+ '<li class="list-group-item">'
 						+ '   <b>위치</b> <a class="pull-center">'+ locations[i].addr+ '</a>'+ '</li>'+ '  <li class="list-group-item">'
-						+ '<li class="list-group-item">'+ ' <b>조회수</b> <a class="pull-right">'+ locations[i].readcount+ '</a>'+ ' </li>'
 						+ ' </ul>'
-						+ '<span> '
-						+ ' <a href="#" id ="abc" class="btn btn-primary btn-block" onclick="aaa()"><b>상세보기</b></a>'
-						+ '<span>'
 						+ '<span> '
 						+ ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'
 						+ '</span>' + '</div>';
@@ -269,10 +263,6 @@ for (var i = 0; i < spot.length; i++) {
 									infowindows[this.index].open(map,markers[this.index]);
 									map.panTo(markers[this.index].getPosition());
 								});
-
-				// 마커를 클릭했을때 이벤트 발생 시키기
-				google.maps.event.addListener(markers[i],'rightclick', function() {alert("이곳의 위치가 궁금한가?!");
-				});
 			}
 	
 	}//end of initmap();	

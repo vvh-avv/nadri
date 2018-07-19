@@ -1,0 +1,15 @@
+///////////////////// 해당 파일은 일단 수정불가!
+///////////////////// 수정이 필요하면 스크립트 만든 사람에게 꼭 먼저 물어보기 !!
+@font-face {
+	font-family: 'seoul';
+	src: url('fonts/seoulhangangjangm.eot');
+	src: url('fonts/seoulhangangjangm.eot?#iefix')
+		format('embedded-opentype'), url('fonts/seoulhangangjangm.woff2')
+		format('woff2'), url('fonts/seoulhangangjangm.woff')
+		format('woff'), url('fonts/seoulhangangjangm.ttf')
+		format('truetype'),
+		url('fonts/seoulhangangjangm.svg#seoul-hangang-jang-m')
+		format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
