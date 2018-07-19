@@ -25,6 +25,8 @@
    <link href="/css/animate.min.css" rel="stylesheet">
    <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
    
+   <link rel="stylesheet" href="/css/toolbar.css">
+   
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
    
@@ -101,7 +103,8 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
    	
    	<div class="col-sm-2" style="margin-left:3%">

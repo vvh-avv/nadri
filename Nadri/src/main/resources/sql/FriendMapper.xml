@@ -8,87 +8,142 @@
 
    <resultMap type="friend" id="friendMap">
    	  <result property="friendNo" column="friend_no" jdbcType="INTEGER" />
-      <result property="friendId" column="friend_id" jdbcType="VARCHAR" />
-      <result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
-      <!-- <result property="profileImg" column="profile_img" jdbcType="VARCHAR" /> -->
-      <!-- <result property="userId" column="user_id" jdbcType="VARCHAR" /> -->
- 	  <result property="friendBlock" column="friend_block" jdbcType="VARCHAR"/>
-	  <association property="friendUser" resultMap="UserMapper.userMap"/>
+		<result property="friendId" column="friend_id" jdbcType="VARCHAR" />
+		<result property="userId" column="user_id" jdbcType="VARCHAR" />
+		<result property="createdDate" column="created_date" jdbcType="DATE"/>
+		<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+		<result property="userName" column="user_name" jdbcType="VARCHAR" />
+		<result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
+		<result property="count" column="count" jdbcType="INTEGER" />
+		
+		<!-- status - 한쪽만 follow : 0(친구상태라면 서로가 0) / 친구 신청: 1 / 친구 차단: 2 -->
   </resultMap>
 
-   <!-- 친구 요청 insert문 -->
-  <insert id="addFriend" parameterType="com.nadri.service.domain.Friend">
-  	INSERT INTO friend (friend_no, user_id, friend_id, friend_code, profile_img, friend_block)
-  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 0, #{friendUser.profileImg}, 0)
-  </insert>
-  
-  <!-- 친구 추가(승인) update문 -->
-  <update id="udpateBeFriend" parameterType="com.nadri.service.domain.Friend">
-  	UPDATE friend
-  	<set>
-  		friend_code = 1
-  	</set>
-  	WHERE user_id = {#userId} AND friend_id = #{friendId}
-  </update>
-  
-  <!-- 친구 승인 insert문 -->
-  <insert id="insertBeFriend" parameterType="com.nadri.service.domain.Friend">
-  	INSERT INTO friend
-  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 1, #{friendUser.profileImg}, 0)
-  </insert>
-  
-  <!-- 받은 친구 요청 거절 -->
-  <delete id="refuseFriend" parameterType="com.nadri.service.domain.Friend">
-  	DELETE
-  	FROM friend
-  	WHERE user_id = #{userId} AND friend_id = #{friendId}
-  </delete>
-  
-  <!-- 보낸 친구 요청 취소 -->
-  <delete id="cancelFriend" parameterType="com.nadri.service.domain.Friend">
-  	DELETE
-  	FROM friend
-  	WHERE user_id= #{userId} AND friend_id=#{friendId}
-  </delete>
-  
-  <!-- 친구 끊기 -->
-  <update id="cutFriend" parameterType="com.nadri.service.domain.Friend">
-  	UPDATE friend
-  	<set>
-  		friend_code=0
-  	</set>
-  	WHERE user_id = #{userId} AND friend_id=#{friendId}
-  </update>
-  
- 
-  <!-- 친구 차단  -->
-  <insert id="friendBlock" parameterType="com.nadri.service.domain.Friend">
-  	INSERT INTO friend
-  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 1, #{friendUser.profileImg}, 1)
-  </insert>
-  
-  <!-- 기존에 데이터가 있는 경우 -->
-  <update id="updateFriendBlock" parameterType="com.nadri.service.domain.Friend">
-  	UPDATE friend
-  	<set>
-  		friend_block = 1
-  	</set>
-  	WHERE user_id = #{userId} AND friend_id = #{friendId}
-  </update>
-  
-  <!-- 친구 테이블 내의 데이터 확인 -->
-  <select id="confirmFriendData" parameterType="com.nadri.service.domain.Friend" resultType="INTEGER">
-  	SELECT COUNT(*)
-  	FROM friend
-  	WHERE user_id = #{userId} AND friend_id = #{friendId}
-  </select>
-  
-  <!-- 상대방이 자신을 차단했는지 확인 -->
-  <select id="blockUser" parameterType="com.nadri.service.domain.Friend" resultType="String">
-  	SELECT friendBlock
-  	FROM friend
-  	WHERE user_id = #{userId} AND friend_id=#{friendId}
-  </select>
+
+	<!-- 친구 맺기 -->
+   <insert id="addFriend" parameterType="map">
+		INSERT
+		INTO FRIEND (user_id, friend_id, friend_code, created_date )
+		VALUES( #{friend.userId:VARCHAR}, #{friend.friendId:VARCHAR}, #{friendCode:VARCHAR}, SYSDATE )
+	</insert>
+	
+	<!--  친구 승인 -->
+	<insert id="enterFriend" parameterType="map">
+		INSERT
+		INTO friend( user_id , friend_id , friend_code )
+		VALUES( #{friendId:VARCHAR}, #{userId:VARCHAR}, '0' )
+	</insert>
+
+	<!-- 친구 조회 -->
+	<select id="getFriend" parameterType="int" resultMap="friendSelectMap">
+		SELECT
+		friend.friend_id, friend.friend_code, user.user_name, user.profile_img
+		FROM
+		friend, user
+		<where>
+			friend.user_id=user.user_id
+			AND friend.friend_code=1
+		</where>
+	</select>
+
+	<!-- 친구 상태 수정 -->
+	<update id="updateFriend" parameterType="friend">
+		UPDATE friend
+		<set>
+			friend_code=#{friendCode}
+		</set>
+		<where>
+			user_id=#{userId}
+			AND friend_id=#{friendId}
+			AND friend_code=#{friendCode}
+		</where>
+	</update>
+
+	<!-- 친구 삭제 -->
+	<delete id="deleteFriend" parameterType="friend">
+		DELETE
+		FROM friend WHERE
+		friend_id=#{friendId}
+	</delete>
+
+
+	<sql id="listFriendSql">
+		SELECT f.*, u.profile_img, u.user_name
+		FROM friend f, (select friend_id from friend where user_id=#{searchKeyword} and friend_code=0) v, user u
+		<where>
+			f.user_id=v.friend_id(+) 
+			AND u.user_id=f.user_id
+			AND friend_code='0' 
+			AND f.friend_id=#{searchKeyword}
+		</where>
+		ORDER BY u.user_name
+	</sql>
+
+	<!-- 친구 리스트 -->
+	<select id="listFriend" parameterType="search" resultMap="friendSelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.*, ROWNUM AS row_seq FROM (
+		<include refid="listFriendSql" />
+		) inner_table
+		WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+	</select>
+
+	<!-- 친구 총 수 -->
+	<select id="getTotalCount" parameterType="search" resultType="int">
+		SELECT COUNT(*)
+		FROM(
+		<include refid="listFriendSql" />
+		) countTable
+	</select>
+
+	<!-- 친구여부 확인 -->
+	<select id="checkFriend" parameterType="map" resultType="int">
+		SELECT count(*)
+		FROM friend
+		WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
+	</select>
+	
+	<!-- 친구 삭제 -->
+	<delete id="cancelFriend" parameterType="map">
+		DELETE
+		FROM friend
+		WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
+	</delete>
+	
+	<!-- status 코드 변경 -->
+	<update id="updateStatus" parameterType="map">
+		UPDATE friend
+		SET friend_code=#{friendCode}
+		WHERE user_id=#{userId} AND friend_id=#{friendId}
+	</update>
+	
+	<!-- follow 여부 확인 -->
+	<select id="checkFollow" parameterType="map" resultType="int">
+		SELECT count(*)
+		FROM friend
+		WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
+	</select>
+	
+	<!-- 친구 추천 -->
+	<select id="recommendFriend" parameterType="int" resultMap="friendSelectMap">
+		SELECT * 
+		FROM (SELECT
+		u.*
+		FROM users u, (SELECT * FROM (SELECT DISTINCT f.friend_id FROM (SELECT friend_id from friend WHERE user_id=#{value} and friend_code=0) v, friend f WHERE v.friend_id=f.user_id(+)
+		and friend_code=0 and  f.friend_id NOT IN(#{value}) and f.friend_id not in(SELECT friend_id FROM friend WHERE user_id=#{value}) ) 
+		) p
+		WHERE u.user_id = p.friend_id
+		ORDER BY RAND())
+		WHERE rownum<![CDATA[<]]>7
+	</select>
+	
+	<!-- 친구 수 카운트 -->	
+	<select id="countFriend" parameterType="int" resultMap="friendSelectMap">
+		SELECT f.friend_id, count(*) AS count
+		FROM (SELECT friend_id FROM friend WHERE user_id=#{value} and friend_code=0) v, friend f 
+		WHERE v.friend_id=f.user_id(+) and friend_code=0 AND  f.friend_id NOT IN(#{value}) and f.friend_id NOT IN(SELECT friend_id FROM friend WHERE user_id=#{value}) GROUP BY f.friend_id
+	</select>
   
   
 </mapper>

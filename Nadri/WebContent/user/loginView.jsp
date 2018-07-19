@@ -25,6 +25,7 @@
 <!-- 네이버 로그인 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <style>
 	body > div.comtainer{
@@ -315,14 +316,7 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp"> 
-		<jsp:param name="uri" value="../"/>
-	</jsp:include>
-	<!-- <div class="navbar navbar-default">
-        <div class="container">
-        	<a class="navbar-brand" href="/index.jsp">너, 나들이 test page</a>
-   		</div>
-   	</div> -->
+	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->	
    	
    	<div class="container">
