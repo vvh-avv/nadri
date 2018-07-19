@@ -64,7 +64,7 @@
 
 <body>
 	<div class="container-fluid indexHead">
-		<%@ include file="layout/toolbar.jsp"%>
+		<%@ include file="/layout/toolbar.jsp"%>
 	</div>
 	<div class="container-fluid">
 		<div class="middle-bar">
