@@ -144,8 +144,6 @@
 	};
 	
 	function initMap() {
-		// 수요미식회를 불러옵니다!
-		//getSpotList(11);
 
 		// 맵 스타일 속성에 필요한 배열 생성 
 		var styles = [];
@@ -212,8 +210,6 @@
 		
 		// 이부분은 마커를 추가해주는 부분입니다.
 		for (var i = 0; i < locations.length; i++) {
-			//마커 각각의 ID를 설정
-			//locationsfestival[i].index = i;
 			markers[i] = new google.maps.Marker({
 				position : locations[i],
 				map : map,
@@ -337,7 +333,8 @@
 						},
 						dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
 						data : JSON.stringify({ // 서버로 보낼 데이터 명시 
-							spotNo : page
+							spotNo : page,
+							spotCode : 11
 						}),
 						success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
 							var output = '';

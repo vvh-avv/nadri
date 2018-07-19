@@ -22,7 +22,7 @@ public class SpotServiceImpl implements SpotService{
 	private SpotDao spotDao;
 	
 	///Method
-	public void setmapDao(SpotDao spotDao) {
+	public void setSpotDao(SpotDao spotDao) {
 		this.spotDao=spotDao;
 	}
 	
@@ -31,37 +31,31 @@ public class SpotServiceImpl implements SpotService{
 		System.out.println(this.getClass());
 	}
 	
-	// 1. 장소 전체를 보여주는 메소드
+	// 1. 장소 10개를 보여주는 메소드
 	@Override
 	public List<Spot> getSpotList(int spotCode) throws Exception {
 		return spotDao.getSpotList(spotCode);
 	}
 	
-	// 2. 한강리스트를 보여주는 메소드
+	// 2. 장소 전체 보여주는 메소드
 	@Override
-	public List<Spot> getRiverList(int spotCode) throws Exception {
-		return spotDao.getRiverList(spotCode);
+	public List<Spot> getAllSpotList(int spotCode) throws Exception {
+		return spotDao.getAllSpotList(spotCode);
 	}
 
-	// 3. 맛집 리스트를 보여주는 메소드
+	// 3 스크롤을 내렸을때 무한 스크롤을 만들어 주는 메소드
 	@Override
-	public List<Spot> getRestaurantList(int spotCode) throws Exception {
-		return spotDao.getRestaurantList(spotCode);
+	public List<Spot> infiniteScrollDown(Spot spot) throws Exception {
+		return spotDao.infiniteScrollDown(spot);
 	}
 	
-	// 4. 스크롤을 내렸을때 무한 스크롤을 만들어 주는 메소드
-	@Override
-	public List<Spot> infiniteScrollDown(int bnoToStart) throws Exception {
-		return spotDao.infiniteScrollDown(bnoToStart);
-	}
-	
-	// 5. 장소 상세보기를 보여주는 메소드
+	// 4. 장소 상세보기를 보여주는 메소드
 	@Override
 	   public Spot getSpot(int spotNo) throws Exception {
 	      return spotDao.getSpot(spotNo);
 	 }
 	
-	// 6. 주변 장소 정보를 가져오는 메소드
+	// 5. 주변 장소 정보를 가져오는 메소드
 	@Override
 	public List<Spot> searchAround(Spot spot) throws Exception {
 		return spotDao.searchAround(spot);
@@ -87,9 +81,10 @@ public class SpotServiceImpl implements SpotService{
 	   }
 	   /////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 
-	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
+	// 6. 게시판을 클릭했을때 조회수가 1씩 증가
 	@Override
 	public void updateSpotReadCnt(Spot spot) throws Exception {
 		spotDao.updateSpotReadCnt(spot);
 	}
+
 }

@@ -1,6 +1,8 @@
 package com.nadri.service.admin.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,5 +57,18 @@ public class AdminServiceImpl implements AdminService{
 		// TODO Auto-generated method stub
 		adminDao.updateSpot(spot);
 	}
+
+	@Override
+	public Map<String, Object> getGraphLog(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return adminDao.getGraphLog(map);
+	}
+
+	@Override
+	public int blockUser(String userId) {
+		// TODO Auto-generated method stub
+		return adminDao.blockUser(userId);
+	}
+
 
 }

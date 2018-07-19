@@ -8,9 +8,10 @@ public class Search {
 	private String searchCondition;
 	private String searchKeyword;
 	private int pageSize;
+
 	private int searchSpot;
 	
-	///Constructor
+	///Constructor method
 	public Search() {
 	}
 
@@ -18,8 +19,8 @@ public class Search {
 	public int getPageSize() {
 		return pageSize;
 	}
-	public void setPageSize(int paseSize) {
-		this.pageSize = paseSize;
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 	
 	public int getCurrentPage() {
@@ -62,11 +63,11 @@ public class Search {
 		this.searchSpot = searchSpot;
 	}
 
-	///toString
 	@Override
 	public String toString() {
 		return "Search [curruntPage=" + curruntPage + ", searchCondition=" + searchCondition + ", searchKeyword="
 				+ searchKeyword + ", pageSize=" + pageSize + ", searchSpot=" + searchSpot + "]";
 	}
+
 
 }

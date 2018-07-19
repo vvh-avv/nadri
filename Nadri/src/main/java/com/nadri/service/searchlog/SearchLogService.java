@@ -1,5 +1,9 @@
 package com.nadri.service.searchlog;
 
-public class SearchLogService {
+import java.util.List;
+
+public interface SearchLogService {
+	
+	public List<Object> getSearchResult(String searchKeyword);
 
 }
