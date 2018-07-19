@@ -253,21 +253,27 @@
 
 <script>
 //* 마지막으로 작성된 댓글시간 출력을 함수로 만들고
-function refreshDate(time){
-	if( time == null ){ //load 시
-		alert("로드");
-		$("#commLastTime").text(transferTime('${board.commLastTime}'));
-	}else{ //ajax 이후
-		var date = new Date(time);
-		$("#commLastTime").text( transferTime( formatDate2(date) ));
-	}
+function refreshDate(){
+	///if(refresh == false){ //load 시 
+		$("#commLastTime").text(transferTime( $("#commLastTime").attr("class") ) );
+	///}else{
+	//	if( time == null ){ //ajax 이후 + 10초마다
+	///		$("#commLastTime").text(transferTime( formatDate2( $("#commLastTime").attr("class") ) ));
+	//	}else{ //ajax 이후
+	//		var date = new Date(time);
+	//		$("#commLastTime").text( transferTime( formatDate2(date) ));
+	///		refresh = true;
+	//	}	
+	///}
 }
 
 $(function(){
+	var refresh = false;
+	//var refreshData = ;
 	//우선 바로 실행
 	refreshDate();
 	//그리고 10초 뒤 또 실행하도록 설정
-	//setInterval(function(){refreshDate()}, 10000);
+	setInterval(function(){refreshDate()}, 10000);
 	
 	//* 툴팁
 	$('[data-toggle="tooltip"]').tooltip();
@@ -381,8 +387,8 @@ $(function(){
 							 str += "<span id='commListContent'>"+comment.commentContent+"</span></div>";
 					   $("#commListAll").append(str);
 						//댓글마지막 시간도 실행
-						alert("댓글이 추가되어 시간이 바뀝니다 : "+comment.commentTime);
-						refreshDate(comment.commentTime);
+						$("#commLastTime").attr("class","comment.commentTime");
+						refreshDate();
 				   }
 			   }) //e.o.ajax
 		   }
@@ -717,7 +723,7 @@ $(function(){
 	        </div>
             
             <!-- 마지막 댓글달린 시간 -->
-            <div id="commLastTime"></div>
+            <div id="commLastTime" class="${board.commLastTime}"></div>
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
