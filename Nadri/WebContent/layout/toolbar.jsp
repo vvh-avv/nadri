@@ -5,8 +5,7 @@
 	<a href="/index.jsp">
 		<img src="/images/common/title.png" class="title">
 	</a> 
-	<input type="text" class="searcher" placeholder="검색을 원하시면 클릭해주세요!">
-	
+	<input type="text" class="searcher" placeholder="검색어를 입력해주세요." name="searchKeyword">
 	<div class="dropdown">
 		<div class="sidemenu">
 			<c:if test="${!empty user}">

@@ -63,4 +63,17 @@ $(function(){
 		arrows: false,
 	});
 	
+	
+	$('.searcher').on('keypress',function(e){
+		if(e.which == 13){
+			if($('.searcher').val() == ""){
+				alert("검색어를 입력해주세요!");
+				return;
+			}else{
+				self.location = "/searchLog/listSearchLog?searchKeyword="+$('.searcher').val();
+			}
+		}
+	})
+	
+	
 })
