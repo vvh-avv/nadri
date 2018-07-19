@@ -37,8 +37,8 @@ $(function(){
 			$('.join').attr('src', '/images/user/join_white.png');
 			$('.login').attr('src', '/images/user/login_white.png');
 			$('.topmenus').hide();
-			$('.searcher').css('top','2vh');
-			$('.sidemenu').css('top','2vh');
+			$('.searcher').css('top','15px');
+			$('.sidemenu').css('top','10px');
 			$('.right-box > img').css('width','20px');
 			
 			} else {

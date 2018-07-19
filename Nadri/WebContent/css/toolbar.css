@@ -42,7 +42,7 @@ html, body {
 	border-bottom: 1px solid rgba(212, 212, 212, 0);
 	transition: all 1s;
 	overflow: hidden;
-	z-index:999;
+	z-index: 999;
 }
 
 .topfixed {
@@ -50,13 +50,14 @@ html, body {
 	top: 0px;
 	width: 100%;
 	height: 6vh;
-	background: rgba(212, 212, 212, 0.65);
+	min-height: 50px; background : rgba( 212, 212, 212, 0.65);
 	transition: all 1s;
 	transition-property: height;
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
 	align-items: center;
 	overflow: hidden;
-	z-index:999;
+	z-index: 999;
+	background: rgba(212, 212, 212, 0.65);
 }
 
 .topmenus {
@@ -90,9 +91,10 @@ html, body {
 	color: black;
 	transition: all 1s;
 	left: 2vw;
-	top: 0.8vh;
-	width: 120px;
-	height: auto;
+	top: 1vh;
+	width: auto;
+	height: 3vh;
+	min-height: 30px;
 }
 
 .topmenus :nth-child(2) {
@@ -169,7 +171,7 @@ html, body {
 	top: 7vh;
 	border: 0.5px solid rgba(212, 212, 212, 0);
 	transition: all 1s;
-	text-align:center;
+	text-align: center;
 }
 
 .profile {
@@ -202,40 +204,67 @@ html, body {
 }
 
 .indexHead {
-	background: 
-	linear-gradient(
-		rgba(255, 255, 255, 0),
-		rgba(255, 255, 255, 0),
-		rgba(255, 255, 255, 0.2),
-		rgba(255, 255, 255, 0.5),
-		rgba(255, 255, 255, 1) 
-	),
-	url(/images/common/img3.jpg) no-repeat 0 100%;
+	background: linear-gradient(rgba(255, 255, 255, 0),
+		rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2),
+		rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
+		url(/images/common/img3.jpg) no-repeat 0 100%;
 	background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover; 
-	
-	height: 120vh; 
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 120vh;
 }
 
-.middle-bar{
-	width:100%;
-	height:120vh;
-	box-shadow: 0px -2px 36px -2px rgba(112,112,112,0.5);
+.middle-bar {
+	width: 100%;
+	height: 120vh;
+	box-shadow: 0px -2px 36px -2px rgba(112, 112, 112, 0.5);
 }
 
-.popular-contents > div{
-	height:200px;
-	color:blue;
+.popular-contents>div {
+	height: 200px;
+	color: blue;
 	background-color: pink;
 }
 
+.toggleBox {
+	visibility: hidden;
+}
 
-@media ( max-width :900px) {
+.toggleMenuMob {
+	visibility: hidden;
+	background-color: white;
+	opacity: 0.5;
+	padding:0;
+}
+
+@media only screen and (max-width:800px)
+{
+	
+	.toggleMenuMob {
+		visibility: hidden;
+		background-color: white;
+		opacity: 0.5;
+		padding:0;
+	}
+	
+	.toggleBox {
+		display: flex;
+		justify-content: flex-end;
+		visibility: visible;
+		padding: 15px 10px;
+	}
+	
+	.toggleBox>img {
+		width: auto;
+		height: 4vh;
+		min-height: 30px;
+	}
+	
 	.topmenus {
 		display: none;
 	}
+	
 	.topbar {
 		position: relative;
 		top: 0px;
@@ -248,26 +277,45 @@ html, body {
 		align-items: center;
 		border-bottom: 1px solid rgba(212, 212, 212, 0.65);
 		transition: all 1s;
+		z-index: 999;
 	}
-	.titlefixed {
-		position: absolute;
-		display: inline-block;
-		color: black;
+	
+	.topfixed {
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		height: 6vh;
+		min-height: 50px;
+		background: rgba(212, 212, 212, 0.65);
 		transition: all 1s;
-		left: 2vw;
-		top: 1.2vh;
-		width: 100px;
-		height: auto;
+		transition-property: height;
+		box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+		align-items: center;
+		overflow: hidden;
+		z-index: 999;
 	}
+	
 	.title {
 		position: absolute;
 		display: inline-block;
 		transition: all 1s;
-		left: 2vw;
-		width: 120px;
-		height: auto;
+		left: 2.5vw;
+		width: auto;
+		height: 4.5vh;
 		top: 1.7vh;
 	}
+	
+	.titlefixed {
+		position: absolute;
+		display: inline-block;
+		transition: all 1s;
+		left: 2vw;
+		top: 10px;
+		width: auto;
+		height: 4vh;
+		min-height:30px;
+	}
+	
 	.searcher {
 		width: 20vw;
 		min-width: 100px;
@@ -278,6 +326,7 @@ html, body {
 		transition: all 1s;
 		text-align: center;
 	}
+	
 	.sidemenu {
 		position: absolute;
 		right: 2vw;
@@ -288,6 +337,7 @@ html, body {
 		flex-direction: row;
 		justify-content: space-between;
 	}
+	
 	.right-box>img {
 		width: 25px;
 	}
