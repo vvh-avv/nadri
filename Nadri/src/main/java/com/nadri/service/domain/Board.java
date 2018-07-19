@@ -1,6 +1,7 @@
 package com.nadri.service.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Board {
 	
@@ -13,6 +14,12 @@ public class Board {
 	private String boardImg;
 	private String openRange;
 	private String hashTag;
+	//기능구현하다보니 추가된 필드
+	private int commCnt;
+	private int likeFlag;
+	private int likeCnt;
+	private String commLastTime;
+	private List<Comment> comment;
 	
 	//Constructor
 	public Board() {
@@ -82,11 +89,53 @@ public class Board {
 	public void setHashTag(String hashTag) {
 		this.hashTag = hashTag;
 	}
+
+	public int getLikeFlag() {
+		return likeFlag;
+	}
+
+	public void setLikeFlag(int likeFlag) {
+		this.likeFlag = likeFlag;
+	}
+
+	public int getCommCnt() {
+		return commCnt;
+	}
+
+	public void setCommCnt(int commCnt) {
+		this.commCnt = commCnt;
+	}
+
+	public int getLikeCnt() {
+		return likeCnt;
+	}
+
+	public void setLikeCnt(int likeCnt) {
+		this.likeCnt = likeCnt;
+	}
+
+	public String getCommLastTime() {
+		return commLastTime;
+	}
+
+	public void setCommLastTime(String commLastTime) {
+		this.commLastTime = commLastTime;
+	}
+	
+	public List<Comment> getComment() {
+		return comment;
+	}
+
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
 	
 	@Override
 	public String toString() {
-		return "BoardVO : [boardNo] "+boardNo+" [boardDate] "+boardDate+
+		return "BoardVO : [user]"+user+"[boardNo] "+boardNo+" [boardDate] "+boardDate+
 				" [boardTitle] "+boardTitle+" [boardContent] "+boardContent+
-				" [boardImg] "+boardImg+" [openRange] "+openRange+" [hashTag] "+hashTag;
+				" [boardImg] "+boardImg+" [openRange] "+openRange+" [hashTag] "+hashTag+
+				" [commCnt] "+commCnt+" [likeCnt] "+likeCnt+" [commLastTime] "+commLastTime+
+				" [comment] "+comment;
 	}
 }

@@ -10,10 +10,10 @@ public interface CommentDao {
 	public void addComment(Comment Comment) throws Exception;
 	
 	public void updateComment(Comment Comment) throws Exception;
+
+	public Comment getComment(int commentNo) throws Exception;
 	
-	public List<Comment> getCommentList(Search search) throws Exception;
+	public List<Comment> getCommentList(int boardNo) throws Exception;
 	
 	public void deleteComment(int CommentNo) throws Exception;
-	
-	public int getCommentCount(int boardNo) throws Exception;
 }

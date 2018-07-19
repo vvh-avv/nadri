@@ -21,17 +21,11 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	@Qualifier("userDaoImpl")
 	private UserDao userDao;
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
-	@Autowired
-	@Qualifier("kakaoLoginDaoImpl") 
-	private UserDao kakaoLoginDao;
-	public void setKakaoLoginDao(UserDao kakaoLoginDao) {
-		this.kakaoLoginDao=kakaoLoginDao;
-	}
-
 	
 	//Constructor method
 	public UserServiceImpl() {
@@ -41,18 +35,9 @@ public class UserServiceImpl implements UserService{
 	///Method
 	public void addUser(User user) throws Exception {
 		userDao.addUser(user);
-		
-		/*String key = new TempKey().getKey(50, false); 			// 인증키 생성
-		
-		userDao.createAuthKey(user.getEmail(), key);	// 인증키 DB에 저장
-		
-		MailHandler sendMail = new MailHandler(mailSender);
-		sendMail.setSubject("nadri 이메일 인증]");
-		sendMail.setText(
-				new StringBuffer().append("<h1>메일인증</h1>").append("<a href='http://localhost/user/emailConfirm?user_email=").append(user.getEmail()).append("&key=").append(key).append("' target='_blenk'>이메일 인증 확인</a>").toString());
-		sendMail.setFrom("nadritest3@gmail.com", "너나들이테스트");
-		sendMail.setTo(user.getEmail());
-		sendMail.send();*/
+		System.out.println("//////////////////////////");
+		System.out.println("addUser:: "+user);
+		System.out.println("//////////////////////////");
 	}
 
 	public User getUser(String userId) throws Exception {
@@ -132,50 +117,28 @@ public class UserServiceImpl implements UserService{
 		return userDao.findUserId(user);
 	}
 
-
-	
-
 	
 	
-	/*@Override
-	public void userAuth(String email) throws Exception {
-		// TODO Auto-generated method stub
-		userDao.userAuth(email);
-	}*/
-	
-	@Override
-	public void updateStatusCode(User user) throws Exception {
-		// TODO Auto-generated method stub
-		userDao.updateStatusCode(user);
-	}
 
-	@Override
-	public boolean findPassword(String email, String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	//카카오 로그인
-	@Override
-	public User getCode(String authorize_code)throws Exception {
-		// TODO Auto-generated method stub
-		return kakaoLoginDao.getCode(authorize_code);
-	}
-
-	//아이디 중복체크
-	@Override
-	public boolean checkUserId(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
+	////////////////////180712 예지 추가///////////////////////
 	@Override
 	public Map<String, Object> getUserLog(String userId, int number, String duration) {
 		// TODO Auto-generated method stub
 		return userDao.getUserLog(userId, number, duration);
 	}
+
+
+
+
+
+
+
+
+
+	
+
+
+	
 
 	
 

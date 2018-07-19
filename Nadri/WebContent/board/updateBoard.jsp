@@ -25,13 +25,14 @@
 	.well > div{
 		cursor : pointer;
 	}
-	#imgUpload{
+	#imgUpload,
+	#imgDelete{
 		 width : 35px;
 		 height : 35px;
 		 align : right;
 		 cursor : pointer;
 	}
-	#imgDelete{
+	#tsDataDelete{
 		cursor : pointer;
 	}
 	.thumb-image{
@@ -40,7 +41,8 @@
 		pointer-events: none; /*마우스효과 비활성화 설정, 이 설정을 안하면 본문에 drag를 할 수 있게 된다*/
 	}
 	.imgPreview{
-		display:none;
+		/*display:none; update에서는 디폴트가 보여주는걸로 설정 */
+		display : visibility;
 		height:200px;
 		white-space:nowrap; /*가로스크롤 사용 설정*/
 		overflow-x:scroll; /*가로스크롤 활성화 설정*/
@@ -60,6 +62,10 @@ function addContent(data){
 }
 
 $(function(){
+    //** 게시물 이미지가 없으면 안보여지게끔 설정
+	if( $("#boardImg").val()=="" || $("#boardImg").val()==null ){
+		$(".imgPreview").css("display","none");
+	}
     
 	//*임시저장 버튼클릭
 	$("button[name='tempSave']").on("click", function(){
@@ -99,7 +105,7 @@ $(function(){
 			//목록에 항목 바로 추가
 			$("#tempMsg").remove();
 			$(".well").prepend("<div id=temp"+localStorage.lsCount+">"+localStorage.getItem(localStorage.lsCount)+
-									"<img src='/images/board/delete.png' id=imgDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
+									"<img src='/images/board/delete.png' id=tsDataDelete"+localStorage.lsCount+" width='20' height='20' align='right'></div>");
 
 			alert("임시저장되었습니다.");
 		}
@@ -116,7 +122,7 @@ $(function(){
 					continue;
 				}else{
 					divTag += "<div id=temp"+[i]+">"+localStorage.getItem(i)+
-									"<img src='/images/board/delete.png' id=imgDelete"+i+" width='20' height='20' align='right'></div>";
+									"<img src='/images/board/delete.png' id=tsDataDelete"+i+" width='20' height='20' align='right'></div>";
 				}
 			}
 			$(".well").html(divTag);
@@ -192,12 +198,23 @@ $(function(){
 	$("#imgUpload").on("click", function(){
 		$("#file").click();
 	})
+	//*이미지없애는 버튼클릭
+	$("#imgDelete").on("click", function(){
+		if( $(".imgPreview").attr("css","display")=="none" ){
+			alert("삭제할 수 있는 이미지가 존재하지 않습니다.");
+		}else{
+			$("#file").attr("type","radio");
+			$("#file").attr("type","file");
+			$(".thumb-image").remove();
+			$(".imgPreview").hide();
+		}
+	})
 	
 	//*이미지업로드시 미리보기
 	$("#file").on('change', function(){
 		imgPreview();
 	})
-	 
+	
 })
 
 </script>
@@ -212,17 +229,19 @@ $(function(){
 		</div>
 		
 		<form class="form-horizontal" enctype="multipart/form-data">
+      	<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
 			<div class="col-md-8">
 				<div class="form-group">
 					<!-- 제목 + 파일업로드 -->
 					<div class="row">
 						<!-- 제목 -->
-						<div class="col-xs-11 col-md-11">
+						<div class="col-xs-8 col-md-10">
 							<input class="form-control" type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력해주세요.." value="${board.boardTitle}">
 						</div>
 						<!-- 파일업로드 -->
-						<div class="col-xs-1 col-md-1" align="right">
+						<div class="col-xs-4 col-md-2" align="right">
 							<img src="/images/board/imgUpload.png" id="imgUpload" alt="이미지 업로드하기">
+							<img src="/images/board/imgDelete.png" id="imgDelete" alt="이미지 삭제하기">
 							<input multiple="multiple" class="form-control" type="file" id="file" name="file" style="display:none" accept=".gif, .jpg, .png, .jpeg">
 						</div>
 					</div>
@@ -231,12 +250,15 @@ $(function(){
 				
 				<!-- 업로드 한 파일 미리보기 -->
 				<div class="imgPreview">
-					<img src="/images/board/${board.boardImg}">
+					<c:forTokens var="images" items="${board.boardImg}" delims=",">
+    					<img class="thumb-image" src="/images/board/posts/${images}"/>
+					</c:forTokens>
 				</div>
+				<input type="hidden" id="boardImg" name="boardImg" value="${board.boardImg}">
 				
 				<!-- 본문 -->
 				<div class="form-group">
-					<textarea class="form-control" rows="20" id="boardContent" name="boardContent" placeholder="내용을 입력해주세요.." value="${board.boardContent}"></textarea>
+					<textarea class="form-control" rows="20" id="boardContent" name="boardContent" placeholder="내용을 입력해주세요..">${board.boardContent}</textarea>
 				</div>
 				<br>
 			</div>
@@ -261,7 +283,7 @@ $(function(){
 				</div>
 				<br><br>
 					
-				<!-- 작성하기, 다시작성 버튼 -->
+				<!-- 수정하기, 다시작성 버튼 -->
 				<button type="button" class="btn btn-primary btn-md btn-block">수정하기</button>
 				<button type="button" class="btn btn-default btn-md btn-block">다시작성</button>
 			</div>

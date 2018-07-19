@@ -12,6 +12,8 @@
 		<result property="openRange" column="open_range" jdbcType="VARCHAR"/>
 		<result property="boardImg" column="board_img" jdbcType="VARCHAR"/>
 		<result property="hashTag" column="hashtag" jdbcType="VARCHAR"/>
+		<result property="likeCnt" column="likeCnt" jdbcType="INTEGER"/>
+		<result property="commCnt" column="commCnt" jdbcType="INTEGER"/>
 		
 		<association property="user" javaType="user">
 			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
@@ -32,16 +34,28 @@
 	</update>
 	
 	<select id="getBoard" parameterType="int" resultMap="boardMap">
-		SELECT
-		board_no, user_id, board_time, board_title, board_content, board_img, open_range, hashtag
-		FROM BOARD
-		WHERE board_no=#{boardNo}
+		SELECT board.*, likeCnt, commCnt
+		FROM board left join ( SELECT comment.board_no, likeCnt, commCnt
+									  FROM (SELECT board_no, count(*) likeCnt FROM likes group by board_no) likes right join
+									  			(SELECT board_no, count(*) commCnt FROM comment group by board_no) comment
+									  ON likes.board_no = comment.board_no
+									  GROUP BY likes.board_no) innerTable
+		ON board.board_no = innerTable.board_no
+		WHERE board.board_no = #{value}
+		GROUP BY board.board_no;
 	</select>
 	
 	<select id="getBoardList" parameterType="list" resultMap="boardMap">
-		SELECT
-		board_no, user_id, board_time, board_title, board_content, board_img, open_range, hashtag
-		FROM BOARD
+		SELECT board.*, likeCnt, commCnt
+		FROM board left join ( SELECT comment.board_no, likeCnt, commCnt
+									  FROM (SELECT board_no, count(*) likeCnt FROM likes group by board_no) likes right join
+									  			(SELECT board_no, count(*) commCnt FROM comment group by board_no) comment
+									  ON likes.board_no = comment.board_no
+									  GROUP BY likes.board_no) innerTable
+		ON board.board_no = innerTable.board_no
+		GROUP BY board.board_no
+		ORDER BY board_time desc
+		LIMIT #{currentPage},#{pageSize};
 	</select>
 	
 	<delete id="deleteBoard" parameterType="int">
@@ -50,7 +64,7 @@
 		WHERE board_no=#{value}
 	</delete>
 	
-	<!-- Likes -->
+	<!-- Likes --> <!-- Rest에서 좋아요시 변경된 개수 리턴할 때 사용 -->
 	<select id="getLikeCount" resultType="int">
 		SELECT
 		COUNT(*)

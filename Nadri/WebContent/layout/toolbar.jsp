@@ -40,6 +40,3 @@
 		<span class="topele">나들이백과</span> <span class="topele">게시판</span> <span class="topele">일정작성</span>
 	</div>
 </div>	
-
-
-

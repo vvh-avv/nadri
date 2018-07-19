@@ -25,7 +25,7 @@ public class CommentDaoImpl implements CommentDao{
 	public CommentDaoImpl() {
 	}
 	
-	//Method
+	//Method	
 	public void addComment(Comment comment) throws Exception{
 		sqlSession.insert("CommentMapper.insertComment", comment);
 	}
@@ -34,15 +34,15 @@ public class CommentDaoImpl implements CommentDao{
 		sqlSession.update("CommentMapper.updateComment", comment);
 	}
 
-	public List<Comment> getCommentList(Search search) throws Exception {
-		return sqlSession.selectList("CommentMapper.getCommentList", search);
+	public Comment getComment(int commentNo) throws Exception{
+		return sqlSession.selectOne("CommentMapper.getComment", commentNo);
+	}
+	
+	public List<Comment> getCommentList(int boardNo) throws Exception {
+		return sqlSession.selectList("CommentMapper.getCommentList", boardNo);
 	}
 
 	public void deleteComment(int commentNo) throws Exception {
 		sqlSession.delete("CommentMapper.deleteComment", commentNo);
-	}
-	
-	public int getCommentCount(int boardNo) throws Exception{
-		return sqlSession.selectOne("CommentMapper.getCommentCount", boardNo);
 	}
 }

@@ -2,6 +2,8 @@ package com.nadri.service.user;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
 
@@ -28,9 +30,9 @@ public interface UserService {
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
 	
-	//비밀번호 찾기
-	public boolean findPassword(String email, String userId) throws Exception;
-	
+/*	//비밀번호 찾기
+	public boolean findPassword(HttpServletResponse response, User user) throws Exception;
+	*/
 	
 	//보상 리스트 
 	public Map<String, Object> getRewardList(Search search) throws Exception;
@@ -48,20 +50,17 @@ public interface UserService {
 	public Map<String, Object> getUserReportList(Search search) throws Exception;
 
 	
-	/*//이메일 인증 키 검증
-	public void userAuth(String email) throws Exception; */
-
-	//이메일 관련: 상태 변화
-	public void updateStatusCode(User user) throws Exception;
-
-	//카카오 로그인
-	public User getCode(String authorize_code) throws Exception;
-
-	//아이디 중복체크
-	public boolean checkUserId(String userId) throws Exception;
 	
+	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
 	public Map<String,Object> getUserLog(String userId,int number,String duration);
+
+
+
+
+
+
+
 
 	
 }

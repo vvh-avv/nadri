@@ -2,12 +2,12 @@
 ///////////////////// 수정이 필요하면 스크립트 만든 사람에게 꼭 먼저 물어보기 !!
 
 
-//HJS
+//HJS //HJS수정(listBoard.jsp에서 현재 사용중)
 //현재 시스템 날짜+시간 가져오고 포맷을 바꾼 자바스크립트
 function formatDate(today) {
-	var month = (today.getMonth() + 1);
-	var day = today.getDate();
-	var hours = today.getHours()+''; //''을 안넣으면 문자취급이 안되어 아래 조건문 성립불가
+	var month = (today.getMonth() + 1)+''; //''을 안넣으면 문자취급이 안되어 아래 조건문 성립불가
+	var day = today.getDate()+'';
+	var hours = today.getHours()+'';
 	var min = today.getMinutes()+'';
 	var sec = today.getSeconds()+'';
 
@@ -17,10 +17,34 @@ function formatDate(today) {
 	if (min.length < 2) min = '0' + min;
 	if (sec.length < 2) sec = '0' + sec;
 	
-   	var now = today.getFullYear() + '년' + month + '월' + day + '일  ' +
-   					hours + ':' + min+ ':' + sec;
+	if (hours < 12 ) {
+		var ap = '오전 ';
+	}else {
+		hours -= 12;
+		var ap = '오후 ';
+	}
+
+   	var now = month + '월' + day + '일  ' + ap + hours + ':' + min;
+   	//var now = today.getFullYear() + '년' + month + '월' + day + '일  ' + hours + ':' + min+ ':' + sec;
 	
 	return now;
+}
+
+//HJS //HJS사용(getBoard.jsp에서 현재 사용중)
+function formatDate2(today) {
+	var month = (today.getMonth() + 1)+''; //''을 안넣으면 문자취급이 안되어 아래 조건문 성립불가
+	var day = today.getDate()+'';
+	var hours = today.getHours()+'';
+	var min = today.getMinutes()+'';
+	var sec = today.getSeconds()+'';
+
+	if (month.length < 2) month = '0' + month;
+	if (day.length < 2) day = '0' + day;
+	if (hours.length < 2) hours = '0' + hours;
+	if (min.length < 2) min = '0' + min;
+	if (sec.length < 2) sec = '0' + sec;
+
+	return today.getFullYear()+month+day+hours+min+sec;
 }
 
 //HJS
@@ -61,4 +85,70 @@ function imgPreview(){
 	}else { alert("사진만 선택이 가능합니다."); imgPreview.hide(); return;}
 
 	imgPreview.show();
+}
+
+
+//HJS //날짜계산
+function transferTime(time){	
+	 var now = new Date();
+	 var sYear = time.substring(0,4);
+	 var sMonth = time.substring(4,6)-1;
+	 var sDate = time.substring(6,8);
+	 var sHour = time.substring(8,10);
+	 var sMin = time.substring(10,12);
+	 var sSecond = time.substring(12,14);
+	 var sc = 1000;
+
+	 var today = new Date(sYear,sMonth,sDate,sHour,sMin,sSecond);
+	 //지나간 초
+	 var pastSecond = parseInt((now-today)/sc,10);
+
+	 var date;
+	 var hour;
+	 var min;
+	 var str = "";
+
+	 var restSecond = 0;
+	 if(pastSecond > 86400){
+	  date = parseInt(pastSecond / 86400,10);
+	  restSecond = pastSecond % 86400;
+	  str = date + "일 ";
+	  if(restSecond > 3600){
+	   hour = parseInt(restSecond / 3600,10);
+	   restSecond = restSecond % 3600;
+	   str = str + hour + "시간 ";
+	   if(restSecond > 60){
+	    min = parseInt(restSecond / 60,10);
+	    restSecond = restSecond % 60;
+	    str = str + min + "분 " + restSecond + "초 전";
+	   }else{
+	    str = str + restSecond + "초 전";
+	   }
+	  }else if(restSecond > 60){
+	   min = parseInt(restSecond / 60,10);
+	   restSecond = restSecond % 60;
+	   str = str + min + "분 " + restSecond + "초 전";
+	  }else{
+	   str = str + restSecond + "초 전";
+	  }
+	 }else if(pastSecond > 3600){
+	  hour = parseInt(pastSecond / 3600,10);
+	  restSecond = pastSecond % 3600;
+	  str = str + hour + "시간 ";
+	  if(restSecond > 60){
+	   min = parseInt(restSecond / 60,10);
+	   restSecond = restSecond % 60;
+	   str = str + min + "분 " + restSecond + "초 전";
+	  }else{
+	   str = str + restSecond + "초 전";
+	  }
+	 }else if(pastSecond > 60){
+	  min = parseInt(pastSecond / 60,10);
+	  restSecond = pastSecond % 60;
+	  str = str + min + "분 " + restSecond + "초 전";
+	 }else{
+	  str = pastSecond + "초 전";
+	 }
+
+	 return str;
 }

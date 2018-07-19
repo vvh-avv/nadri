@@ -14,21 +14,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
+import com.nadri.common.util.sendingMail;
 
 @RestController
 @RequestMapping("/user/*")
@@ -45,6 +48,7 @@ public class UserRestController {
 	}
 	
 	//method
+	//rest 로그인: post
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
 	public User login( @RequestBody User user, HttpSession session ) throws Exception{
 		System.out.println("/user/json/login : POST");
@@ -55,13 +59,13 @@ public class UserRestController {
 			returnUser = new User();
 			returnUser.setUserId("none");
 		}
-		
 		if( user.getPassword().equals(returnUser.getPassword()) ){
 			session.setAttribute("user", returnUser);
 		}
 		return returnUser;
 	}
 	
+	//rest 유저 정보 가져오기
 	@RequestMapping(value="json/getUser/{userId}", method=RequestMethod.GET)
 	public User getUser( @PathVariable String userId ) throws Exception{
 		System.out.println("/user/json/getUser : GET");
@@ -69,14 +73,19 @@ public class UserRestController {
 		return userService.getUser(userId);
 	}
 	
+	//rest 유저 회원 가입: sns로그인에서 사용
 	@RequestMapping(value="json/addUser", method=RequestMethod.POST)
 	public User addUser( @RequestBody User user ) throws Exception{
 		System.out.println("/user/json/addUser : POST");
+		System.out.println("sns계정 가입자 정보: "+user);
 
 		userService.addUser(user);
-		
+		System.out.println("/////////////////////////");
+		System.out.println("sns계정 가입자 정보: "+user);
+		System.out.println("/////////////////////////");
 		return userService.getUser(user.getUserId());
 	}
+
 	
 	@RequestMapping(value="json/updateUser", method=RequestMethod.POST)
 	public User updateUser( @RequestBody User user ) throws Exception{
@@ -87,16 +96,19 @@ public class UserRestController {
 		return userService.getUser(user.getUserId());
 	}
 	
+	//rest 회원 아이디 중복 여부
 	@RequestMapping(value="json/checkDuplication/{userId}", method=RequestMethod.GET)
 	public boolean checkDuplication( @PathVariable String userId ) throws Exception{
 		System.out.println("/user/json/checkDuplication : GET");
+		System.out.println("아이디 중복 여부 체크: 해당 아이디 - "+userId);
 		
-/*		boolean result = userService.checkDuplication(userId);
-		System.out.println("boolean 값 : "+result);*/
+		boolean result = userService.checkDuplication(userId);
+		System.out.println("boolean 값 : "+result);
 		
-		return userService.checkDuplication(userId);
+		return result;
 	}
 	
+	//rest 유저 목록
 	@RequestMapping(value="json/listUser/{sort}", method=RequestMethod.POST)
 	public Map<String, Object> listUser( @RequestBody Search search, @PathVariable String sort ) throws Exception{
 		System.out.println("/user/json/listUser : GET / POST");
@@ -163,17 +175,7 @@ public class UserRestController {
 		return check;
 	}
 	
-	//이메일 인증 or 미인증 상태
-	@RequestMapping( value="json/checkUserStatus/{userId}", method=RequestMethod.GET)
-	public String checkUserStatus(@PathVariable String userId) throws Exception{
-		String status = "";
-		User user = userService.getUser(userId);
-		status = user.getUserStatusCode();		
-		System.out.println("userStatus :: "+status);
-		
-		return status;
-	}
-	
+
 	//회원 아이디 찾기
 	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
@@ -192,17 +194,38 @@ public class UserRestController {
 		return map;
 	}
 	
-	//비밀번호찾을때 존재하지 않은 아이디임을 알려주는 아이디중복체크
-	@RequestMapping(value="json/checkUserId", method=RequestMethod.POST)
-	public boolean checkUserId(@RequestParam("userId")String userId)throws Exception{
+	
+	
+	//회원가입 시 이메일 전송
+	@RequestMapping( value="json/emailCheck", method=RequestMethod.POST )
+	public String emailCheck( Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		System.out.println("userId...."+ userId);
+		String userEmail = request.getParameter("userEmail") ;
 		
-		System.out.println("restController - checkUserId : POST ");
+		int authenticationNumber = new sendingMail().Sending(userEmail) ;
+		System.out.println("/emailCheck POST " + authenticationNumber );
+		model.addAttribute("authenticationNumber", (new Integer(authenticationNumber) ))  ;
+		//세션 호출 + 인증번호 심기
+		HttpSession session = request.getSession() ;
+		session.setAttribute("authenticationNumber", authenticationNumber);
+		return "forward:/common/True.jsp" ;
+	}
 		
-		boolean result=userService.checkUserId(userId);
+	//회원가입 시 이메일 전송 후 승인번호 확인
+	@RequestMapping( value="json/emailCheck2", method=RequestMethod.POST )
+	public String emailCheck2(HttpServletRequest request) {
+		String qualifiedNumber = request.getParameter("qulifiedNumber") ;
+		System.out.println("/emailCheck2 POST " + qualifiedNumber ) ;
+		System.out.println("/emailCheck2 POST " + request.getParameter("authenticationNumber") ) ;
 		
-		return result;	
-	} 
+		if(qualifiedNumber.equals(request.getParameter("authenticationNumber")) ) {
+			System.out.println("true") ;
+			return "0" ;
+		} else {
+			System.out.println("false") ;
+			return "1" ;
+		}
+	}
+	
 	
 }

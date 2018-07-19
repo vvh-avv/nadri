@@ -33,7 +33,7 @@
 	}
 	
 	#map {
-		height: 80%;
+		height: 85%;
 		width: 100%;
 		clear: both;
 	}
@@ -47,6 +47,47 @@
     background-repeat: no-repeat;
     color: white;
 	}
+	
+	/*드랍다운 들어가는 css*/
+	.dropbtn {
+		    background-color: #4CAF50;
+		    color: white;
+		    padding: 16px;
+		    font-size: 16px;
+		    border: none;
+		}
+
+		span.dropdown {
+			width: 16.6%;
+			float: left;
+		}
+
+		.dropdown {
+		    position: relative;
+		    display: inline-block;
+		}
+
+		.dropdown-content {
+		    display: none;
+		    position: absolute;
+		    background-color: #f1f1f1;
+		    min-width: 160px;
+		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		    z-index: 1;
+		}
+
+		.dropdown-content a {
+		    color: black;
+		    padding: 12px 16px;
+		    text-decoration: none;
+		    display: block;
+		}
+		
+		.dropdown-content a:hover {background-color: #ddd;}
+		
+		.dropdown:hover .dropdown-content {display: block;}
+		
+		.dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 </style>
 
@@ -137,15 +178,6 @@ for (var i = 0; i < festival.length; i++) {
 		return output;
 	}) */
 }
-	
-	// 구글 맵에서 쓸 아이콘을 세팅하는 장소입니다!
-	var iconBase = '/images/spot/icon/';
-	var icons = {
-		festival : {
-			icon : iconBase + 'festival.png'
-		}            
-	};
-
 	function initMap() {
 		
 		// 맵 스타일 속성에 필요한 배열 생성 
@@ -260,8 +292,6 @@ for (var i = 0; i < festival.length; i++) {
 
 			// 이부분은 마커를 추가해주는 부분입니다.
 			for (var i = 0; i < locations.length; i++) {
-				//마커 각각의 ID를 설정
-				//locationsfestival[i].index = i;
 				markers[i] = new google.maps.Marker({
 					position : locations[i],
 					map : map,
@@ -354,7 +384,6 @@ for (var i = 0; i < festival.length; i++) {
 	</div>
 
 	<%-- Main content --%>
-	<section class="content container-fluid">
 		<body>
 
 			<span class="dropdown">
@@ -367,17 +396,28 @@ for (var i = 0; i < festival.length; i++) {
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a></button>
+				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
+					<div class="dropdown-content">
+					<a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a>
+					<a href="/spot/getRestaurantList?spotCode=11">수요미식회</a>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs"  ><a href="/spot/getRestaurantList?spotCode=11">수요미식회</a></button>
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+			</span>
+			
+			<span class="dropdown">
+				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
+				<div class="dropdown-content">
+					<a href="/spot/getBabyList">수유실</a> 
+					<a href="/spot/bikeSpot.jsp">자전거</a>
+					<a href="/spot/carSpot.jsp">자동차</a>
 				</div>
 			</span>
-
+			
 			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/searchSpot.jsp">직접검색</a></button>
 			</span>
 
 			<div id="map">

@@ -23,9 +23,7 @@
 
 	</style>
 	
-	<script type="text/javascript">
-		var check = false;
-		
+	<script type="text/javascript">		
 		function fncAddUser() {
 			// Form 유효성 검증
 			var id=$('#userId').val();
@@ -64,34 +62,52 @@
 			}
 			$('input:hidden[name="phone"]').val(value);
 			
+			//이메일 입력해야 가입 진행
 			if( $("#userEmailResult").val() == "" && $("#userEmailResult").val() != "0") {
-				alert("이메일을 확인해주세요") ;
+				alert("이메일 창을 확인해주세요") ;
 				return ;		
 			} 
 			
-			$('form.add-user').attr('method','post').attr('action','addUser').submit();
-		}
+			//회원가입 클릭시 진행
+			$('form').attr('method', 'POST').attr('action', 'addUser').submit();
+			}
 		
 		//회원가입 버튼 클릭시 행위 발생
 		$(function(){
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 			$('.col-sm-9 button:contains("회원가입")').on('click', function(){
-				console.log('??');
+				/* console.log('??'); */
 				fncAddUser();
 			});
 		});
 		
 		//이메일 형식 확인
-		$(function(){
+		 /* $(function(){
 			$('#email').on('change', function(){
 				var email=$('input[name="email"]').val();
 				if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1)){
 					alert("이메일 형식이 올바르지 않습니다.");
+					returm false;
 				}
+				$("#email").val(email) ;
+			    return true;
 			});
-		});
+		});  */
 		
+		//이메일 창에 쓰여진 메일 형식 확인
+		function check_email(email) {
+			var email= email ; 
+			alert(email);
+		    if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1)){
+		    	alert("이메일 형식이 아닙니다.");
+				return false;
+		    }
+			$("#email").val(email) ;
+		    return true;
+		} 
+		
+		//이메일 팝업창
 		function checkEmail() {
 			window.open("/user/emailCheck2.jsp","popWin", 
 			"left=500,top=500,width=500,height=500, marginwidth=0,marginheight=0,scrollbars=no, scrolling=no,menubar=no,resizable=no");
@@ -153,8 +169,8 @@
 		<h1>회원 가입</h1>
 	</div>
 	
-	<form class="add-user form-horizontal" enctype="multipart/form-data">
-		<div class="form-group">
+	<form class="form-horizontal" enctype="multipart/form-data">
+		<div class="form-group" >
 			<div class="row">
 				<label for="userName" class="col-sm-3 control-label">이름</label>
 				<div class="col-sm-3">
@@ -163,7 +179,7 @@
 				<span class="col-sm-6"></span>
 			</div>
 			<br/>
-		
+
 			<div class="row">
 				<label for="userId" class="col-sm-3 control-label">아이디</label>
 				<div class="col-sm-3">
@@ -171,17 +187,19 @@
 				</div>
 				<span id="helpBlock" class="help-block col-sm-6"></span>
 			</div>
+
 			<br/>
 			
-			<div class="row">
+			<!-- <div class="row">
 				<label for="email" class="col-sm-3 control-label">이메일</label>
 				<div class="col-sm-3">
 					<input type="text" class="form-control" id="email" name="email" placeholder="example@example.com">
 				</div>
 				<div class="col-sm-3">
-					<button type="button" class="btn btn-success">인증하기</button>
+					<button type="button" id="verifiedEmail" name="verifiedEmail" class="btn btn-success">인증하기</button>
 				</div>
-			</div>
+			</div> -->
+			<jsp:include page="emailCheck.jsp"/>
 			<br/>
 			
 			<div class="row">
@@ -192,6 +210,7 @@
 				<span class="col-sm-6"></span>
 			</div>
 			<br/>
+
 			<div class="row">
 				<label for="passwordChk" class="col-sm-3 control-label">비밀번호확인</label>
 				<div class="col-sm-3">
@@ -263,11 +282,17 @@
 			</div>
 			<br/>
 			
-		
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-9">
 					<button type="button" class="btn btn-success">회원가입</button>
 				</div>
+			</div>
+			
+			<div class="row">
+				<!-- <img src="/images/ct_btnbg03.gif" width="14" height="23"/> -->
+			 <!-- 	<input type="hidden" id="userId" name="userId" value="">-->
+			 	<input type="hidden" id="email" name="email" value="">
+			 	<input type="hidden" id="userEmailResult" name="userEmailResult" value="">
 			</div>
 			
 		</div>

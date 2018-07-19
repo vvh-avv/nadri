@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FriendMapper">
+
+   <resultMap type="friend" id="friendMap">
+   	  <result property="friendNo" column="friend_no" jdbcType="INTEGER" />
+      <result property="friendId" column="friend_id" jdbcType="VARCHAR" />
+      <result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
+      <!-- <result property="profileImg" column="profile_img" jdbcType="VARCHAR" /> -->
+      <!-- <result property="userId" column="user_id" jdbcType="VARCHAR" /> -->
+ 	  <result property="friendBlock" column="friend_block" jdbcType="VARCHAR"/>
+	  <association property="friendUser" resultMap="UserMapper.userMap"/>
+  </resultMap>
+
+   <!-- 친구 요청 insert문 -->
+  <insert id="addFriend" parameterType="com.nadri.service.domain.Friend">
+  	INSERT INTO friend (friend_no, user_id, friend_id, friend_code, profile_img, friend_block)
+  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 0, #{friendUser.profileImg}, 0)
+  </insert>
+  
+  <!-- 친구 추가(승인) update문 -->
+  <update id="udpateBeFriend" parameterType="com.nadri.service.domain.Friend">
+  	UPDATE friend
+  	<set>
+  		friend_code = 1
+  	</set>
+  	WHERE user_id = {#userId} AND friend_id = #{friendId}
+  </update>
+  
+  <!-- 친구 승인 insert문 -->
+  <insert id="insertBeFriend" parameterType="com.nadri.service.domain.Friend">
+  	INSERT INTO friend
+  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 1, #{friendUser.profileImg}, 0)
+  </insert>
+  
+  <!-- 받은 친구 요청 거절 -->
+  <delete id="refuseFriend" parameterType="com.nadri.service.domain.Friend">
+  	DELETE
+  	FROM friend
+  	WHERE user_id = #{userId} AND friend_id = #{friendId}
+  </delete>
+  
+  <!-- 보낸 친구 요청 취소 -->
+  <delete id="cancelFriend" parameterType="com.nadri.service.domain.Friend">
+  	DELETE
+  	FROM friend
+  	WHERE user_id= #{userId} AND friend_id=#{friendId}
+  </delete>
+  
+  <!-- 친구 끊기 -->
+  <update id="cutFriend" parameterType="com.nadri.service.domain.Friend">
+  	UPDATE friend
+  	<set>
+  		friend_code=0
+  	</set>
+  	WHERE user_id = #{userId} AND friend_id=#{friendId}
+  </update>
+  
+ 
+  <!-- 친구 차단  -->
+  <insert id="friendBlock" parameterType="com.nadri.service.domain.Friend">
+  	INSERT INTO friend
+  	VALUES(#{friendNo:INTEGER}, #{friendUser.userId}, #{friendId:VARCHAR}, 1, #{friendUser.profileImg}, 1)
+  </insert>
+  
+  <!-- 기존에 데이터가 있는 경우 -->
+  <update id="updateFriendBlock" parameterType="com.nadri.service.domain.Friend">
+  	UPDATE friend
+  	<set>
+  		friend_block = 1
+  	</set>
+  	WHERE user_id = #{userId} AND friend_id = #{friendId}
+  </update>
+  
+  <!-- 친구 테이블 내의 데이터 확인 -->
+  <select id="confirmFriendData" parameterType="com.nadri.service.domain.Friend" resultType="INTEGER">
+  	SELECT COUNT(*)
+  	FROM friend
+  	WHERE user_id = #{userId} AND friend_id = #{friendId}
+  </select>
+  
+  <!-- 상대방이 자신을 차단했는지 확인 -->
+  <select id="blockUser" parameterType="com.nadri.service.domain.Friend" resultType="String">
+  	SELECT friendBlock
+  	FROM friend
+  	WHERE user_id = #{userId} AND friend_id=#{friendId}
+  </select>
+  
+  
+</mapper>

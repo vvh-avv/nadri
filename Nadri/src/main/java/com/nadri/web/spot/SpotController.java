@@ -47,18 +47,47 @@ public class SpotController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
-	/*@RequestMapping( value="getSpotList",  method=RequestMethod.GET)
+	@RequestMapping( value="getSpotList",  method=RequestMethod.GET)
 	public String getSpotList(Model model , HttpServletRequest request, @RequestParam("spotCode") int spotCode, Spot spot) throws Exception{
 		
 		System.out.println("/spot/getSpotList : GET / POST");
 		
+		List<Spot> list = spotService.getAllSpotList(spotCode);
 		JSONArray jsonArray = new JSONArray();
+		
+		for(Spot a : list) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("spotX", a.getSpotX());
+			jsonObject.put("spotY", a.getSpotY());
+			jsonObject.put("spotAddress", a.getSpotAddress());
+			jsonObject.put("spotTitle", a.getSpotTitle());
+			jsonObject.put("spotImg", a.getSpotImg());
+			jsonObject.put("spotCode", a.getSpotCode());
+			jsonArray.add(jsonObject);
+		}
 	
 		// Model 과 View 연결
 		model.addAttribute("list" , spotService.getSpotList(spotCode));
+		model.addAttribute("a", jsonArray);
 		
-		return "forward:/spot/parkSpot.jsp";
-	}*/
+		if(spotCode == 0) {
+			return "forward:/spot/parkSpot.jsp";
+		} else if(spotCode == 4) {
+			return "forward:/spot/riverSpot.jsp";
+		} else if(spotCode == 10) {
+			return "forward:/spot/samdaeSpot.jsp";
+		} else if(spotCode == 11) {
+			return "forward:/spot/suyoSpot.jsp";
+		} else if(spotCode == 30) {
+			return "forward:/spot/babySpot.jsp";
+		} else if(spotCode == 31) {
+			return "forward:/spot/carSpot.jsp";
+		} else if(spotCode == 32) {
+			return "forward:/spot/bikeSpot.jsp";
+		} else {
+			return "forward:/spot/parkSpot.jsp";
+		}
+	}
 	
 	@RequestMapping(value="getFestivalList" , method=RequestMethod.GET)
 	public String getFestivalList( Model model) throws Exception{
@@ -97,56 +126,13 @@ public class SpotController {
         return "forward:/spot/festivalSpot.jsp";
 	}
 	
-	@RequestMapping(value="getBikeList" , method=RequestMethod.GET)
+	@RequestMapping(value="getSearchSpot" , method=RequestMethod.GET)
 	public String getBikeList( Model model) throws Exception{
 
-		System.out.println("/getBikeList");
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\bike.json"), "UTF8"));
-		
-		String inputLine;
-		
-		StringBuffer response = new StringBuffer();
-		
-		while ((inputLine = br.readLine()) != null)  {
-        	response.append(inputLine);
-        }
-		
-		 JSONParser parser = new JSONParser();
-	     JSONObject bike = (JSONObject)parser.parse(response.toString());
-	     
-	     br.close();
-		
-	     model.addAttribute("bike", bike);
+		System.out.println("/getSearchSpot");
         
-        return "forward:/spot/bikeSpot.jsp";
+        return "forward:/spot/searchSpot.jsp";
 	}
-	
-	@RequestMapping(value="getRestaurantList" , method=RequestMethod.GET)
-	public String getRestaurantList( Model model, @RequestParam("spotCode") int spotCode) throws Exception{
-
-		System.out.println("/getSpotList");
-		
-		List<Spot> list = spotService.getSpotList(spotCode);
-		JSONArray jsonArray = new JSONArray();
-		
-		for(Spot a : list) {
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("spotX", a.getSpotX());
-			jsonObject.put("spotY", a.getSpotY());
-			jsonObject.put("spotAddress", a.getSpotAddress());
-			jsonObject.put("spotDetail", a.getSpotDetail());
-			jsonObject.put("spotTitle", a.getSpotTitle());
-			jsonObject.put("spotImg", a.getSpotImg());
-			jsonArray.add(jsonObject);
-		}
-				
-		model.addAttribute("list", spotService.getRestaurantList(spotCode));
-		model.addAttribute("a", jsonArray);
-		
-        return "forward:/spot/suyoSpot.jsp";
-        
-	}//end of infinityscroll
 	
 	@RequestMapping( value="getSpot" , method=RequestMethod.GET)
     public String getProduct( @RequestParam("spotNo") int spotNo , Model model, HttpServletRequest request ) throws Exception {
@@ -155,6 +141,8 @@ public class SpotController {
       
       //Business Logic
       Spot spot = spotService.getSpot(spotNo);
+      
+      spotService.updateSpotReadCnt(spot);
       
       // Model 과 View 연결
       model.addAttribute("spot", spot);

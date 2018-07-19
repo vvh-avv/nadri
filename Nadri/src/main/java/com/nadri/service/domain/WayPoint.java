@@ -2,6 +2,8 @@ package com.nadri.service.domain;
 
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class WayPoint {
 	
@@ -14,15 +16,16 @@ public class WayPoint {
 	private BigDecimal wayPointY;
 	private String wayPointAddress;
 	private String wayPointDetail;
-	private Time stayTime;
-	private Time moveTime;
-	private Time startHour;
-	private Time endHour;
+	private String wayPointNav;
+	private int stayTime;
+	private int moveTime;
+	private String wayPointStartHour;
+	private String wayPointEndHour;
 	
 	///Constructor
 	public WayPoint() {
 	}
-	
+
 	///Method
 	public int getWayPointNo() {
 		return wayPointNo;
@@ -56,20 +59,12 @@ public class WayPoint {
 		return wayPointDetail;
 	}
 
-	public Time getStayTime() {
+	public int getStayTime() {
 		return stayTime;
 	}
 
-	public Time getMoveTime() {
+	public int getMoveTime() {
 		return moveTime;
-	}
-
-	public Time getStartHour() {
-		return startHour;
-	}
-
-	public Time getEndHour() {
-		return endHour;
 	}
 
 	public void setWayPointNo(int wayPointNo) {
@@ -104,29 +99,46 @@ public class WayPoint {
 		this.wayPointDetail = wayPointDetail;
 	}
 
-	public void setStayTime(Time stayTime) {
+	public void setStayTime(int stayTime) {
 		this.stayTime = stayTime;
 	}
 
-	public void setMoveTime(Time moveTime) {
+	public void setMoveTime(int moveTime) {
 		this.moveTime = moveTime;
 	}
-
-	public void setStartHour(Time startHour) {
-		this.startHour = startHour;
-	}
-
-	public void setEndHour(Time endHour) {
-		this.endHour = endHour;
-	}
 	
+	public String getWayPointNav() {
+		return wayPointNav;
+	}
+
+	public String getWayPointStartHour() {
+		return wayPointStartHour;
+	}
+
+	public String getWayPointEndHour() {
+		return wayPointEndHour;
+	}
+
+	public void setWayPointNav(String wayPointNav) {
+		this.wayPointNav = wayPointNav;
+	}
+
+	public void setWayPointStartHour(String wayPointStartHour) {
+		this.wayPointStartHour = wayPointStartHour;
+	}
+
+	public void setWayPointEndHour(String wayPointEndHour) {
+		this.wayPointEndHour = wayPointEndHour;
+	}
+
 	///toString
 	@Override
 	public String toString() {
 		return "WayPoint [wayPointNo=" + wayPointNo + ", scheduleNo=" + scheduleNo + ", wayPointTitle=" + wayPointTitle
 				+ ", wayPointImg=" + wayPointImg + ", wayPointX=" + wayPointX + ", wayPointY=" + wayPointY
-				+ ", wayPointAddress=" + wayPointAddress + ", wayPointDetail=" + wayPointDetail + ", stayTime="
-				+ stayTime + ", moveTime=" + moveTime + ", startHour=" + startHour + ", endHour=" + endHour + "]";
+				+ ", wayPointAddress=" + wayPointAddress + ", wayPointDetail=" + wayPointDetail + ", wayPointNav="
+				+ wayPointNav + ", stayTime=" + stayTime + ", moveTime=" + moveTime + ", wayPointStartHour="
+				+ wayPointStartHour + ", wayPointEndHour=" + wayPointEndHour + "]";
 	}
-	
+
 }

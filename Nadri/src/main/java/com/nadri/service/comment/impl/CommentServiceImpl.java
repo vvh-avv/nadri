@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService{
 	
 	public CommentServiceImpl() {
 	}
-
+	
 	@Override
 	public void addComment(Comment comment) throws Exception {
 		commentDao.addComment(comment);
@@ -36,8 +36,13 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public List<Comment> getCommentList(Search search) throws Exception {
-		List<Comment> list = commentDao.getCommentList(search);
+	public Comment getComment(int commentNo) throws Exception{
+		return commentDao.getComment(commentNo);
+	}
+	
+	@Override
+	public List<Comment> getCommentList(int boardNo) throws Exception {
+		List<Comment> list = commentDao.getCommentList(boardNo);
 		
 		return list;
 	}
@@ -45,11 +50,6 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public void deleteComment(int commentNo) throws Exception {
 		commentDao.deleteComment(commentNo);
-	}
-	
-	@Override
-	public int getCommentCount(int boardNo) throws Exception{
-		return commentDao.getCommentCount(boardNo);
 	}
 	
 }

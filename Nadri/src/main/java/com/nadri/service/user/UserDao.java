@@ -25,10 +25,8 @@ public interface UserDao {
 	
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
-	
-	//비밀번호 찾기
-	
-	
+
+	 
 	// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 	public int getTotalCount(Search search) throws Exception ;
 	
@@ -47,24 +45,14 @@ public interface UserDao {
 	//유저 신고내역 목록
 	public Map<String, Object> getUserReportList(Search search) throws Exception;
 	
+
 	
-	/////////////////이메일 관련//////////////////////////
-	
-	/*//인증키 발행
-	public void createAuthKey(String userEmail, String memberAuthKey) throws Exception;
-	
-	//인증키로 인한 유저 상태 변경
-	public void userAuth(String email) throws Exception;*/
-
-	//인증 코드 상태 변화
-	public void updateStatusCode(User user) throws Exception;
-
-	//카카오 로그인
-	public User getCode(String authorize_code) throws Exception;
-
-
+	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
 	public Map<String,Object> getUserLog(String userId,int number,String duration);
+
+
+	
 	
 	
 
