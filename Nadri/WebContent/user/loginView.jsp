@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +25,7 @@
 <!-- 네이버 로그인 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 
+<script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
 
 <style>
