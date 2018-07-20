@@ -33,22 +33,26 @@ import com.nadri.service.user.UserService;
 @RequestMapping("/user/*")
 public class UserController {
 
+	//field
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
+	@Value("#{commonProperties['pageUnit']}")
+	//@Value("#{commonProperties['pageUnit'] ?: 3}")
+	int pageUnit;
+	
+	@Value("#{commonProperties['pageSize']}")
+	//@Value("#{commonProperties['pageSize'] ?: 2}")
+	int pageSize;
+
+	//constructor method
 	public UserController(){
 		System.out.println(this.getClass());
 	}
 
-	@Value("#{commonProperties['pageUnit']}")
-	//@Value("#{commonProperties['pageUnit'] ?: 3}")
-	int pageUnit;
-		
-	@Value("#{commonProperties['pageSize']}")
-	//@Value("#{commonProperties['pageSize'] ?: 2}")
-	int pageSize;
 	
+	//method
 	//유저 가입: get방식
 	@RequestMapping(value="addUser", method=RequestMethod.GET)
 	public String addUser() throws Exception {
