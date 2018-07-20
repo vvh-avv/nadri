@@ -686,7 +686,7 @@ $(function(){
                         if (status == "success") {
                            $('body').removeClass('waiting');
                            $('form')[0].reset();
-                           $('#myModal').modal('hide');
+                           $('#inquireModal').modal('hide');
                            console.log(data);
                         }
                      }

@@ -95,8 +95,8 @@
 	<div class="container-fluid indexHead">
 		<%@ include file="layout/toolbar.jsp"%>
 		<div
-			style="width: 30%; height: 50%; margin: 10% auto; text-align: center;">
-			<h1 style="font-weight: 800; color: white;">우리 나들이 갈래?</h1>
+			style="width: 100%; height: 50%; margin: 18% auto; text-align: center;">
+			<h1 style="font-weight: 800; color: powderblue; font-size: 82px;" class="textAni">우리둘이...나들이갈래?</h1>
 		</div>
 	</div>
 	<div class="container-fluid">
