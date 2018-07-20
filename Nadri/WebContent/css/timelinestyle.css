@@ -166,8 +166,6 @@ header h1 {
 
 .cd-timeline__img.cd-timeline__img--location {
   background: #f0ca45;
-  background-image: url(/images/spot/200.jpg);
-  background-size: 150px;
 }
 
 @media only screen and (min-width: 1170px) {

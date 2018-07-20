@@ -85,6 +85,7 @@ ul.countdown li p {
     margin-right: auto;
     margin-left: auto;
 	}
+	
 </style>
 <script>
 	$(function() {
@@ -150,7 +151,7 @@ ul.countdown li p {
 </head>
 <body>
       <%@ include file="/layout/toolbar.jsp"%>
-	<header>
+	<header style ="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
 		<div class="cd-nugget-info">
 			<span> <polygon class="cd-nugget-info-arrow" points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " /> </span>
 			<p id="scheduleTitle">${schedule.scheduleTitle}</p>
@@ -225,7 +226,7 @@ ul.countdown li p {
 			<!-- cd-timeline__block -->
 			
 			<div class="cd-timeline__block js-cd-block">
-			<div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+			<div class="cd-timeline__img cd-timeline__img--movie js-cd-img" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
 				<img src="/images/spot/icon/cd-icon-movie.svg" alt="Movie">
 			</div>
 			<!-- cd-timeline__img -->

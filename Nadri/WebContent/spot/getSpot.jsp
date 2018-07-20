@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <!-- 구글맵을 불러쓰기위한 CDN -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
+<!-- 툴바 넣는 CDN 입니다 -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 <html>
 <style>
 html, body {
@@ -83,30 +86,16 @@ html, body {
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <body class="hold-transition skin-blue sidebar-mini layout-boxed">
-	<form name="form">
-		<input type="hidden" id="prodNo" name="prodNo"
-			value="${product.prodNo}" />
+	<%@ include file="/layout/toolbar.jsp"%>
 		<div class="wrapper">
 			<%-- Content Wrapper. Contains page content --%>
 			<div class="content-wrapper">
 				<%-- Content Header (Page header) --%>
-				<div class="page-header">
-					<h1>
-						장소 상세보기 <small>장소를 상세보기 합니다.</small>
-					</h1>
-				</div>
 				<div class="jumbotron" id="map">
-					<h1>Hello, world!</h1>
-					<p>...</p>
-					<p>
-						<a class="btn btn-primary btn-lg" href="#" role="button">Learn
-							more</a>
-					</p>
 				</div>
 				<%-- Main content --%>
 				<section class="content container-fluid">
 					<div class="col-lg-12">
-						<form role="form">
 							<div class="box box-primary">
 								<div class="box-header with-border">
 									<h5 class="text-muted">
