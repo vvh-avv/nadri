@@ -164,10 +164,12 @@ html, body {
 }
 
 .searcher {
-	width: 20vw;
+	display:block;
+	width: 20%;
+	left:40%;
 	min-width: 100px;
 	position: absolute;
-	margin-left: 40vw;
+	margin : 0 auto;
 	top: 7vh;
 	border: 0.5px solid rgba(212, 212, 212, 0);
 	transition: all 1s;
@@ -203,16 +205,21 @@ html, body {
 	opacity: 1;
 }
 
+.navbar-collapse{
+	padding:0; 
+}
+
 .indexHead {
 	background: linear-gradient(rgba(255, 255, 255, 0),
 		rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2),
 		rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)),
-		url(/images/common/img3.jpg) no-repeat 0 100%;
+		url(/images/common/img3.jpg);
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 120vh;
+	transition : width 2s ease;
 }
 
 .middle-bar {
@@ -221,8 +228,9 @@ html, body {
 	box-shadow: 0px -2px 36px -2px rgba(112, 112, 112, 0.5);
 }
 
-.popular-contents>div {
+.popular-contents > div {
 	height: 200px;
+	width: 100%;
 	color: blue;
 	background-color: pink;
 }
@@ -232,33 +240,34 @@ html, body {
 }
 
 .toggleMenuMob {
-	visibility: hidden;
-	background-color: white;
-	opacity: 0.5;
-	padding:0;
+	display: none;
+	transition : all 1s;
 }
 
 @media only screen and (max-width:800px)
 {
 	
 	.toggleMenuMob {
-		visibility: hidden;
+		display: none;
 		background-color: white;
 		opacity: 0.5;
 		padding:0;
+		width:100%;
+		text-align: center;
+		font-size: 20px;
 	}
 	
 	.toggleBox {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 		visibility: visible;
 		padding: 15px 10px;
 	}
 	
 	.toggleBox>img {
 		width: auto;
-		height: 4vh;
-		min-height: 30px;
+		height: 2.5vh;
+		min-height: 20px;
 	}
 	
 	.topmenus {
@@ -271,13 +280,11 @@ html, body {
 		width: 100vw;
 		min-width: 100vw;
 		height: 8vh;
-		background: white;
-		transition: all 2s;
-		transition-property: height;
+		background: rgba(212, 212, 212, 0);
 		align-items: center;
-		border-bottom: 1px solid rgba(212, 212, 212, 0.65);
-		transition: all 1s;
+		border-bottom: 1px solid rgba(212, 212, 212, 0);
 		z-index: 999;
+		transition : all 0s;
 	}
 	
 	.topfixed {
@@ -299,20 +306,20 @@ html, body {
 		position: absolute;
 		display: inline-block;
 		transition: all 1s;
-		left: 2.5vw;
-		width: auto;
-		height: 4.5vh;
-		top: 1.7vh;
+		left: 37%;
+		width: 26%;
+		height: auto;
+		top: 1.2vh;
 	}
 	
 	.titlefixed {
 		position: absolute;
 		display: inline-block;
 		transition: all 1s;
-		left: 2vw;
-		top: 10px;
-		width: auto;
-		height: 4vh;
+		left: 40%;
+		top: 9.5px;
+		width: 20%;
+		height: auto;
 		min-height:30px;
 	}
 	
