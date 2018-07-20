@@ -1,6 +1,5 @@
 package com.nadri.web.board;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import com.nadri.service.board.BoardService;
 import com.nadri.service.comment.CommentService;
 import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Comment;
-import com.nadri.service.domain.User;
 import com.nadri.service.user.UserService;
 
 @RestController
@@ -57,11 +55,12 @@ public class BoardRestController {
 		Search search = new Search();
 		search.setCurrentPage( (currentPage+1)*pageSize );
 		search.setPageSize(pageSize);
+		System.out.println("@@@@"+ search);
 		
 		List<Board> list = boardService.getBoardList(search);
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
-			list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), "user05") );
+			list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), "user01") );
 			
 			//댓글이 있을 때만 수행
 			if( list.get(i).getCommCnt()>0 ) {
@@ -74,7 +73,8 @@ public class BoardRestController {
 				list.get(i).setCommLastTime(commLastTime);
 			}
 		}
-		
+
+		System.out.println("????"+list);
 		return list;
 	}
 	

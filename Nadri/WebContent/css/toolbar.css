@@ -1,21 +1,22 @@
 /* 
 	착한 조원은 마음대로 건드리지 않는  css 입니다.
  */
+ /*
 ::-webkit-input-placeholder {
 	text-align: center;
 }
 
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder {
 	text-align: center;
 }
 
-::-moz-placeholder { /* Firefox 19+ */
+::-moz-placeholder {
 	text-align: center;
 }
 
 :-ms-input-placeholder {
 	text-align: center;
-}
+}*/
 
 html, body {
 	margin: 0;
@@ -42,6 +43,7 @@ html, body {
 	border-bottom: 1px solid rgba(212, 212, 212, 0);
 	transition: all 1s;
 	overflow: hidden;
+	z-index:999;
 }
 
 .topfixed {
@@ -55,6 +57,7 @@ html, body {
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
 	align-items: center;
 	overflow: hidden;
+	z-index:999;
 }
 
 .topmenus {

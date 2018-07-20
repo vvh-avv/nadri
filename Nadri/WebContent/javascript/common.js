@@ -107,8 +107,8 @@ function transferTime(time){
 	 var hour;
 	 var min;
 	 var str = "";
-
 	 var restSecond = 0;
+	 
 	 if(pastSecond > 86400){
 	  date = parseInt(pastSecond / 86400,10);
 	  restSecond = pastSecond % 86400;
@@ -147,7 +147,11 @@ function transferTime(time){
 	  restSecond = pastSecond % 60;
 	  str = str + min + "분 " + restSecond + "초 전";
 	 }else{
-	  str = pastSecond + "초 전";
+		 if(pastSecond<=0){
+			 str = "방금 전";
+		 }else{
+			  str = pastSecond + "초 전"; 
+		 }
 	 }
 
 	 return str;
