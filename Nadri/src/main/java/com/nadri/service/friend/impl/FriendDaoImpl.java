@@ -28,79 +28,86 @@ public class FriendDaoImpl implements FriendDao {
 	//constructor method
 	public FriendDaoImpl() {
 		// TODO Auto-generated constructor stub
+		System.out.println(this.getClass());
 	}
 
 
 	//method
-	//模备 肝扁
-	@Override
-	public void addFriend(Friend friend, String status) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("FriendMapper - AddFriend: "+friend);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("friend", friend);
-		map.put("status", status);
-		
-		sqlSession.insert("FriendMapper.addFriend", map);
-	}
-
-	
-	//模备 夸没, 脚没
-	@Override
-	public void acceptFriend(Friend friend) throws Exception {
-		// TODO Auto-generated method stub
-	}
-
-	
-	@Override
-	public void deleteFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.delete("FriendMapper.deleteFriend",friendId);
-	}
-
-
-	@Override
-	public List<Friend> listFriend(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("FriendMapper.listFriend",search);
-	}
-
-
-	@Override
-	public boolean blockFriend(Friend friendId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public Friend getFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("FriendMapper.getFriend", friendId);
-	}
-
-
+	//模备 函版
 	@Override
 	public Friend updateFriend(Friend status) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
+	//模备 犬牢
 	@Override
-	public int getTotalCount(Search search) throws Exception {
+	public Friend getFriend(String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("FriendMapper.getTotalCount", search);
+		return sqlSession.selectOne("FriendMapper.getFriend", friendId);
 	}
-
-
+	
+	//模备 肝扁(夸没)
+	@Override
+	public void addFriend(Friend friend, String status) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("FriendDaoImpl - AddFriend: "+friend);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("friend", friend);
+		map.put("status", status);
+		
+		sqlSession.insert("FriendMapper.addFriend", map);
+	}
+	
+	//模备 铰牢
 	@Override
 	public void enterFriend(Friend friend) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.insert("FriendMapper.enterFriend", friend);
 	}
+	
+	//模备 夸没, 脚没
+	@Override
+	public void acceptFriend(Friend friend) throws Exception {
+		// TODO Auto-generated method stub
+	}
+	
+	//模备 眠玫
+	@Override
+	public List<Friend> recommendFriend(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("FriendMapper.recommendFriend", userId);
+	}
+	
+	//模备 谗扁
+	@Override
+	public void deleteFriend(String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete("FriendMapper.deleteFriend",friendId);
+	}
+	
+	//模备 府胶飘
+	@Override
+	public List<Friend> listFriend(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("FriendMapper.listFriend",search);
+	}
 
+	//模备 瞒窜
+	@Override
+	public boolean blockFriend(Friend friendId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}	
 
+	//醚 模备 荐 技扁
+	@Override
+	public int getTotalCount(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("FriendMapper.getTotalCount", search);
+	}
+	
+	//模备 咯何 犬牢
 	@Override
 	public int checkFriend(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
@@ -112,7 +119,7 @@ public class FriendDaoImpl implements FriendDao {
 		return sqlSession.selectOne("FriendMapper.checkFriend", map);
 	}
 
-
+	//模备 脚没 秒家
 	@Override
 	public void cancelFriend(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
@@ -124,7 +131,7 @@ public class FriendDaoImpl implements FriendDao {
 		sqlSession.delete("FriendMapper.cancelFriend", map);
 	}
 
-
+	//模备 内靛 函版
 	@Override
 	public void updateStatus(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
@@ -137,6 +144,7 @@ public class FriendDaoImpl implements FriendDao {
 	}
 
 
+	//follow 犬牢
 	@Override
 	public int checkFollow(String userId, String friendId, int status) throws Exception {
 		// TODO Auto-generated method stub
@@ -148,7 +156,7 @@ public class FriendDaoImpl implements FriendDao {
 		return sqlSession.selectOne("FriendMapper.checkFollow", map);
 	}
 
-
+	//模备 荐 墨款飘
 	@Override
 	public List countFriend(String userId) throws Exception {
 		// TODO Auto-generated method stub
@@ -157,9 +165,5 @@ public class FriendDaoImpl implements FriendDao {
 
 	
 
-
-
-
-	
 
 }

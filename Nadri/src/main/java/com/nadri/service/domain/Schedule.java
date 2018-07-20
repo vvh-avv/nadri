@@ -20,7 +20,8 @@ public class Schedule {
 	private List<WayPoint> wayPoints;
 	private String startHour;
 	private String endHour;
-	
+	private String scheduleDetail;
+
 	///Constructor
 	public Schedule() {
 	}
@@ -137,8 +138,15 @@ public class Schedule {
 	public void setEndHour(String endHour) {
 		this.endHour = endHour;
 	}
-
 	
+	public String getScheduleDetail() {
+		return scheduleDetail;
+	}
+
+	public void setScheduleDetail(String scheduleDetail) {
+		this.scheduleDetail = scheduleDetail;
+	}
+
 	///toString
 	@Override
 	public String toString() {
@@ -146,6 +154,8 @@ public class Schedule {
 				+ ", scheduleTitle=" + scheduleTitle + ", scheduleReview=" + scheduleReview + ", hashTag=" + hashTag
 				+ ", userId=" + userId + ", scheduleCreateTime=" + scheduleCreateTime + ", scheduleModifyTime="
 				+ scheduleModifyTime + ", openRange=" + openRange + ", transportationCode=" + transportationCode
-				+ ", wayPoints=" + wayPoints + ", startHour=" + startHour + ", endHour=" + endHour + "]";
+				+ ", wayPoints=" + wayPoints + ", startHour=" + startHour + ", endHour=" + endHour + ", scheduleDetail="
+				+ scheduleDetail + "]";
 	}
+
 }

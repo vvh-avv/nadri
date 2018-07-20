@@ -1,5 +1,7 @@
 package com.nadri.web.schedule;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.WayPoint;
@@ -38,12 +41,24 @@ public class ScheduleController {
 	
 	// addSchedule을 실행하기 위한 POST 메서드 입니다.
 	@RequestMapping( value="addSchedule",  method=RequestMethod.POST)
-	public String addSchedule(Model model , @ModelAttribute WayPoint waypoint , @ModelAttribute Schedule schedule) throws Exception{
+	public String addSchedule(Model model , @ModelAttribute WayPoint waypoint , @ModelAttribute Schedule schedule, @RequestParam("file") MultipartFile multipartFile) throws Exception{
 		
 		System.out.println( "/addSchedule : POST");
 		
+		// 파일명 얻기
+		String fileName = multipartFile.getOriginalFilename();
+		
+		// 파일 객체 생성
+		File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+		
+		multipartFile.transferTo(file);
+		
+		//Business Logic
+		schedule.setScheduleImg(fileName);
+		
 		// 일정 등록하는 부분
 		scheduleService.addSchedule(schedule);
+		
 		
 		// 경유지 등록하는 부분
 		for(int i = 0; i < schedule.getWayPoints().size() ; i++) {
@@ -52,7 +67,7 @@ public class ScheduleController {
 			scheduleService.addWayPoint(schedule.getWayPoints().get(i));
 			scheduleService.updateHashTag(schedule.getWayPoints().get(i).getWayPointTitle());
 		}
-		return null;
+		return "forward:/index.jsp";
 	}
 	
 	// addSchedule을 실행하기 위한 POST 메서드 입니다.
