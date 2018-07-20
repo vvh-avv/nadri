@@ -18,12 +18,13 @@
 <!-- common.js / common.css CDN --> 
 <script src="/javascript/common.js"></script> 
 <link rel="stylesheet" href="/css/common.css"> 
-<!-- toolbar.js CDN --> 
-<script src="/javascript/toolbar.js"></script> 
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js"></script> 
 <!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! --> 
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+<!-- 툴바 넣는 CDN 입니다 -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <html>
@@ -285,7 +286,7 @@ for (var i = 0; i < festival.length; i++) {
 
 		// 클릭시 이벤트 리스너 셋팅
 		map.data.addListener('click', function(event) {
-			alert("클릭하면 현재 위치의 주소값을 가져옵니다");
+			//alert("클릭하면 현재 위치의 주소값을 가져옵니다");
 			//getAddress(event);
 			//zoomChange(event);
 		});
@@ -365,29 +366,11 @@ for (var i = 0; i < festival.length; i++) {
 
 <%-- Content Wrapper. Contains page content --%>
 <div class="content-wrapper">
-	<%-- Content Header (Page header) --%>
-	<section class="content-header">
-		<h1>판매지도보기</h1>
-		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> 판매관리</a></li>
-			<li class="active">판매지도</li>
-		</ol>
-	</section>
-	<div id="weather_info">
-		<h1 class="city"></h1>
-		<section>
-			<p class="w_id"></p>
-			<div class="icon"></div>
-			<span class="temp"></span> <span class="temp_max"></span> <span
-				class="temp_min"></span>
-		</section>
-	</div>
-
 	<%-- Main content --%>
 		<body>
-
+      <%@ include file="/layout/toolbar.jsp"%>
 			<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/getSpotList?spotCode=0">공원</a></button>
 			</span>
 
 			<span class="dropdown">
@@ -398,28 +381,28 @@ for (var i = 0; i < festival.length; i++) {
 			<span class="dropdown">
 				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
 					<div class="dropdown-content">
-					<a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a>
-					<a href="/spot/getRestaurantList?spotCode=11">수요미식회</a>
+					<a href="/spot/getSpotList?spotCode=10">삼대천왕</a>
+					<a href="/spot/getSpotList?spotCode=11">수요미식회</a>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/getSpotList?spotCode=4">한강</a></button>
 			</span>
 			
 			<span class="dropdown">
 				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
 				<div class="dropdown-content">
-					<a href="/spot/getBabyList">수유실</a> 
-					<a href="/spot/bikeSpot.jsp">자전거</a>
-					<a href="/spot/carSpot.jsp">자동차</a>
+					<a href="/spot/getSpotList?spotCode=30">수유실</a> 
+					<a href="/spot/getSpotList?spotCode=31">자동차</a>
+					<a href="/spot/getSpotList?spotCode=32">자전거</a>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/searchSpot.jsp">직접검색</a></button>
+				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/getSearchSpot">직접검색</a></button>
 			</span>
-
+			
 			<div id="map">
 				<br /> <br />
 			</div>

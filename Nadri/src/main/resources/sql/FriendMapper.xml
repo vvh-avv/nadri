@@ -6,16 +6,16 @@
 
 <mapper namespace="FriendMapper">
 
-   <resultMap type="friend" id="friendMap">
-   	  <result property="friendNo" column="friend_no" jdbcType="INTEGER" />
-		<result property="friendId" column="friend_id" jdbcType="VARCHAR" />
-		<result property="userId" column="user_id" jdbcType="VARCHAR" />
-		<result property="createdDate" column="created_date" jdbcType="DATE"/>
-		<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
-		<result property="userName" column="user_name" jdbcType="VARCHAR" />
-		<result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
-		<result property="count" column="count" jdbcType="INTEGER" />
-		
+   <resultMap type="friend" id="friendSelectMap">
+ 	<result property="friendNo" column="friend_no" jdbcType="INTEGER" />
+	<result property="friendId" column="friend_id" jdbcType="VARCHAR" />
+	<result property="userId" column="user_id" jdbcType="VARCHAR" />
+	<result property="createdDate" column="created_date" jdbcType="DATE"/>
+	<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+	<result property="userName" column="user_name" jdbcType="VARCHAR" />
+	<result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
+	<result property="count" column="count" jdbcType="INTEGER" />
+			
 		<!-- status - 한쪽만 follow : 0(친구상태라면 서로가 0) / 친구 신청: 1 / 친구 차단: 2 -->
   </resultMap>
 

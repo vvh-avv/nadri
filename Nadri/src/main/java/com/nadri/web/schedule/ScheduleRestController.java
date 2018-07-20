@@ -43,8 +43,7 @@ public class ScheduleRestController {
 		Date currentTime = new Date ();
 		String mTime = mSimpleDateFormat.format ( currentTime );
 		
-		//String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=A&listYN=Y&eventStartDate="+mTime+"&&_type=json";
-		String apiURL = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&base_date=20180719&base_time=0500&nx=60&ny=127&numOfRows=100&pageSize=100&pageNo=1&startPage=1&_type=json";
+		String apiURL = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&base_date="+mTime+"&base_time=0500&nx=60&ny=127&numOfRows=100&pageSize=100&pageNo=1&startPage=1&_type=json";
 		URL url = new URL(apiURL);
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		con.setRequestMethod("GET");

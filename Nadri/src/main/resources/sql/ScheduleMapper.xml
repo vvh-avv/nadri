@@ -14,8 +14,9 @@
 		<result property="scheduleCreateTime"   column="schedule_createtime"   			       jdbcType="DATE"/>
 		<result property="scheduleModifyTime"   column="schedule_modifytime"   		       jdbcType="DATE"/>
 		<result property="openRange"					column="open_range"   		                       jdbcType="VARCHAR"/>
-		<result property="startHour" 	                    column="startHour" 	                                   jdbcType="DATE" />
-		<result property="endHour" 			            column="endHour" 		                               jdbcType="DATE" />
+		<result property="startHour" 	                    column="starthour" 	                                   jdbcType="DATE" />
+		<result property="endHour" 			            column="endhour" 		                                   jdbcType="DATE" />
+		<result property="scheduleDetail"				column="schedule_detail"   		                   jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<resultMap id="waypointSelectMap"               type="waypoint">
@@ -27,11 +28,11 @@
 		<result property="wayPointY" 						column="waypoint_y" 					     jdbcType="DECIMAL"/>
 		<result property="wayPointAddress" 	        column="waypoint_address" 	         jdbcType="VARCHAR" />
 		<result property="wayPointDetail" 	            column="waypoint_detail" 		             jdbcType="VARCHAR" />
-		<result property="stayTime" 					    column="stayTime" 			                 jdbcType="DATE" />
-		<result property="moveTime" 	                    column="moveTime"                          jdbcType="DATE" />
+		<result property="stayTime" 					    column="stayTime" 			                 jdbcType="INTEGER" />
+		<result property="moveTime" 	                    column="moveTime"                          jdbcType="INTEGER" />
 		<result property="transportationCode" 		column="transportation_code"   		 jdbcType="VARCHAR"/>
 		<result property="wayPointNav" 		            column="waypoint_nav"   		             jdbcType="VARCHAR"/>
-		<result property="wayPointStartHour" 		column="waypoint_starthour" 			 jdbcType="DATE" />
+        <result property="wayPointStartHour" 		column="waypoint_starthour" 			 jdbcType="DATE" />
 		<result property="wayPointEndHour" 	    column="waypoint_endhour"             jdbcType="DATE" />
 	</resultMap>
 	
@@ -48,7 +49,8 @@
 			schedule_modifytime,
 			open_range,
 			transportation_code,
-			startHour) 
+			starthour,
+			schedule_detail) 
 		VALUES (
 			#{userId:VARCHAR},
 			#{scheduleDate:DATE},
@@ -59,7 +61,8 @@
 			now(),
 			#{openRange:VARCHAR},
 			#{transportationCode:VARCHAR},
-			#{startHour:DATE})
+			#{startHour:DATE},
+			#{scheduleDetail:VARCHAR})
 	</insert>
 	
 	<!-- 2. 경유지를 추가하기 위한 메서드 -->

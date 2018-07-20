@@ -8,7 +8,7 @@ public class Friend {
 	private String friendId;							//친구 아이디(요청받은 친구)
 	private String friendCode;					//친구 상태 코드(0:친구 신청 중or 아무것도 아닌 사이 1: 요청 수락시 2: 차단)
 	private String profileImg;						//프로필 사진
-	private String userName;								//친구 이름 표시
+	private String userName;						//친구 이름 표시
 	private String createdDate;					//친구 생성일
 	private int count;									//친구 총 수 세기 위한 수단
 

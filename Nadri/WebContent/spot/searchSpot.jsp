@@ -22,8 +22,9 @@
 <!-- common.js / common.css CDN --> 
 <script src="/javascript/common.js"></script> 
 <link rel="stylesheet" href="/css/common.css"> 
-<!-- toolbar.js CDN --> 
-<script src="/javascript/toolbar.js"></script> 
+<!-- 툴바 넣는 CDN 입니다 -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js"></script> 
 <!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! --> 
@@ -381,14 +382,10 @@ body {
 <%-- Content Wrapper. Contains page content --%>
 <div class="content-wrapper">
 	<%-- Content Header (Page header) --%>
+	      <%@ include file="/layout/toolbar.jsp"%>
 	<section class="content-header">
-		<h1>지도찾기</h1>
-		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> 판매관리</a></li>
-			<li class="active">판매지도</li>
-		</ol>
 		<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/parkSpot.jsp">공원</a></button>
+				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/getSpotList?spotCode=0">공원</a></button>
 			</span>
 
 			<span class="dropdown">
@@ -399,26 +396,22 @@ body {
 			<span class="dropdown">
 				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
 					<div class="dropdown-content">
-					<a href="/spot/getRestaurantList?spotCode=10">삼대천왕</a>
-					<a href="/spot/getRestaurantList?spotCode=11">수요미식회</a>
+					<a href="/spot/getSpotList?spotCode=10">삼대천왕</a>
+					<a href="/spot/getSpotList?spotCode=11">수요미식회</a>
 				</div>
 			</span>
 			
 			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/riverSpot.jsp">한강</a></button>
+				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/getSpotList?spotCode=4">한강</a></button>
 			</span>
 			
 			<span class="dropdown">
 				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
 				<div class="dropdown-content">
-					<a href="/spot/getBabyList">수유실</a> 
-					<a href="/spot/bikeSpot.jsp">자전거</a>
-					<a href="/spot/carSpot.jsp">자동차</a>
+					<a href="/spot/getSpotList?spotCode=30">수유실</a> 
+					<a href="/spot/getSpotList?spotCode=31">자동차</a>
+					<a href="/spot/getSpotList?spotCode=32">자전거</a>
 				</div>
-			</span>
-			
-			<span class="dropdown">
-				<button class="btn btn-block btn-normal btn-xs" ><a href="/spot/searchSpot.jsp">직접검색</a></button>
 			</span>
 	</section>
 
