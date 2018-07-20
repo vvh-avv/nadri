@@ -215,7 +215,6 @@ public class BoardController {
 	@RequestMapping(value="listBoard")
 	public String getBoardList(@ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception{
 		System.out.println("/board/getBoardList : GET / POST");
-		System.out.println("**"+((User)session.getAttribute("user")).getUserId());
 		
 		if(search.getCurrentPage()==0 ){
 			search.setCurrentPage(0);
@@ -225,7 +224,10 @@ public class BoardController {
 		List<Board> list = boardService.getBoardList(search);
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
-			list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), ((User)session.getAttribute("user")).getUserId()) );
+			if(session.getAttribute("user")!=null) {
+				System.out.println("넌 회원이다!!!!!!!!!!!!!!!");
+				list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), ((User)session.getAttribute("user")).getUserId()) );	
+			}
 			
 			//댓글이 있을 때만 수행
 			if( list.get(i).getCommCnt()>0 ) {
