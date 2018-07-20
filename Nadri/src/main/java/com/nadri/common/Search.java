@@ -12,6 +12,7 @@ public class Search {
 	private int startRowNum;
 
 	private int searchSpot;
+	private int memberFlag; //회원과 비회원일 때 게시물 목록 불러오는 조건이 달라서 추가함 HJS
 	
 	///Constructor method
 	public Search() {
@@ -81,11 +82,19 @@ public class Search {
 		this.startRowNum = startRowNum;
 	}
 
+	public int getMemberFlag() {
+		return memberFlag;
+	}
+
+	public void setMemberFlag(int memberFlag) {
+		this.memberFlag = memberFlag;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Search [curruntPage=" + curruntPage + ", searchCondition=" + searchCondition + ", searchKeyword="
 				+ searchKeyword + ", pageSize=" + pageSize + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum
-				+ ", searchSpot=" + searchSpot + "]";
+				+ ", searchSpot=" + searchSpot + ", memberFlag=" + memberFlag + "]";
 	}
-
 }

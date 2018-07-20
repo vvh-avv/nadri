@@ -2,10 +2,7 @@
 <%@ page pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-
-<html lang="ko">
-	
+<html>
 <head>
 	<meta charset="EUC-KR">
 	
@@ -19,18 +16,8 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	<!-- Bootstrap Dropdown Hover CSS -->
+	<script src="/javascript/toolbar.js"></script>
 	<link rel="stylesheet" href="/css/toolbar.css">
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-    
-   <!-- jQuery UI toolTip 사용 CSS-->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  
-  <!-- jQuery UI toolTip 사용 JS-->
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -56,7 +43,6 @@
 		
 		//============= userId 에 회원정보보기  Event  처리(Click) =============	
 		 $(function() {
-		
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$( "td:nth-child(2)" ).on("click" , function() {
 				 self.location ="/user/getUser?userId="+$(this).text().trim();
@@ -64,7 +50,6 @@
 						
 			//==> userId LINK Event End User 에게 보일수 있도록 
 			$( "td:nth-child(2)" ).css("color" , "red");
-			
 		});	
 		
 		//============= userId 에 회원정보보기  Event  처리 (double Click)=============
@@ -90,7 +75,6 @@
 																+"아이디 : "+JSONData.userId+"<br/>"
 																+"이  름 : "+JSONData.userName+"<br/>"
 																+"이메일 : "+JSONData.email+"<br/>"
-																+"ROLE : "+JSONData.role+"<br/>"
 																+"등록일 : "+JSONData.regDate+"<br/>"
 																+"</h6>";
 									$("h6").remove();
@@ -108,44 +92,6 @@
 			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 		});	
 		
-		 $( function() {
-			    var autocompleId = [];
-			    var autocompleName = [];
-			    
-			    $.ajax( 
-						{
-							url : "/user/json/autocompleteUser" ,
-							method : "GET" ,
-							dataType : "json" ,
-							headers : {
-								"Accept" : "application/json",
-								"Content-Type" : "application/json"
-							},
-							success : function(JSONData , status) {
-								for(i=0; i<JSONData.length; i++){
-									autocompleId.push(JSONData[i].userId);
-									autocompleName.push(JSONData[i].userName);
-								}
-							}
-					});
-
-			    $( "input[name=searchKeyword]" ).autocomplete({
-			      source: autocompleId
-			    });
-			    
-			    $("select[name=searchCondition]").on("change", function(){
-			    	var value = $(this).val();
-			    	if(value == "0"){
-			    		$( "input[name=searchKeyword]" ).autocomplete({
-			  		      source: autocompleId
-			  		    });	    		
-			    	}else{
-			    		$( "input[name=searchKeyword]" ).autocomplete({
-			  		      source: autocompleName
-			  		    });
-			    	}
-			    });
-			  });
 	
 	</script>
 </head>
@@ -161,7 +107,7 @@
  <div class="col-sm-2" style="margin-left:3%">
 
   <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-  <h3><a href="/user/listUser">마이 페이지</a></h3><br/>
+  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
   <a href="/user/getUser.jsp">내 정보 보기</a><br/><br/>
   <a href="/user/updateUser.jsp">내 정보 수정</a><br/><br/>
   <a href="/friend/listFriend.jsp">친구 목록</a><br/><br/>
@@ -227,7 +173,7 @@
 	          <tr>
 	            <th class="text-center">No</th>
 	            <th class="text-center">회원 ID</th>
-	            <th class="text-center">회원명</th>
+	            <th class="text-center">회원이름	</th>
 	            <th class="text-center">이메일</th>
 	            <th class="text-center">간략정보</th>
 	          </tr>
@@ -250,11 +196,8 @@
 				</tr>
 	          </c:forEach>
 	        
-	        </tbody>
-	      
-	      </table>
-		  <!--  table End /////////////////////////////////////-->
-		  
+	        </tbody>   
+	      </table>		  
 	 	</div>
 	 	<!--  화면구성 div End /////////////////////////////////////-->
 	 	

@@ -187,7 +187,7 @@
  <div class="col-sm-2" style="margin-left:3%">
 
   <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-  <h3><a href="/user/listUser.jsp">마이 페이지</a></h3><br/>
+  <h4><a href="/user/listUser.jsp">마이 페이지</a></h4><br/>
   <a href="/user/getUser.jsp">내 정보 보기</a><br/><br/>
   <a href="/user/updateUser.jsp">내 정보 수정</a><br/><br/>
   <a href="#">친구 목록</a><br/><br/>

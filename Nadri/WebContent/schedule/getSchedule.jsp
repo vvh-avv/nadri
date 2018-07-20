@@ -21,14 +21,15 @@
 <link rel="stylesheet" href="/css/commonfont.css">
 <!-- toolbar.js CDN -->
 <script src="/javascript/toolbar.js"></script>
-<!-- Import materialize.min.js -->
-<script type="text/javascript" src="/javascript/materialize.min.js"></script>
-<link rel="stylesheet" href="/css/materialize.min.css">
 <!-- TimeLine에 관한 라인입니다. -->
 <script type="text/javascript" src="/javascript/timelinemain.js"></script>
 <link rel="stylesheet" href="/css/timelinestyle.css">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
+<!-- 툴바 넣는 CDN 입니다 -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
+
 <style>
 @font-face {
 	font-family: 'seoul';
@@ -77,6 +78,14 @@ ul.countdown li p {
 .cd-nugget-info-arrow {
 	fill: #383838;
 }
+
+.container {
+    padding-right: 30px;
+    padding-left: 30px;
+    margin-right: auto;
+    margin-left: auto;
+	}
+	
 </style>
 <script>
 	$(function() {
@@ -141,7 +150,8 @@ ul.countdown li p {
 </script>
 </head>
 <body>
-	<header>
+      <%@ include file="/layout/toolbar.jsp"%>
+	<header style ="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
 		<div class="cd-nugget-info">
 			<span> <polygon class="cd-nugget-info-arrow" points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " /> </span>
 			<p id="scheduleTitle">${schedule.scheduleTitle}</p>
@@ -183,6 +193,7 @@ ul.countdown li p {
 			<div class="cd-timeline__content js-cd-content">
 				<h2>Start!!</h2>
 					<p>${schedule.scheduleDate}</p>
+					<p id="scheduleDetail">${schedule.scheduleDetail}</p>
 					<p>${schedule.hashTag}</p>
 					<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
 				<a href="#0" class="cd-timeline__read-more">Read more</a> <span
@@ -215,7 +226,7 @@ ul.countdown li p {
 			<!-- cd-timeline__block -->
 			
 			<div class="cd-timeline__block js-cd-block">
-			<div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+			<div class="cd-timeline__img cd-timeline__img--movie js-cd-img" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
 				<img src="/images/spot/icon/cd-icon-movie.svg" alt="Movie">
 			</div>
 			<!-- cd-timeline__img -->

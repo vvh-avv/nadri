@@ -26,6 +26,7 @@
 		<typeAlias alias="searchlog" type="com.nadri.service.domain.SearchLog" />
 		<typeAlias alias="spot" type="com.nadri.service.domain.Spot" />
 		<typeAlias alias="user" type="com.nadri.service.domain.User" />
+		<typeAlias alias="friend" type="com.nadri.service.domain.Friend" />
 		<typeAlias alias="waypoint" type="com.nadri.service.domain.WayPoint" />
 	</typeAliases>
 	
@@ -40,6 +41,7 @@
 		<mapper resource="sql/SearchLogMapper.xml" />
 		<mapper resource="sql/SpotMapper.xml" />
 		<mapper resource="sql/UserMapper.xml" />
+		<mapper resource="sql/FriendMapper.xml" />
 	</mappers>
 
 </configuration>

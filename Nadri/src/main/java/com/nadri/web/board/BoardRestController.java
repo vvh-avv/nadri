@@ -1,7 +1,8 @@
 package com.nadri.web.board;
 
-import java.sql.Timestamp;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,18 +52,24 @@ public class BoardRestController {
 	}
 	
 	@RequestMapping(value="json/getBoardList/{currentPage}", method=RequestMethod.POST)
-	public List<Board> getBoardList( @PathVariable int currentPage ) throws Exception{
+	public List<Board> getBoardList( @PathVariable int currentPage, HttpSession session ) throws Exception{
 		System.out.println("/board/json/getBoardList : POST");
 		
 		Search search = new Search();
-		search.setCurrentPage( (currentPage+1)*pageSize );
+		search.setStartRowNum( (currentPage+1)*pageSize );
 		search.setPageSize(pageSize);
+
+		if(session.getAttribute("user")!=null) { //비회원0, 회원1
+			search.setMemberFlag(1);
+		}
 		
 		List<Board> list = boardService.getBoardList(search);
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
-			list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), "user05") );
-			
+			//회원일 경우 session 으로 좋아요 여부 가져오기
+			if(session.getAttribute("user")!=null) {
+				list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), ((User)session.getAttribute("user")).getUserId()) );	
+			}
 			//댓글이 있을 때만 수행
 			if( list.get(i).getCommCnt()>0 ) {
 				List<Comment> comment = commentService.getCommentList(list.get(i).getBoardNo());
@@ -74,7 +81,7 @@ public class BoardRestController {
 				list.get(i).setCommLastTime(commLastTime);
 			}
 		}
-		
+
 		return list;
 	}
 	

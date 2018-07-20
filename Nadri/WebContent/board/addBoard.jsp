@@ -20,6 +20,9 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
+<!-- toolbar.js CDN -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <style>
 	.addBody{
@@ -48,6 +51,9 @@
 		white-space:nowrap; /*가로스크롤 사용 설정*/
 		overflow-x:scroll; /*가로스크롤 활성화 설정*/
 		/*overflow:auto; /*영역 초과시 스크롤 보이고, 초과안하면 스크롤 감추는 auto 설정 */
+	}
+	textarea{
+		resize: none;
 	}
 </style>
 
@@ -224,7 +230,7 @@ $(function(){
 
 <body>
 	<!-- 메인툴바 -->
-	<jsp:include page="/layout/toolbar.jsp"/>
+   <%@ include file="/layout/toolbar.jsp"%>
 	
 	<div class="container addBody">
 		<div class="col-md-2"> <!-- 내 일정 목록 -->

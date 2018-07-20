@@ -24,7 +24,7 @@
 	<insert id="insertBoard" parameterType="board">
 		INSERT
 		INTO BOARD (user_id, board_time, board_title, board_content, board_img, open_range, hashtag)
-		VALUES (<!--#{user.userId}-->'user06', NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
+		VALUES (#{user.userId}, NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
 	</insert>
 	
 	<update id="updateBoard" parameterType="board">
@@ -45,7 +45,7 @@
 		GROUP BY board.board_no;
 	</select>
 	
-	<select id="getBoardList" parameterType="list" resultMap="boardMap">
+	<select id="getBoardList" parameterType="search" resultMap="boardMap">
 		SELECT board.*, likeCnt, commCnt
 		FROM board left join ( SELECT comment.board_no, likeCnt, commCnt
 									  FROM (SELECT board_no, count(*) likeCnt FROM likes group by board_no) likes right join
@@ -54,8 +54,11 @@
 									  GROUP BY likes.board_no) innerTable
 		ON board.board_no = innerTable.board_no
 		GROUP BY board.board_no
+		<if test="memberFlag==0">
+			HAVING open_range=0
+		</if>
 		ORDER BY board_time desc
-		LIMIT #{currentPage},#{pageSize};
+		LIMIT #{startRowNum},#{pageSize};
 	</select>
 	
 	<delete id="deleteBoard" parameterType="int">
