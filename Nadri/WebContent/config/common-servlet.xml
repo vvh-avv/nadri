@@ -52,16 +52,16 @@
 	</bean>
 	
 	
-	<!-- 	:: exception resolver  선언 :: 서술적 / 선언적 예외처리 -->
+	<!-- 	:: exception resolver  선언 :: 서술적 / 선언적 예외처리
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<!-- <property name="exceptionMappings">
+		</- <property name="exceptionMappings">
 			<props>
 				<prop key="java.lang.NullPointerException">/common/nullError.jsp</prop>
 				<prop key="java.lang.NumberFormatException">/common/numberFormatError.jsp</prop>
 			</props>
-		</property> -->
+		</property> /->
 		<property name="defaultErrorView"	value="/common/error.jsp" />
-	</bean>
+	</bean>-->
 	
 
 

@@ -213,7 +213,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="listBoard")
-	public String getBoardList(@ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception{
+	public String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception{
 		System.out.println("/board/getBoardList : GET / POST");
 		
 		if(search.getCurrentPage()==0 ){
@@ -221,14 +221,17 @@ public class BoardController {
 		}
 		search.setPageSize(pageSize);
 		
+		if(session.getAttribute("user")!=null) { //비회원0, 회원1
+			search.setMemberFlag(1);
+		}
+		
 		List<Board> list = boardService.getBoardList(search);
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
-			if(session.getAttribute("user")!=null) {
-				System.out.println("넌 회원이다!!!!!!!!!!!!!!!");
+			//회원일 경우 session 으로 좋아요 여부 가져오기
+			if(session.getAttribute("user")!=null) { 
 				list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), ((User)session.getAttribute("user")).getUserId()) );	
 			}
-			
 			//댓글이 있을 때만 수행
 			if( list.get(i).getCommCnt()>0 ) {
 				List<Comment> comment = commentService.getCommentList(list.get(i).getBoardNo());

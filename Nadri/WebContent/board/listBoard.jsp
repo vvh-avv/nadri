@@ -328,9 +328,9 @@ $(function(){
 		            				tag += formatDate(date);
 		            			}
 		            				tag += "</span> · ";
-		            			if(this.openRange=='1'){
+		            			if(this.openRange=='0'){
 		            				tag += "<img class='iconOpen' src='/images/board/open_all.png' data-toggle='tooltip' data-placement='top' title='전체공개'>";
-		            			}else if(this.openRange=='2'){
+		            			}else if(this.openRange=='1'){
 		            				tag += "<img class='iconOpen' src='/images/board/open_friends.png' data-toggle='tooltip' data-placement='top' title='친구공개'>";
 		            			}else{
 		            				tag += "<img class='iconOpen' src='/images/board/open_self.png' data-toggle='tooltip' data-placement='top' title='비공개'>";
@@ -371,13 +371,12 @@ $(function(){
 			            			+"<div id='viewList'> <span id='likePrint"+boardNo+"'>좋아요 "+this.likeCnt+"개</span> &nbsp;&nbsp; <span id='commPrint"+boardNo+"'>댓글 "+this.commCnt+"개</span></div><br>"
 			            			+"<div id='commListAll'>";
 			            		if(this.comment!=null){
-		            					tag += "<div id='commList'>";
 			            			for( i=0; i<this.comment.length; i++ ){
-			            				tag += "<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
+			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
-			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span>"	
+			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span></div>"	
 			            			}
-			            			tag += "</div> <div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
+			            			tag += "<div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
 			            		}
 			            		tag += "<section class='commProm'> <form> <textarea id='commContent' name='commContent' placeholder='댓글을 입력해주세요..'></textarea></form></section></div></article><br>";
 		            	})
