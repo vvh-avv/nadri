@@ -194,20 +194,25 @@ public class BoardController {
 		User user = userService.getUser(board.getUser().getUserId());
 		board.setUser(user);
 
-		int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
-		
-		List<Comment> comment = commentService.getCommentList(boardNo);
-		for( int i=0; i<comment.size(); i++) {
-			comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+		if(session.getAttribute("user")!=null) {
+			int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
+			model.addAttribute("likeFlag", likeFlag);
 		}
-		board.setComment(comment);
 		
-		String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
-		
-		board.setCommLastTime(commLastTime);
+		//댓글이 있을 때만 수행
+		if( board.getCommCnt()>0 ) {
+			List<Comment> comment = commentService.getCommentList(boardNo);
+			for( int i=0; i<comment.size(); i++) {
+				comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+			}
+			board.setComment(comment);
+			
+			String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+			
+			board.setCommLastTime(commLastTime);
+		}
 		
 		model.addAttribute("board", board);
-		model.addAttribute("likeFlag", likeFlag);
 		
 		return "forward:/board/getBoard.jsp";
 	}

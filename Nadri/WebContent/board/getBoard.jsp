@@ -123,6 +123,9 @@
       cursor : pointer;
       display : none;
    }
+   .b2Section{
+   	float: right;
+   }
    /* 화면이 작아졌을 때 유저정보가 위로 가게끔 설정 */
    @media only screen and (max-width: 600px) {
       .container{
@@ -178,10 +181,8 @@
    	    border: 1px solid #ccc;
 	    border-radius: 4px;
 	    display: inline-block;
-	    width: 300px;
-	    height: auto;
-	    /*width: auto;
-	    height: 34px;*/
+	    width: auto;
+	    height: 34px;
 	    padding: 6px 12px;
 	    font-size: 14px;
 	    line-height: 1.42857143;
@@ -252,12 +253,19 @@
       float: left;
       margin-bottom: 10px;
    }
+   p{
+   	 float:left;
+     margin-bottom:10px;
+   }
 </style>
 
 <script>
 //* 마지막으로 작성된 댓글시간 출력을 함수로 만들고
 function refreshDate(){
-	$("#commLastTime").text(transferTime( $("#commLastTime").attr("class") ) );
+	//댓글이 존재할 때만 실행
+	if( $("#commLastTime").length>0 ){
+		$("#commLastTime").text(transferTime( $("#commLastTime").attr("class") ) );	
+	}
 }
 
 $(function(){
@@ -324,6 +332,11 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
+	  if( ${empty sessionScope.user} ){
+		  swal ( "좋아요 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
+		  return;
+	  }
+	   
       if( $(this).attr("src")=="/images/board/like_empty.png" ){ //좋아요+1
          $.ajax({
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
@@ -357,8 +370,14 @@ $(function(){
 			   $(this).val("");
 			   $(this).focus();
 		   }else{
+			   if( ${empty sessionScope.user} ){
+					swal ( "댓글달기 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
+					$(this).val("");
+					return;
+				}
+			   
 			   $.ajax({
-				   url : "/board/json/addComment/"+"ggobugi", //세션
+				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
 				   method : "POST",
 				   dataType : "json",
 					headers : {
@@ -512,67 +531,83 @@ $(function(){
       $(".inquireSend").on(
             "click",
             function(e) {
+               var inquireFile = $('.inquire_file').val();
+             
+             if(inquireFile==""){
+                console.log("파일없음");
+                var formData = $(".inquire_form");
+                var requestMapping = 'addInquireNoFile';
+             }else{
+                console.log("파일있음");
+                $('.inquire_form').attr('enctype','multipart/form-data');
+                var requestMapping = 'addInquire';
+                var form = $(".inquire_form");
+                // you can't pass Jquery form it has to be javascript form object
+                var formData = new FormData(form[0]);
+             }
 
-               var form = $(".inquire_form");
+             //if you only need to upload files then 
+             //Grab the File upload control and append each file manually to FormData
+             //var files = form.find("#fileupload")[0].files;
 
-               // you can't pass Jquery form it has to be javascript form object
-               var formData = new FormData(form[0]);
+             //$.each(files, function() {
+             //  var file = $(this);
+             //  formData.append(file[0].name, file[0]);
+             //});
 
-               //if you only need to upload files then 
-               //Grab the File upload control and append each file manually to FormData
-               //var files = form.find("#fileupload")[0].files;
+             if ($('.inquireTitle').val() == '') {
+                alert("제목을 입력해주세요!");
+                $('.inquireTitle').focusin();
+                return;
+             } else if ($('.inquireWrite').val() == '') {
+                alert("내용을 입력해주세요!");
+                $('.inquireTitle').focusin();
+             } else {
 
-               //$.each(files, function() {
-               //  var file = $(this);
-               //  formData.append(file[0].name, file[0]);
-               //});
-
-               if ($('.inquireTitle').val() == '') {
-                  alert("제목을 입력해주세요!");
-                  $('.inquireTitle').focusin();
-                  return;
-               } else if ($('.inquireWrite').val() == '') {
-                  alert("내용을 입력해주세요!");
-                  $('.inquireTitle').focusin();
-               } else {
-
-                  $('body').addClass('waiting');
-                  
-                  var reportUser = $('.reportedUserId').val();
-                  
-                  if(reportUser==''){
-                     console.log("유저신고가 아닙니다~");
-                     reportUser = "null";
-                  }
-                  
-                  var inquireCode = $('.inquireCode').val();
-                  
-                  var title = $('.inquireTitle').val();
-                  var title_enc = encodeURI(encodeURIComponent(title));
-                  
-                  var write = $('.inquireWrite').val();
-                  var write_enc = encodeURI(encodeURIComponent(write));
-                  
-                  var link = $('.inquireLink').val();
-                                    
-                  $.ajax({
-                     type : "POST",
-                     url : "/restAdmin/addInquire/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+link,
-                     //dataType: 'json', //not sure but works for me without this
-                     data : formData,
-                     contentType: false,//this is requireded please see answers above
-                     processData : false, //this is requireded please see answers above
-                     //cache: false, //not sure but works for me without this
-                     success : function(data, status) {
-                        if (status == "success") {
-                           $('body').removeClass('waiting');
-                           $('form')[0].reset();
-                           $('#myModal').modal('hide');
-                           console.log(data);
-                        }
-                     }
-                  });
-               }
+                $('body').addClass('waiting');
+                
+                var reportUser = $('.reportedUserId').val();
+                
+                if(reportUser==''){
+                   console.log("유저신고가 아닙니다~");
+                   reportUser = "null";
+                }
+                
+                var inquireCode = $('.inquireCode').val();
+                
+                var title = $('.inquireTitle').val();
+                var title_enc = encodeURI(encodeURIComponent(title));
+                
+                var write = $('.inquireWrite').val();
+                var write_enc = encodeURI(encodeURIComponent(write));
+                
+                var inquireLink = $('.inquireLink').val();
+                
+                if(inquireLink == ''){
+                   
+                   console.log("링크가 없어요~");
+                   inquireLink = "null";
+                   
+                }
+                
+                $.ajax({
+                   type : "POST",
+                   url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
+                   //dataType: 'json', //not sure but works for me without this
+                   data : formData,
+                   contentType: false,//this is requireded please see answers above
+                   processData : false, //this is requireded please see answers above
+                   //cache: false, //not sure but works for me without this
+                   success : function(data, status) {
+                      if (status == "success") {
+                         $('body').removeClass('waiting');
+                         $('.inquire_form')[0].reset();
+                         $('#inquireModal').modal('hide');
+                         console.log(data);
+                      }
+                   }
+                });
+             }
 
             });
 
@@ -676,8 +711,10 @@ $(function(){
                   	<c:if test="${board.openRange=='2'}"><img class="iconOpen" src="/images/board/open_self.png" data-toggle="tooltip" data-placement="bottom" title="비공개"></c:if> <!-- 비공개 아이콘 -->
                   </div>
                </div>
-               <div id="more"><img class="moreImg" src="/images/board/more.png" style="cursor:pointer;width:20px;height:20px;margin-top:10px"></div>
-            </div>
+               <c:if test="${!empty sessionScope.user}">
+               		<div id="more"><img class="moreImg" src="/images/board/more.png" style="cursor:pointer;width:20px;height:20px;margin-top:10px"></div>
+               </c:if>
+               </div>
             </form>
       </div>
       
@@ -685,8 +722,8 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-                  <c:if test="${likeFlag==0}"><img class="icon" src="/images/board/like_empty.png"></c:if>
-                  <c:if test="${likeFlag!=0}"><img class="icon" src="/images/board/like_full.png"></c:if>
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+                  <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;
                <!-- 공유하기 버튼 클릭시 노출될 항목 -->
@@ -719,7 +756,9 @@ $(function(){
 	        </div>
             
             <!-- 마지막 댓글달린 시간 -->
-            <div id="commLastTime" class="${board.commLastTime}"></div>
+            <c:if test="${board.commLastTime!=null}">
+            	<div id="commLastTime" class="${board.commLastTime}"></div>
+            </c:if>
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
@@ -743,10 +782,12 @@ $(function(){
 				<br>
 				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
-				<div class="modalUserButton">
-					<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
-					<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
-				</div>
+				<c:if test="${!empty sessionScope.user}">
+					<div class="modalUserButton">
+						<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
+						<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -764,7 +805,7 @@ $(function(){
                </h4>
             </div>
             <div class="modal-body">
-               <form class="inquire_form" enctype="multipart/form-data">
+               <form class="inquire_form">
 	               신 고 종 류
 	              <select class="inquireCode" name="inquireCode" style="height: 30px;">
                      <option value="9">선택하세요</option>
