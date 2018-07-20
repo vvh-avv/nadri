@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="/css/common.css">
 <!-- toolbar.js CDN -->
 <script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <!-- flexslider CDN (슬라이드쇼) -->
 <link rel="stylesheet" href="/css/flexslider.css" type="text/css">
@@ -43,13 +44,14 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
 
-<style>
+<style>	
 	.ListBody{
-		padding-top : 10px;
+		padding-top: 10px;
+		overflow: hidden;
 	}
 	.gotoBoard {
 	  cursor : pointer;
-	  position: absolute;
+	  position: fixed; /*absolute;*/
 	  bottom: 10%;
 	  right: 10%;
 	  width: 50px;
@@ -59,7 +61,7 @@
 	.gotoTop {
 	  display : none;
 	  cursor : pointer;
-	  position: absolute;
+	  position: fixed;
 	  bottom: 10%;
 	  right: 5%;
 	  width: 50px;
@@ -180,12 +182,15 @@
    	    border: 1px solid #ccc;
 	    border-radius: 4px;
 	    display: inline-block;
-	    width: auto;
-	    height: 34px;
+	    width: 300px;
+	    height: auto;
+	    /*width: auto;
+	    height: 34px;*/
 	    padding: 6px 12px;
 	    font-size: 14px;
 	    line-height: 1.42857143;
 	    color: #555;
+	    margin-left: 5px;
    }
    span[id^='boardDetail']{
      cursor: pointer;
@@ -267,7 +272,7 @@ function refreshDate(){
 	}
 }
 
-$(function(){	
+$(function(){
 	//마지막으로 작성된 댓글시간 출력을 함수 바로 실행
 	refreshDate();
 	//그리고 10초 뒤 또 실행하도록 설정
@@ -277,8 +282,8 @@ $(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	
 	//*스크롤감지
-	$("body").on("scroll", function(){
-		var scrollLocation = $("body").scrollTop(); //브라우저의 스크롤 값
+	$(window).on("scroll", function(){
+		var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
 		var maxHeight = $(document).height(); //현재페이지의 높이
 		var currentScroll = scrollLocation + $(window).height(); //브라우저의 스크롤 값 + 윈도우의 크기
 		
@@ -291,7 +296,7 @@ $(function(){
 		}
 		
 		//*2.무한스크롤
-		if (maxHeight <= currentScroll) { //+100을 한 이유는 사용자가 반드시 최하단이 아니라 하단보다 조금 위에 위치했더라도 데이터를 불러올 수 있도록 하기 위함
+		if (maxHeight <= currentScroll) { //+50을 한 이유는 사용자가 반드시 최하단이 아니라 하단보다 조금 위에 위치했더라도 데이터를 불러올 수 있도록 하기 위함
 			$.ajax({
 				url : "/board/json/getBoardList/"+$("#currentPage").val(),
 	            method : "POST",
@@ -304,7 +309,7 @@ $(function(){
 	            		//alert("더 불러올 데이터가 없습니다.");
 	            		swal ( "확인" ,  "더 불러올 데이터가 존재하지 않습니다." ,  "error" )
 	            	}else{
-		            	$("#currentPage").val( $("#currentPage").val()+1 ); //현재페이지 증가 +1
+		            	$("#currentPage").val( Number($("#currentPage").val())+1 ); //현재페이지 증가 +1
 		            	
 		            	var tag = "";
 		            	$(data).each(function(){
@@ -315,7 +320,7 @@ $(function(){
 		            			+"</span>"
 		            			+"<article class='"+boardNo+"'>"
 		            			+"<div class='aSection'> <div class='userList'> <div id='userProfile'>"
-		            			+"<img src='/images/profile/"+this.user.profileImg+"' class='img-circle' data-toggle='modal' data-target='.userModal' data-whatever='"+this.user.profileImg+","+this.user.userId+","+this.user.userName+","+this.user.introduce+"'>"                        
+		            			+"<img src='/images/profile/"+this.user.profileImg+"' class='img-circle' data-toggle='modal' data-target='.userModal' data-whatever='"+this.user.profileImg+","+this.user.userName+","+this.user.userId+","+this.user.introduce+"'>"                        
 		            			+"</div> <div class='userInfoAndBoardDate'> <div id='userInfo'> <b>"+this.user.userName+"</b> ("+this.user.userId+") </div>"
 		            			+"<div id='boardDate' style='width:auto;'> <span id='boardDetail'>";
 		            			if(this.boardDate){
@@ -363,7 +368,7 @@ $(function(){
 			            			+"<span id='commIcon'> <img class='icon' src='/images/board/comment.png'> </span> &nbsp; &nbsp;"
 			            			+"<span id='shareIcon'> <img class='icon' src='/images/board/share.png'> &nbsp;&nbsp; <img class='iconDetail"+boardNo+"' id='kakaoShare' src='/images/board/share/kakao.png'>"
 			            			+"<img class='iconDetail"+boardNo+"' id='facebookShare' src='/images/board/share/facebook.png'> <img class='iconDetail"+boardNo+"' id='naverShare' src='/images/board/share/naver.png'> </span> </div> <br>"
-			            			+"<div id='viewList'> <span id='likePrint"+boardNo+"'>좋아요 "+this.likeCnt+"개</span> &nbsp;&nbsp; <span id='commPrint'>댓글 "+this.commCnt+"개</span></div><br>"
+			            			+"<div id='viewList'> <span id='likePrint"+boardNo+"'>좋아요 "+this.likeCnt+"개</span> &nbsp;&nbsp; <span id='commPrint"+boardNo+"'>댓글 "+this.commCnt+"개</span></div><br>"
 			            			+"<div id='commListAll'>";
 			            		if(this.comment!=null){
 		            					tag += "<div id='commList'>";
@@ -376,8 +381,8 @@ $(function(){
 			            		}
 			            		tag += "<section class='commProm'> <form> <textarea id='commContent' name='commContent' placeholder='댓글을 입력해주세요..'></textarea></form></section></div></article><br>";
 		            	})
-		            	
-		            	$(".ListBody").append(tag);	
+		            	$(".ListBody").append(tag);
+		            	refreshDate();
 	            	}
 	            }
 			})
@@ -389,7 +394,7 @@ $(function(){
 	})
 	//*상단에 둥둥 떠있는 아이콘 (상단으로 이동)
 	$(".gotoTop").on("click", function(){
-		$("body").scrollTop(0);
+		$(window).scrollTop(0);
 	})
 	//*날짜 클릭시 상세보기로 이동
 	$("span[id^='boardDetail']").on("click", function(){
@@ -480,6 +485,47 @@ $(function(){
    $("span[id^='commIcon']").on("click", function(){
 	  $(this).closest('article').find('textarea').focus();
    })
+   //*댓글 입력
+   $("textarea[id^='commContent']").on("keyup", function(event){
+	   if (event.which==13) {
+		   if ( $(this).val().trim()==null || $(this).val().trim()=="" ){
+			   alert("댓글을 입력해주세요.");
+			   $(this).val("");
+			   $(this).focus();
+		   }else{
+				var num = $(this).closest('article').attr("class");
+				
+			   $.ajax({
+				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
+				   method : "POST",
+				   dataType : "json",
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					data : JSON.stringify({
+						boardNo : num,
+						commentContent : $(this).val()
+					}),
+				   success : function(comment){
+					   var cnt = $("#commPrint"+num).text().replace(/[^0-9]/g,"");
+					   $("#commPrint"+num).text("댓글 "+(Number(cnt)+1)+"개");
+					   //댓글 리스트 추가
+					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
+							 str += "<span id='commListContent'>"+comment.commentContent+"</span></div>";
+					   $("#commLastTime"+num).prev().append(str);
+						//댓글마지막 시간도 실행
+						var timeStampType = comment.commentTime;
+						var dateType = new Date(timeStampType);
+						var lastTime = formatDate2(dateType);
+						$("#commLastTime"+num).attr("class", lastTime);
+						refreshDate();
+				   }
+			   }) //e.o.ajax
+		   }
+		   $(this).val("");
+	   }
+   })
    
    //*공유 클릭시 SNS 아이콘 노출
    $("span[id^='shareIcon']>.icon").on("click", function(){
@@ -558,6 +604,7 @@ $(function(){
   		modal.find('.myFormControl:first').val(recipient[1]);
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
+  		modal.find('button:last').attr("name",recipient[2]);
 	})
    //*유저프로필 모달창 내 친구추가
    $("button[id^='addFriend']").on("click", function(){
@@ -698,7 +745,7 @@ $(function(){
 	<img class="gotoTop" src="/images/board/gotoTop.png">
 	
 	<!-- 메인툴바 -->
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%@ include file="/layout/toolbar.jsp"%>
 	
 	<!-- 페이징처리를 위함 -->
 	<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}">
@@ -711,7 +758,7 @@ $(function(){
 		<!-- 더보기 버튼 클릭시 노출될 항목 --> 
 	    <span id="moreContent${board.boardNo}">
 	   	  <!-- 현재 로그인 한 유저가 게시물 작성자와 같아야지만 수정/삭제 메뉴를 보여줌 -->
-	   	  <c:if test="${board.user.userId=='user01'}">
+	   	  <c:if test="${board.user.userId==sessionScope.user.userId}">
 	      	<span class="moreDetail${board.boardNo}" id="modifyBoard">게시물수정</span><br>
 	      	<span class="moreDetail${board.boardNo}" id="deleteBoard">게시물삭제</span><br>
 	   	  </c:if>
@@ -722,7 +769,7 @@ $(function(){
 	  <article class="${board.boardNo}">
 		<div class="aSection"> <!-- 유저정보 -->
             <div class="userList">
-               <div id="userProfile"><img src="/images/profile/${board.user.profileImg}" class="img-circle" data-toggle="modal" data-target=".userModal"  data-whatever="${board.user.profileImg},${board.user.userId},${board.user.userName},${board.user.introduce}"></div>
+               <div id="userProfile"><img src="/images/profile/${board.user.profileImg}" class="img-circle" data-toggle="modal" data-target=".userModal"  data-whatever="${board.user.profileImg},${board.user.userName},${board.user.userId},${board.user.introduce}"></div>
                <div class="userInfoAndBoardDate">
                   <div id="userInfo"><b>${board.user.userName}</b> (${board.user.userId})</div>
                   <div id="boardDate" style="width:auto;">
@@ -779,7 +826,7 @@ $(function(){
             <!-- 좋아요@개+댓글@개 -->
             <div id="viewList">
                <span id="likePrint${board.boardNo}">좋아요 ${board.likeCnt}개</span>&nbsp;&nbsp;
-               <span id="commPrint">댓글 ${board.commCnt}개</span>
+               <span id="commPrint${board.boardNo}">댓글 ${board.commCnt}개</span>
             </div>
             <br>
             
@@ -789,7 +836,7 @@ $(function(){
 				<c:forEach var="comment" items="${board.comment}">
 				<c:set var="j" value="${j+1}"/>
 					<div id="commList">
-						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userId},${comment.user.userName},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
+						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
 						<span id="commListContent">${comment.commentContent}</span>
 					</div>
 	            </c:forEach>
@@ -825,7 +872,7 @@ $(function(){
 				<br><br>
 				<div class="modalUserButton">
 					<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
-					<button type="button" class="btn btn-danger" id="inquireUser" name="${board.user.userId}" data-toggle="modal" data-target="#inquireModal">유저신고</button>
+					<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
 				</div>
 			</div>
 		</div>

@@ -20,6 +20,9 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
+<!-- toolbar.js CDN -->
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <style>
 	.well > div{
@@ -221,6 +224,9 @@ $(function(){
 </head>
 
 <body>
+	<!-- 메인툴바 -->
+   <%@ include file="/layout/toolbar.jsp"%>
+   
 	<div class="container">
 		<div class="col-md-2"> <!-- 내 일정 목록 -->
 			<div id="cartList">

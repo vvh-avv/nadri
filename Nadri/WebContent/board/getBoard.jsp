@@ -29,8 +29,9 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js CDN -->
+<!-- toolbar.js / toolbar.css CDN -->
 <script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
 
 <!-- flexslider CDN (슬라이드쇼) -->
 <link rel="stylesheet" href="/css/flexslider.css" type="text/css">
@@ -177,8 +178,10 @@
    	    border: 1px solid #ccc;
 	    border-radius: 4px;
 	    display: inline-block;
-	    width: auto;
-	    height: 34px;
+	    width: 300px;
+	    height: auto;
+	    /*width: auto;
+	    height: 34px;*/
 	    padding: 6px 12px;
 	    font-size: 14px;
 	    line-height: 1.42857143;
@@ -254,22 +257,10 @@
 <script>
 //* 마지막으로 작성된 댓글시간 출력을 함수로 만들고
 function refreshDate(){
-	///if(refresh == false){ //load 시 
-		$("#commLastTime").text(transferTime( $("#commLastTime").attr("class") ) );
-	///}else{
-	//	if( time == null ){ //ajax 이후 + 10초마다
-	///		$("#commLastTime").text(transferTime( formatDate2( $("#commLastTime").attr("class") ) ));
-	//	}else{ //ajax 이후
-	//		var date = new Date(time);
-	//		$("#commLastTime").text( transferTime( formatDate2(date) ));
-	///		refresh = true;
-	//	}	
-	///}
+	$("#commLastTime").text(transferTime( $("#commLastTime").attr("class") ) );
 }
 
 $(function(){
-	var refresh = false;
-	//var refreshData = ;
 	//우선 바로 실행
 	refreshDate();
 	//그리고 10초 뒤 또 실행하도록 설정
@@ -367,7 +358,7 @@ $(function(){
 			   $(this).focus();
 		   }else{
 			   $.ajax({
-				   url : "/board/json/addComment/"+"user06", //세션
+				   url : "/board/json/addComment/"+"ggobugi", //세션
 				   method : "POST",
 				   dataType : "json",
 					headers : {
@@ -383,11 +374,14 @@ $(function(){
 					   var cnt = $("#commPrint").text().replace(/[^0-9]/g,"");
 					   $("#commPrint").text("댓글 "+(Number(cnt)+1)+"개");
 					   //댓글 리스트 추가
-					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userId+","+comment.user.userName+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+"</span>";
+					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
 							 str += "<span id='commListContent'>"+comment.commentContent+"</span></div>";
 					   $("#commListAll").append(str);
 						//댓글마지막 시간도 실행
-						$("#commLastTime").attr("class","comment.commentTime");
+						var timeStampType = comment.commentTime;
+						var dateType = new Date(timeStampType);
+						var lastTime = formatDate2(dateType);
+						$("#commLastTime").attr("class", lastTime);
 						refreshDate();
 				   }
 			   }) //e.o.ajax
@@ -485,6 +479,7 @@ $(function(){
   		modal.find('.myFormControl:first').val(recipient[1]);
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
+  		modal.find('button:last').attr("name",recipient[2]);
 	})
    //*유저프로필 모달창 내 친구추가
    $("#addFriend").on("click", function(){
@@ -623,7 +618,8 @@ $(function(){
 </head>
 
 <body>
-   <jsp:include page="/layout/toolbar.jsp"/>
+	<!-- 메인 툴바 -->
+   <%@ include file="/layout/toolbar.jsp"%>
 
    <!-- 더보기 버튼 클릭시 노출될 항목 --> 
    <span id="moreContent">
@@ -671,7 +667,7 @@ $(function(){
          <form id="lastForm" class="form-horizontal">
             <!-- 유저정보 -->
             <div class="userList">
-               <div id="userProfile"><img src="/images/profile/${board.user.profileImg}" class="img-circle" data-toggle="modal" data-target=".userModal" data-whatever="${board.user.profileImg},${board.user.userId},${board.user.userName},${board.user.introduce}"></div>
+               <div id="userProfile"><img src="/images/profile/${board.user.profileImg}" class="img-circle" data-toggle="modal" data-target=".userModal" data-whatever="${board.user.profileImg},${board.user.userName},${board.user.userId},${board.user.introduce}"></div>
                <div class="userInfoAndBoardDate">
                   <div id="userInfo"><b>${board.user.userName}</b> (${board.user.userId})</div>
                   <div id="boardDate"><fmt:formatDate value="${board.boardDate}" pattern="MM월 dd일   a hh:mm"/> · 
@@ -716,7 +712,7 @@ $(function(){
 				<c:forEach var="comment" items="${board.comment}">
 				<c:set var="i" value="${i+1}"/>
 					<div id="commList">
-						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userId},${comment.user.userName},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
+						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
 						<span id="commListContent">${comment.commentContent}</span>
 					</div>
 	            </c:forEach>
@@ -749,7 +745,7 @@ $(function(){
 				<br><br>
 				<div class="modalUserButton">
 					<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
-					<button type="button" class="btn btn-danger" id="inquireUser" name="${board.user.userId}" data-toggle="modal" data-target="#inquireModal">유저신고</button>
+					<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
 				</div>
 			</div>
 		</div>

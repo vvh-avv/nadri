@@ -55,6 +55,7 @@
 	<%@ include file="/layout/toolbar.jsp"%>
 	<div class="container">
 		<div class="content-box">
+		<div><h2><span style="font-weight:700">${searchKeyword}</span>의 검색결과입니다.</h2></div>
 			<div class="row contents">
 				<div class="col-md-12">
 					<div id="map"></div>
@@ -187,6 +188,7 @@
 				    
 			    $('.placeTitle').text(locations[0][0]);
 		        $('.placeContent').text("information of selected place");
+		        $('.placeImg').attr("src","/images/spot/"+locations[0][4]);
 		    }
 
 		    

@@ -24,7 +24,7 @@
 	<insert id="insertBoard" parameterType="board">
 		INSERT
 		INTO BOARD (user_id, board_time, board_title, board_content, board_img, open_range, hashtag)
-		VALUES (<!--#{user.userId}-->'user06', NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
+		VALUES (#{user.userId}, NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
 	</insert>
 	
 	<update id="updateBoard" parameterType="board">
