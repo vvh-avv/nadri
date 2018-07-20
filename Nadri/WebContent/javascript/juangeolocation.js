@@ -48,6 +48,8 @@ function initTmap(){
         width : "100%",
         height : "60%",
     });
+    
+    map.ctrl_nav.disableZoomWheel(); //지도 확대축소 기능을 막습니다
 
     //map.events.register("click", map, onClick);
     
@@ -64,7 +66,17 @@ function initTmap(){
     // 현재 위치 정보를 얻어오는 메서드이다. 사용자가 허용을 할 경우 실행된다.
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다.
         if (geolocation)    geoLocation("w0");
+        
+      //지도의 줌레벨을 한단계 올리는 함수입니다.
+        function zoomIn(){
+        	map.zoomIn(); //지도를 1레벨 올립니다.
+        }
+        // 지도의 줌레벨을 한단계 내리는 함수입니다.
+        function zoomOut(){
+        	map.zoomOut(); //지도를 1레벨 내립니다.
+        }
 }
+
 // 나의 위치정보를 나타낼 메서드
 
 //이 메서드는 입장하자마자 자신의 위치 값을 삽입시켜주는 메서드 입니다.
@@ -91,7 +103,7 @@ function moveCoordinate (value, x, y) {
     
     setMarker(value,lonlat); //마커 만들어주기
 
-    map.setCenter(lonlat); // geolocation으로 얻어온 좌표로 지도의 중심을 설정합니다.
+    map.setCenter(lonlat,13); // geolocation으로 얻어온 좌표로 지도의 중심을 설정합니다.
 }
 
 // 맵 클릭할 경우 마커 표시 메서드

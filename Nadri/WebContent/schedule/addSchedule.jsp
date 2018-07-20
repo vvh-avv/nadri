@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/css/commonfont.css">
 <!-- T-map 지도를 쓰기위한 선언 -->
 <script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
-<script src="/javascript/juangeolocation.js?ver=1"></script>
+<script src="/javascript/juangeolocation.js?ver=2"></script>
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
@@ -359,6 +359,8 @@ $(function () {
 			<hr/>
 		
 		<div id="map_div"></div>
+		<button onClick="zoomIn()">zoom in</button>
+		<button onClick="zoomOut()">zoom out</button>
 		
 			<hr/>
 		
