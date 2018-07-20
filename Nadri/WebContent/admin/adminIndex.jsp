@@ -53,8 +53,9 @@
 </script>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default" style="padding : 0px 20px;">
 		<div class="container-fluid">
+			
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
 				<div class="graph">통계내역</div>
@@ -62,6 +63,8 @@
 				<div class="inquire">문의관리</div>
 			</div>
 		</div>
+		
+		<a href="/"><img src="/images/common/home.png" style="width:34px; height:auto;"></a>
 		<!-- /.container-fluid -->
 	</nav>
 

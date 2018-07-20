@@ -38,27 +38,37 @@ $(function(){
 			$('.login').attr('src', '/images/user/login_white.png');
 			$('.topmenus').hide();
 			$('.searcher').css('top','15px');
-			$('.sidemenu').css('top','10px');
-			$('.right-box > img').css('width','20px');
+			$('.sidemenu').css('top','4px');
+			$('.right-box > img').css('width','30px');
+			$('.right-box').css('top','10px');
 			$('.menuExpand').attr('src','/images/common/more_white.png');
 			$('.searchExpand').attr('src','/images/common/search_white.png');
 			$('.toggleMenuMob').css('position','fixed');
 			$('.toggleMenuMob').css('top','50px');
 			$('.toggleMenuMob').css('z-index','999');
 			$('.toggleMenuMob').css('opacity','0.8');
-			} else {
+			$('.profile').css('border','2px solid rgba(255, 255, 255, 0.65)');
+			$('.bell').attr('src','/images/common/bell_white.png');
+			$('.chat').attr('src','/images/common/chat_white.png');
+			$('.friend').attr('src','/images/common/user_white.png');
+		} else {
 			$('.topfixed').attr('class', 'topbar');
 			$('.titlefixed').attr('class', 'title');
 			$('.title').attr('src', '/images/common/title.png');
 			$('.join').attr('src', '/images/user/join_black.png');
 			$('.login').attr('src', '/images/user/login_black.png');
 			$('.topmenus').show();
-			$('.searcher').css('top','7vh');	
+			$('.searcher').css('top','7vh');
 			$('.sidemenu').css('top','5vh');
 			$('.right-box > img').css('width','35px');
+			$('.right-box').css('top','5vh');
 			$('.menuExpand').attr('src','/images/common/more_black.png');
 			$('.searchExpand').attr('src','/images/common/search_black.png');
 			$('.toggleMenuMob').css('top','0');
+			$('.profile').css('border','2px solid rgba(212, 212, 212, 0.65)');
+			$('.bell').attr('src','/images/common/bell_black.png');
+			$('.chat').attr('src','/images/common/chat_black.png');
+			$('.friend').attr('src','/images/common/user_black.png');
 		}
 
 	});
@@ -139,6 +149,14 @@ $(function(){
 		$(this).css('background-color','grey');
 		$(this).css('color','white');
 	})
+	
+	$('.schedules').on('click',function(){
+		self.location = "/schedule/addSchedule";
+	})
+	
+	$('.spots').on('click',function(){
+		self.location = "/spot/getSpotList?spotCode=0";
+	}) 
 	
 	
 })

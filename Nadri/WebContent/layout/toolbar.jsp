@@ -11,16 +11,9 @@
 			name="searchKeyword">
 		<div class="sidemenu">
 			<c:if test="${!empty user}">
-				<img src="/images/test/bell.png" class="icons">
-				<img src="/images/test/conversation.png" class="icons">
-				<c:if test="${empty user}">
-					<a href="/user/loginView.jsp"><img
-						src="/images/test/multiple-users-silhouette.png" class="icons"></a>
-				</c:if>
-				<c:if test="${!empty user}">
-					<a href="/user/listUser.jsp"><img
-						src="/images/test/multiple-users-silhouette.png" class="icons"></a>
-				</c:if>
+				<img src="/images/common/bell_black.png" class="icons bell">
+				<img src="/images/common/chat_black.png" class="icons chat">
+				<img src="/images/common/user_black.png" class="icons friend">
 				<c:if test="${user.role==1}">
 					<a href="/admin/adminIndex.jsp"> <img
 						src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
@@ -34,16 +27,16 @@
 					</a>
 				</c:if>
 			</c:if>
-			<c:if test="${empty user}">
+		</div>
+		<c:if test="${empty user}">
 				<div class="right-box">
 					<img src="/images/user/join_black.png" class="join"> <img
 						src="/images/user/login_black.png" class="login">
 				</div>
-			</c:if>
-		</div>
+		</c:if>
 		<div class="topmenus">
-			<span class="topele spots">나들이백과</span> <span class="topele boards">게시판</span> <span
-				class="topele schedules">일정작성</span>
+			<span class="topele spots" style="font-family: 'seoul';">나들이백과</span> <span class="topele boards" style="font-family: 'seoul';">게시판</span> <span
+				class="topele schedules" style="font-family: 'seoul';">일정작성</span>
 		</div>
 	</div>
 	<div class="toggleBox">
