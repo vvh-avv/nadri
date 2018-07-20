@@ -21,7 +21,7 @@ $(function(){
 		$(this).css("color","white");
 	})	
 	
-	$('.join').on('click',function(){
+	$('.friend').on('click',function(){
 		self.location = '/user/listUser';
 	})
 	
