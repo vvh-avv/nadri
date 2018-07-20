@@ -11,10 +11,12 @@ public class User {
 	private String email;								//이메일
 	private String profileImg;						//프로필 사진
 	private String sex;									//성별(0: 남, 1: 여)
+	//////////////////////////////////////////////////////////////////
 	private String phone;							//휴대전화 번호
 	private String phone1;							//전화번호 첫 번째 세 자리
 	private String phone2;							//전화번호 두 번째 세 자리
 	private String phone3;							//전화번호 세 번째 세 자리
+	//////////////////////////////////////////////////////////////////
 	private int age;										//나이
 	private String introduce;						//자기소개
 	private Date regDate;							//가입일

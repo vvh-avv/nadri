@@ -8,6 +8,8 @@ public class Search {
 	private String searchCondition;
 	private String searchKeyword;
 	private int pageSize;
+	private int endRowNum;
+	private int startRowNum;
 
 	private int searchSpot;
 	
@@ -63,11 +65,27 @@ public class Search {
 		this.searchSpot = searchSpot;
 	}
 
+	public int getEndRowNum() {
+		return endRowNum;
+	}
+
+	public void setEndRowNum(int endRowNum) {
+		this.endRowNum = endRowNum;
+	}
+
+	public int getStartRowNum() {
+		return startRowNum;
+	}
+
+	public void setStartRowNum(int startRowNum) {
+		this.startRowNum = startRowNum;
+	}
+
 	@Override
 	public String toString() {
 		return "Search [curruntPage=" + curruntPage + ", searchCondition=" + searchCondition + ", searchKeyword="
-				+ searchKeyword + ", pageSize=" + pageSize + ", searchSpot=" + searchSpot + "]";
+				+ searchKeyword + ", pageSize=" + pageSize + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum
+				+ ", searchSpot=" + searchSpot + "]";
 	}
-
 
 }

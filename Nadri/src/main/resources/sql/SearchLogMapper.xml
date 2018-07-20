@@ -8,7 +8,7 @@
 	<select id="boardSearchResult" parameterType="string" resultType="hashmap">
 		SELECT
 	    A.board_no board_no, A.board_title board_title, 
-	    A.board_content board_content,A.board_time board_time,A.board_img1 board_img1
+	    A.board_content board_content,A.board_time board_time,A.board_img board_img
 	    ,(SELECT COUNT(*) FROM comment B WHERE B.board_no=A.board_no) reply 
 		FROM board A
 		WHERE A.board_title LIKE '%${value}%'

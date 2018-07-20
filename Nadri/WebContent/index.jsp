@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=euc-kr"%>
+<%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -73,12 +73,6 @@
             <div class="col-md-3 col-xs-6">content2</div>
             <div class="col-md-3 col-xs-6">content3</div>
             <div class="col-md-3 col-xs-6">content4</div>
-            <div class="col-md-3 col-xs-6">content5</div>
-            <div class="col-md-3 col-xs-6">content1</div>
-            <div class="col-md-3 col-xs-6">content2</div>
-            <div class="col-md-3 col-xs-6">content3</div>
-            <div class="col-md-3 col-xs-6">content4</div>
-            <div class="col-md-3 col-xs-6">content5</div>
          </div>
       </div>
    </div>

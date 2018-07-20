@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
@@ -34,6 +33,8 @@
    
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+   
+   <link rel="stylesheet" href="/css/toolbar.css">
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
@@ -50,17 +51,15 @@
 					self.location = "/user/updateUser?userId=${user.userId}"
 				});
 		});
-		
-	
-		
-	</script>
-	
+
+	</script>	
 </head>
 
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	<div class="col-sm-2" style="margin-left:3%">

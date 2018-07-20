@@ -140,6 +140,7 @@ public class SearchLogController {
 		model.addAttribute("list_spot", list_spot);
 		model.addAttribute("list_schedule", list_schedule);
 		model.addAttribute("spot_location", array);
+		model.addAttribute("searchKeyword", searchKeyword);
 		
 		return "/search/totalSearchView.jsp";
 	}

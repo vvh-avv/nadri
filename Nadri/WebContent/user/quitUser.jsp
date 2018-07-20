@@ -19,10 +19,11 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
+	<link rel="stylesheet" href="/css/toolbar.css">
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" /> 
+	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
+	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -62,9 +63,6 @@
 	</script>
 	
 	<style type="text/css">
-	body {
-		padding-top : 70px;
-    }
  
 	.glyphicon {
 		font-size: 20px;
