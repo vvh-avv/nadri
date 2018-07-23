@@ -2,11 +2,16 @@ package com.nadri.service.friend;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
 
 public interface FriendDao {
 
+	////하지수 테스트
+	public String listFriendFromBoard(@PathVariable String userId) throws Exception;
+	
 	//친구 맺기
 	public void addFriend(Friend friend, String status) throws Exception;
 	

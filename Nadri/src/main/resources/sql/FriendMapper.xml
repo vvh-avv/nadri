@@ -16,9 +16,18 @@
 	<result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
 	<result property="count" column="count" jdbcType="INTEGER" />
 			
-		<!-- status - 한쪽만 follow : 0(친구상태라면 서로가 0) / 친구 신청: 1 / 친구 차단: 2 -->
+	<!-- status - 한쪽만 follow : 0(친구상태라면 서로가 0) / 친구 신청: 1 / 친구 차단: 2 -->
   </resultMap>
-
+	
+	<!-- 하지수 테스트 -->
+	<select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
+	 	SELECT friend_id
+	 	FROM friend
+        WHERE user_id=#{userId} and friend_code='1'
+        UNION ALL
+        SELECT user_id FROM friend
+        WHERE friend_id=#{userId} and friend_code='1';
+	</select>
 
 	<!-- 친구 맺기 -->
    <insert id="addFriend" parameterType="map">
@@ -98,12 +107,24 @@
 	</select>
 
 	<!-- 친구여부 확인 -->
-	<select id="checkFriend" parameterType="map" resultType="int">
+	<!-- <select id="checkFriend" parameterType="map" resultType="int">
 		SELECT count(*)
 		FROM friend
 		WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
-	</select>
+	</select>-->
 	
+	 <select id="checkFriend" parameterType="map" resultType="int">
+        SELECT *
+        FROM ( SELECT count(*) isFriend
+					FROM friend
+					WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{status}
+        			UNION ALL
+        			SELECT count(*) isFriend
+					FROM friend
+					WHERE friend_id=#{userId} AND user_id=#{friendId} AND friend_code=#{status} ) checkFriend
+        where checkFriend.isFriend not in ('0');
+	</select>
+	 
 	<!-- 친구 삭제 -->
 	<delete id="cancelFriend" parameterType="map">
 		DELETE

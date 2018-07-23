@@ -19,6 +19,7 @@ import com.nadri.service.comment.CommentService;
 import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.User;
+import com.nadri.service.friend.FriendService;
 import com.nadri.service.user.UserService;
 
 @RestController
@@ -36,6 +37,10 @@ public class BoardRestController {
 	@Autowired
 	@Qualifier("commentServiceImpl")
 	private CommentService commentService;
+	
+	@Autowired
+	@Qualifier("friendServiceImpl")
+	private FriendService friendService;
 	
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
@@ -108,14 +113,34 @@ public class BoardRestController {
 	public Comment addComment( @RequestBody Comment comment, @PathVariable String userId ) throws Exception{
 		System.out.println("/board/json/addComment : POST");
 		
+		/* 알림시 사용
+		String cc = comment.getCommentContent(); //넘어온 내용
+		if( cc.contains("@") ) { //친구소환
+			String[] friend = cc.split("@");
+			for( int i=1; i<friend.length; i++) { //여기서 알림추가
+				String friendId = friend[i].split(" ")[0];
+				comment.setFriend( userService.getUser(friendId) );
+			}
+		}else { //친구소환X
+			System.out.println("@친구소환X");
+		}
+		//*/
+		
 		comment.setUser( userService.getUser(userId) );
 		commentService.addComment(comment);
 		
 		Comment returnComm = commentService.getComment(comment.getCommentNo());
 		returnComm.setUser( userService.getUser( returnComm.getUser().getUserId() ) );
 		
-		System.out.println("리턴 : "+returnComm);
-		
 		return returnComm;
+	}
+
+	@RequestMapping(value="json/deleteComment/{boardNo}/{commentNo}", method=RequestMethod.POST) 
+	public int deleteComment( @PathVariable int boardNo, @PathVariable int commentNo ) throws Exception{
+		System.out.println("/board/json/deleteComment : POST");
+		
+		commentService.deleteComment(commentNo);
+		
+		return commentService.getCommentCount(boardNo); //변경된 개수 리턴
 	}
 }

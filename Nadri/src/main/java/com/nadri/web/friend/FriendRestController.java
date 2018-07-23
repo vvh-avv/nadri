@@ -5,11 +5,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +54,25 @@ public class FriendRestController {
 		System.out.println(this.getClass());
 	}
 
+	////하지수테스트
+	@RequestMapping(value="json/listFriendFromBoard/{userId}")
+	public String listFriendFromBoard(@PathVariable String userId) throws Exception{
+		System.out.println("/friend/json/listFriendFromBoard : GET"); //$.getJSON 으로 가져오는거라 POST로 하면 에러
+				
+		return friendService.listFriendFromBoard(userId);
+	}
+	@RequestMapping(value="json/chkFriend/{friendId}")
+	public int chkFriend(@PathVariable String friendId, HttpSession session) throws Exception{
+		System.out.println("/friend/json/chkFriend : GET / POST");
+		
+		User user = (User)session.getAttribute("user");
+		
+		int returnValue = friendService.checkFriend(user.getUserId(), friendId, 1);
+		System.out.println("?????????? : "+returnValue);
+		
+		return friendService.checkFriend(user.getUserId(), friendId, 1);
+	}
+	
 	//method
 	//친구 목록
 	@RequestMapping(value="json/listFriend", method=RequestMethod.POST)

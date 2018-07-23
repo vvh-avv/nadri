@@ -111,6 +111,12 @@ function transferTime(time){
 	 
 	 if(pastSecond > 86400){
 	  date = parseInt(pastSecond / 86400,10);
+	  
+	  if(date>4000){ //되게 오래전이면 그냥 널스트링으로 보내버리기
+		  str = "";
+		  return str;
+	  }
+	  
 	  restSecond = pastSecond % 86400;
 	  str = date + "일 ";
 	  if(restSecond > 3600){
