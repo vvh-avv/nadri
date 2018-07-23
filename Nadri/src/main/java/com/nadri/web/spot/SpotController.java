@@ -99,8 +99,8 @@ public class SpotController {
 		Date currentTime = new Date ();
 		String mTime = mSimpleDateFormat.format ( currentTime );
 		
-		String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=A&listYN=Y&eventStartDate="+mTime+"&&_type=json";
-		//String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=A&listYN=Y&eventStartDate=20180710&&_type=json";
+		String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=B&listYN=Y&eventStartDate="+mTime+"&&_type=json";
+		//String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&MobileOS=ETC&areaCode=1&numOfRows=999&MobileApp=AppTest&arrange=B&listYN=Y&eventStartDate=20180710&&_type=json";
 		URL url = new URL(apiURL);
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		con.setRequestMethod("GET");
@@ -124,7 +124,7 @@ public class SpotController {
         model.addAttribute("a", a);
         
         return "forward:/spot/festivalSpot.jsp";
-	}
+	}	
 	
 	@RequestMapping(value="getSearchSpot" , method=RequestMethod.GET)
 	public String getBikeList( Model model) throws Exception{
@@ -137,7 +137,7 @@ public class SpotController {
 	@RequestMapping( value="getSpot" , method=RequestMethod.GET)
     public String getProduct( @RequestParam("spotNo") int spotNo , Model model, HttpServletRequest request ) throws Exception {
       
-      System.out.println("/product/getProduct : GET");
+      System.out.println("/spot/getSpot : GET");
       
       //Business Logic
       Spot spot = spotService.getSpot(spotNo);
@@ -149,5 +149,47 @@ public class SpotController {
       
       return "forward:/spot/getSpot.jsp";
    }
+	
+	@RequestMapping( value="getSpotMain" , method=RequestMethod.GET)
+    public String getSpotMain(Model model ) throws Exception {
+      
+      System.out.println("/spot/getSpotMain : GET");
+      
+      // Model 과 View 연결
+      model.addAttribute("total", spotService.getTotalSpot());
+      
+      return "forward:/spot/mainSpot.jsp";
+   }
+	
+	@RequestMapping(value="getFestival" , method=RequestMethod.GET)
+	public String getFestival( Model model , @RequestParam("spotNo") int spotNo) throws Exception{
+
+		System.out.println("/getFestival");
+		
+		String apiURL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=Vb0jmUo%2BoqFihhoFRCLFAblLhxt3%2FbySc4fVdPJU%2B1SmB3AXejpBHSazfVyQr232n7jNWjyUr3KtxKi0UJQuoA%3D%3D&contentId="+spotNo+"&defaultYN=Y&addrinfoYN=Y&overviewYN=Y&mapinfoYN=Y&firstImageYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json";
+		URL url = new URL(apiURL);
+		HttpURLConnection con = (HttpURLConnection)url.openConnection();
+		con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        BufferedReader br;
+        if(responseCode==200) { //정상호출
+        	br = new BufferedReader(new InputStreamReader(con.getInputStream() , "UTF-8"));
+        } else { //에러발생
+        	br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+        }
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = br.readLine()) != null)  {
+        	response.append(inputLine);
+        }
+        JSONParser parser = new JSONParser();
+        JSONObject a = (JSONObject)parser.parse(response.toString());
+        
+        br.close();
+        
+        model.addAttribute("a", a);
+        
+        return "forward:/spot/getFestival.jsp";
+	}
 		
 }

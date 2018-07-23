@@ -1,5 +1,16 @@
 package com.nadri.service.cart;
 
-public class CartService {
+import java.util.List;
+
+import com.nadri.common.Search;
+import com.nadri.service.domain.Cart;
+
+public interface CartService {
+	
+	// 1. cart에 장소를 등록하는 메서드
+	public void addCartSpot(Cart cart) throws Exception; 
+	
+	// 2. spot Cart를 가져오는 메서드
+	public List<Cart> getSpotCartList(Search search) throws Exception;
 
 }

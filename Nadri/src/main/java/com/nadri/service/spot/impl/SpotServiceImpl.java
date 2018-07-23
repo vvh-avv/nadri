@@ -17,8 +17,7 @@ public class SpotServiceImpl implements SpotService{
 	///Field
 	@Autowired
 	@Qualifier("spotDaoImpl")
-	
-	///Constructor
+
 	private SpotDao spotDao;
 	
 	///Method
@@ -86,5 +85,10 @@ public class SpotServiceImpl implements SpotService{
 	public void updateSpotReadCnt(Spot spot) throws Exception {
 		spotDao.updateSpotReadCnt(spot);
 	}
-
+	
+	// 7. 전체 장소의 갯수를 가져옵니다.
+	public int getTotalSpot() throws Exception {
+		return spotDao.getTotalSpot();
+	}
+	
 }

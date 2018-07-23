@@ -8,7 +8,7 @@ import com.nadri.service.domain.Spot;
 public interface SpotDao {
 	
 	// 1. 장소 10개를 보여주는 메소드
-		public List<Spot> getSpotList(int spotCode) throws Exception;
+	public List<Spot> getSpotList(int spotCode) throws Exception;
 		
 	// 2. 장소 전체를 보여주는 메소드
 	public List<Spot> getAllSpotList(int spotCode) throws Exception;
@@ -35,4 +35,7 @@ public interface SpotDao {
 	 
 	// 6. 게시판을 클릭했을때 조회수가 1씩 증가
 	public void updateSpotReadCnt(Spot spot) throws Exception;
+	
+	// 7. 전체 장소의 갯수를 가져옵니다.
+	public int getTotalSpot() throws Exception;
 } 
