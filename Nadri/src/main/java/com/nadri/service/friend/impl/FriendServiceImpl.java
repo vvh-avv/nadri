@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
@@ -31,6 +32,12 @@ public class FriendServiceImpl implements FriendService {
 		System.out.println(this.getClass());
 	}
 
+	////하지수 테스트
+	@Override
+	public String listFriendFromBoard(@PathVariable String userId) throws Exception{
+		return friendDao.listFriendFromBoard(userId);
+	}
+	
 	//method
 	//친구 끊기
 	@Override

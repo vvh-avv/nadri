@@ -52,4 +52,9 @@ public class CommentServiceImpl implements CommentService{
 		commentDao.deleteComment(commentNo);
 	}
 	
+	@Override
+	public int getCommentCount(int commentNo) throws Exception{
+		return commentDao.getCommentCount(commentNo);
+	}
+	
 }

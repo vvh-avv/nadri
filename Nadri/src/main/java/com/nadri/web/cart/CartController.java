@@ -1,10 +1,25 @@
 package com.nadri.web.cart;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nadri.service.cart.CartService;
+
+//==> 장바구니 RestController
+@RestController
+@RequestMapping("/cart/*")
 public class CartController {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	///Field
+	@Autowired
+	@Qualifier("cartServiceImpl")
+	private CartService cartService;
+	
+	public CartController(){
+		System.out.println(this.getClass());
 	}
-
+	
 }
+

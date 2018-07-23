@@ -1,13 +1,16 @@
 package com.nadri.service.friend.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
@@ -31,7 +34,21 @@ public class FriendDaoImpl implements FriendDao {
 		System.out.println(this.getClass());
 	}
 
-
+	////하지수 테스트
+	@Override
+	public String listFriendFromBoard(@PathVariable String userId) throws Exception{
+		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+		List<String> friendId = new ArrayList<String>(); 
+		
+		for(int i=0; i<friend.size(); i++) {
+			friendId.add(friend.get(i).getFriendId());
+		}
+		
+		String json = new ObjectMapper().writeValueAsString( friendId );
+		
+		return json;
+	}
+	
 	//method
 	//친구 변경
 	@Override
@@ -116,7 +133,10 @@ public class FriendDaoImpl implements FriendDao {
 		map.put("friendId", friendId);
 		map.put("status", status);
 		
-		return sqlSession.selectOne("FriendMapper.checkFriend", map);
+		Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
+		if(returnValue==null) { returnValue=0; }
+		
+		return returnValue;
 	}
 
 	//친구 신청 취소

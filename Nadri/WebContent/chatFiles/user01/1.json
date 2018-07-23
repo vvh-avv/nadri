@@ -1,0 +1,13 @@
+{
+	"chattingList" : 
+				[
+{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}
+,{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}
+,{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}
+,{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"3","sending_date":"2018-07-21 19:04:42","protocol":"0","flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":".","sending_date":"2018-07-22 11:18:40","protocol":"0","flag":"Y"}
+,{"sender_id":"user02","receiver_id":"user01","message":"3","sending_date":"2018-07-23 15:31:42","protocol":"0","flag":"Y"}
+,{"sender_id":"user02","receiver_id":"user01","message":"김성훈","sending_date":"2018-07-23 15:31:44","protocol":"0","flag":"Y"}
+,{"sender_id":"user02","receiver_id":"user01","message":".","sending_date":"2018-07-23 15:32:07","protocol":"0","flag":"Y"}
+,{"sender_id":"user02","receiver_id":"user01","message":"아아","sending_date":"2018-07-23 15:32:11","protocol":"0","flag":"Y"}

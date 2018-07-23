@@ -34,38 +34,62 @@
 	</update>
 	
 	<select id="getBoard" parameterType="int" resultMap="boardMap">
-		SELECT board.*, likeCnt, commCnt
-		FROM board left join ( SELECT comment.board_no, likeCnt, commCnt
-									  FROM (SELECT board_no, count(*) likeCnt FROM likes group by board_no) likes right join
-									  			(SELECT board_no, count(*) commCnt FROM comment group by board_no) comment
-									  ON likes.board_no = comment.board_no
-									  GROUP BY likes.board_no) innerTable
-		ON board.board_no = innerTable.board_no
-		WHERE board.board_no = #{value}
-		GROUP BY board.board_no;
+        SELECT board.*, comment.commCnt, likes.likeCnt
+        FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
+        WHERE board.board_no = #{value}
 	</select>
 	
 	<select id="getBoardList" parameterType="search" resultMap="boardMap">
-		SELECT board.*, likeCnt, commCnt
-		FROM board left join ( SELECT comment.board_no, likeCnt, commCnt
-									  FROM (SELECT board_no, count(*) likeCnt FROM likes group by board_no) likes right join
-									  			(SELECT board_no, count(*) commCnt FROM comment group by board_no) comment
-									  ON likes.board_no = comment.board_no
-									  GROUP BY likes.board_no) innerTable
-		ON board.board_no = innerTable.board_no
-		GROUP BY board.board_no
+        SELECT board.*, comment.commCnt, likes.likeCnt
+        FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
 		<if test="memberFlag==0">
-			HAVING open_range=0
+			HAVING board.open_range=0
 		</if>
-		ORDER BY board_time desc
+		ORDER BY board.board_time desc
 		LIMIT #{startRowNum},#{pageSize};
 	</select>
 	
 	<delete id="deleteBoard" parameterType="int">
 		DELETE
 		FROM BOARD
-		WHERE board_no=#{value}
+		WHERE board_no = #{value}
 	</delete>
+	
+	<!-- 마이페이지 작성한 글 보기 -->
+	<select id="getMyBoardList" parameterType="String" resultMap="boardMap">
+        SELECT board.*, comment.commCnt, likes.likeCnt
+        FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
+		WHERE board.user_id = #{value}
+	</select>
+	
+	<!-- 메인화면 추천 게시물 -->
+	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
+        SELECT board.*, likes.likeCnt
+        FROM board join ( SELECT board_no, COUNT(*) likeCnt
+							FROM likes <if test="searchCondition.equals('최신')">
+												WHERE likes_time > date_sub(NOW(), interval 1 day)
+											</if>
+											<if test="searchCondition.equals('일간')">
+												BETWEEN date_add(NOW(), interval -1 day)
+											</if>
+											<if test="searchCondition.equals('주간')">
+												BETWEEN date_add(NOW(), interval -1 week)
+											</if>
+											<if test="searchCondition.equals('월간')">
+												BETWEEN date_add(NOW(), interval -1 month)
+											</if>
+											group by board_no ) likes
+        ON board.board_no = likes.board_no
+        GROUP BY board.board_no
+        ORDER BY likes.likeCnt desc;
+	</select>
+	
 	
 	<!-- Likes --> <!-- Rest에서 좋아요시 변경된 개수 리턴할 때 사용 -->
 	<select id="getLikeCount" resultType="int">

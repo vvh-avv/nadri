@@ -25,22 +25,26 @@
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 
-<title>안녀어어어어어엉</title>
+<title>너나들이 유저 목록</title>
 
 </head>
 <style type="text/css">
 html, body {
 	margin: 0px;
 	width: 100%;
-	height: 100%;
+	height:70vh;
 	font-size: 65px;
 }
 
 .tableset {
-	margin: 5% 5%;
+	margin: 10% 5%;
 	width: 90%;
-	text-align: right;
+	text-align: left;
 	font-size: 0.2em;
+}
+
+.table{
+	margin-top:5%;
 }
 
 th {
@@ -49,7 +53,7 @@ th {
 }
 
 .texts:hover {
-	background: #ccc;
+	background: rgba(163, 161, 159, 0.52);
 }
 
 td {
@@ -101,10 +105,6 @@ li {
 	font-size: 1.3em;
 }
 
-img {
-	margin: 20px 15vw;
-}
-
 .logbutton {
 	margin-left: 15px;
 }
@@ -139,6 +139,12 @@ select, option {
 	margin-right: 2%;
 }
 
+.row{
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 </style>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
@@ -147,9 +153,14 @@ select, option {
 	google.charts.load('current', {
 		'packages' : [ 'corechart' ]
 	});
+	
+	function fncGetList(currentPage) {
+		$("#currentPage").val(currentPage)
+		$("form").attr("method", "POST").attr("action", "/admin/listUser").submit();
+	}
 
 	$(function() {
-		
+
 		/* index page animation start */
 
 		$('.adminmenus > div').on('click', function() {
@@ -159,26 +170,15 @@ select, option {
 			} else if (way == "spot") {
 				self.location = '/admin/listSpot';
 			} else if (way == "graph") {
-				self.location='/admin/listGraph?duration=day';
+				self.location = '/admin/listGraph?duration=day';
 			} else if (way == "userList") {
 				self.location = '/admin/listUser';
 			} else if (way == "userLog") {
 				self.location = '/admin/listLog';
 			}
 		})
-		
+
 		/* index page animation end */
-
-		$('.texts').on('mouseover', function() {
-			if ($(this).text() == '처리대기') {
-				$(this).css('cursor', 'pointer');
-				$(this).css('color', 'skyblue');
-			}
-		})
-
-		$('.texts').on('mouseleave', function() {
-			$(this).css('color', 'black');
-		})
 
 		$('.inquirebutton').on(
 				'click',
@@ -240,291 +240,19 @@ select, option {
 		$('img').on('mouseleave', function() {
 			$(this).css('opacity', '1');
 		})
+		
+		$("button.btn.btn-default:contains('검색')").on("click", function() {
+			fncGetList(1);
+		});
 
-		$('.userInqLog')
-				.on(
-						'click',
-						function() {
-							
-							$('.block-user').css('visibility','hidden');
-							
-							var id = $(this).attr('name');
-							console.log(id);
+		
+		
 
-							var duration = "all";
-							$('.userIdLog').text(id);
-
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
-
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
-
-												function drawChart() {
-
-													// Create our data table out of JSON data loaded from server.
-													var data = new google.visualization.DataTable();
-													data.addColumn("string",
-															"activity");
-													data.addColumn("number",
-															"count");
-
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		console
-																				.log('key:'
-																						+ key
-																						+ ' / '
-																						+ 'value:'
-																						+ value);
-																		data
-																				.addRow([
-																						key,
-																						value ]);
-																	});
-
-													var options = {
-														chartArea : {
-															left : 10,
-															top : 10,
-															width : "100%",
-															height : "75%"
-														}
-													};
-
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
-
-													chart.draw(data, options);
-
-												}
-
-											});
-
-						});
-
-		$('.userReportLog')
-				.on(
-						'click',
-						function() {
-							
-							$('.block-user').css('visibility','visible');
-							
-							var id = $(this).attr('name');
-							console.log(id);
-
-							var duration = "all";
-							$('.userIdLog').text(id);
-
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
-
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
-
-												function drawChart() {
-
-													// Create our data table out of JSON data loaded from server.
-													var data = new google.visualization.DataTable();
-													data.addColumn("string",
-															"activity");
-													data.addColumn("number",
-															"count");
-
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		console
-																				.log('key:'
-																						+ key
-																						+ ' / '
-																						+ 'value:'
-																						+ value);
-																		data
-																				.addRow([
-																						key,
-																						value ]);
-																	});
-
-													var options = {
-														chartArea : {
-															left : 10,
-															top : 10,
-															width : "100%",
-															height : "75%"
-														}
-													};
-
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
-
-													chart.draw(data, options);
-
-												}
-
-											});
-
-						});
-
-		$('.duration')
-				.on(
-						'change',
-						function() {
-
-							var id = $('.userIdLog').text();
-							console.log(id);
-
-							var duration = $(this).val();
-							console.log(duration);
-
-							$
-									.get(
-											"/restAdmin/userLog/" + id + "/"
-													+ duration,
-											function(jdata, status) {
-												console.log(status);
-												console.log(jdata);
-												console.log(jdata.rows);
-
-												// 챠트의 정보를 담아줍니다(callback method 설정)
-												google.charts
-														.setOnLoadCallback(drawChart);
-
-												function drawChart() {
-
-													// Create our data table out of JSON data loaded from server.
-
-													var checker = 0;
-
-													$
-															.each(
-																	jdata.rows,
-																	function(
-																			key,
-																			value) {
-																		if (value > 0) {
-																			checker++;
-																			console
-																					.log(checker);
-																		}
-																	});
-
-													if (checker > 0) {
-
-														var data = new google.visualization.DataTable();
-														data.addColumn(
-																"string",
-																"activity");
-														data.addColumn(
-																"number",
-																"count");
-
-														$
-																.each(
-																		jdata.rows,
-																		function(
-																				key,
-																				value) {
-																			console
-																					.log('key:'
-																							+ key
-																							+ ' / '
-																							+ 'value:'
-																							+ value);
-																			data
-																					.addRow([
-																							key,
-																							value ]);
-																		});
-
-														var options = {
-															chartArea : {
-																left : 10,
-																top : 10,
-																width : "100%",
-																height : "75%"
-															}
-														};
-
-													} else {
-
-														var data = new google.visualization.DataTable();
-														data.addColumn(
-																"string",
-																"NoData");
-														data.addColumn(
-																"number",
-																"capacity");
-
-														data.addRow([
-																'데이터가 없습니다.',
-																100 ]);
-
-														var options = {
-															colors : [ '#ccc',
-																	'grey' ],
-															chartArea : {
-																left : 10,
-																top : 10,
-																width : "100%",
-																height : "75%"
-															}
-														};
-
-													}
-
-													// Instantiate and draw our chart, passing in some options.
-													var chart = new google.visualization.PieChart(
-															document
-																	.getElementById('chart_div'));
-
-													chart.draw(data, options);
-
-												}
-
-											})
-
-						});
-
-		$('.modal-close').on(
-				'click',
-				function() {
-
-					var chart = new google.visualization.PieChart(document
-							.getElementById('chart_div'));
-
-					chart.clearChart();
-				})
 	});
 </script>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
@@ -532,6 +260,10 @@ select, option {
 				<div class="spot">백과관리</div>
 				<div class="inquire">문의관리</div>
 			</div>
+		</div>
+		<div class="navbar-right" style="padding-right: 16px;">
+			<a href="/"><img src="/images/common/home.png"
+				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
@@ -544,8 +276,42 @@ select, option {
 
 	<c:if test="${list.size() > 0}">
 		<div class="tableset">
-			${list.totalCount}명의 회원이 검색되었습니다.
-			<table class="table table-hover">
+			<div class="row">
+
+				<div class="col-md-6 text-left">
+					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수, 현재
+						${resultPage.currentPage} 페이지</p>
+				</div>
+
+				<div class="col-md-6 text-right">
+					<form class="form-inline" name="detailForm">
+
+						<div class="form-group">
+							<select class="form-control" name="searchCondition">
+								<option value="0"
+									${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
+								<option value="1"
+									${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label class="sr-only" for="searchKeyword">검색어</label> <input
+								type="text" class="form-control" id="searchKeyword"
+								name="searchKeyword" placeholder="검색어"
+								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+						</div>
+
+						<button type="button" class="btn btn-default">검색</button>
+
+						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+						<input type="hidden" id="currentPage" name="currentPage" value="" />
+
+					</form>
+				</div>
+
+			</div>
+			<table class="table">
 				<tr class="firstLine">
 					<th>회원아이디</th>
 					<th>회원이름</th>
@@ -556,7 +322,7 @@ select, option {
 					<th>유저 아이피</th>
 				</tr>
 				<c:set var="i" value="0" />
-				<c:forEach var="user" items="${list.list}">
+				<c:forEach var="user" items="${list}">
 					<c:set var="i" value="${ i+1 }" />
 					<tr id="list${i}" class="texts">
 						<td>${user.userId}</td>
@@ -567,7 +333,7 @@ select, option {
 						<td>${user.status==0 ? "정상" : (user.status == 1 ? "차단" : "탈퇴")}</td>
 						<td>${user.ip}</td>
 					</tr>
-<%-- 					<tr>
+					<tr>
 						<td colspan="7" class="${i}">
 							<div class="inquireBody">
 								<div class="inquire-detail-title">${inquire.inquireNo}번
@@ -606,7 +372,7 @@ select, option {
 
 							</div>
 						</td>
-					<tr> --%>
+					<tr>
 				</c:forEach>
 				<tr>
 					<td></td>
@@ -619,7 +385,12 @@ select, option {
 				</tr>
 			</table>
 		</div>
+		<!-- PageNavigation Start... -->
+		<jsp:include page="../common/pageNavigator.jsp" />
+		<!-- PageNavigation End... -->
 	</c:if>
+
+	
 
 	<!-- 신고처리 Modal content-->
 	<div class="modal fade" id="Modal1" role="dialog">

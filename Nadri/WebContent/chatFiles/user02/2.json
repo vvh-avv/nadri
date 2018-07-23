@@ -1,0 +1,5 @@
+{
+	"chattingList" : 
+				[
+{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "占쎈툧占쎈��?" , "sending_date" : "2017" }
+,{"sender_id":"user01","receiver_id":"user02","message":"1","sending_date":"2018-07-04 13:07","protocol":"0"}

@@ -47,6 +47,16 @@ public class BoardDaoImpl implements BoardDao{
 	public void deleteBoard(int boardNo) throws Exception {
 		sqlSession.delete("BoardMapper.deleteBoard", boardNo);
 	}
+
+	//마이페이지 작성한 글보기
+	public List<Board> getMyBoardList(String userId) throws Exception{
+		return sqlSession.selectList("BoardMapper.getMyBoardList", userId);
+	}
+	
+	//메인화면 추천게시물
+	public List<Board> getRecomBoard(Search search) throws Exception{
+		return sqlSession.selectList("BoardMapper.getRecomBoard", search);
+	}
 	
 	//좋아요
 	public int getLikeCount(int boardNo) throws Exception{

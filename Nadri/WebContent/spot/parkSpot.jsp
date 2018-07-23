@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 <link rel="shortcut icon" href="/images/common/favicon.ico"> 
-
 <!-- jQuery CDN --> 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
@@ -79,10 +78,41 @@
 		.dropdown:hover .dropdown-content {display: block;}
 		
 		.dropdown:hover .dropbtn {background-color: #3e8e41;}
+		
+/*맨위로가게만들어주는 css */
+.gotoTop {
+     display : none;
+     cursor : pointer;
+     position: fixed;
+     bottom: 10%;
+     right: 5%;
+     width: 50px;
+     height: 50px;
+     z-index:999;
+   }	
 </style>
 
 <head>
 <script>
+
+//맨위로 올라가게 만들어 주는 script
+$(function(){
+    //*스크롤감지
+    $(window).scroll(function(){
+        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+        
+        if(scrollLocation!=0){ //화면을 내리면 gotoTop 뜨게하고
+            $(".gotoTop").fadeIn();
+        }else{                    //화면을 올리면 gotoTop 사라지게하기
+            $(".gotoTop").fadeOut();
+        }
+    });
+    
+    //*상단에 둥둥 떠있는 아이콘 (상단으로 이동)
+    $(".gotoTop").on("click", function(){
+        $("body").scrollTop(0);
+    });
+});
 	//이 부분은 지도 관련 맵 입니다! 
 	//중앙 위치값을 세팅해 줍니다. 
 	var center = {
@@ -245,11 +275,13 @@
 		      var output = '';
 		      output += '<div class="col-sm-6 col-md-4">';
 		      output += '<div class="thumbnail">';
-		      //output += '<img src=" '  + spot[i].spotImg + ' " height="100px" width="100px"/>';
 		      output += ' <div class="caption">';
 		      output += '<h3>' + spot[i].spotTitle + '</h3>';
-			  output += '<p> ' + spot[i].spotCreateTime+'</p>';
-			  output += '<p> ' + spot[i].spotModifyTime+'</p>';
+			  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+			  output += '<p> ' + spot[i].spotAddress+'</p>';
+			  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 등록날짜 / 수정날짜 </strong>';
+			  output += '<p> ' + spot[i].spotCreateTime+' / ' + spot[i].spotModifyTime+'</p>';
+			  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 			 output += ' <p>';
 			 output += ' <span class="label label-danger">공원</span>';
 			 output += ' </p>';
@@ -267,6 +299,8 @@
 
 	<%-- Main content --%>
 	<section class="content container-fluid">
+	<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
+<img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 		<body>
       <%@ include file="/layout/toolbar.jsp"%>
 				<span class="dropdown">
@@ -312,4 +346,53 @@
 			<br />
 			</div>
 		</body>
+		
+<script>
+	var page = -1;
+	// 1. 스크롤 이벤트 발생
+	$(window).scroll(function() {
+		if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+          ++page;
+       // 4. ajax를 이용하여 현재 뿌려진 게시글의 마지막 bno를 서버로 보내어 그 다음 20개의 게시물 데이터를 받아온다. 
+			$.ajax({
+						type : 'post', // 요청 method 방식 
+						url : '/restspot/infinityscrollDown',// 요청할 서버의 url
+						headers : {
+							"Content-Type" : "application/json",
+							"X-HTTP-Method-Override" : "POST"
+						},
+						dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
+						data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+							spotNo : page,
+							spotCode : 0
+						}),
+						success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+							var output = '';
+							$(data).each(function() {
+							      output += '<div class="col-sm-6 col-md-4">';
+							      output += '<div class="thumbnail">';
+							      output += ' <div class="caption">';
+							      output += '<h3>' + this.spotTitle + '</h3>';
+								  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+								  output += '<p> ' + this.spotAddress+'</p>';
+								  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 등록날짜 / 수정날짜 </strong>';
+								  output += '<p> ' + this.spotCreateTime+' / ' + this.spotModifyTime+'</p>';
+								  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+								 output += ' <p>';
+								 output += ' <span class="label label-danger">공원</span>';
+								 output += ' </p>';
+								  output += '<p><a href="/spot/getSpot?spotNo='+this.spotNo+'" class="btn btn-primary" role="button">상세보기</a> <a href="#" class="btn btn-default" role="button">장소바구니</a></p>';
+								  output += '</div>';
+								  output += '</div>';
+								  output += '</div>';
+							});// each
+								// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
+								$(".spotImg").append(output);
+							}// else
+						}// success
+
+					);// ajax
+        }//end of if
+    });
+</script>
 	</html>

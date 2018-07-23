@@ -1,6 +1,7 @@
 package com.nadri.service.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Comment {
 
@@ -55,10 +56,13 @@ public class Comment {
 	public void setCommentContent(String commentContent) {
 		this.commentContent = commentContent;
 	}
+
 	
 	@Override
 	public String toString() {
 		return "CommentVO : [commentNo] "+commentNo+" [boardNo] "+boardNo+
-				" [commentTime] "+commentTime+" [commentContent] "+commentContent+" [user] "+user;
+				" [commentTime] "+commentTime+" [commentContent] "+commentContent+
+				" [user] "+user;
 	}
+
 }

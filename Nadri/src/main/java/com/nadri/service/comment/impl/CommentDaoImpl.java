@@ -45,4 +45,8 @@ public class CommentDaoImpl implements CommentDao{
 	public void deleteComment(int commentNo) throws Exception {
 		sqlSession.delete("CommentMapper.deleteComment", commentNo);
 	}
+	
+	public int getCommentCount(int commentNo) throws Exception{
+		return sqlSession.selectOne("CommentMapper.getCommentCount", commentNo);
+	}
 }

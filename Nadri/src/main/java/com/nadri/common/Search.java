@@ -66,14 +66,15 @@ public class Search {
 		this.searchSpot = searchSpot;
 	}
 
-	public int getEndRowNum() {
-		return endRowNum;
-	}
-
 	public void setEndRowNum(int endRowNum) {
 		this.endRowNum = endRowNum;
 	}
 
+	//==> Select Query 시 ROWNUM 마지막 값 
+	public int getEndRowNum() {
+		return endRowNum;
+	}
+	//==> Select Query 시 ROWNUM 시작 값
 	public int getStartRowNum() {
 		return startRowNum;
 	}

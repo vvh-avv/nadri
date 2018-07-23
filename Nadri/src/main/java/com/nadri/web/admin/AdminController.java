@@ -1,9 +1,7 @@
 package com.nadri.web.admin;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,25 +9,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
+import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
+import com.nadri.service.domain.User;
 import com.nadri.service.spot.SpotService;
 import com.nadri.service.user.UserService;
 
@@ -52,33 +48,54 @@ public class AdminController {
 	public AdminController() {
 		System.out.println(this.getClass());
 	}
+	
+	@Value("#{commonProperties['pageUnit']}")
+	int pageUnit;
+	
+	int pageSize = 5;
 
 	@Value("#{provinceProperties}")
 	Map<String, String> map = new HashMap<String, String>();
+	
+	@RequestMapping(value = "adminIndex")
+	public String adminIndex(Model model) throws Exception {
+		System.out.println("adminIndex -> controller 들어옴");
+		List<User> list = adminService.latestRegUsers();
+		model.addAttribute("userList",list);
+		return "/admin/adminIndex.jsp";
+	}
 
 	@RequestMapping(value = "listInquire")
-	public String getInquireList(Model model) {
+	public String getInquireList(Model model,Search search) {
+		
 		System.out.println("listInquire -> controller 들어옴");
-		List<Inquire> list = adminService.getInquireList();
-		System.out.println(list.get(1).getInquireChkCode());
-		int counter = 0;
-		for (int i = 0; i < list.size(); i++) {
-			String z = list.get(i).getInquireChkCode();
-			if (z.equals("0")) {
-				counter++;
-			}
+
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
-
-		System.out.println("처리 대기중인 문의 갯수 = " + counter);
-		model.addAttribute("count", counter);
-		model.addAttribute("list", list);
-
+		search.setPageSize(pageSize);
+		
+		// Business logic 수행
+		Map<String , Object> map=adminService.getInquireList(search);
+		
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		System.out.println(resultPage);
+		
+		// Model 과 View 연결
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("search", search);
+		
+		
 		return "forward:/admin/adminInquireList.jsp";
 	}
 
 	@RequestMapping(value = "updateInquire")
 	public String updateInquire(Model model, @RequestParam("inqCode") String inqCode,
-			@RequestParam("chkCode") String chkCode) {
+			@RequestParam("chkCode") String chkCode,Search search) {
 		System.out.println("updateInquire -> controller 들어옴");
 		System.out.println("들어온 문의번호 : " + inqCode);
 		System.out.println("들어온 처리번호 : " + chkCode);
@@ -87,11 +104,11 @@ public class AdminController {
 		inquire.setInquireNo(Integer.parseInt(inqCode));
 		adminService.updateInquire(inquire);
 
-		List<Inquire> list = adminService.getInquireList();
-		System.out.println(list.get(1).getInquireChkCode());
+		Map<String, Object> list = adminService.getInquireList(search);
+		System.out.println(((Inquire) list.get(1)).getInquireChkCode());
 		int counter = 0;
 		for (int i = 0; i < list.size(); i++) {
-			String z = list.get(i).getInquireChkCode();
+			String z = ((Inquire) list.get(i)).getInquireChkCode();
 			if (z.equals("0")) {
 				counter++;
 			}
@@ -104,16 +121,30 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "listSpot")
-	public String getSpotList(Model model) throws Exception {
+	public String getSpotList(Model model,Search search) throws Exception {
 
-		System.out.println("listSpot -> controller 들어옴");
-		List<Spot> list = spotService.getSpotList();
+		System.out.println("getSpotList -> controller 들어옴");
 
-		System.out.println(list);
-
-		model.addAttribute("list", list);
-		model.addAttribute("count", list.size());
-
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
+		}
+		search.setPageSize(pageSize);
+		
+		// Business logic 수행
+		Map<String , Object> map=adminService.getSpotList(search);
+		
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		System.out.println(resultPage);
+		
+		// Model 과 View 연결
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("search", search);
+		
+		
 		return "forward:/admin/adminSpotList.jsp";
 	}
 
@@ -702,16 +733,32 @@ public class AdminController {
 
 
 	@RequestMapping(value = "listUser")
-	public String getUserList(Model model) throws Exception {
+	public String getUserList(Model model,Search search) throws Exception {
 
 		System.out.println("getUserList -> controller 들어옴");
-
-		Search search = null;
-
-		Map<String, Object> map = userService.getUserList(search);
 		
-		model.addAttribute("list",map);
+		System.out.println(search.getCurruntPage());
 
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
+		}
+		search.setPageSize(pageSize);
+		
+		// Business logic 수행
+		Map<String , Object> map=adminService.getUserList(search);
+		
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		System.out.println(resultPage);
+		
+		// Model 과 View 연결
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("search", search);
+		
+		
 		return "forward:/admin/adminUserList.jsp";
 	}
 }

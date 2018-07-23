@@ -24,22 +24,26 @@
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 
-<title>너나들이 관리자 페이지 - 나들이백과관리</title>
+<title>너나들이 나들이백과목록</title>
 
 </head>
 <style type="text/css">
 html, body {
 	margin: 0px;
 	width: 100%;
-	height: 100%;
+	height: 70vh;
 	font-size: 65px;
 }
 
 .tableset {
-	margin: 5% 5%;
+	margin: 10% 5%;
 	width: 90%;
 	text-align: right;
 	font-size: 0.2em;
+}
+
+.table{
+	margin-top:5%;
 }
 
 th {
@@ -131,25 +135,31 @@ h5 {
 }
 </style>
 <script type="text/javascript">
+	function fncGetList(currentPage) {
+		$("#currentPage").val(currentPage)
+		$("form").attr("method", "POST").attr("action", "/admin/listSpot")
+				.submit();
+	}
+
 	$(function() {
 
 		/* index page animation start */
-		
-		$('.adminmenus > div').on('click',function(){
+
+		$('.adminmenus > div').on('click', function() {
 			var way = $(this).attr('class');
-			if(way=="inquire"){
-				self.location='/admin/listInquire';
-			}else if(way=="spot"){
-				self.location='/admin/listSpot';
-			}else if(way=="graph"){
-				self.location='/admin/listGraph?duration=day';
-			}else if(way=="userList"){
+			if (way == "inquire") {
+				self.location = '/admin/listInquire';
+			} else if (way == "spot") {
+				self.location = '/admin/listSpot';
+			} else if (way == "graph") {
+				self.location = '/admin/listGraph?duration=day';
+			} else if (way == "userList") {
 				self.location = '/admin/listUser';
-			}else if(way=="userLog"){
+			} else if (way == "userLog") {
 				self.location = '/admin/listLog';
 			}
 		})
-		
+
 		/* index page animation end */
 
 		$('td[colspan=5]').hide();
@@ -185,30 +195,35 @@ h5 {
 
 		$('.delete-fine').on('click', function() {
 			var code = $('.hiddenNo').val();
-			self.location = "/admin/deleteSpot?spotNo="+code;
+			self.location = "/admin/deleteSpot?spotNo=" + code;
 		})
-		
-		$('#addSpot').on('mouseover',function(){
+
+		$('#addSpot').on('mouseover', function() {
 			$(this).addClass('btn-primary');
 		})
-		
-		$('#addSpot').on('mouseleave',function(){
+
+		$('#addSpot').on('mouseleave', function() {
 			$(this).removeClass('btn-primary');
 		})
-		
-		$('#addSpot').on('click',function(){
+
+		$('#addSpot').on('click', function() {
 			self.location = "/admin/addSpot";
 		})
-		
-		$('.modify-spot').on('click',function(){
+
+		$('.modify-spot').on('click', function() {
 			var no = $(this).attr('name');
-			self.location = "/admin/updateSpot?spotNo="+no;
+			self.location = "/admin/updateSpot?spotNo=" + no;
 		})
+		
+		$("button.btn.btn-default:contains('검색')").on("click", function() {
+			fncGetList(1);
+		});
 	})
 </script>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="padding: 0px 20px;">
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
@@ -217,62 +232,104 @@ h5 {
 				<div class="inquire">문의관리</div>
 			</div>
 		</div>
+		<div class="navbar-right" >
+			<a href="/"><img src="/images/common/home.png"
+				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
+		</div>
 		<!-- /.container-fluid -->
 	</nav>
 
-	<div class="tableset">
-		<div class="tableset-top">
-			<div style="margin-right: 1%;">${count}개의장소가있습니다.</div>
-			<button id="addSpot" class="btn btn-default">추가하기</button>
+	<c:if test="${list.size()==0}">
+		<div class="container">
+			<div>나들이 목록이 하나도 없어요.</div>
 		</div>
-		<table class="table table-hover">
-			<tr class="firstLine">
-				<th>장소번호</th>
-				<th>장소이름</th>
-				<th>장소주소</th>
-				<th>장소등록일</th>
-				<th>최종수정일</th>
-			</tr>
-			<c:set var="i" value="0" />
-			<c:forEach var="spot" items="${list}">
-				<c:set var="i" value="${ i+1 }" />
-				<tr id="inq${i}" class="texts">
-					<td>${spot.spotNo}</td>
-					<td>${spot.spotTitle}</td>
-					<td>${spot.spotAddress}</td>
-					<td>${spot.spotCreateTime}</td>
-					<td>${spot.spotModifyTime}</td>
-				</tr>
-				<tr>
-					<td colspan="5" class="${i}">
-						<div class="inquireBody">
-							<div class="inquire-detail-title">
-								<span>${spot.spotTitle}</span> 상세보기
-							</div>
-							<ul>
-								<li>주소지 : ${spot.spotAddress}</li>
-								<li>설 &nbsp;&nbsp;&nbsp;명 : ${spot.spotDetail}</li>
-								<li>장소 이미지</li>
-							</ul>
-							<img src="/images/spot/${spot.spotImg}">
+	</c:if>
+
+	<c:if test="${list.size() > 0}">
+
+		<div class="tableset">
+			<div class="tableset-top">
+				<div class="col-md-6 text-left">
+					<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
+						${resultPage.currentPage} 페이지</p>
+				</div>
+
+				<div class="col-md-6 text-right">
+					<form class="form-inline" name="detailForm">
+
+						<div class="form-group">
+							<select class="form-control" name="searchCondition">
+								<option value="0"
+									${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>장소명</option>
+								<option value="1"
+									${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>장소번호</option>
+							</select>
+
+							<label class="sr-only" for="searchKeyword">검색어</label> <input
+								type="text" class="form-control" id="searchKeyword"
+								name="searchKeyword" placeholder="검색어"
+								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
 						</div>
-						<button class="btn btn-danger delete-spot" data-toggle="modal"
-							data-target="#modal2">삭제하기</button>
-						<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
-					</td>
+
+						<button type="button" class="btn btn-default">검색</button>
+
+						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+						<input type="hidden" id="currentPage" name="currentPage" value="" />
+
+					</form>
+				</div>
+				<button id="addSpot" class="btn btn-default">추가하기</button>
+			</div>
+			<table class="table">
+				<tr class="firstLine">
+					<th>장소번호</th>
+					<th>장소이름</th>
+					<th>장소주소</th>
+					<th>장소등록일</th>
+					<th>최종수정일</th>
+				</tr>
+				<c:set var="i" value="0" />
+				<c:forEach var="spot" items="${list}">
+					<c:set var="i" value="${ i+1 }" />
+					<tr id="inq${i}" class="texts">
+						<td>${spot.spotNo}</td>
+						<td>${spot.spotTitle}</td>
+						<td>${spot.spotAddress}</td>
+						<td>${spot.spotCreateTime}</td>
+						<td>${spot.spotModifyTime}</td>
+					</tr>
+					<tr>
+						<td colspan="5" class="${i}">
+							<div class="inquireBody">
+								<div class="inquire-detail-title">
+									<span>${spot.spotTitle}</span> 상세보기
+								</div>
+								<ul>
+									<li>주소지 : ${spot.spotAddress}</li>
+									<li>설 &nbsp;&nbsp;&nbsp;명 : ${spot.spotDetail}</li>
+									<li>장소 이미지</li>
+								</ul>
+								<img src="/images/spot/${spot.spotImg}">
+							</div>
+							<button class="btn btn-danger delete-spot" data-toggle="modal"
+								data-target="#modal2">삭제하기</button>
+							<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
+						</td>
+					<tr>
+				</c:forEach>
 				<tr>
-			</c:forEach>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</table>
-
-
-	</div>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!-- PageNavigation Start... -->
+		<jsp:include page="../common/pageNavigator.jsp" />
+		<!-- PageNavigation End... -->
+	</c:if>
 
 	<!-- 삭제확인 Modal content-->
 	<div class="modal fade" id="modal2" role="dialog">
@@ -281,8 +338,8 @@ h5 {
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h5>
-					<span></span>의 정보를 정말로 삭제하시겠습니까?
-					<input type="hidden" name="spotNo" value="" class="hiddenNo">
+					<span></span>의 정보를 정말로 삭제하시겠습니까? <input type="hidden" name="spotNo"
+						value="" class="hiddenNo">
 				</h5>
 				<div
 					style="justify-content: space-evenly; display: flex; padding: 5%;">
