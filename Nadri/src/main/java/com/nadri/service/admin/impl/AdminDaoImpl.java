@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.nadri.common.Search;
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
+import com.nadri.service.domain.User;
 
 @Repository("adminDaoImpl")
 public class AdminDaoImpl implements AdminDao{
@@ -34,12 +36,6 @@ public class AdminDaoImpl implements AdminDao{
 	public void addInquire(Inquire inquire) {
 		// TODO Auto-generated method stub
 		sqlSession.insert("AdminMapper.insertInquire", inquire);
-	}
-
-	@Override
-	public List<Inquire> getInquireList() {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("AdminMapper.getInquireList");
 	}
 
 	@Override
@@ -122,6 +118,46 @@ public class AdminDaoImpl implements AdminDao{
 	public int blockUser(String userId) {
 		// TODO Auto-generated method stub
 		return sqlSession.update("AdminMapper.blockUser", userId);		
+	}
+
+	@Override
+	public List<User> latestRegUsers() {
+		// TODO Auto-generated method stub
+		List<User> list = sqlSession.selectList("AdminMapper.latestRegUser");
+		return list;
+	}
+
+	@Override
+	public Map<String, Object> getUserList(Search search) {
+		// TODO Auto-generated method stub
+		Map<String,Object> map= new HashMap<String,Object>();
+		List<User> list = sqlSession.selectList("AdminMapper.getUserList", search);
+		int count = sqlSession.selectOne("AdminMapper.getTotalCount", search);
+		map.put("list", list);
+		map.put("totalCount", count);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getSpotList(Search search) {
+		// TODO Auto-generated method stub
+		Map<String,Object> map= new HashMap<String,Object>();
+		List<Spot> list = sqlSession.selectList("AdminMapper.getSpotList", search);
+		int count = sqlSession.selectOne("AdminMapper.getSpotCount", search);
+		map.put("list", list);
+		map.put("totalCount", count);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getInquireList(Search search) {
+		// TODO Auto-generated method stub
+		Map<String,Object> map= new HashMap<String,Object>();
+		List<Spot> list = sqlSession.selectList("AdminMapper.getInquireList", search);
+		int count = sqlSession.selectOne("AdminMapper.getInquireCount", search);
+		map.put("list", list);
+		map.put("totalCount", count);
+		return map;
 	}
 
 

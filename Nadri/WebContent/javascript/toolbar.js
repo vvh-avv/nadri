@@ -10,19 +10,39 @@ $(function(){
 	
 	$('.profile').on('mouseover',function(){
 		$(this).css('cursor','pointer');
-	})
-		
-	$('.topele').on("mouseover",function(){
-		$(this).css("cursor","pointer");
-		$(this).css("color","black");
+		$(this).css('border','4px solid #60daaa');		
 	})
 	
-	$('.topele').on("mouseout",function(){
-		$(this).css("color","white");
-	})	
+	$('.profile').on('mouseleave',function(){
+		$(this).css('border','4px solid white');		
+	})
 	
 	$('.friend').on('click',function(){
 		self.location = '/user/listUser';
+	})
+	
+	$('.friend').on('mouseover',function(){
+		$(this).attr("src","/images/common/users_green.png");
+	})
+	
+	$('.friend').on('mouseleave',function(){
+		$(this).attr("src","/images/common/user_white.png");
+	})
+	
+	$('.chat').on('mouseover',function(){
+		$(this).attr("src","/images/common/chat_green.png");
+	})
+	
+	$('.chat').on('mouseleave',function(){
+		$(this).attr("src","/images/common/chat_white.png");
+	})
+	
+	$('.bell').on('mouseover',function(){
+		$(this).attr("src","/images/common/bell_green.png");
+	})
+	
+	$('.bell').on('mouseleave',function(){
+		$(this).attr("src","/images/common/bell_white.png");
 	})
 	
 	$('.login').on('click',function(){
@@ -33,44 +53,25 @@ $(function(){
 		if ($(document).scrollTop() > 0) {
 			$('.topbar').attr('class', 'topfixed');
 			$('.title').attr('class', 'titlefixed');
-			$('.titlefixed').attr('src', '/images/common/title_colored.png');
-			$('.join').attr('src', '/images/user/join_white.png');
-			$('.login').attr('src', '/images/user/login_white.png');
 			$('.topmenus').hide();
-			$('.searcher').css('top','15px');
+			$('.searcher').css('top','9px');
 			$('.sidemenu').css('top','4px');
-			$('.right-box > img').css('width','30px');
-			$('.right-box').css('top','10px');
-			$('.menuExpand').attr('src','/images/common/more_white.png');
-			$('.searchExpand').attr('src','/images/common/search_white.png');
-			$('.toggleMenuMob').css('position','fixed');
-			$('.toggleMenuMob').css('top','50px');
-			$('.toggleMenuMob').css('z-index','999');
-			$('.toggleMenuMob').css('opacity','0.8');
-			$('.profile').css('border','2px solid rgba(255, 255, 255, 0.65)');
-			$('.bell').attr('src','/images/common/bell_white.png');
-			$('.chat').attr('src','/images/common/chat_white.png');
-			$('.friend').attr('src','/images/common/user_white.png');
+			$('.right-box').css('top','15px');
 		} else {
 			$('.topfixed').attr('class', 'topbar');
 			$('.titlefixed').attr('class', 'title');
-			$('.title').attr('src', '/images/common/title.png');
-			$('.join').attr('src', '/images/user/join_black.png');
-			$('.login').attr('src', '/images/user/login_black.png');
 			$('.topmenus').show();
 			$('.searcher').css('top','7vh');
 			$('.sidemenu').css('top','5vh');
-			$('.right-box > img').css('width','35px');
-			$('.right-box').css('top','5vh');
-			$('.menuExpand').attr('src','/images/common/more_black.png');
-			$('.searchExpand').attr('src','/images/common/search_black.png');
-			$('.toggleMenuMob').css('top','0');
-			$('.profile').css('border','2px solid rgba(212, 212, 212, 0.65)');
-			$('.bell').attr('src','/images/common/bell_black.png');
-			$('.chat').attr('src','/images/common/chat_black.png');
-			$('.friend').attr('src','/images/common/user_black.png');
+			$('.right-box').css('top','6vh');
 		}
 
+	});
+	
+	$(".arrowDonw").click(function() {
+	    $('html,body').animate({
+	        scrollTop: $(".middle-bar").offset().top
+	    }, 1000);
 	});
 	
 /*	$('.popular-contents').slick({
@@ -81,6 +82,13 @@ $(function(){
 		arrows: false,
 	});*/
 	
+	$('.searcher').on('focusin',function(){
+		$(this).attr('placeholder',"");
+	});
+	
+	$('.searcher').on('focusout',function(){
+		$(this).attr('placeholder',"검색어를 입력해주세요.");
+	});
 	
 	$('.searcher').on('keypress',function(e){
 		if(e.which == 13){
@@ -88,6 +96,9 @@ $(function(){
 				alert("검색어를 입력해주세요!");
 				return;
 			}else{
+				$('body').css('overflow','hidden');
+				$('#loadStatus').css('display','block');
+				$('.indexHead').css('background','white');
 				self.location = "/searchLog/listSearchLog?searchKeyword="+$('.searcher').val();
 			}
 		}
@@ -114,38 +125,45 @@ $(function(){
 	
 	var valiExpand = false;
 	var searchExpand = false;
+	
 	$('.menuExpand').on('click',function(){
 		if(!valiExpand){
-			$('.topbar').css('background-color','rgba(255, 255, 255, 0.5)');
-			$('.toggleMenuMob').css('display','block');
-			$('.toggleMenuMob').html('<li class="userMenus"> 마 이 페 이 지 </li><li class="userMenus"> 나 들 이 백 과 </li><li class="userMenus"> 게 시 판 </li><li class="userMenus"> 일 정 작 성 </li>');;
+			var top = $(document).scrollTop();
+			$('.tobbleMunuMob').css('top',top);
+			$('.toggleMenuMob').css('width','80%');
+			$('.userMenus').css('display','flex');
+			$('.userMenus').css('background','white');
+			$('.userMenus').css('color','black');
+			$('.mobSearcher').css('z-index','99');
 			valiExpand = true;
-			console.log(valiExpand);
-		}else{
-			$('.toggleMenuMob').css('display','none');
-			$('.topbar').css('background-color','rgba(255, 255, 255, 0)');
-			valiExpand = false;
 			console.log(valiExpand);
 		}
 	})
 	
-	$('.searchExpand').on('click',function(){
+	$('.userMenus:first-child').on('click',function(){
+		$('.toggleMenuMob').css('width','0%');
+		$('.userMenus').css('display','none');
+		$('.mobSearcher').css('z-index','9999');
+		valiExpand = false;
+		console.log(valiExpand);
+	})	
+	
+	$('.mobSearcher').on('click',function(){
 		if(!searchExpand){
-			$('.topbar').css('background-color','rgba(255, 255, 255, 0.5)');
-			$('.toggleMenuMob').css('display','block');
-			$('.toggleMenuMob').html('<li style="padding:20px 20px;"><input type="text" class="mobSearcher" name="searchKeyword" value=""></li>');;
 			searchExpand = true;
 			console.log(searchExpand);
-		}else{
-			$('.toggleMenuMob').css('display','none');
-			$('.topbar').css('background-color','rgba(255, 255, 255, 0)');
-			searchExpand = false;
-			console.log(searchExpand);
 		}
+	})
+	
+	$('.mobSearcher').on('focusin',function(){
+		$('.mobSearcher').attr('placeholder','');
+	})
+	
+	$('.mobSearcher').on('focusout',function(){
+		$('.mobSearcher').attr('placeholder','검색어를 입력해주세요.');
 	})
 	
 	$(document).on('click','.userMenus',function(){
-		console.log("??");
 		$(this).css('background-color','grey');
 		$(this).css('color','white');
 	})
@@ -157,6 +175,8 @@ $(function(){
 	$('.spots').on('click',function(){
 		self.location = "/spot/getSpotList?spotCode=0";
 	}) 
+	
+
 	
 	
 })

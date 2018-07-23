@@ -95,8 +95,13 @@
 	<div class="container-fluid indexHead">
 		<%@ include file="layout/toolbar.jsp"%>
 		<div
-			style="width: 100%; height: 50%; margin: 18% auto; text-align: center;">
-			<h1 style="font-weight: 800; color: powderblue; font-size: 82px;" class="textAni">우리둘이...나들이갈래?</h1>
+			style="width: 100%; height: 50%; margin: 10% auto; text-align: center; position:relative">
+			<h1 style="position:absolute; left:30%; width:40%; font-size: 10vw; color:white; animation:fadein 3s;">너,나둘이<br>너,나들이</h1>
+<!-- 			<div class="animateShape" style="width:500px; height:500px;"></div> -->
+			<img src="/images/common/down_arrow.png" class="arrowDonw" style="width:50px; hegiht:auto; margin-top: 60vh; opacity:0.5;">
+		</div>
+		<div>
+			
 		</div>
 	</div>
 	<div class="container-fluid">
@@ -104,16 +109,16 @@
 			<h2 style="font-weight: 700;">지금 인기 게시글</h2>
 			<div class="container">
 				<div class="popular-contents container">
-					<div class="col-md-3 col-xs-6" style="line-height: 20vh;">
+					<div class="col-md-3 col-xs-6">
 						<div>PLACE BOX</div>
 					</div>
-					<div class="col-md-3 col-xs-6" style="line-height: 20vh;">
+					<div class="col-md-3 col-xs-6">
 						<div>PLACE BOX</div>
 					</div>
-					<div class="col-md-3 col-xs-6" style="line-height: 20vh;">
+					<div class="col-md-3 col-xs-6">
 						<div>PLACE BOX</div>
 					</div>
-					<div class="col-md-3 col-xs-6" style="line-height: 20vh;">
+					<div class="col-md-3 col-xs-6">
 						<div>PLACE BOX</div>
 					</div>
 				</div>
@@ -122,15 +127,15 @@
 			<h2 style="font-weight: 700; margin-top: 10%;">지금 인기 일정</h2>
 			<div class="container">
 				<div class="popular-contents container">
-					<div class="col-md-6 col-xs-12" style="line-height: 20vh;">
+					<div class="col-md-6 col-xs-12">
 						<div>PLACE BOX</div>
 					</div>
-					<div class="col-md-6 col-xs-12" style="line-height: 20vh;">
+					<div class="col-md-6 col-xs-12">
 						<div>PLACE BOX</div>
 					</div>
 				</div>
 				<div class="popular-contents container">
-					<div class="col-md-12 col-xs-12" style="line-height: 20vh;">
+					<div class="col-md-12 col-xs-12">
 						<div>PLACE BOX</div>
 					</div>
 				</div>

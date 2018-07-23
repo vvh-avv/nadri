@@ -25,22 +25,26 @@
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 
-<title>안녀어어어어어엉</title>
+<title>너나들이 어드민 문의관리 페이지</title>
 
 </head>
 <style type="text/css">
 html, body {
 	margin: 0px;
 	width: 100%;
-	height: 100%;
+	height: 70vh;
 	font-size: 65px;
 }
 
 .tableset {
-	margin: 5% 5%;
+	margin: 10% 5%;
 	width: 90%;
 	text-align: right;
 	font-size: 0.2em;
+}
+
+.table{
+	margin-top:5%;
 }
 
 th {
@@ -101,10 +105,6 @@ li {
 	font-size: 1.3em;
 }
 
-img {
-	margin: 20px 15vw;
-}
-
 .logbutton {
 	margin-left: 15px;
 }
@@ -146,6 +146,11 @@ select, option {
 
 	// 구글 챠트의 정보를 불러옵니다.
 	google.charts.load('current', {'packages' : [ 'corechart' ]});
+		
+	function fncGetList(currentPage) {
+		$("#currentPage").val(currentPage)
+		$("form").attr("method", "POST").attr("action", "/admin/listInquire").submit();
+	}
 
 	$(function() {
 		
@@ -446,11 +451,16 @@ select, option {
 			})
 		})
 		
+		$("button.btn.btn-default:contains('검색')").on("click", function() {
+			fncGetList(1);
+		});
+		
 	}); // javaScript function 끝
 </script>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="padding: 0px 20px;">
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
@@ -458,6 +468,10 @@ select, option {
 				<div class="spot">백과관리</div>
 				<div class="inquire">문의관리</div>
 			</div>
+		</div>
+		<div class="navbar-right">
+			<a href="/"><img src="/images/common/home.png"
+				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
@@ -470,8 +484,42 @@ select, option {
 
 	<c:if test="${list.size() > 0}">
 		<div class="tableset">
-			${count}개의 문의가 처리대기중입니다.
-			<table class="table table-hover">
+			<div class="row">
+	
+					<div class="col-md-6 text-left">
+						<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
+							${resultPage.currentPage} 페이지</p>
+					</div>
+	
+					<div class="col-md-6 text-right">
+						<form class="form-inline" name="detailForm">
+	
+							<div class="form-group">
+								<select class="form-control" name="searchCondition">
+									<option value="0"
+										${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>문의회원ID</option>
+									<option value="1"
+										${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>문의명</option>
+								</select>
+							</div>
+	
+							<div class="form-group">
+								<label class="sr-only" for="searchKeyword">검색어</label> <input
+									type="text" class="form-control" id="searchKeyword"
+									name="searchKeyword" placeholder="검색어"
+									value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+							</div>
+	
+							<button type="button" class="btn btn-default">검색</button>
+	
+							<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+							<input type="hidden" id="currentPage" name="currentPage" value="" />
+	
+						</form>
+					</div>
+	
+				</div>
+			<table class="table">
 				<tr class="firstLine">
 					<th>문의번호</th>
 					<th>문의유형</th>
@@ -545,6 +593,9 @@ select, option {
 				</tr>
 			</table>
 		</div>
+		<!-- PageNavigation Start... -->
+		<jsp:include page="../common/pageNavigator.jsp" />
+		<!-- PageNavigation End... -->
 	</c:if>
 
 	<!-- 신고처리 Modal content-->

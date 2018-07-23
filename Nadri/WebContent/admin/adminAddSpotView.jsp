@@ -20,10 +20,10 @@
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-	
+
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
-	
+
 <title>나들이 백과 추가</title>
 
 </head>
@@ -55,43 +55,43 @@ html, body {
 	margin-top: 0.5vh;
 }
 
-option,select{
-	font-size:0.2em;
-	width:100%;
-	border:1px solid #ccc;
+option, select {
+	font-size: 0.2em;
+	width: 100%;
+	border: 1px solid #ccc;
 }
 </style>
 <script type="text/javascript">
 	$(function() {
-		
+
 		/* index page animation start */
-		
-		$('.adminmenus > div').on('click',function(){
+
+		$('.adminmenus > div').on('click', function() {
 			var way = $(this).attr('class');
-			if(way=="inquire"){
-				self.location='/admin/listInquire';
-			}else if(way=="spot"){
-				self.location='/admin/listSpot';
-			}else if(way=="graph"){
-				self.location='/admin/listGraph?duration=day';
-			}else if(way=="userList"){
+			if (way == "inquire") {
+				self.location = '/admin/listInquire';
+			} else if (way == "spot") {
+				self.location = '/admin/listSpot';
+			} else if (way == "graph") {
+				self.location = '/admin/listGraph?duration=day';
+			} else if (way == "userList") {
 				self.location = '/admin/listUser';
-			}else if(way=="userLog"){
+			} else if (way == "userLog") {
 				self.location = '/admin/listLog';
 			}
 		})
-		
+
 		/* index page animation end */
-		
-		$('.confirm').on('click',function(){
+
+		$('.confirm').on('click', function() {
 			window.location.href = "/admin/listSpot";
 		})
-		
+
 	})
 </script>
 <body>
-
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="padding: 0px 20px;">
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
@@ -100,14 +100,18 @@ option,select{
 				<div class="inquire">문의관리</div>
 			</div>
 		</div>
+		<div class="navbar-right" style="padding-right: 16px;">
+			<a href="/"><img src="/images/common/home.png"
+				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
+		</div>
 	</nav>
 
 	<div class="container">
 		<form class="addForm" enctype="multipart/form-data">
 			<div class="spotAddTitle">나들이 백과추가 확인</div>
 			<div class="form-group">
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label normal">장 소 명</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" name="spotTitle"
@@ -119,8 +123,8 @@ option,select{
 							value="${spot.spotCode}" disabled>
 					</div>
 				</div>
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label description">장 소 번 호</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" name="spotPhone"
@@ -128,16 +132,16 @@ option,select{
 					</div>
 				</div>
 
-				<div style="display: flex; margin-bottom:1vh;">
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label description">장 소 설 명</label>
 					<div class="col-sm-10">
 						<textarea class="form-control" rows="4" name="spotDetail" disabled>${spot.spotDetail}</textarea>
 					</div>
 				</div>
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label normal">주 소</label>
-					<div class="col-sm-2" style="display:inline-flex;">
+					<div class="col-sm-2" style="display: inline-flex;">
 						<select name="spotProvince" disabled>
 							<option>${spot.spotProvince}</option>
 						</select>
@@ -147,8 +151,8 @@ option,select{
 							value="${spot.spotAddress}" disabled>
 					</div>
 				</div>
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label normal">X 좌 표</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" name="spotX"
@@ -160,24 +164,29 @@ option,select{
 							value="${spot.spotY}" disabled>
 					</div>
 				</div>
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label description">장 소 링 크</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" name="spotDetailURL"
 							value="${spot.spotDetailURL}" disabled>
 					</div>
 				</div>
-				
-				<div style="display: flex; margin-bottom:1vh;">
+
+				<div style="display: flex; margin-bottom: 1vh;">
 					<label class="col-sm-2 control-label normal">이 미 지</label>
 					<div class="col-sm-10">
 						<img src="/images/spot/${spot.spotImg}">
 					</div>
 				</div>
-				<div class="col-sm-12" style="display:flex; justify-content: center; margin-top:3%;">
-					<button class="btn btn-primary confirm" style="margin-right:2%;" onclick="javascript:window.location.href='/admin/listSpot';return false;">확 인</button>
-					<button class="btn btn-defalut" style="margin-left:2%;" onclick="javascript:window.location.href='/admin/addSpot.jsp';return false;">추 가 등 록</button>
+				<div class="col-sm-12"
+					style="display: flex; justify-content: center; margin-top: 3%;">
+					<button class="btn btn-primary confirm" style="margin-right: 2%;"
+						onclick="javascript:window.location.href='/admin/listSpot';return false;">확
+						인</button>
+					<button class="btn btn-defalut" style="margin-left: 2%;"
+						onclick="javascript:window.location.href='/admin/addSpot.jsp';return false;">추
+						가 등 록</button>
 				</div>
 			</div>
 		</form>

@@ -27,10 +27,11 @@
 
 </head>
 <style type="text/css">
+
 html, body {
 	margin: 0px;
 	width: 100%;
-	height: 100%;
+	height: 70vh;
 	font-size: 65px;
 }
 
@@ -110,7 +111,8 @@ html, body {
 </script>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="padding: 0px 20px;">
 		<div class="container-fluid">
 			<div class="adminmenus">
 				<div class="userList">회원목록</div>
@@ -118,6 +120,10 @@ html, body {
 				<div class="spot">백과관리</div>
 				<div class="inquire">문의관리</div>
 			</div>
+		</div>
+		<div class="navbar-right">
+			<a href="/"><img src="/images/common/home.png"
+				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
@@ -168,15 +174,15 @@ html, body {
 								data : (duration == 'day' ? ${boardDay} : ( duration == 'week' ? ${boardWeek} : ${boardMonth})),		
 								fill: false,
 								lineTension:0,
-								backgroundColor: 'red',
-								borderColor : [ 'rgba(255,99,132,1)'],
+								backgroundColor: '#a03131',
+								borderColor : [ '#c54444'],
 								borderWidth : 1
 							},{
 								label : '작성된댓글',
 								data : (duration == 'day' ? ${commDay} : ( duration == 'week' ? ${commWeek} : ${commMonth})),
 								fill: false,
 								lineTension:0,
-								backgroundColor : 'blue',
+								backgroundColor : 'powderblue',
 								borderColor : [ 'rgba(54, 162, 235, 1)' ],
 								borderWidth : 1	
 							},{
@@ -184,16 +190,16 @@ html, body {
 								data : (duration == 'day' ? ${scheduleDay} : ( duration == 'week' ? ${scheduleWeek} : ${scheduleMonth})),
 								fill: false,
 								lineTension:0,
-								backgroundColor : 'green',
-								borderColor : [ 'green' ],
+								backgroundColor : '#6cc05d',
+								borderColor : [ '#51a942' ],
 								borderWidth : 1	
 							},{
 								label : '작성된 문의',
 								data : (duration == 'day' ? ${inquireDay} : ( duration == 'week' ? ${inquireWeek} : ${inquireMonth})),
 								fill: false,
 								lineTension:0,
-								backgroundColor : 'yellow',
-								borderColor : [ 'yellow' ],
+								backgroundColor : '#f1ec50',
+								borderColor : [ '#f2be50' ],
 								borderWidth : 1	
 							} ]
 						},

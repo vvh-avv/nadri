@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.nadri.common.Search;
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
+import com.nadri.service.domain.User;
 
 @Service("adminServiceImpl")
 public class AdminServiceImpl implements AdminService{
@@ -34,11 +36,6 @@ public class AdminServiceImpl implements AdminService{
 		adminDao.addInquire(inquire);
 	}
 
-	@Override
-	public List<Inquire> getInquireList() {
-		// TODO Auto-generated method stub
-		return adminDao.getInquireList();
-	}
 	@Override
 	public void updateInquire(Inquire inquire) {
 		// TODO Auto-generated method stub
@@ -68,6 +65,30 @@ public class AdminServiceImpl implements AdminService{
 	public int blockUser(String userId) {
 		// TODO Auto-generated method stub
 		return adminDao.blockUser(userId);
+	}
+
+	@Override
+	public List<User> latestRegUsers() {
+		// TODO Auto-generated method stub
+		return adminDao.latestRegUsers();
+	}
+
+	@Override
+	public Map<String, Object> getUserList(Search search) {
+		// TODO Auto-generated method stub
+		return adminDao.getUserList(search);
+	}
+
+	@Override
+	public Map<String, Object> getSpotList(Search search) {
+		// TODO Auto-generated method stub
+		return adminDao.getSpotList(search);
+	}
+
+	@Override
+	public Map<String, Object> getInquireList(Search search) {
+		// TODO Auto-generated method stub
+		return adminDao.getInquireList(search);
 	}
 
 

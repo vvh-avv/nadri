@@ -26,6 +26,43 @@
 		<result property="schedule_createtime" column="schedule_createtime" jdbcType="DATE" />
 	</resultMap>
 	
+	<resultMap type="user" id="userMap">
+      <result property="userId" column="user_id" jdbcType="VARCHAR" />
+      <result property="userName" column="user_name" jdbcType="VARCHAR" />
+      <result property="password" column="password" jdbcType="VARCHAR" />
+      <result property="email" column="email" jdbcType="VARCHAR" />
+      <result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+      <result property="sex" column="sex" jdbcType="VARCHAR" />
+      <result property="phone" column="phone" jdbcType="VARCHAR" />
+      <result property="age" column="age" jdbcType="INTEGER" />   
+      <result property="introduce" column="introduce" jdbcType="VARCHAR" />
+      <result property="role" column="role" jdbcType="VARCHAR" />
+      <result property="regDate" column="reg_date" jdbcType="DATE" />
+      <result property="lastLogin" column="last_login" jdbcType="DATE" />
+      <result property="status" column="status" jdbcType="VARCHAR" />
+      <result property="ip" column="ip" jdbcType="VARCHAR" />
+      <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
+      <result property="quitDate" column="quit_date" jdbcType="DATE" />
+      <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+   </resultMap>
+   
+   <resultMap id="spot" type="spot">
+		<result property="spotNo" 			   		column="spot_no" 					jdbcType="NUMERIC"/>
+		<result property="spotCode"	     		column="spot_code" 			    jdbcType="VARCHAR" />
+		<result property="spotTitle"	     			column="spot_title" 		        jdbcType="VARCHAR" />
+		<result property="spotPhone" 			 	column="spot_phone" 		    jdbcType="VARCHAR"/>
+		<result property="spotAddress" 	        column="spot_address" 		jdbcType="VARCHAR" />
+		<result property="spotDetail" 	            column="spot_detail" 		    jdbcType="VARCHAR" />
+		<result property="spotX" 						column="spot_x" 					jdbcType="DECIMAL"  />
+		<result property="spotY" 						column="spot_y" 					jdbcType="DECIMAL"/>
+		<result property="spotImg" 					column="spot_img" 			    jdbcType="VARCHAR" />
+		<result property="spotCreateTime" 	column="spot_createtime"    jdbcType="DATE" />
+		<result property="spotModifyTime" 	column="spot_modifytime" 	jdbcType="DATE" />
+		<result property="spotProvince" 			column="spot_province" 		jdbcType="VARCHAR" />
+		<result property="spotDetailURL" 		column="spot_detailurl" 		jdbcType="VARCHAR" />
+		<result property="spotReadCnt" 		column="spot_readcnt" 			jdbcType="NUMERIC"/>
+	</resultMap>
+	
 	<insert id="insertInquire" parameterType="inquire">
 		INSERT
 		INTO inquire(user_id, reported_user_id, inquire_code, inquire_title, inquire_link, inquire_detail, inquire_file1, inquire_time)
@@ -33,9 +70,40 @@
 	</insert>
 	
 	<select id="getInquireList" resultMap="inquireMap">
-		SELECT *
-		FROM inquire
+		SELECT @n := @n + 1 as num, x.*
+  		FROM (SELECT  *
+			FROM inquire
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !=''">
+		 				user_id LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !=''">
+		 				inquire_title LIKE '%${searchKeyword}%'
+					</if>
+				</where>
+			</if>
+			ORDER BY inquire_no
+			LIMIT 9999999999999999) X,
+		(SELECT @n := 0) r
+		limit #{startRowNum}, 3
 	</select>
+	
+	<select  id="getInquireCount"  parameterType="search"	 resultType="int">
+  	SELECT COUNT(*)
+  	FROM(	SELECT *
+			FROM inquire
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !='' ">
+			 			user_id LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !='' ">
+			 			inquire_title LIKE '%${searchKeyword}%'
+					</if>
+				</where>
+			</if> ) countTable			
+	 </select>
 	
 	<select id="getInquire" parameterType="int" resultMap="inquireMap">
 		SELECT *
@@ -68,7 +136,7 @@
 		<choose>
 			<when test="time.equals('board_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(board_time, '%Y-%m-%d') = DATE_FORMAT('2018-07-14', '%Y-%m-%d') 
+					WHERE DATE_FORMAT(board_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d') 
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(board_time) = WEEKOFYEAR(CURDATE())
@@ -79,7 +147,7 @@
 			</when>
 			<when test="time.equals('inquire_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(inquire_time, '%Y-%m-%d') = DATE_FORMAT('2018-07-14', '%Y-%m-%d')  
+					WHERE DATE_FORMAT(inquire_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d')  
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(inquire_time) = WEEKOFYEAR(CURDATE())
@@ -90,7 +158,7 @@
 			</when>
 			<when test="time.equals('comm_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(comm_time, '%Y-%m-%d') = DATE_FORMAT('2018-07-14', '%Y-%m-%d') 
+					WHERE DATE_FORMAT(comm_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d') 
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(comm_time) = WEEKOFYEAR(CURDATE())
@@ -124,5 +192,83 @@
 		SET status = '0'
 		WHERE user_id = #{value}
 	</update>
+	
+	<select id="latestRegUser" resultMap="userMap">
+		SELECT user_id, user_name, reg_date
+		FROM user
+		WHERE WEEKOFYEAR(reg_date) = WEEKOFYEAR(CURDATE())
+	</select>
+	
+	<select id="getUserList" parameterType="search" resultMap="userMap">
+		SELECT @n := @n + 1 as num, x.*
+  		FROM (SELECT  user_id, user_name, reg_date
+			FROM user
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !=''">
+		 				user_id LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !=''">
+		 				user_name LIKE '%${searchKeyword}%'
+					</if>
+				</where>
+			</if>
+			ORDER BY user_id
+			LIMIT 9999999999999999) X,
+		(SELECT @n := 0) r
+		limit #{startRowNum}, 3
+	</select>
+	
+	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT user_id , user_name , email
+				FROM user
+				<if test="searchCondition != null">
+					<where>
+						<if test="searchCondition == 0 and searchKeyword !='' ">
+				 			user_id LIKE '%${searchKeyword}%'
+						</if>
+						<if test="searchCondition == 1 and searchKeyword !='' ">
+				 		user_name LIKE '%${searchKeyword}%'
+						</if>
+					</where>
+				</if> ) countTable			
+	 </select>
+	 
+	 <select id="getSpotList" parameterType="search" resultMap="spot">
+	 	SELECT @n := @n + 1 as num, x.*
+  		FROM (SELECT  *
+			FROM spot
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !=''">
+		 				spot_title LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !=''">
+		 				spot_no LIKE '%${searchKeyword}%'
+					</if>
+				</where>
+			</if>
+			ORDER BY spot_no
+			LIMIT 9999999999999999) X,
+		(SELECT @n := 0) r
+		limit #{startRowNum}, 3
+	 </select>
+	 
+ 	<select  id="getSpotCount"  parameterType="search"	 resultType="int">
+  	SELECT COUNT(*)
+  	FROM(	SELECT *
+			FROM spot
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !='' ">
+			 			spot_title LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !='' ">
+			 			spot_no LIKE '%${searchKeyword}%'
+					</if>
+				</where>
+			</if> ) countTable			
+	 </select>
 
 </mapper>
