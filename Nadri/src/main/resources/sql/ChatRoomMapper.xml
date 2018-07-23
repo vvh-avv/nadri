@@ -3,5 +3,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ChatRoomMapper">
+<resultMap id="ChatRoomSelectMap" type="chatRoom">
+<result property="chatRoomNo" column="chatRoom_no" jdbcType="NUMERIC" />
+<result property="userId" 	column="user_id"  jdbcType="VARCHAR"/>
+<result property="userName" 	column="user_name"  jdbcType="VARCHAR"/>
+</resultMap>
 
+<insert id="addChatRoom" parameterType="chatRoom">
+INSERT
+INTO chatRoom ( user_id , user_name )
+VALUES(	 #{userId} , #{userName} )
+</insert>
+
+<select id="chatRoomList" parameterType="java.util.HashMap" resultMap="ChatRoomSelectMap">
+ SELECT chatRoom_No , REPLACE( REPLACE( user_id , CONCAT( #{userId} , ',') , '' ) , CONCAT(',' , #{userId}) , '' ) user_id , user_Name
+ FROM chatRoom WHERE user_id LIKE CONCAT( '%', #{userId} , '%' )
+ </select>
+
+ <!-- 
+ <select id="updateChatRoom" parameterType="chatRoom" resultMap="ChatRoomSelectMap">
+ UPDATE chatRoom
+<set>
+ users += #{user_id}
+</set>
+<where>
+ chatRoom_No = #{chatRoomNo}
+</where>
+</select>
+
+
+<select id="getChatRoom2" parameterType="java.util.HashMap" resultMap="ChatRoomSelectMap"> 
+ SELECT chatroom_No , users FROM chatroom 
+  WHERE users = concat( concat(#{userId1} , ',') , #{userId2}) OR users = concat( concat(#{userId2} , ',') , #{userId1})
+</select>
+
+<select id="getChatRoom" parameterType="int" resultMap="ChatRoomSelectMap"> 
+  SELECT chatroom_No , chat_no , users FROM chatroom 
+  WHERE chatroom_no = #{chatroomNo}
+</select> -->
 </mapper>

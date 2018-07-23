@@ -29,6 +29,10 @@
 <script src="/javascript/board.js"></script>
 
 <style>
+	.container{
+		padding-top: 10px;
+	}
+	
 	article{
 		display: inline-block;
 	    position: relative;
@@ -103,6 +107,10 @@ $(function(){
 					</div>
 				</article>
 			</c:forEach>
+			
+			<c:if test="${empty list}">
+				<span id="defaultText" style="margin-left:40%;">작성하신 글이 없습니다. ㅠㅠ</span>
+			</c:if>
 		</div>
 	</div> <!-- e.o.container -->
 </body>
