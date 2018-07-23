@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="EUC-KR"%>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="/css/chatRoom.css">
 <link rel="stylesheet" href="/css/chatRoomInner.css">
+
 <script>
 var chatCount = 0;
 $(function() {
@@ -100,7 +100,7 @@ $(function() {
 	
 	
 	
-	//채팅방 클릭시
+	//*채팅방 클릭시
 	$('#chatFriendList').on( 'click', '.clearfix', function() {
 				flag = 0 ;
 
@@ -152,9 +152,9 @@ $(function() {
 				
 				$("#chatFriendList").html('') ;
 				$("#chatRoomContainer").css("display", "none") ;
-	}) ; //End of on click
+	}) ; //End of on click 
 	
-	//창 떠있을 때, 다른 화면 누르면 닫히는 기능.
+	//*창 떠있을 때, 다른 화면 누르면 닫히는 기능.
 	$('body').click(function(e) {
 		
 		if ($("#noticeContainer").css('display') == 'block') {
@@ -262,7 +262,7 @@ $(function() {
 }) ; //End of jQuery
 
 /**************************************WebSocket******************************************/
-var userId = "<c:out value="${user.userId}"/>"
+var userId = "${sessionScope.user.userId}"; //"<c:out value="${user.userId}"/>";
 if (userId != null) {
 	var webSocket = new WebSocket("ws://localhost:8080/websocket/" + userId ) ;
 
@@ -312,61 +312,24 @@ if (userId != null) {
    <a href="/index.jsp"> 
    <img src="/images/common/title_colored.png" class="title">
    </a>
+   
+   
 
    <div class="collapse navbar-collapse">
       <input type="text" class="searcher" placeholder="검색어를 입력해주세요."
          name="searchKeyword">
       <div class="sidemenu">
          <c:if test="${!empty user}">
-         	<ul id="nav">
-			<li>
-			<a href="#" id="noticeList">
-            <img src="/images/common/bell_white.png" class="icons bell">
-            			</a>	
-			<div class="notificationContainer" style="display: none;"id="noticeContainer">
-			<div id="notificationTitle">알림</div>
-			<div class="col-md-12 bg-white">
-            <ul class="friend-list" id="noticeFriendList">
-<!-- 	       	여기가 알림 리스트 -->
-
-	        </ul>
-            </div>
-            </div>
-            </ul>
-      		</div>
-			</div>
-			
-			
-			
- 				
-			<ul id="nav">
-			<li>
-			<a href="#" id="chatRoomList">           
-            <img src="/images/common/chat_white.png" class="icons chat">
-			</a>
-			<div class="notificationContainer" style="display: none;" id="chatRoomContainer">
-			<div id="notificationTitle">채팅방</div>
-			<div class="col-md-12 bg-white">
-            <ul class="friend-list" id="chatFriendList">
-<!--             여기에 채팅방 리스트가 출력됨. -->
-            </ul>
-             </div>
-             </div>
-             </ul>
-      		 </div>
-            
-            <img src="/images/common/user_white.png" class="icons friend">
             <c:if test="${user.role==0}">
+               <img src="/images/common/chat_white.png" class="icons chat">
                <a href="/user/listUser"> <img
-                  src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
+                  src="/images/profile/${user.profileImg}"
                   class="profile" title="let's go to my page">
                </a>
             </c:if>
             <c:if test="${user.role==1}">
-               <a href="/admin/adminIndex"> <img
-                  src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-                  class="profile" title="let's go to Admin page">
-               </a>
+               <img src="/images/common/chat_white.png" class="icons chat">
+               <img src="/images/profile/${user.profileImg}" class="profile" title="let's go to Admin page">
             </c:if>
          </c:if>
       </div>
@@ -377,14 +340,39 @@ if (userId != null) {
          </div>
       </c:if>
       <div class="topmenus">
-         <span class="topele spots" style="font-family: 'seoul';">나들이백과</span> <span class="topele boards" style="font-family: 'seoul';">게시판</span> <span
-            class="topele schedules" style="font-family: 'seoul';">일정작성</span>
+         <span class="topele spots" style="font-family: 'seoul';">나들이백과</span> 
+         <span class="topele boards" style="font-family: 'seoul';">게시판</span> 
+         <span class="topele schedules" style="font-family: 'seoul';">일정작성</span>
       </div>
    </div>
    <div class="toggleBox">
       <img src="/images/common/more_white.png" class="menuExpand" style="transform:rotate(90deg)"> 
       <img src="/images/common/search_white.png" class="searchExpand">
    </div>
+</div>
+<div class="floatbackground"></div>
+<div class="sidecatalogue">
+
+   <div class="closeAll">X</div>
+   
+   <div class="profileSection">
+      <img src="/images/profile/${user.profileImg}" class="profileImg">
+      <div class="row" style="display:flex; justify-content: center; margin-top:20px;">
+         <div class="col-md-12" style="text-align:center; font-size:3vw; font-weight:700;">${user.userName}</div>
+      </div>
+         <div class="col-md-12" style="text-align:center; font-size: 1vw;">${user.userId}</div>
+   </div>
+   
+   <ul style="list-style-type: none;">
+      <li class="friendAlert"> 친 구 알 림 <span style="color:red; font-weight:700;">1</span> </li>
+      <li class="friendSmall"> <img src="/images/profile/${user.profileImg}" class="profileImg2"> 님이 친구신청을 하셨습니다. </li>
+      <li class="friendSmall"> 알림2 </li>
+      <li class="friendSmall"> 알림3 </li>
+      <li> 나 들 이 백 과 </li>
+      <li> 게 시 판 </li>
+      <li> 일 정 작 성 </li>
+   </ul>
+   
 </div>
 <div style="display:flex; flex-direction: col; justify-content: flex-start;">
    <ul class="toggleMenuMob">

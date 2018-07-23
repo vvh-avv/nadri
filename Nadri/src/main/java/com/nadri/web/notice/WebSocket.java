@@ -21,6 +21,7 @@ public class WebSocket {
 	
     @OnOpen
     public void handleOpen(@PathParam("userId") String userId , Session session) {
+    	System.out.println("123") ;
         map.put( userId  , session) ;
     }
     
