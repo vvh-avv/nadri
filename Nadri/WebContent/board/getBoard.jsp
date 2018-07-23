@@ -176,10 +176,17 @@
    }
    #commListDelete img{
       cursor: pointer;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       float: right;
     }
+   #commListInquire img{
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+      float: right;
+      margin-right: .3em;
+   }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
 	}
@@ -440,7 +447,8 @@ $(function(){
 						   //댓글 리스트 추가
 						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
 								 str += "<span id='commListContent'>"+addTag+"</span>"
-								        + "<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>";
+								        +"<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+								        +"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 						   $("#commListAll").append(str);
 							//댓글마지막 시간도 실행
 							var timeStampType = comment.commentTime;
@@ -463,14 +471,22 @@ $(function(){
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
    $(document).on("mouseover", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").removeAttr("style");
-		}
+	   if( ${!empty sessionScope.user} ){
+	   		$(this).children('span:eq(3)').removeAttr("style");
+
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').removeAttr("style");
+			}
+	   }
 	})
    //*댓글 마우스가 떠나면 삭제버튼 다시 노출감추기 => 회원만 가능 => 본인만 가능
    $(document).on("mouseleave", "div[id^='commList']", function(){
-	   if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-		   $(this).find("span:last").attr("style","display:none;");  
+	   if( ${!empty sessionScope.user} ){
+			$(this).children("span:eq(3)").attr("style","display:none;");
+			
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').attr("style","display:none;");
+			}
 	   }
    })
    //*댓글삭제
@@ -852,6 +868,7 @@ $(function(){
 						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
 						<span id="commListContent${i}">${comment.commentContent}</span>
 						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span>
+						<span id="commListInquire" id="inquireUser" name="${comment.commentNo}" style="display:none;" data-toggle="modal" data-target="#inquireModal"><img src="/images/board/inquire.png"></span>
 					</div>
 	            </c:forEach>
 	        </div>

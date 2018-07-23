@@ -67,9 +67,6 @@ public class FriendRestController {
 		
 		User user = (User)session.getAttribute("user");
 		
-		int returnValue = friendService.checkFriend(user.getUserId(), friendId, 1);
-		System.out.println("?????????? : "+returnValue);
-		
 		return friendService.checkFriend(user.getUserId(), friendId, 1);
 	}
 	

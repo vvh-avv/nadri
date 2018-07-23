@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,18 +93,21 @@ public class BoardRestController {
 	
 	//좋아요
 	@RequestMapping(value="json/addLike/{boardNo}", method=RequestMethod.POST)
-	public int addLike( @PathVariable int boardNo ) throws Exception{
+	public int addLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
 		System.out.println("/board/json/addLike : POST");
-		boardService.addLike(boardNo, "user05"); //추가하고
+		
+		User user = (User)session.getAttribute("user");
+		boardService.addLike(boardNo, user.getUserId()); //추가하고
 
 		return boardService.getLikeCount(boardNo); //변경된 개수 리턴
 	}
 
 	@RequestMapping(value="json/deleteLike/{boardNo}", method=RequestMethod.POST)
-	public int deleteLike( @PathVariable int boardNo ) throws Exception{
+	public int deleteLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
 		System.out.println("/board/json/deleteLike : POST");
-		
-		boardService.deleteLike(boardNo, "user05");
+
+		User user = (User)session.getAttribute("user");
+		boardService.deleteLike(boardNo, user.getUserId());
 		
 		return boardService.getLikeCount(boardNo); //변경된 개수 리턴
 	}
@@ -142,5 +146,58 @@ public class BoardRestController {
 		commentService.deleteComment(commentNo);
 		
 		return commentService.getCommentCount(boardNo); //변경된 개수 리턴
+	}
+
+	//메인화면 추천게시물 (최신)
+	@RequestMapping(value="recomBoardNew")
+	public String recomBoardNew(Model model) throws Exception{
+		System.out.println("/board/recomBoardNew : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("최신");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardNew", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (일간)
+	@RequestMapping(value="recomBoardDay")
+	public String recomBoardDay(Model model) throws Exception{
+		System.out.println("/board/recomBoardDay : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("일간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardDay", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (주간)
+	@RequestMapping(value="recomBoardWeek")
+	public String recomBoardWeek(Model model) throws Exception{
+		System.out.println("/board/recomBoardWeek : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("주간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardWeek", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (월간)
+	@RequestMapping(value="recomBoardMonth")
+	public String recomBoardMonth(Model model) throws Exception{
+		System.out.println("/board/recomBoardMonth : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("월간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardMonth", list);
+		
+		return "forward:/index.jsp";
 	}
 }

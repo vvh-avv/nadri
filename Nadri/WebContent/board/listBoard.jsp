@@ -188,6 +188,13 @@
       height: 8px;
       float: right;
     }
+   #commListInquire img{
+      cursor: pointer;
+      width: 12px;
+      height: auto;
+      float: right;
+      margin-right: .3em;
+   }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
 	}
@@ -401,7 +408,8 @@ $(function(){
 			            			for( i=0; i<this.comment.length; i++ ){
 			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
-			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>"	
+			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+			            				+ "<span id='commListInquire' id='inquireUser' name='"+this.comment[i].commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>"	
 			            			}
 			            			tag += "<div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
 			            		}
@@ -433,8 +441,8 @@ $(function(){
 	})
 
 	//*슬라이드쇼 시작
-   $(document).on("flexslider", ".flexslider", function(){
-	//$('.flexslider').flexslider({
+   //$(document).on("flexslider", "div[class^='flexslider']", function(){
+	$("div[class^='flexslider']").flexslider({
 	   animation: "slide"
 	});
 
@@ -584,7 +592,8 @@ $(function(){
 					   $("#commPrint"+num).text("댓글 "+(Number(cnt)+1)+"개");
 					   //댓글 리스트 추가
 					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
-							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>";
+							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+							 	+"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 					   $("#commLastTime"+num).prev().append(str);
 						//댓글마지막 시간도 실행
 						var timeStampType = comment.commentTime;
@@ -605,18 +614,28 @@ $(function(){
    $(document).on("click", "span[class^='commTag']", function(){
 		swal("Hi~"); 
 	})
+	
 	//*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
    $(document).on("mouseover", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").removeAttr("style");	
-		}
+	   if( ${!empty sessionScope.user} ){
+	   		$(this).children('span:eq(3)').removeAttr("style");
+
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').removeAttr("style");
+			}
+	   }
 	})
 	//*댓글 마우스가 떠나면 삭제버튼 다시 노출감추기 => 회원만 가능 => 본인만 가능
    $(document).on("mouseleave", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").attr("style","display:none;");	
-		}
+	   if( ${!empty sessionScope.user} ){
+			$(this).children("span:eq(3)").attr("style","display:none;");
+			
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').attr("style","display:none;");
+			}
+	   }
 	})
+	
 	//*댓글삭제
    $(document).on("click", "span[id^='commListDelete']", function(){
 		//alert( $(this).attr("class") );
@@ -629,6 +648,16 @@ $(function(){
 				$("."+commNo).parent().remove();
 			}
 		}) //e.o.ajax
+	 })
+	 //*댓글신고
+	 $(document).on("click","span[id^='commListInquire']", function(){
+		 var counter = $(this).attr('name');
+		   $('.inquireLink').val(counter);
+		   $('.inquireLink').attr('disabled', 'disabled');
+		   $('.inquireCode').val('2').prop("selected", true);
+		   $('.inquireCode').attr('disabled', 'disabled');
+		   $('.reportUser').css('visibility', 'hidden');
+		   $('.reportLink').css('visibility', 'visible');
 	 })
    
    //*공유 클릭시 SNS 아이콘 노출
@@ -895,10 +924,12 @@ $(function(){
 	<!-- 페이징처리를 위함 -->
 	<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}">
 	
+	<!-- commList 마다 고유 k값 부여 -->
+	<c:set var="k" value="0"/>
+	
 	<div class="container ListBody">
 		<c:set var="i" value="0"/>
 		<c:forEach var="board" items="${list}">
-		<c:set var="i" value="${i+1}"/>
 			
 		<!-- 더보기 버튼 클릭시 노출될 항목 --> 
 	    <span id="moreContent${board.boardNo}">
@@ -982,10 +1013,12 @@ $(function(){
 	            <c:set var="j" value="0"/>
 				<c:forEach var="comment" items="${board.comment}">
 				<c:set var="j" value="${j+1}"/>
+				<c:set var="k" value="${k+1}"/>
 					<div id="commList">
 						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
-						<span id="commListContent${j}">${comment.commentContent}</span>
-						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span>
+						<span id="commListContent${k}">${comment.commentContent}</span>
+						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span> 
+						<span id="commListInquire" id="inquireUser" name="${comment.commentNo}" style="display:none;" data-toggle="modal" data-target="#inquireModal"><img src="/images/board/inquire.png"></span>
 					</div>
 	            </c:forEach>
 	        </div>
