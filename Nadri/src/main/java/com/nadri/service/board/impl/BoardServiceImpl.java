@@ -54,6 +54,17 @@ public class BoardServiceImpl implements BoardService{
 	public void deleteBoard(int boardNo) throws Exception {
 		boardDao.deleteBoard(boardNo);
 	}
+
+	//마이페이지 작성한 글보기
+	public List<Board> getMyBoardList(String userId) throws Exception{
+		return boardDao.getMyBoardList(userId);
+	}
+	
+	//메인화면 추천게시물
+	@Override
+	public List<Board> getRecomBoard(Search search) throws Exception{
+		return boardDao.getRecomBoard(search);
+	}
 	
 	//좋아요
 	@Override

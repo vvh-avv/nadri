@@ -1,14 +1,9 @@
 package com.nadri.web.board;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,14 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
 import com.nadri.service.comment.CommentService;
@@ -183,7 +176,7 @@ public class BoardController {
 		board.setUser( (User)request.getSession().getAttribute("user") );
 		boardService.updateBoard(board);
 		
-		return "redirect:/board/listBoard.jsp";
+		return "redirect:/board/listBoard";
 	}
 	
 	@RequestMapping(value="getBoard")
@@ -208,7 +201,6 @@ public class BoardController {
 			board.setComment(comment);
 			
 			String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
-			
 			board.setCommLastTime(commLastTime);
 		}
 		
@@ -261,6 +253,76 @@ public class BoardController {
 		
 		boardService.deleteBoard(boardNo);
 		
-		return "redirect:/board/listBoard.jsp";
+		return "redirect:/board/listBoard";
+	}
+
+	//마이페이지 작성한 글보기
+	@RequestMapping(value="getMyBoardList")
+	public String getMyBoardList(Model model, HttpSession session) throws Exception{
+		System.out.println("/board/getMyBoardList : GET / POST");
+		
+		User user = (User)session.getAttribute("user");
+		
+		if(user==null) { //세션이 끊겼을 경우
+			return "redirect:/index.jsp";
+		}
+		List<Board> list = boardService.getMyBoardList(user.getUserId());
+		
+		model.addAttribute("list", list);
+		
+		return "forward:/user/mypageBoardList.jsp";
+	}
+	
+	//메인화면 추천게시물 (최신)
+	@RequestMapping(value="recomBoardNew")
+	public String recomBoardNew(Model model) throws Exception{
+		System.out.println("/board/recomBoardNew : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("최신");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardNew", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (일간)
+	@RequestMapping(value="recomBoardDay")
+	public String recomBoardDay(Model model) throws Exception{
+		System.out.println("/board/recomBoardDay : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("일간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardDay", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (주간)
+	@RequestMapping(value="recomBoardWeek")
+	public String recomBoardWeek(Model model) throws Exception{
+		System.out.println("/board/recomBoardWeek : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("주간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardWeek", list);
+		
+		return "forward:/index.jsp";
+	}
+	//메인화면 추천게시물 (월간)
+	@RequestMapping(value="recomBoardMonth")
+	public String recomBoardMonth(Model model) throws Exception{
+		System.out.println("/board/recomBoardMonth : GET / POST");
+		
+		Search search = new Search();
+		search.setSearchCondition("월간");
+		List<Board> list = boardService.getRecomBoard(search);
+		
+		model.addAttribute("recomBoardMonth", list);
+		
+		return "forward:/index.jsp";
 	}
 }

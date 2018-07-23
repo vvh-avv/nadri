@@ -25,6 +25,8 @@
 <!-- toolbar.js CDN -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
+<!-- board.js -->
+<script src="/javascript/board.js"></script>
 
 <!-- flexslider CDN (슬라이드쇼) -->
 <link rel="stylesheet" href="/css/flexslider.css" type="text/css">
@@ -43,6 +45,13 @@
     js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0&appId=141283403397328";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
+  
+<!-- 친구리스트 오토컴플릿에 필요한 Caret.js -->
+<script src="/javascript/caret.js"></script>
+<!-- 친구리스트 오토컴플릿에 필요한 atwho.js -->
+<script src="/javascript/atwho.js"></script>
+<!--친구리스트 오토컴플릿에 필요한 atwho.css -->
+<link href="/css/atwho.css" rel="stylesheet">
 
 <style>	
 	.ListBody{
@@ -173,6 +182,12 @@
    	  letter-spacing: .2px;
    	  color: #999;
    }
+   #commListDelete img{
+      cursor: pointer;
+      width: 8px;
+      height: 8px;
+      float: right;
+    }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
 	}
@@ -223,6 +238,10 @@
      line-height: 18px;
      min-height: 56px;
      padding: 16px 0;
+   }
+   .commTag{
+   	 cursor: pointer;
+   	 background-color: #dce6f8;
    }
    
    /*  신고기능을 위한 admin css  */
@@ -281,7 +300,7 @@ $(function(){
 	setInterval(function(){refreshDate()}, 10000);
 	
 	//*툴팁사용
-	$('[data-toggle="tooltip"]').tooltip();
+	$(document.body).tooltip({ selector: "[data-toggle='tooltip']" });
 	
 	//*스크롤감지
 	$(window).on("scroll", function(){
@@ -299,6 +318,8 @@ $(function(){
 		
 		//*2.무한스크롤
 		if (maxHeight <= currentScroll) { //+50을 한 이유는 사용자가 반드시 최하단이 아니라 하단보다 조금 위에 위치했더라도 데이터를 불러올 수 있도록 하기 위함
+			console.log("무한스크롤~");
+		
 			$.ajax({
 				url : "/board/json/getBoardList/"+$("#currentPage").val(),
 	            method : "POST",
@@ -338,12 +359,12 @@ $(function(){
 		            				tag += "<img class='iconOpen' src='/images/board/open_self.png' data-toggle='tooltip' data-placement='top' title='비공개'>";
 		            			}
 			            			tag += "</div></div>";
-			            		if( sessionScope.user!=null ){
+			            		if( ${!empty sessionScope.user} ){
 			            			tag += "<div id='more'><img class='moreImg' src='/images/board/more.png' style='cursor:pointer;width:20px;height:20px;margin-top:10px'></div>";
 			            		}
 			            			tag += "</div> </div>";
-			            			+"<div class='bSection'> <input type='hidden' id='boardNo' name='boardNo' value='"+boardNo+"'> <div id='boardTitle' class='bg-success'>"+this.boardTitle+"</div>"
-			            			+"<div class='flexslider'> <ul class='slides'>";
+			            			tag += "<div class='bSection'> <input type='hidden' id='boardNo' name='boardNo' value='"+boardNo+"'> <div id='boardTitle' class='bg-success'>"+this.boardTitle+"</div>"
+			            					+ "<div class='flexslider'> <ul class='slides'>";
 			            		if(this.boardImg!=null){ //이미지가 존재할 경우
 			            			if((this.boardImg).indexOf(',')==-1){ //하나일 경우
 			            				tag += "<li><img src='/images/board/posts/"+this.boardImg+"'/></li>";
@@ -372,7 +393,7 @@ $(function(){
 			            		}	
 			            			tag += "</span> &nbsp; &nbsp;"
 			            			+"<span id='commIcon'> <img class='icon' src='/images/board/comment.png'> </span> &nbsp; &nbsp;"
-			            			+"<span id='shareIcon'> <img class='icon' src='/images/board/share.png'> &nbsp;&nbsp; <img class='iconDetail"+boardNo+"' id='kakaoShare' src='/images/board/share/kakao.png'>"
+			            			+"<span id='shareIcon'> <img class='icon' src='/images/board/share.png'> &nbsp;&nbsp; <img class='iconDetail"+boardNo+"' id='kakaoShare' src='/images/board/share/kakao.png'> "
 			            			+"<img class='iconDetail"+boardNo+"' id='facebookShare' src='/images/board/share/facebook.png'> <img class='iconDetail"+boardNo+"' id='naverShare' src='/images/board/share/naver.png'> </span> </div> <br>"
 			            			+"<div id='viewList'> <span id='likePrint"+boardNo+"'>좋아요 "+this.likeCnt+"개</span> &nbsp;&nbsp; <span id='commPrint"+boardNo+"'>댓글 "+this.commCnt+"개</span></div><br>"
 			            			+"<div id='commListAll'>";
@@ -380,11 +401,15 @@ $(function(){
 			            			for( i=0; i<this.comment.length; i++ ){
 			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
-			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span></div>"	
+			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>"	
 			            			}
 			            			tag += "<div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
 			            		}
-			            		tag += "<section class='commProm'> <form> <textarea id='commContent' name='commContent' placeholder='댓글을 입력해주세요..'></textarea></form></section></div></article><br>";
+			            			tag += "<section class='commProm'> <form> <textarea id='commContent' name='commContent' placeholder='댓글을 입력해주세요..'";
+			            		if( ${empty sessionScope.user} ){
+			            			tag += "readonly";
+			            		}
+			            		tag += "></textarea></form></section></div></article><br>";
 		            	})
 		            	$(".ListBody").append(tag);
 		            	refreshDate();
@@ -402,17 +427,25 @@ $(function(){
 		$(window).scrollTop(0);
 	})
 	//*날짜 클릭시 상세보기로 이동
-	$("span[id^='boardDetail']").on("click", function(){
+   $(document).on("click", "span[id^='boardDetail']", function(){
 		//alert( $(this).closest('article').attr("class") );
 		self.location="/board/getBoard?boardNo="+$(this).closest('article').attr("class");
 	})
 
 	//*슬라이드쇼 시작
-	$('.flexslider').flexslider({
+   $(document).on("flexslider", ".flexslider", function(){
+	//$('.flexslider').flexslider({
 	   animation: "slide"
 	});
+
+	//*페이지 로드 시 댓글 태그로 보여주기
+	var array = $("div[id^='commList']").length;
+	for(var i=0; i<array; i++){
+		$("#commListContent"+i).html( ccTag( $("#commListContent"+i).text() ) );
+	}
+	   
    //*더보기 클릭
-   $("img[class^='moreImg']").on("click", function(){	   
+   $(document).on("click", "img[class^='moreImg']", function(){
 	   var top =  $(this).offset().top+$(this).outerHeight(true); //떠야하는 상단 위치
        var right = ($(window).width() - ($(this).offset().left+$(this).outerWidth())); //떠야하는 우측위치
        var num = $(this).closest('article').attr("class");
@@ -427,10 +460,10 @@ $(function(){
       
    })
    //*더보기 메뉴
-   $("span[id^='modifyBoard']").on("click", function(){
+   $(document).on("click", "span[id^='modifyBoard']", function(){
       self.location="/board/updateBoard?BoardNo="+$(this).parent().next().attr("class");
    })
-   $("span[id^='deleteBoard']").on("click", function(){
+   $(document).on("click", "span[id^='deleteBoard']", function(){
 	   swal({
 		   title: "게시물을 정말 삭제하시겠습니까?",
 		   text: "게시물을 삭제하면 게시물에 포함된\n좋아요, 댓글, 이미지가 모두 삭제됩니다.",
@@ -450,7 +483,7 @@ $(function(){
 		   }
 	   });
    })
-   $("span[id^='addCart']").on("click", function(){
+   $(document).on("click", "span[id^='addCart']", function(){
       alert("일정바구니추가하자..")
    })
    //*더보기 영역 외 클릭시 fadeOut();
@@ -461,9 +494,9 @@ $(function(){
    })
    
    //*하트 클릭
-   $("span[id^='likeIcon']>.icon").on("click", function(){
+   $(document).on("click", "span[id^='likeIcon']>.icon", function(){
 		if( ${empty sessionScope.user} ){
-			swal ( "좋아요 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
+			swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 			return;
 		}
 		
@@ -492,11 +525,30 @@ $(function(){
    })
    
    //*댓글 클릭
-   $("span[id^='commIcon']").on("click", function(){
+   $(document).on("click", "span[id^='commIcon']", function(){
+	  if( ${empty sessionScope.user} ){
+			  swal ( "댓글입력 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
+			  return;
+	  }
 	  $(this).closest('article').find('textarea').focus();
    })
    //*댓글 입력
-   $("textarea[id^='commContent']").on("keyup", function(event){
+   $(document).on("keyup", "textarea[id^='commContent']", function(){
+	 //autocomplete data get
+	   $(this).atwho({
+	        at: "@",
+	        data: null,
+	        limit: 15,
+	        callbacks: {
+	          remoteFilter: function(query, callback){
+	            $.getJSON('/friend/json/listFriendFromBoard/${sessionScope.user.userId}', function(data){
+	              console.log("서버에서 가져온 데이터 : "+data);
+	              callback(data);
+	            });
+	          }
+	        }
+	    });
+	   //enter event
 	   if (event.which==13) {
 		   if ( $(this).val().trim()==null || $(this).val().trim()=="" ){
 			   alert("댓글을 입력해주세요.");
@@ -509,6 +561,8 @@ $(function(){
 					return;
 				}
 			   
+			   if($(this).val().indexOf('\n')!=-1){ //줄바꿈 감지 => autocomplete 과 submit 구별
+			   //comment submit
 			   var num = $(this).closest('article').attr("class");
 			   $.ajax({
 				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
@@ -523,11 +577,14 @@ $(function(){
 						commentContent : $(this).val()
 					}),
 				   success : function(comment){
+					   var addTag = ccTag(comment.commentContent);
+					   console.log(addTag);
+					   
 					   var cnt = $("#commPrint"+num).text().replace(/[^0-9]/g,"");
 					   $("#commPrint"+num).text("댓글 "+(Number(cnt)+1)+"개");
 					   //댓글 리스트 추가
 					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
-							 str += "<span id='commListContent'>"+comment.commentContent+"</span></div>";
+							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>";
 					   $("#commLastTime"+num).prev().append(str);
 						//댓글마지막 시간도 실행
 						var timeStampType = comment.commentTime;
@@ -536,14 +593,46 @@ $(function(){
 						$("#commLastTime"+num).attr("class", lastTime);
 						refreshDate();
 				   }
-			   }) //e.o.ajax
+			   }) //e.o.ajax 
+			   $(this).val("");
+			   }else{
+				   //autocomplete
+			   }
 		   }
-		   $(this).val("");
 	   }
-   })
+	})
+	//*댓글에 태그된 유저아이디 클릭
+   $(document).on("click", "span[class^='commTag']", function(){
+		swal("Hi~"); 
+	})
+	//*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
+   $(document).on("mouseover", "div[id^='commList']", function(){
+		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
+			$(this).find("span:last").removeAttr("style");	
+		}
+	})
+	//*댓글 마우스가 떠나면 삭제버튼 다시 노출감추기 => 회원만 가능 => 본인만 가능
+   $(document).on("mouseleave", "div[id^='commList']", function(){
+		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
+			$(this).find("span:last").attr("style","display:none;");	
+		}
+	})
+	//*댓글삭제
+   $(document).on("click", "span[id^='commListDelete']", function(){
+		//alert( $(this).attr("class") );
+		var commNo = $(this).attr("class");
+		$.ajax({
+			url : "/board/json/deleteComment/"+$("#boardNo").val()+"/"+commNo,
+			method : "POST",
+			success : function(data, status){
+				$("#commPrint").text("댓글 "+data+"개");
+				$("."+commNo).parent().remove();
+			}
+		}) //e.o.ajax
+	 })
    
    //*공유 클릭시 SNS 아이콘 노출
-   $("span[id^='shareIcon']>.icon").on("click", function(){
+   $(document).on("click", "span[id^='shareIcon']>.icon", function(){
 	   var num = $(this).closest('article').attr("class");
       if( $(".iconDetail"+num).css("display")=="none" ){
          $(".iconDetail"+num).show("scale");
@@ -553,7 +642,7 @@ $(function(){
    })
    //* SNS공유
    Kakao.init('b3eb26586b770154ea49919a7f59f2d2');
-   $("img[id^='kakaoShare']").on("click", function(){
+   $(document).on("click", "img[id^='kakaoShare']", function(){
 	   Kakao.Link.sendDefault({
 		     objectType: 'feed',
 		     content: {
@@ -587,7 +676,7 @@ $(function(){
 		     ]
 		});
    })
-   $("img[id^='facebookShare']").on("click", function(){
+   $(document).on("click", "img[id^='facebookShare']", function(){
       FB.ui({
 			method		: 'share_open_graph',
 			action_type: 'og.shares',
@@ -601,7 +690,7 @@ $(function(){
 		    })
 	  });
    })
-   $("img[id^='naverShare']").on("click", function(){
+   $(document).on("click", "img[id^='naverShare']", function(){
 	  var url = encodeURI( "http://localhost:8080/board/getBoard?boardNo="+$(this).closest('article').attr("class") );
 	  var title = encodeURI( $(this).closest('article').find('div[id^=boardTitle]').text() );
 	  
@@ -620,11 +709,33 @@ $(function(){
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
   		modal.find('button:last').attr("name",recipient[2]);
+
+  		//클릭한 사람이 친구인지 아닌지 확인
+  		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
+  	  		$.ajax({
+  	  			url : "/friend/json/chkFriend/"+recipient[2],
+  	  			success : function(data){
+  	  				if(data==1){ //친구임
+  	  					$("#addFriend").remove();
+  	  					$("#chatFriend").remove();
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
+  	  				}else{ //친구가 아님
+  	  					$("#addFriend").remove();
+  	  					$("#chatFriend").remove();
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
+  	  				}
+  	  			}
+  	  		})
+  		}
 	})
    //*유저프로필 모달창 내 친구추가
-   $("button[id^='addFriend']").on("click", function(){
-	   alert("친구추가를 합시다..")
+   $(document).on("click", "button[id^='addFriend']", function(){
+	   alert("친구추가를 합시다..");
    })
+   //*유저프로필 모달창 내 대화하기
+   $(document).on("click", "button[id^='chatFriend']", function(){
+	   alert("대화를 합시다..");
+  })
    //*유저프로필 모달창 내 신고하기
    $("button[id^='inquireUser']").on("click", function(){
 	   var counter = $(this).attr('name');
@@ -873,19 +984,18 @@ $(function(){
 				<c:set var="j" value="${j+1}"/>
 					<div id="commList">
 						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
-						<span id="commListContent">${comment.commentContent}</span>
+						<span id="commListContent${j}">${comment.commentContent}</span>
+						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span>
 					</div>
 	            </c:forEach>
 	        </div>
             
             <!-- 마지막 댓글달린 시간 -->
-            <c:if test="${board.commLastTime!=null}">
-            	<div id="commLastTime${board.boardNo}" class="${board.commLastTime}"></div>
-            </c:if>
+            <div id="commLastTime${board.boardNo}" class="${board.commLastTime}"></div>
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
-            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.."></textarea></form>
+            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.." ${empty user.userId ? "readonly" : ""}></textarea></form>
             </section>
       </div>
    </article><br>
