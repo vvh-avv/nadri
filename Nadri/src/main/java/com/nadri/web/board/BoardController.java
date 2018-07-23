@@ -99,18 +99,18 @@ public class BoardController {
 			
 			if(i==0) {
 				fileMultiName += fileOriginName;
-			}else {
+			} else {
 				fileMultiName += ","+fileOriginName;
 			}
 		}
 		
-		System.out.println("최종 파일명(들) : "+fileMultiName);
-		board.setBoardImg(fileMultiName);
-		board.setUser( (User)request.getSession().getAttribute("user") );
+		System.out.println("최종 파일명(들) : "+fileMultiName) ;
+		board.setBoardImg(fileMultiName) ;
+		board.setUser( (User)request.getSession().getAttribute("user") ) ;
 		
-		boardService.addBoard(board);
+		boardService.addBoard( board ) ;
 		
-		return "redirect:/board/listBoard";
+		return "redirect:/board/listBoard" ;
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.GET)
@@ -194,25 +194,20 @@ public class BoardController {
 		User user = userService.getUser(board.getUser().getUserId());
 		board.setUser(user);
 
-		if(session.getAttribute("user")!=null) {
-			int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
-			model.addAttribute("likeFlag", likeFlag);
-		}
+		int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
 		
-		//댓글이 있을 때만 수행
-		if( board.getCommCnt()>0 ) {
-			List<Comment> comment = commentService.getCommentList(boardNo);
-			for( int i=0; i<comment.size(); i++) {
-				comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
-			}
-			board.setComment(comment);
-			
-			String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
-			
-			board.setCommLastTime(commLastTime);
+		List<Comment> comment = commentService.getCommentList(boardNo);
+		for( int i=0; i<comment.size(); i++) {
+			comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
 		}
+		board.setComment(comment);
+		
+		String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+		
+		board.setCommLastTime(commLastTime);
 		
 		model.addAttribute("board", board);
+		model.addAttribute("likeFlag", likeFlag);
 		
 		return "forward:/board/getBoard.jsp";
 	}

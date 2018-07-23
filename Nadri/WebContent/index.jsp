@@ -33,8 +33,8 @@
 		$("img[src='/images/user/kakao_login_btn_small.png']").on("click",
 				function() {
 					loginWithKakao();
-				});
-	});
+				}) ;
+	}) ;
 
 	Kakao.init('7368fcab4bac4f1c102ca1316601d03f');
 	function loginWithKakao() {
@@ -47,17 +47,17 @@
 					success : function(res) {
 						//alert(JSON.stringify(res));
 						checkUser(res);
-					},
+					} ,
 					fail : function(error) {
 						alert(JSON.stringify(error));
 					}
-				});
-			},
+				}) ;
+			} ,
 			fail : function(err) {
-				alert(JSON.stringify(err));
+				alert(JSON.stringify(err)) ;
 			}
-		});
-	};
+		}) ;
+	} ;
 </script>
 <style>
 .middle-bar {
@@ -95,8 +95,8 @@
 	<div class="container-fluid indexHead">
 		<%@ include file="layout/toolbar.jsp"%>
 		<div
-			style="width: 100%; height: 50%; margin: 18% auto; text-align: center;">
-			<h1 style="font-weight: 800; color: powderblue; font-size: 82px;" class="textAni">우리둘이...나들이갈래?</h1>
+			style="width: 30%; height: 50%; margin: 10% auto; text-align: center;">
+			<h1 style="font-weight: 800; color: white;">우리 나들이 갈래?</h1>
 		</div>
 	</div>
 	<div class="container-fluid">

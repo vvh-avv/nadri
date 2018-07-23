@@ -58,10 +58,6 @@
 	  height: 50px;
 	  z-index:999;
 	}
-	p{
-		float:left;
-		margin-bottom:10px;
-	}
 	.gotoTop {
 	  display : none;
 	  cursor : pointer;
@@ -186,8 +182,10 @@
    	    border: 1px solid #ccc;
 	    border-radius: 4px;
 	    display: inline-block;
-	    width: auto;
-	    height: 34px;
+	    width: 300px;
+	    height: auto;
+	    /*width: auto;
+	    height: 34px;*/
 	    padding: 6px 12px;
 	    font-size: 14px;
 	    line-height: 1.42857143;
@@ -337,11 +335,7 @@ $(function(){
 		            			}else{
 		            				tag += "<img class='iconOpen' src='/images/board/open_self.png' data-toggle='tooltip' data-placement='top' title='비공개'>";
 		            			}
-			            			tag += "</div></div>";
-			            		if( sessionScope.user!=null ){
-			            			tag += "<div id='more'><img class='moreImg' src='/images/board/more.png' style='cursor:pointer;width:20px;height:20px;margin-top:10px'></div>";
-			            		}
-			            			tag += "</div> </div>";
+			            			tag += "</div></div> <div id='more'> <img class='moreImg' src='/images/board/more.png' style='cursor:pointer;width:20px;height:20px;margin-top:10px'></div></div> </div>"
 			            			+"<div class='bSection'> <input type='hidden' id='boardNo' name='boardNo' value='"+boardNo+"'> <div id='boardTitle' class='bg-success'>"+this.boardTitle+"</div>"
 			            			+"<div class='flexslider'> <ul class='slides'>";
 			            		if(this.boardImg!=null){ //이미지가 존재할 경우
@@ -462,11 +456,6 @@ $(function(){
    
    //*하트 클릭
    $("span[id^='likeIcon']>.icon").on("click", function(){
-		if( ${empty sessionScope.user} ){
-			swal ( "좋아요 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
-			return;
-		}
-		
 	  //alert( $(this).closest('article').attr("class") );
 	  var num = $(this).closest('article').attr("class"); 
 	  
@@ -503,13 +492,8 @@ $(function(){
 			   $(this).val("");
 			   $(this).focus();
 		   }else{
-			   if( ${empty sessionScope.user} ){
-					swal ( "댓글달기 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
-					$(this).val("");
-					return;
-				}
-			   
-			   var num = $(this).closest('article').attr("class");
+				var num = $(this).closest('article').attr("class");
+				
 			   $.ajax({
 				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
 				   method : "POST",
@@ -650,83 +634,64 @@ $(function(){
       $(".inquireSend").on(
             "click",
             function(e) {
-               var inquireFile = $('.inquire_file').val();
-             
-             if(inquireFile==""){
-                console.log("파일없음");
-                var formData = $(".inquire_form");
-                var requestMapping = 'addInquireNoFile';
-             }else{
-                console.log("파일있음");
-                $('.inquire_form').attr('enctype','multipart/form-data');
-                var requestMapping = 'addInquire';
-                var form = $(".inquire_form");
-                // you can't pass Jquery form it has to be javascript form object
-                var formData = new FormData(form[0]);
-             }
+               var form = $(".inquire_form");
+               // you can't pass Jquery form it has to be javascript form object
+               var formData = new FormData(form[0]);
+               //if you only need to upload files then 
+               //Grab the File upload control and append each file manually to FormData
+               //var files = form.find("#fileupload")[0].files;
 
-             //if you only need to upload files then 
-             //Grab the File upload control and append each file manually to FormData
-             //var files = form.find("#fileupload")[0].files;
+               //$.each(files, function() {
+               //  var file = $(this);
+               //  formData.append(file[0].name, file[0]);
+               //});
 
-             //$.each(files, function() {
-             //  var file = $(this);
-             //  formData.append(file[0].name, file[0]);
-             //});
+               if ($('.inquireTitle').val() == '') {
+                  alert("제목을 입력해주세요!");
+                  $('.inquireTitle').focusin();
+                  return;
+               } else if ($('.inquireWrite').val() == '') {
+                  alert("내용을 입력해주세요!");
+                  $('.inquireTitle').focusin();
+               } else {
 
-             if ($('.inquireTitle').val() == '') {
-                alert("제목을 입력해주세요!");
-                $('.inquireTitle').focusin();
-                return;
-             } else if ($('.inquireWrite').val() == '') {
-                alert("내용을 입력해주세요!");
-                $('.inquireTitle').focusin();
-             } else {
-
-                $('body').addClass('waiting');
-                
-                var reportUser = $('.reportedUserId').val();
-                
-                if(reportUser==''){
-                   console.log("유저신고가 아닙니다~");
-                   reportUser = "null";
-                }
-                
-                var inquireCode = $('.inquireCode').val();
-                
-                var title = $('.inquireTitle').val();
-                var title_enc = encodeURI(encodeURIComponent(title));
-                
-                var write = $('.inquireWrite').val();
-                var write_enc = encodeURI(encodeURIComponent(write));
-                
-                var inquireLink = $('.inquireLink').val();
-                
-                if(inquireLink == ''){
-                   
-                   console.log("링크가 없어요~");
-                   inquireLink = "null";
-                   
-                }
-                
-                $.ajax({
-                   type : "POST",
-                   url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
-                   //dataType: 'json', //not sure but works for me without this
-                   data : formData,
-                   contentType: false,//this is requireded please see answers above
-                   processData : false, //this is requireded please see answers above
-                   //cache: false, //not sure but works for me without this
-                   success : function(data, status) {
-                      if (status == "success") {
-                         $('body').removeClass('waiting');
-                         $('.inquire_form')[0].reset();
-                         $('#inquireModal').modal('hide');
-                         console.log(data);
-                      }
-                   }
-                });
-             }
+                  $('body').addClass('waiting');
+                  
+                  var reportUser = $('.reportedUserId').val();
+                  
+                  if(reportUser==''){
+                     console.log("유저신고가 아닙니다~");
+                     reportUser = "null";
+                  }
+                  
+                  var inquireCode = $('.inquireCode').val();
+                  
+                  var title = $('.inquireTitle').val();
+                  var title_enc = encodeURI(encodeURIComponent(title));
+                  
+                  var write = $('.inquireWrite').val();
+                  var write_enc = encodeURI(encodeURIComponent(write));
+                  
+                  var link = $('.inquireLink').val();
+                                    
+                  $.ajax({
+                     type : "POST",
+                     url : "/restAdmin/addInquire/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+link,
+                     //dataType: 'json', //not sure but works for me without this
+                     data : formData,
+                     contentType: false,//this is requireded please see answers above
+                     processData : false, //this is requireded please see answers above
+                     //cache: false, //not sure but works for me without this
+                     success : function(data, status) {
+                        if (status == "success") {
+                           $('body').removeClass('waiting');
+                           $('form')[0].reset();
+                           $('#myModal').modal('hide');
+                           console.log(data);
+                        }
+                     }
+                  });
+               }
 
             });
 
@@ -773,10 +738,10 @@ $(function(){
 </head>
 
 <body>
-	<!-- 상단에 둥둥 떠있는 아이콘 (게시물작성으로 이동) --> 
+	<!-- 상단에 둥둥 떠있는 아이콘 (게시물작성으로 이동) -->
 	<img class="gotoBoard" src="/images/board/gotoBoard.png">
 	<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
-	<img class="gotoTop" src="/images/common/gotoTop.png">
+	<img class="gotoTop" src="/images/board/gotoTop.png">
 	
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
@@ -813,9 +778,7 @@ $(function(){
                   	<c:if test="${board.openRange=='2'}"><img class="iconOpen" src="/images/board/open_self.png" data-toggle="tooltip" data-placement="top" title="비공개"></c:if> <!-- 비공개 아이콘 -->
                   </div>
                </div>
-               <c:if test="${!empty sessionScope.user}">
-               		<div id="more"><img class="moreImg" src="/images/board/more.png" style="cursor:pointer;width:20px;height:20px;margin-top:10px"></div>
-               </c:if>
+               <div id="more"><img class="moreImg" src="/images/board/more.png" style="cursor:pointer;width:20px;height:20px;margin-top:10px"></div>
             </div>
 		</div>
 		
@@ -906,12 +869,10 @@ $(function(){
 				<br>
 				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
-				<c:if test="${!empty sessionScope.user}">
-					<div class="modalUserButton">
-						<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
-						<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
-					</div>
-				</c:if>
+				<div class="modalUserButton">
+					<button type="button" class="btn btn-primary" id="addFriend">친구추가</button>
+					<button type="button" class="btn btn-danger" id="inquireUser" name="" data-toggle="modal" data-target="#inquireModal">유저신고</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -929,7 +890,7 @@ $(function(){
 	               </h4>
 	            </div>
 	            <div class="modal-body">
-	               <form class="inquire_form">
+	               <form class="inquire_form" enctype="multipart/form-data">
 		               신 고 종 류
 		              <select class="inquireCode" name="inquireCode" style="height: 30px;">
 	                     <option value="9">선택하세요</option>
