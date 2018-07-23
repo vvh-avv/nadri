@@ -1,9 +1,7 @@
 package com.nadri.web.admin;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,21 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
 import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
@@ -58,8 +52,7 @@ public class AdminController {
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	
-	@Value("#{commonProperties['pageSize']}")
-	int pageSize;
+	int pageSize = 5;
 
 	@Value("#{provinceProperties}")
 	Map<String, String> map = new HashMap<String, String>();
@@ -77,15 +70,18 @@ public class AdminController {
 		
 		System.out.println("listInquire -> controller 들어옴");
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getInquireList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
@@ -129,15 +125,18 @@ public class AdminController {
 
 		System.out.println("getSpotList -> controller 들어옴");
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getSpotList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
@@ -737,16 +736,21 @@ public class AdminController {
 	public String getUserList(Model model,Search search) throws Exception {
 
 		System.out.println("getUserList -> controller 들어옴");
+		
+		System.out.println(search.getCurruntPage());
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getUserList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결

@@ -138,6 +138,13 @@ select, option {
 	visibility: hidden;
 	margin-right: 2%;
 }
+
+.row{
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 </style>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
@@ -272,7 +279,7 @@ select, option {
 			<div class="row">
 
 				<div class="col-md-6 text-left">
-					<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
+					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수, 현재
 						${resultPage.currentPage} 페이지</p>
 				</div>
 
