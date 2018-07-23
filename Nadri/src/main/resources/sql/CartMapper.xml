@@ -3,5 +3,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="CartMapper">
+	<resultMap id="cartSelectMap" type="cart">
+		<result property="cartNo" 			   		        column="cart_no" 					        jdbcType="NUMERIC"/>
+		<result property="scheduleNo" 			   		column="schedule_no" 					jdbcType="NUMERIC"/>
+		<result property="spotNo" 			   		        column="spot_no" 					        jdbcType="NUMERIC"/>
+		<result property="userId"	     		                column="user_id" 			                jdbcType="VARCHAR" />
+		<result property="cartCode"	     		            column="cart_code" 			            jdbcType="VARCHAR" />
+		<result property="cartDetail"	     		        column="cart_detail" 			            jdbcType="VARCHAR" />
+		<result property="cartTitle" 	                        column="cart_title" 		                    jdbcType="VARCHAR" />
+		<result property="cartAddress"	     			column="cart_address" 		            jdbcType="VARCHAR" />
+		<result property="cartX" 						        column="cart_x" 					            jdbcType="DECIMAL"  />
+		<result property="cartY" 						        column="cart_Y" 					        jdbcType="DECIMAL"/>
+		<result property="cartCreateTime" 	        column="cart_time"                        jdbcType="DATE" />
+		<result property="stampCode" 		            column="stamp_code" 			        jdbcType="NUMERIC"/>
+		<result property="cartImg" 	                        column="cart_img" 		                jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert 	id="addCartSpot"	parameterType="cart" >
+	 	INSERT
+		INTO cart  (
+					spot_no, 
+					user_id, 
+					cart_code,
+					cart_detail,
+					cart_title,
+					cart_address,
+					cart_x,
+					cart_y,
+					cart_time,
+					stamp_code,
+					cart_img)
+		VALUES ( 	
+					#{spotNo:INTEGER},
+					#{userId:VARCHAR},
+					'0',
+					#{cartDetail:VARCHAR},
+					#{cartTitle:VARCHAR},
+					#{cartAddress:VARCHAR},
+					#{cartX},
+					#{cartY},
+					now(),
+					'0',
+					#{cartImg:VARCHAR})		
+	 </insert>
+	 
+	 <select id="getSpotCartList" parameterType="search" resultMap="cartSelectMap" >
+	 	SELECT *
+	 	FROM cart
+	 	WHERE user_id = #{searchKeyword}
+	 	AND cart_code='0'
+	 	LIMIT 5,10;
+	 </select>
 
 </mapper>

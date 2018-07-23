@@ -36,4 +36,7 @@ public interface SpotService {
 	
 	// 7. 게시판을 클릭했을때 조회수가 1씩 증가
 	public void updateSpotReadCnt(Spot spot) throws Exception;
+	
+	// 8. 전체 장소의 갯수를 가져옵니다.
+	public int getTotalSpot() throws Exception;
 }

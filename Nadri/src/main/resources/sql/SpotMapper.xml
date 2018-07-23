@@ -120,4 +120,9 @@
 	   	</set>
 	  	 	WHERE spot_no = #{spotNo}
 	 </update>
+	 
+	 <!-- 전체 장소개수 카운트하는 메서드 -->
+	 <select id="getTotalSpot" resultType="int">
+	 	SELECT COUNT(spot_no) AS totalspot FROM spot;
+	 </select>
 </mapper>

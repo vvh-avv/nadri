@@ -110,7 +110,7 @@ function addCartSpot(){
           scrollwheel: false
         });
         
-        var nowposition = new google.maps.LatLng(${spot.spotY}, ${spot.spotX}),    
+        var nowposition = new google.maps.LatLng(JSON.stringify(${a.response.body.items.item.mapy}), JSON.stringify(${a.response.body.items.item.mapx})),    
         message = '여기에요!'
         
     	displayMarker(nowposition, message);
@@ -171,24 +171,17 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소명</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotTitle}</div>
+										<div class="col-xs-8 col-md-4">${a.response.body.items.item.title}</div>
 									</div>
 								</div>
-								
 								<hr />
-								
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소이미지</strong>
 										</div>
 										<div class="col-xs-8 col-md-4">
-											<c:if test="${spot.spotCode==0 }">
-												<img src="${spot.spotImg}" width="300" height="300" />
-											</c:if>
-											<c:if test="${spot.spotCode !=0 }">
-												<img src="/images/spot/${spot.spotImg}" width="300" height="300" />
-											</c:if>
+												<img src='${a.response.body.items.item.firstimage}' width="250" height="250" />
 										</div>
 									</div>
 								</div>
@@ -200,7 +193,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2">
 											<strong>상세정보</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotDetail}</div>
+										<div class="col-xs-8 col-md-4">${a.response.body.items.item.overview}</div>
 									</div>
 								</div>
 
@@ -211,20 +204,20 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>주소</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotAddress}</div>
+										<div class="col-xs-8 col-md-4">${a.response.body.items.item.addr1}</div>
 									</div>
 								</div>
 
 								<hr />
 								
 							<!-- 전화번호는 있는 장소도 있고 없는 장소도 있으므로 널체크를 해줍니다. -->
-							<c:if test="${not empty spot.spotPhone}">
+							<c:if test="${not empty a.response.body.items.item.tel }">
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
 											<strong>연락처</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotPhone}</div>
+										<div class="col-xs-8 col-md-4">${a.response.body.items.item.tel}</div>
 									</div>
 								</div>
 
@@ -232,13 +225,13 @@ function addCartSpot(){
 							</c:if>
 							
 							<!-- 장소URL은 있는 장소도 있고 없는 장소도 있으므로 널체크를 해줍니다. -->
-							<c:if test="${not empty spot.spotDetailURL}">
+							<c:if test="${not empty a.response.body.items.item.homepage }">
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소URL</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${not empty spot.spotDetailURL}</div>
+										<div class="col-xs-8 col-md-4">${a.response.body.items.item.homepage}</div>
 									</div>
 								</div>
 
@@ -248,84 +241,10 @@ function addCartSpot(){
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
-											<strong>장소시군구</strong>
+											<strong>장소구</strong>
 										</div>
 										<div class="col-xs-8 col-md-4">
-											<c:if test="${spot.spotProvince == 1}">
-										     강남구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 2}">
-										     강동구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 3}">
-										     강북구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 4}">
-										     강서구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 5}">
-										     관악구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 6}">
-										     광진구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 7}">
-										     구로구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 8}">
-										     금천구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 9}">
-										     노원구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 10}">
-										     도봉구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 11}">
-										     동대문구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 12}">
-										     동작구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 13}">
-										     마포구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 14}">
-										     서대문구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 15}">
-										    서초구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 16}">
-										     성동구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 17}">
-										     성북구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 18}">
-										   송파구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 19}">
-										     양천구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 20}">
-										     영등포구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 21}">
-										     용산구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 22}">
-										     은평구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 23}">
-										     종로구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 24}">
-										    중구
-										  </c:if>
-											<c:if test="${spot.spotProvince == 25}">
-										     중랑구
-										  </c:if>
+										     ${a.response.body.items.item.telname}
 										</div>
 									</div>
 								</div>
@@ -335,9 +254,13 @@ function addCartSpot(){
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
-											<strong>장소작성일자</strong> / <strong>수정일자</strong>
+											<strong>장소 작성일자</strong> / <strong>수정일자</strong>
+										</div>	
+											<c:set var="createdtime" value="${a.response.body.items.item.createdtime}"/>
+											<c:set var="modifiedtime" value="${a.response.body.items.item.modifiedtime}"/>
+										<div class="col-xs-8 col-md-4">
+											 ${fn:substring(createdtime,0,8) } / ${fn:substring(modifiedtime,0,8) }
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotCreateTime} / ${spot.spotModifyTime}</div> 
 									</div>
 								</div>
 							</div>
@@ -354,7 +277,7 @@ function addCartSpot(){
 
 				<!-- 장바구니추가 modal 창 start -->
 				<form id=cart>
-					<input type="hidden" name="spotNo" value="${spot.spotNo}" />
+					<input type="hidden" name="spotNo" value="${a.response.body.items.item.contentid}" />
 					<div class="modal fade" id="cartModal" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -365,27 +288,27 @@ function addCartSpot(){
 								<div class="modal-body">
 									<div class="form-group">
 										<label for="spotNo">장소번호</label> <input class="form-control"
-											id="spotNo" name="spotNo" value="${spot.spotNo}" readonly>
+											id="spotNo" name="spotNo" value="${a.response.body.items.item.contentid}" readonly>
 									</div>
 									<div class="form-group">
 										<label for="cartTitle">카트이름(=장소이름일수도..)</label> <input
 											class="form-control" id="cartTitle" name="cartTitle" 
-											value="${spot.spotTitle}" readonly>
+											value="${a.response.body.items.item.title}" readonly>
 									</div>
 									<div class="form-group">
 										<label for="cartX">장소x</label> <input
 											class="form-control" id="cartX" name="cartX"
-											value="${spot.spotX}" readonly>
+											value="${a.response.body.items.item.mapx}" readonly>
 									</div>
 									<div class="form-group">
 										<label for="cartY">장소y</label> <input
 											class="form-control" id="cartY" name="cartY"
-											value="${spot.spotY}" readonly>
+											value="${a.response.body.items.item.mapy}" readonly>
 									</div>
 									<div class="form-group">
 										<label for="cartAddress">장소주소</label> 
 										<input class="form-control" id="cartAddress" name="cartAddress"
-											value="${spot.spotAddress}" readonly>
+											value="${a.response.body.items.item.addr1}" readonly>
 									</div>
 									<div class="form-group">
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
@@ -399,7 +322,7 @@ function addCartSpot(){
 									<div class="form-group">
 										<label for="userId">장소이미지</label> <input
 											class="form-control" id="cartImg" name="cartImg"
-											value="${spot.spotImg}" readonly>
+											value="${a.response.body.items.item.firstimage}" readonly>
 									</div>
 								</div>
 								<div class="modal-footer">

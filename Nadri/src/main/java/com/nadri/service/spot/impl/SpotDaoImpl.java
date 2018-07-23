@@ -83,4 +83,9 @@ public class SpotDaoImpl implements SpotDao{
 		sqlSession.update("SpotMapper.updateSpotReadCnt", spot);
 	}
 	
+	// 7. 전체 장소의 갯수를 가져옵니다.
+	public int getTotalSpot() throws Exception {
+		return sqlSession.selectOne("SpotMapper.getTotalSpot");
+	}
+	
 }

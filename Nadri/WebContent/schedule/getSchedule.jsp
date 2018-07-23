@@ -30,6 +30,10 @@
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+<script src="/javascript/printThis.js"></script>
+
 <style>
 @font-face {
 	font-family: 'seoul';
@@ -85,9 +89,39 @@ ul.countdown li p {
     margin-right: auto;
     margin-left: auto;
 	}
-	
+
+/*맨위로가게만들어주는 css */
+.gotoTop {
+     display : none;
+     cursor : pointer;
+     position: fixed;
+     bottom: 10%;
+     right: 5%;
+     width: 50px;
+     height: 50px;
+     z-index:999;
+   }	
 </style>
 <script>
+// 맨위로 올라가게 만들어 주는 script
+$(function(){
+    //*스크롤감지
+    $(window).scroll(function(){
+        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+        
+        if(scrollLocation!=0){ //화면을 내리면 gotoTop 뜨게하고
+            $(".gotoTop").fadeIn();
+        }else{                    //화면을 올리면 gotoTop 사라지게하기
+            $(".gotoTop").fadeOut();
+        }
+    })
+ 
+    //*상단에 둥둥 떠있는 아이콘 (상단으로 이동)
+    $(".gotoTop").on("click", function(){
+        $("body").scrollTop(0);
+    })
+});
+
 	$(function() {
 		$('.countdown').downCount({
 			date : '${schedule.scheduleDate} ${schedule.startHour}',
@@ -147,9 +181,20 @@ ul.countdown li p {
             }//end of success
         });//end of ajax
 	});
+	
+	$(function(){
+	//pdfdown 버튼 클릭시 report 하위 div가 canvas 변환 -> pdf다운로드
+	$("#pdfdown").click(function(){
+			$("#schedule").printThis();
+		});
+	});
 </script>
 </head>
 <body>
+
+<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
+<img class="gotoTop" src="/images/board/gotoTop.png">
+<div id="schedule">
       <%@ include file="/layout/toolbar.jsp"%>
 	<header style ="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
 		<div class="cd-nugget-info">
@@ -259,13 +304,12 @@ ul.countdown li p {
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
-		
+			<button type="button" class="btn btn-secondary" id="pdfdown">PDFDOWN</button>
 		</div>
 		<!-- 여기안에다가 집어넣으면 몇개더 들어갑니다! -->
-
+	</div>
 	</section>
 	<!-- cd-timeline -->
-
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
 </body>
 </html>
