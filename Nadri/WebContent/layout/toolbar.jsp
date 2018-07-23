@@ -14,14 +14,14 @@
 				<img src="/images/common/bell_black.png" class="icons bell">
 				<img src="/images/common/chat_black.png" class="icons chat">
 				<img src="/images/common/user_black.png" class="icons friend">
-				<c:if test="${user.role==1}">
-					<a href="/admin/adminIndex.jsp"> <img
+				<c:if test="${user.role==0}">
+					<a href="/user/listUser"> <img
 						src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-						class="profile" title="let's go to Admin page">
+						class="profile" title="let's go to my page">
 					</a>
 				</c:if>
-				<c:if test="${user.role==0}">
-					<a href=""> <img
+				<c:if test="${user.role==1}">
+					<a href="/admin/adminIndex.jsp"> <img
 						src="/images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
 						class="profile" title="let's go to Admin page">
 					</a>
