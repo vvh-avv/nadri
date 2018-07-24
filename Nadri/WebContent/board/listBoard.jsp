@@ -184,14 +184,14 @@
    }
    #commListDelete img{
       cursor: pointer;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       float: right;
     }
    #commListInquire img{
       cursor: pointer;
-      width: 12px;
-      height: auto;
+      width: 15px;
+      height: 15px;
       float: right;
       margin-right: .3em;
    }
@@ -612,7 +612,7 @@ $(function(){
 	})
 	//*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-		swal("Hi~"); 
+		swal($(this).text()+" 님과 친구가 되어보세요~"); 
 	})
 	
 	//*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능

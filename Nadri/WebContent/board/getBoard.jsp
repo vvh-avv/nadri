@@ -182,8 +182,8 @@
     }
    #commListInquire img{
       cursor: pointer;
-      width: 25px;
-      height: 25px;
+      width: 15px;
+      height: 15px;
       float: right;
       margin-right: .3em;
    }
@@ -308,7 +308,7 @@ $(function(){
    
    //*페이지 로드 시 댓글 태그로 보여주기
    var array = $("div[id^='commList']").length;
-   for(var i=0; i<array; i++){
+   for(var i=1; i<array; i++){
 	   $("#commListContent"+i).html( ccTag( $("#commListContent"+i).text() ) );
    }
    
@@ -467,7 +467,7 @@ $(function(){
    })
    //*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-	  swal("Hi~"); 
+	  swal($(this).text()+" 님과 친구가 되어보세요~"); 
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
    $(document).on("mouseover", "div[id^='commList']", function(){
@@ -502,6 +502,16 @@ $(function(){
 		   }
 	   }) //e.o.ajax
     })
+	 //*댓글신고
+	 $(document).on("click","span[id^='commListInquire']", function(){
+		 var counter = $(this).attr('name');
+		   $('.inquireLink').val(counter);
+		   $('.inquireLink').attr('disabled', 'disabled');
+		   $('.inquireCode').val('2').prop("selected", true);
+		   $('.inquireCode').attr('disabled', 'disabled');
+		   $('.reportUser').css('visibility', 'hidden');
+		   $('.reportLink').css('visibility', 'visible');
+	 })
    
    //*공유 클릭시 SNS 아이콘 노출
    $("#shareIcon>.icon").on("click", function(){
@@ -619,6 +629,7 @@ $(function(){
    //*유저프로필 모달창 내 대화하기
     $(document).on("click", "#chatFriend", function(){
 	   alert("대화를 합시다..");
+	   $(".userModal").modal('hide');
    })
    //*유저프로필 모달창 내 신고하기
    $("#inquireUser").on("click", function(){
