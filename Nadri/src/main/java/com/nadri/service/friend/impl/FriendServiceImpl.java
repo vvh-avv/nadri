@@ -50,7 +50,7 @@ public class FriendServiceImpl implements FriendService{
 
 	//模备 夸没 荐遏
 	@Override
-	public int addFriend(String userId, String friendId) throws Exception {
+	public int acceptFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
 		int result = 0;
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
@@ -67,7 +67,7 @@ public class FriendServiceImpl implements FriendService{
 			list.add(map1);
 			list.add(map2);
 			
-			result = friendDao.addFriend(list);
+			result = friendDao.acceptFriend(list);
 					
 			return result;
 	}
@@ -87,13 +87,13 @@ public class FriendServiceImpl implements FriendService{
 
 	//模备 夸没
 	@Override
-	public int createFriend(String userId, String friendId) throws Exception {
+	public int addFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
 		int result = 0;
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
 		map.put("friendId", friendId);
-		result = friendDao.createFriend(map);
+		result = friendDao.addFriend(map);
 		
 		return result;
 	}

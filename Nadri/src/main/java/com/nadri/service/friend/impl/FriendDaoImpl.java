@@ -32,9 +32,9 @@ public class FriendDaoImpl implements FriendDao{
 	//method
 	//模备 眠啊
 	@Override
-	public int addFriend(List<Map<String, String>> list) throws Exception {
+	public int acceptFriend(List<Map<String, String>> list) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("friend.addFriend", list);
+		return sqlSession.insert("friend.acceptFriend", list);
 	}
 
 	//模备 昏力
@@ -53,9 +53,9 @@ public class FriendDaoImpl implements FriendDao{
 
 	//模备 夸没
 	@Override
-	public int createFriend(Map<String, String> map) throws Exception {
+	public int addFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("friend.createFriend", map);
+		return sqlSession.insert("friend.addFriend", map);
 	}
 
 	//模备 夸没 芭例

@@ -10,13 +10,13 @@ import com.nadri.service.domain.User;
 public interface FriendService {
 	
 	//模备 夸没 荐遏
-	public int addFriend(String userId, String friendId) throws Exception;
+	public int acceptFriend(String userId, String friendId) throws Exception;
 	
 	//模备 昏力
 	public int deleteFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没矫
-	public int createFriend(String userId, String friendId) throws Exception;
+	public int addFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没 秒家
 	public int cancelFriend(String userId, String friendId) throws Exception;

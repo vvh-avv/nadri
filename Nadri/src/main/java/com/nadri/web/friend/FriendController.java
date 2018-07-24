@@ -102,9 +102,9 @@ public class FriendController {
 	
 	
 	//模备 眠啊
-	@RequestMapping("/addFriend")
-	public String addFriend(String userId, String friendId)throws Exception{
-		friendService.addFriend(userId, friendId);
+	@RequestMapping("/acceptFriend")
+	public String acceptFriend(String userId, String friendId)throws Exception{
+		friendService.acceptFriend(userId, friendId);
 		return "redirect:/friend/listFriend?userId="+userId;
 	}
 	
@@ -118,10 +118,10 @@ public class FriendController {
 	
 	
 	//模备 夸没
-	@RequestMapping("/createFriend")
-	public String createFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
+	@RequestMapping("/addFriend")
+	public String addFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
 		if (parameterMap != null) {
-			int result = friendService.createFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
+			int result = friendService.addFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
 		
 			if (result > 0) {
 				List<Friend> searchFriendList = null;

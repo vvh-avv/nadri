@@ -9,7 +9,7 @@ import com.nadri.service.domain.User;
 public interface FriendDao {
 	
 	//模备 眠啊
-	public int addFriend(List<Map<String, String>> list) throws Exception;
+	public int acceptFriend(List<Map<String, String>> list) throws Exception;
 	
 	//模备 昏力
 	public int deleteFriend(Map<String, String> list)throws Exception;
@@ -18,7 +18,7 @@ public interface FriendDao {
 	public int cancelFriend(Map<String, String> map)throws Exception;
 	
 	//模备 夸没
-	public int createFriend(Map<String, String> map) throws Exception;
+	public int addFriend(Map<String, String> map) throws Exception;
 	
 	//模备 夸没 芭例
 	public int refuseFriend(Map<String, String> map) throws Exception;
