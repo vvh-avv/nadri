@@ -12,178 +12,110 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
+import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
 
-@Repository("friendDaoImpl")
-public class FriendDaoImpl implements FriendDao {
 
-	//field
+@Repository("friendDaoImpl")
+public class FriendDaoImpl implements FriendDao{
+	
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
 	private SqlSession sqlSession;
 	
-	public void setSqlSession (SqlSession sqlSession) {
-		this.sqlSession = sqlSession;
-	}
 	
-	//constructor method
 	public FriendDaoImpl() {
-		// TODO Auto-generated constructor stub
 		System.out.println(this.getClass());
-	}
-
-	////하지수 테스트
-	@Override
-	public String listFriendFromBoard(@PathVariable String userId) throws Exception{
-		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
-		List<String> friendId = new ArrayList<String>(); 
-		
-		for(int i=0; i<friend.size(); i++) {
-			friendId.add(friend.get(i).getFriendId());
-		}
-		
-		String json = new ObjectMapper().writeValueAsString( friendId );
-		
-		return json;
 	}
 	
 	//method
-	//친구 변경
+	//친구 추가
 	@Override
-	public Friend updateFriend(Friend status) throws Exception {
+	public int addFriend(List<Map<String, String>> list) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.insert("friend.addFriend", list);
 	}
 
-	//친구 확인
+	//친구 삭제
 	@Override
-	public Friend getFriend(String friendId) throws Exception {
+	public int deleteFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("FriendMapper.getFriend", friendId);
+		return sqlSession.delete("friend.deleteFriend", map);
+	}
+
+	//친구 요청 취소
+	@Override
+	public int cancelFriend(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("friend.cancelFriend", map);
+	}
+
+	//친구 요청
+	@Override
+	public int createFriend(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("friend.createFriend", map);
+	}
+
+	//친구 요청 거절
+	@Override
+	public int refuseFriend(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("friend.refuseFriend", map);
 	}
 	
-	//친구 맺기(요청)
+	//사용자 아이디와 검색할 아이디를 이용, 유저 목록 리턴
 	@Override
-	public void addFriend(Friend friend, String status) throws Exception {
+	public List<Friend> searchFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("FriendDaoImpl - AddFriend: "+friend);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("friend", friend);
-		map.put("status", status);
+		return sqlSession.selectList("friend.searchFriend", map);
+	}
+	
+	@Override
+	public List<Friend> selectFriendList(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("friend.selectFriendList", user);
+	}
 		
-		sqlSession.insert("FriendMapper.addFriend", map);
-	}
-	
-	//친구 승인
-	@Override
-	public void enterFriend(Friend friend) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.insert("FriendMapper.enterFriend", friend);
-	}
-	
-	//친구 요청, 신청
-	@Override
-	public void acceptFriend(Friend friend) throws Exception {
-		// TODO Auto-generated method stub
-	}
-	
-	//친구 추천
-	@Override
-	public List<Friend> recommendFriend(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("FriendMapper.recommendFriend", userId);
-	}
-	
-	//친구 끊기
-	@Override
-	public void deleteFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.delete("FriendMapper.deleteFriend",friendId);
-	}
-	
-	//친구 리스트
-	@Override
-	public List<Friend> listFriend(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("FriendMapper.listFriend",search);
-	}
-
-	//친구 차단
-	@Override
-	public boolean blockFriend(Friend friendId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}	
-
-	//총 친구 수 세기
-	@Override
-	public int getTotalCount(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("FriendMapper.getTotalCount", search);
-	}
-	
-	//친구 여부 확인
-	@Override
-	public int checkFriend(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		map.put("status", status);
-		
-		Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
-		if(returnValue==null) { returnValue=0; }
-		
-		return returnValue;
-	}
-
-	//친구 신청 취소
-	@Override
-	public void cancelFriend(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		map.put("status", status);
-				
-		sqlSession.delete("FriendMapper.cancelFriend", map);
-	}
-
-	//친구 코드 변경
-	@Override
-	public void updateStatus(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		map.put("status", status);
-		
-		sqlSession.update("FriendMapper.updateStatus", map);
-	}
 
 
-	//follow 확인
-	@Override
-	public int checkFollow(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		map.put("status", status);
-		
-		return sqlSession.selectOne("FriendMapper.checkFollow", map);
-	}
-
-	//친구 수 카운트
-	@Override
-	public List countFriend(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("FriendMapper.countFriend", userId);
-	}
+	//하지수 테스트
+	   @Override
+	   public String listFriendFromBoard(@PathVariable String userId) throws Exception{
+	      List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+	      List<String> friendId = new ArrayList<String>(); 
+	      
+	      for(int i=0; i<friend.size(); i++) {
+	         friendId.add(friend.get(i).getFriendId());
+	      }
+	      
+	      String json = new ObjectMapper().writeValueAsString( friendId );
+	      
+	      return json;
+	   }
+	   
+	 //친구 여부 확인
+	   @Override
+	   public int checkFriend(String userId, String friendId, int status) throws Exception {
+	      // TODO Auto-generated method stub
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      map.put("userId", userId);
+	      map.put("friendId", friendId);
+	      map.put("status", status);
+	      
+	      Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
+	      if(returnValue==null) { returnValue=0; }
+	      
+	      return returnValue;
+	   }
 
 	
 
+	
 
+	
+
+	   
+	
 }

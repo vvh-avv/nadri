@@ -1,6 +1,7 @@
 package com.nadri.web.user;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class UserController {
 	
 	//유저 가입: post방식
 	@RequestMapping(value="addUser", method=RequestMethod.POST)
-	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file, @RequestParam("type") String type ) throws Exception {
+	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file ) throws Exception {
 		
 		System.out.println("/user/addUser : POST");
 		System.out.println("useradd - :" +user);
@@ -271,11 +272,9 @@ public class UserController {
 		System.out.println("/user/quitUser : POST");
 		
 		userService.quitUser(userId);
+		session.invalidate();
 		
-		System.out.println("/////////////////////////");
-		
-			
-		return "forward:/user/logout";
+		return "redirect:/index.jsp";
 	}
 
 	//아이디 찾기 화면 소환

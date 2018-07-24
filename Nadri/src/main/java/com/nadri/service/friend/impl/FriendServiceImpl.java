@@ -1,5 +1,6 @@
 package com.nadri.service.friend.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,153 +8,147 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
+import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
 import com.nadri.service.friend.FriendService;
 
 @Service("friendServiceImpl")
-public class FriendServiceImpl implements FriendService {
-
-	//field
+public class FriendServiceImpl implements FriendService{
+	
 	@Autowired
 	@Qualifier("friendDaoImpl")
 	private FriendDao friendDao;
 	
-	public void setFriendDao(FriendDao friendDao) {
-		this.friendDao = friendDao;
-	}
 	
-	//constructor method
 	public FriendServiceImpl() {
-		// TODO Auto-generated constructor stub
-		System.out.println(this.getClass());
-	}
-
-	////하지수 테스트
-	@Override
-	public String listFriendFromBoard(@PathVariable String userId) throws Exception{
-		return friendDao.listFriendFromBoard(userId);
+		
 	}
 	
 	//method
-	//친구 끊기
+	//친구 목록
 	@Override
-	public void deleteFreind(String friendId) throws Exception {
+	public List<Friend> selectFriendList(User user) throws Exception {
 		// TODO Auto-generated method stub
-		friendDao.deleteFriend(friendId);
+		return friendDao.selectFriendList(user);
 	}
 	
-	//친구 변경
-	@Override
-	public void updateFriend(Friend friendCode) throws Exception {
-		// TODO Auto-generated method stub
-		friendDao.updateFriend(friendCode);
-	}
-
-	//친구 조회
-	@Override
-	public Friend getFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		return friendDao.getFriend(friendId);
-	}
 	
-	//친구 승인
+	//멤버의 친구 목록
 	@Override
-	public void enterFriend(Friend friend) throws Exception {
+	public List<Friend> searchFriend(String userId, String searchUserId) throws Exception {
 		// TODO Auto-generated method stub
-		friendDao.enterFriend(friend);
-	}
-	
-	//친구 맺기
-	@Override
-	public void addFriend(Friend friend, String status) throws Exception {
-		// TODO Auto-generated method stub
-		friendDao.addFriend(friend, status);
-		System.out.println("friendService- addFriend: "+friend);
-	}
-
-	//친구 리스트
-	@Override
-	public Map<String, Object> listFriend(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		//친구 리스트 가져오기
-		List<Friend> list = friendDao.listFriend(search);
-		//총 친구 인원 수 가져오기
-		int totalCount = friendDao.getTotalCount(search);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("searchUserId", searchUserId);
 		
-		System.out.println("listFriend: "+list);
+		return friendDao.searchFriend(map);
+	}
+	
+
+	//친구 요청 수락
+	@Override
+	public int addFriend(String userId, String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		int result = 0;
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		
-		//map에 친구 리스트와 총 인원수 담기
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("totalCount", totalCount);
-		//map 반환
-		return map;
+			Map<String, String> map1 = new HashMap<String, String>();
+			map1.put("userId", userId);
+			map1.put("friendId", friendId);
+			friendDao.deleteFriend(map1);
+			
+			Map<String, String> map2 = new HashMap<String, String>();
+			map2.put("userId", userId);
+			map2.put("friendId", friendId);
+			
+			list.add(map1);
+			list.add(map2);
+			
+			result = friendDao.addFriend(list);
+					
+			return result;
 	}
 
-	//친구 요청, 신청
+	//친구 삭제
 	@Override
-	public Map<String, Object> acceptFriend(Search search) throws Exception {
+	public int deleteFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		int result = 0;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("friendId", friendId);
+		result = friendDao.deleteFriend(map);
+		
+		return result;
 	}
 
-	//친구 추천
+	//친구 요청
 	@Override
-	public List<Friend> recommendFriend(String userId) throws Exception {
+	public int createFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		return friendDao.recommendFriend(userId);
+		int result = 0;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("friendId", friendId);
+		result = friendDao.createFriend(map);
+		
+		return result;
 	}
-	
-	//친구 확인
-	@Override
-	public int checkFriend(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		return friendDao.checkFriend(userId, friendId, status);
-	}
-
-	//친구 신청 취소
-	@Override
-	public void cancelFriend(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		friendDao.cancelFriend(userId, friendId, status);
-	}
-
-	//상태코드 변경
-	@Override
-	public void updateStatus(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		friendDao.updateStatus(userId, friendId, status);
-	}
-	
-	//follow 확인
-	@Override
-	public int checkFollow(String userId, String friendId, int status) throws Exception {
-		// TODO Auto-generated method stub
-		return friendDao.checkFollow(userId, friendId, status);
-	}
-
-	//친구 수 
-	@Override
-	public List countFriend(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return friendDao.countFriend(userId);
-	}
-
 
 	
+	//친구 요청 취소
+	@Override
+	public int cancelFriend(String userId, String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("friendId", friendId);
+		result = friendDao.cancelFriend(map);
+		
+		return result;
+	}
+	
 
+	//친구 요청 거절
+	@Override
+	public int refuseFriend(String userId, String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("friendId", friendId);
+		result = friendDao.refuseFriend(map);
+		
+		return result; 
+	}
 
 	
 
+	
+	//하지수 테스트
+		@Override
+		public String listFriendFromBoard(String userId) throws Exception {
+			// TODO Auto-generated method stub
+			return friendDao.listFriendFromBoard(userId);
+		}
+
+	
+	@Override
+	public int checkFriend(String userId, String friendId, int friendCode) throws Exception {
+		// TODO Auto-generated method stub
+		return friendDao.checkFriend(userId, friendId, friendCode);
+	}
+
+	
+
+	
 
 	
 	
-
 	
-
 
 }

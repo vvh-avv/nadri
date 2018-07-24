@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.nadri.common.Search;
+import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
+import com.nadri.service.friend.FriendDao;
 import com.nadri.service.user.UserDao;
 import com.nadri.service.user.UserService;
 
@@ -117,6 +119,11 @@ public class UserServiceImpl implements UserService{
 		return userDao.findUserId(user);
 	}
 
+	//회원 비밀번호 찾기
+	@Override
+	public void findUserPassword(User user) throws Exception {
+		// TODO Auto-generated method stub
+	}
 	
 	
 
@@ -126,6 +133,12 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return userDao.getUserLog(userId, number, duration);
 	}
+
+
+	
+
+
+	
 
 
 
