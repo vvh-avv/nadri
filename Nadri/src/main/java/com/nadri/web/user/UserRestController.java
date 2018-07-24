@@ -3,6 +3,7 @@ package com.nadri.web.user;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
@@ -50,19 +52,33 @@ public class UserRestController {
 	//method
 	//rest 로그인: post
 	@RequestMapping(value="json/login", method=RequestMethod.POST)
-	public User login( @RequestBody User user, HttpSession session ) throws Exception{
+	public JSONObject login( @RequestBody User user, HttpSession session, HttpServletResponse response ) throws Exception{
 		System.out.println("/user/json/login : POST");
 		
 		User returnUser = userService.getUser(user.getUserId());
+		System.out.println("returnUser: "+returnUser);
 		
-		if(returnUser==null) {
-			returnUser = new User();
-			returnUser.setUserId("none");
+		String userStatus = "3";
+		// status(0: 정상, 1: 차단, 2: 탈퇴)
+		
+		if(returnUser != null) {
+			
+			userStatus = returnUser.getStatus();
+			if(userStatus.equals("1")) {
+				userStatus = "1";								//차단된 유저
+			}else if(userStatus.equals("2")) {
+				userStatus = "2";								//탈퇴한 유저
+			}else{
+				if( user.getPassword().equals(returnUser.getPassword()) ){
+					session.setAttribute("user", returnUser);
+					userStatus = "0";
+				}//정상 유저 로그인
+			}
 		}
-		if( user.getPassword().equals(returnUser.getPassword()) ){
-			session.setAttribute("user", returnUser);
-		}
-		return returnUser;
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("userStatus", userStatus);
+		System.out.println("제이슨에 담긴 userstatus 값: "+jsonObject.toString());
+		return jsonObject;
 	}
 	
 	//rest 유저 정보 가져오기
@@ -194,6 +210,107 @@ public class UserRestController {
 		return map;
 	}
 	
+	//회원 비밀번호 찾기
+	@RequestMapping(value="json/findPassword", method=RequestMethod.POST)
+	public boolean findUserPassword(@RequestBody User user)throws Exception{
+		System.out.println("RestController:: /json/findPassword:POST");
+		
+		boolean check = false;
+		
+		//유저 이메일 담기
+		String email = user.getEmail();
+		
+		//유저 서비스에서 유저 정보 가져오기 + 이메일 정보 가져오기
+		user = userService.getUser(user.getUserId());
+		String email2 = user.getEmail();
+		
+		if(email.equals(email2)) {
+			int passwordNo = createNo();
+			user.setPassword(passwordNo+"");
+			
+			System.out.println("비밀번호 확인: "+user);
+			userService.updateUser(user);
+			System.out.println("변경된 비밀번호 확인 필요");
+			
+			boolean sendOk = sendEmail(email2, passwordNo);
+			
+			if(sendOk) {
+				check = true;
+			}
+		}
+		return check;
+	}
+	
+	//비밀번호 이메일로 보내기
+	public boolean sendEmail(String email2, int passwordNo) throws Exception{
+		String host = "smtp.gmail.com";
+		String user = "nadritest@gmail.com";
+		String password = "nadritest3";
+		
+		String receiver = email2;
+		
+		String emailHtml = "<HTML>"+
+										"<HEAD><TITLE></TITLE></HEAD>"+
+										"<BODY>"+
+										"<h3>너, 나들이에서 알려드립니다</h3>"+
+										"<h4>고객님이 요청하신 비밀번호 찾기에 의해 임시 비밀번호가 전송되었습니다</h4>"+
+										"<h5>임시 비밀번호는 다음과 같습니다</h5>"+
+										"<h5>"+passwordNo+"</h5>"+
+										"<br>"+
+										"<img src =  >"+							//이미지 주소 넣기!!!!!
+										"<br/></BODY></HTML>";
+		
+		 Properties props = new Properties();
+		  props.put("mail.smtp.host", host);
+		  props.put("mail.smtp.port", 587);
+		  props.put("mail.smtp.auth", "true");
+		  props.put("mail.smtp.starttls.enable", "true");
+		  props.put("mail.transport.protocol", "smtp");
+		  props.put("mail.smtp.socketFactory.fallback", "true");
+		  props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		  
+		  Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+			   protected PasswordAuthentication getPasswordAuthentication() {
+				   return new PasswordAuthentication(user, password);
+			   }
+		  });
+		  
+		// Compose the message
+		  try {
+			   MimeMessage message = new MimeMessage(session);
+			   message.setFrom(new InternetAddress(user));
+			   message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
+		  
+			// Subject
+		   message.setSubject("너, 나들이에서 임시 비밀번호를 알려드립니다");
+		  
+		   message.setContent(emailHtml	, "text/html; charset=euc-kr");  
+		
+		// send the message
+		   Transport.send(message);
+		   System.out.println("message sent successfully...");
+
+		  } catch (MessagingException e) {
+		   e.printStackTrace();
+		  }
+		  return true;
+	}
+	
+	//임시 비밀번호 만들기
+	public int createNo() {
+		Random ran = new Random();
+		
+		int passwordNo = ran.nextInt();
+		passwordNo = Math.abs(passwordNo);
+		
+		String temp = passwordNo+"";
+		
+		temp = temp.substring(3);
+		passwordNo = Integer.parseInt(temp);
+		
+		System.out.println("생성된 임시 비밀번호: "+passwordNo);
+		return passwordNo;
+	}
 	
 	
 	//회원가입 시 이메일 전송

@@ -624,7 +624,7 @@ $(function(){
 	})
    //*유저프로필 모달창 내 친구추가
    $(document).on("click", "#addFriend", function(){
-	   alert("친구추가를 합시다..");
+	   alert("친구추가가 필요...");
    })
    //*유저프로필 모달창 내 대화하기
     $(document).on("click", "#chatFriend", function(){
@@ -909,7 +909,7 @@ $(function(){
 				<br>
 				<div class="modalUserId"><b>아&nbsp;&nbsp;이&nbsp;&nbsp;디 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br>
-				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
+				<div class="modalUserIntroduce"><b>자기소개</b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
 				<c:if test="${!empty sessionScope.user}">
 					<div class="modalUserButton">

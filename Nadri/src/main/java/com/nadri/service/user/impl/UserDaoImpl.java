@@ -71,6 +71,12 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("UserMapper.findUserId", user);
 	}
+	
+	//회원 비밀번호 찾기
+	@Override
+	public void findUserPassword(User user) throws Exception {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public Map<String, Object> getRewardList(Search search) throws Exception {
@@ -136,6 +142,8 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
+
+	
 
 
 

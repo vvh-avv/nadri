@@ -79,18 +79,20 @@
    </select>
    
    <!-- SQL: QUIT USER -->
-   <delete id="quitUser" parameterType="String">
+   <!-- <delete id="quitUser" parameterType="String">
       DELETE 
       FROM user
       WHERE user_id = #{value}
-   </delete>
-   <!-- <update id="quitUser" parameterType="user">
+   </delete> -->
+   <update id="quitUser" parameterType="user">
    		UPDATE user
    		<set>
-   		status = 2
+   		status = 2,
+   		quit_date = NOW(),
+   		quit_reason = #{quitReason}
    		</set>
    		WHERE user_id = #{userId}
-   </update> -->
+   </update>
    
     
     <!--  아이디 찾기 -->

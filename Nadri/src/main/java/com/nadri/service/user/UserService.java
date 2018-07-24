@@ -1,10 +1,10 @@
 package com.nadri.service.user;
 
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.nadri.common.Search;
+import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
 
 public interface UserService {
@@ -30,9 +30,9 @@ public interface UserService {
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
 	
-/*	//비밀번호 찾기
-	public boolean findPassword(HttpServletResponse response, User user) throws Exception;
-	*/
+	//비밀번호 찾기
+	public void findUserPassword(User user) throws Exception;
+	
 	
 	//보상 리스트 
 	public Map<String, Object> getRewardList(Search search) throws Exception;
@@ -48,6 +48,8 @@ public interface UserService {
 	
 	//신고 내역 확인 리스트
 	public Map<String, Object> getUserReportList(Search search) throws Exception;
+	
+
 
 	
 	
