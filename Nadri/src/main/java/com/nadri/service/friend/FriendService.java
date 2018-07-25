@@ -14,7 +14,7 @@ public interface FriendService {
 	public int deleteFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没矫
-	public int addFriend(String userId, String friendId) throws Exception;
+	public void addFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没 秒家
 	public int cancelFriend(String userId, String friendId) throws Exception;

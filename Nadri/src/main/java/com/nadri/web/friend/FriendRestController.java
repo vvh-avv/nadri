@@ -46,9 +46,18 @@ public class FriendRestController {
 	//하지수테스트
    @RequestMapping(value="json/listFriendFromBoard/{userId}") //, method=RequestMethod.POST)
    public String listFriendFromBoard(@PathVariable String userId) throws Exception{
-      System.out.println("/friend/json/listFriendFromBoard : POST");
+      System.out.println("/friend/json/listFriendFromBoard : GET / POST");
             
       return friendService.listFriendFromBoard(userId);
+   }
+   //하지수테스트
+   @RequestMapping(value="json/addFriend/{friendId}")
+   public void addFriend(@PathVariable String friendId, HttpSession session) throws Exception{
+	   System.out.println("/friend/json/addFriend : GET / POST");
+	   
+	   User user = (User)session.getAttribute("user");
+	   
+	   friendService.addFriend(user.getUserId(), friendId);
    }
    
   //친구 여부 확인

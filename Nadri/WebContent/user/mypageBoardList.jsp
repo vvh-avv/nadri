@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>작성한 글 보기</title>
+<title>너, 나들이</title>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -25,8 +25,6 @@
 <!-- toolbar.js CDN -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
-<!-- board.js -->
-<script src="/javascript/board.js"></script>
 
 <style>
 	.container{
@@ -107,10 +105,10 @@ $(function(){
 				<article class="${board.boardNo}">
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
-						<c:if test="${board.boardImg==''}">
+						<c:if test="${board.boardImg==null}">
 							<img src="http://placehold.it/250X250" class="img-thumbnail">
 						</c:if>
-						<c:if test="${board.boardImg!=''}">
+						<c:if test="${board.boardImg!=null}">
 							<c:if test="${(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg.split(',')[0]}" class="img-thumbnail"> </c:if>
 							<c:if test="${!(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg}" class="img-thumbnail"> </c:if>
 						</c:if>

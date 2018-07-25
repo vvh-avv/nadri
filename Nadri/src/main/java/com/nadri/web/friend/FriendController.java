@@ -110,6 +110,7 @@ public class FriendController {
 			searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchFriendId"));
 			model.addAttribute("searchFriendList", searchFriendList);
 			}
+
 		return "friend/listFriend";
 	}
 	

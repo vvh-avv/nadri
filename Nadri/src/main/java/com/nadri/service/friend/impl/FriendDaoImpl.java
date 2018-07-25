@@ -43,8 +43,10 @@ public class FriendDaoImpl implements FriendDao{
 	@Override
 	public int deleteFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
+
 		System.out.println("deleteFriend start: "+ map);
 		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", map));
+
 		return sqlSession.delete("FriendMapper.deleteFriend", map);
 	}
 
@@ -57,9 +59,13 @@ public class FriendDaoImpl implements FriendDao{
 
 	//친구 요청
 	@Override
-	public int addFriend(Map<String, String> map) throws Exception {
+	public void addFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		return sqlSession.insert("FriendMapper.addFriend", map);
+=======
+		sqlSession.insert("FriendMapper.addFriend", map);
+>>>>>>> refs/remotes/origin/master
 	}
 
 	//친구 요청 거절
@@ -100,13 +106,23 @@ public class FriendDaoImpl implements FriendDao{
 		return sqlSession.selectList("FriendMapper.searchFriend", map);
 	}
 	
+<<<<<<< HEAD
+=======
+	@Override
+	public List<Friend> selectFriendList(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("FriendMapper.selectFriendList", user);
+	}
+		
+
+>>>>>>> refs/remotes/origin/master
 
 	//하지수 테스트
 	   @Override
 	   public String listFriendFromBoard(@PathVariable String userId) throws Exception{
 	      List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
-	      List<String> friendId = new ArrayList<String>(); 
 	      
+	      List<String> friendId = new ArrayList<String>();
 	      for(int i=0; i<friend.size(); i++) {
 	         friendId.add(friend.get(i).getFriendId());
 	      }
@@ -124,13 +140,19 @@ public class FriendDaoImpl implements FriendDao{
 	      map.put("userId", userId);
 	      map.put("friendId", friendId);
 	      map.put("friendCode", status);
+<<<<<<< HEAD
 	      
 	      Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
 	      if(returnValue==null) { returnValue=0; }
 	      
 	      return returnValue;
+=======
+	      	      
+	      return sqlSession.selectOne("FriendMapper.checkFriend", map);
+>>>>>>> refs/remotes/origin/master
 	   }
 
+<<<<<<< HEAD
 	   
 
 
@@ -143,4 +165,6 @@ public class FriendDaoImpl implements FriendDao{
 
 	   
 	
+=======
+>>>>>>> refs/remotes/origin/master
 }

@@ -1,22 +1,32 @@
 package com.nadri.web.schedule;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.nadri.service.domain.Comment;
+import com.nadri.service.domain.Schedule;
+import com.nadri.service.domain.User;
+import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleService;
 
 //==> 장소관리 RestController
@@ -100,5 +110,53 @@ public class ScheduleRestController {
 		return map;
 	}
 	
+	//게시판에서 일정복사 눌렀을 때 실행 할 메서드
+	@RequestMapping( value="checkSchedule/{scheduleNo}", method=RequestMethod.POST)
+	public int checkSchedule( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
+		System.out.println("/restschedule/checkSchedule : POST");
+		
+		User user = (User)session.getAttribute("user");
+		String scheduleImg = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
+		System.out.println("@@@"+scheduleImg);
+		
+		return scheduleService.checkSchedule(scheduleImg, user.getUserId());
+	}
 	
+	//게시판에서 일정복사 요청이 들어왔을 때 실행 할 메서드
+	@RequestMapping( value="addSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
+	public void addSchedule( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
+		System.out.println("/restschedule/addSchedule : POST");
+		
+		User user = (User)session.getAttribute("user");
+		Schedule schedule = scheduleService.getSchedule(scheduleNo);
+		schedule.setUserId(user.getUserId());
+		if( schedule.getTransportationCode()==null ) {
+			schedule.setTransportationCode("0");
+		}
+		
+		//스케줄이미지 복사
+		String fileName = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
+		schedule.setScheduleImg( fileName );
+
+		/*File newFile = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+		MultipartFile multipartFile = (MultipartFile) newFile;
+		multipartFile.transferTo(newFile);*/
+
+		scheduleService.copySchedule(schedule);
+		
+		//경유지 복사 후 추가
+		List<WayPoint> waypoint = scheduleService.getWayPoint(scheduleNo);
+		for(int i=0; i<waypoint.size(); i++) {
+			waypoint.get(i).setScheduleNo(schedule.getScheduleNo());
+			scheduleService.addWayPoint(waypoint.get(i));
+		}
+	}
+
+	//일정을 삭제하는 메서드
+	@RequestMapping( value="deleteSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
+	public void deleteSchedule( @PathVariable int scheduleNo ) throws Exception{
+		System.out.println("/restschedule/deleteSchedule : POST");
+		
+		scheduleService.deleteSchedule(scheduleNo);
+	}
 }
