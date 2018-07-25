@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,6 +115,9 @@ public class SearchLogController {
 		System.out.println("인스타 리스트의 결과 : "+insta_list);
 		
 		// board & spot result
+		
+		HttpSession session;
+		
 		
 		List<Object> list_all = searchLogService.getSearchResult(searchKeyword);
 		

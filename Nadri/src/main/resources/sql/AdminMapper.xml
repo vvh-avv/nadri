@@ -194,6 +194,8 @@
 		SELECT user_id, user_name, reg_date
 		FROM user
 		WHERE WEEKOFYEAR(reg_date) = WEEKOFYEAR(CURDATE())
+		ORDER BY reg_date
+		limit 7
 	</select>
 	
 	<select id="getUserList" parameterType="search" resultMap="userMap">

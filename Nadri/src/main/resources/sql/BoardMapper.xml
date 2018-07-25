@@ -68,27 +68,28 @@
 		WHERE board.user_id = #{value}
 	</select>
 	
-	<!-- 메인화면 추천 게시물 -->
-	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
-        SELECT board.*, likes.likeCnt
+	  <!-- 메인화면 추천 게시물 -->
+   <select id="getRecomBoard" parameterType="search" resultMap="boardMap">
+        SELECT board.user_id,board.hashtag,ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt
         FROM board join ( SELECT board_no, COUNT(*) likeCnt
-							FROM likes <if test="searchCondition.equals('최신')">
-												WHERE likes_time > date_sub(NOW(), interval 1 day)
-											</if>
-											<if test="searchCondition.equals('일간')">
-												BETWEEN date_add(NOW(), interval -1 day)
-											</if>
-											<if test="searchCondition.equals('주간')">
-												BETWEEN date_add(NOW(), interval -1 week)
-											</if>
-											<if test="searchCondition.equals('월간')">
-												BETWEEN date_add(NOW(), interval -1 month)
-											</if>
-											group by board_no ) likes
+                     FROM likes WHERE likes_time
+                                 <if test="searchCondition.equals('최신')">
+                                     > date_sub(NOW(), interval 1 day)
+                                 </if>
+                                 <if test="searchCondition.equals('일간')">
+                                    BETWEEN date_add(NOW(), interval -1 day) AND NOW()
+                                 </if>
+                                 <if test="searchCondition.equals('주간')">
+                                    BETWEEN date_add(NOW(), interval -1 week) AND NOW()
+                                 </if>
+                                 <if test="searchCondition.equals('월간')">
+                                    BETWEEN date_add(NOW(), interval -1 month) AND NOW()
+                                 </if>
+                                 group by board_no ) likes
         ON board.board_no = likes.board_no
         GROUP BY board.board_no
         ORDER BY likes.likeCnt desc;
-	</select>
+   </select>
 	
 	
 	<!-- Likes --> <!-- Rest에서 좋아요시 변경된 개수 리턴할 때 사용 -->

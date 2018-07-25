@@ -176,6 +176,21 @@ $(function(){
 		self.location = "/spot/getSpotList?spotCode=0";
 	}) 
 	
+	$('.profile2').on('click',function(){
+		$('body').css('overflow','hidden');
+		$('.sidecatalogue').css('width','30%');
+		$('.floatbackground').css('display','block');
+	})
+	
+	$('.closeAll').on('click',function(){
+		$('body').css('overflow','auto');
+		$('.sidecatalogue').css('width','0%');
+		$('.floatbackground').css('display','none');
+	})
+	
+	$('.friendAlert').on('click',function(){
+		$('.friendSmall').css('display','block');
+	})
 
 	
 	

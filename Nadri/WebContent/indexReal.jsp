@@ -20,7 +20,7 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <script src="/javascript/toolbar.js"></script>
-<!-- <script src="/javascript/index.js"></script> -->
+<script src="/javascript/index.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
 
 <!--  slick  -->
@@ -32,16 +32,6 @@
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	$(function() {
-		
-		
-		if(${empty user}){
-			console.log("로그인안함");
-			$.ajax('');
-		}else{
-			console.log("로그인함");
-			$.ajax('');
-		}
-		
 		$("img[src='/images/user/kakao_login_btn_small.png']").on("click",
 				function() {
 					loginWithKakao();
@@ -72,6 +62,12 @@
 	};
 </script>
 <style>
+body {
+    margin: 0;
+    font-family: Arial;
+    font-size: 17px;
+}
+
 .middle-bar {
 	width: 100%;
 	height: 120vh;
@@ -97,70 +93,23 @@
 	border: 1px solid grey;
 	height: 20vh;
 }
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
 </style>
 </head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
 <body>
-	<div class="container-fluid indexHead">
-		<%@ include file="layout/toolbar.jsp"%>
-		<div
-			style="width: 100%; height: 50%; margin: 10% auto; text-align: center; position:relative">
-			<h1 style="position:absolute; left:30%; width:40%; font-size: 10vw; color:white; animation:fadein 3s;">너,나둘이<br>너,나들이</h1>
-<!-- 			<div class="animateShape" style="width:500px; height:500px;"></div> -->
-			<img src="/images/common/down_arrow.png" class="arrowDonw" style="width:50px; hegiht:auto; margin-top: 60vh; opacity:0.5;">
-		</div>
-		<div>
-			
-		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="middle-bar">
-			<h2 style="font-weight: 700;">지금 인기 게시글</h2>
-			<div class="container">
-				<div class="popular-contents container">
-					<div class="col-md-3 col-xs-6">
-						<div>PLACE BOX</div>
-					</div>
-					<div class="col-md-3 col-xs-6">
-						<div>PLACE BOX</div>
-					</div>
-					<div class="col-md-3 col-xs-6">
-						<div>PLACE BOX</div>
-					</div>
-					<div class="col-md-3 col-xs-6">
-						<div>PLACE BOX</div>
-					</div>
-				</div>
-			</div>
 
-			<h2 style="font-weight: 700; margin-top: 10%;">지금 인기 일정</h2>
-			<div class="container">
-				<div class="popular-contents container">
-					<div class="col-md-6 col-xs-12">
-						<div>PLACE BOX</div>
-					</div>
-					<div class="col-md-6 col-xs-12">
-						<div>PLACE BOX</div>
-					</div>
-				</div>
-				<div class="popular-contents container">
-					<div class="col-md-12 col-xs-12">
-						<div>PLACE BOX</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div
-			style="height: 200px; width: 100%; background-color: #7caafb; padding-top: 10vh; text-align: center;">
-			<h3 style="margin-top: 0px; font-weight: 800;">middle area</h3>
-		</div>
-		<div style="width:100%; height:500px;">
-		
-		</div>
-	</div>
+	<video autoplay muted loop id="myVideo">
+	  <source src="/video/js3.mp4" type="video/mp4">
+	</video>
 
 </body>
 

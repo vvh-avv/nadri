@@ -1,0 +1,32 @@
+@charset "EUC-KR";
+
+@media only screen and (max-width : 600px){
+	
+	.inquire-title{
+		margin-left:22%;
+	}
+	
+	.option-box > div {
+		margin:0px;
+		margin-top:20px;
+	}
+	
+	.options{
+		left:0;
+	}
+	
+	.inquire-lists > div{
+		margin : 0px;
+		margin-top:10px;
+		margin-bottom:20px;
+	}
+	
+	.non-inquire > div{
+		font-size:30%;
+	}
+	
+	.inquireKeyword{
+		font-size:13px;
+	}
+	
+}
