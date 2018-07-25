@@ -42,6 +42,8 @@ public interface FriendDao {
 	//친구 여부 확인
 	public int checkFriend(String userId, String friendId, int status) throws Exception;
 
+	List<Friend> selectFriendList(User user) throws Exception;
+
 
 	
 

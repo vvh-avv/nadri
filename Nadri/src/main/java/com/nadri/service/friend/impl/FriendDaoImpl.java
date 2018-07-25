@@ -61,11 +61,8 @@ public class FriendDaoImpl implements FriendDao{
 	@Override
 	public void addFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		return sqlSession.insert("FriendMapper.addFriend", map);
-=======
+
 		sqlSession.insert("FriendMapper.addFriend", map);
->>>>>>> refs/remotes/origin/master
 	}
 
 	//친구 요청 거절
@@ -106,16 +103,11 @@ public class FriendDaoImpl implements FriendDao{
 		return sqlSession.selectList("FriendMapper.searchFriend", map);
 	}
 	
-<<<<<<< HEAD
-=======
-	@Override
-	public List<Friend> selectFriendList(User user) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("FriendMapper.selectFriendList", user);
-	}
-		
-
->>>>>>> refs/remotes/origin/master
+	 @Override
+	   public List<Friend> selectFriendList(User user) throws Exception {
+	      // TODO Auto-generated method stub
+	      return sqlSession.selectList("FriendMapper.selectFriendList", user);
+	   }
 
 	//하지수 테스트
 	   @Override
@@ -133,38 +125,14 @@ public class FriendDaoImpl implements FriendDao{
 	   }
 	   
 	 //친구 여부 확인
-	   @Override
-	   public int checkFriend(String userId, String friendId, int status) throws Exception {
-	      // TODO Auto-generated method stub
-	      Map<String, Object> map = new HashMap<String, Object>();
-	      map.put("userId", userId);
-	      map.put("friendId", friendId);
-	      map.put("friendCode", status);
-<<<<<<< HEAD
-	      
-	      Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
-	      if(returnValue==null) { returnValue=0; }
-	      
-	      return returnValue;
-=======
-	      	      
-	      return sqlSession.selectOne("FriendMapper.checkFriend", map);
->>>>>>> refs/remotes/origin/master
-	   }
-
-<<<<<<< HEAD
-	   
-
-
-	
-	
-
-	
-
-	
-
-	   
-	
-=======
->>>>>>> refs/remotes/origin/master
+	      @Override
+	      public int checkFriend(String userId, String friendId, int status) throws Exception {
+	         // TODO Auto-generated method stub
+	         Map<String, Object> map = new HashMap<String, Object>();
+	         map.put("userId", userId);
+	         map.put("friendId", friendId);
+	         map.put("friendCode", status);
+	                  
+	         return sqlSession.selectOne("FriendMapper.checkFriend", map);
+	      }
 }
