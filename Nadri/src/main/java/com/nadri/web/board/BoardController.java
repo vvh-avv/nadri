@@ -55,15 +55,20 @@ public class BoardController {
 	
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.GET)
-	public String addBoard() throws Exception{
+	public String addBoard(HttpSession session) throws Exception{
 		System.out.println("/board/addBoard : GET");
 		
-		return "forward:/board/addBoard.jsp"; //redirect 해도 되지만 URL 감추기 위해 사용!
+		if(session.getAttribute("user")==null) { //비회원이 접근하면 리스트로 보내기
+			return "redirect:/board/listBoard";
+		}else {
+			//redirect 해도 되지만 URL 감추기 위해 사용!
+			return "forward:/board/addBoard.jsp"; //회원일 경우 작성페이지로 들여보내주기
+		}
 	}
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.POST)
-	public String addBoard(@ModelAttribute("board") Board board,
-									MultipartHttpServletRequest request, @RequestParam("file") MultipartFile[] file) throws Exception{
+	public String addBoard(@ModelAttribute("board") Board board, @RequestParam("file") MultipartFile[] file,
+									MultipartHttpServletRequest request, Model model) throws Exception{
 		System.out.println("/board/addBoard : POST");
 		
 		String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
@@ -96,23 +101,43 @@ public class BoardController {
 				fileMultiName += ","+fileOriginName;
 			}
 		}
-		
 		System.out.println("최종 파일명(들) : "+fileMultiName);
-		board.setBoardImg(fileMultiName);
+		if( fileMultiName.trim()=="" ) {
+			board.setBoardImg(null);
+		}else {
+			board.setBoardImg(fileMultiName);
+		}
 		board.setUser( (User)request.getSession().getAttribute("user") );
+		board.setBoardCode(0); //게시판에서 작성한건 0으로, 일정복사한건 1로(rest에서 1로 처리하면 됨)
 		
 		boardService.addBoard(board);
+		
+		//보상기능에 필요 //생각을 더 해보는걸로 ..
+		//model.addAttribute("boardCnt", boardService.getMyCount("board", board.getUser().getUserId()));
 		
 		return "redirect:/board/listBoard";
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.GET)
-	public String updateBoard( @ModelAttribute Board board, Model model ) throws Exception{
+	public String updateBoard( @ModelAttribute Board board, Model model, HttpSession session ) throws Exception{
 		System.out.println("/board/updateBoard : GET");
 		
-		model.addAttribute("board", boardService.getBoard(board.getBoardNo()));
+		User user = (User)session.getAttribute("user");
+		Board bb = boardService.getBoard(board.getBoardNo());
 		
-		return "forward:/board/updateBoard.jsp";
+		if(bb == null) { //존재하지 않는 게시물 일 경우
+			return "forward:/mainError.jsp";
+		}
+		
+		if( user==null ) { 														//비회원이라면 리스트로 보내버리기
+			return "redirect:/board/listBoard";
+		}else if( !user.getUserId().equals(bb.getUser().getUserId()) ) { //작성자가 요청한게 아닐 경우
+			return "redirect:/board/listBoard";
+		}else { 																//회원이면서 작성자가 요청한 경우
+			model.addAttribute("board", bb);
+			
+			return "forward:/board/updateBoard.jsp";	
+		}
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.POST)
@@ -184,6 +209,11 @@ public class BoardController {
 		System.out.println("/board/getBoard : GET / POST");
 
 		Board board = boardService.getBoard(boardNo);
+		
+		if(board==null) { //해당 게시물이 존재하지 않을 때
+			return "forward:/mainError.jsp";
+		}
+		
 		User user = userService.getUser(board.getUser().getUserId());
 		board.setUser(user);
 
@@ -264,7 +294,7 @@ public class BoardController {
 		User user = (User)session.getAttribute("user");
 		
 		if(user==null) { //세션이 끊겼을 경우
-			return "redirect:/index.jsp";
+			return "redirect:/";
 		}
 		List<Board> list = boardService.getMyBoardList(user.getUserId());
 		

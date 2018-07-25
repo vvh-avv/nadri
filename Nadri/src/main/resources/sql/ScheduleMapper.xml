@@ -37,65 +37,65 @@
 	</resultMap>
 	
 	<!-- 1. 일정을 추가하기 위한 메서드 -->
-	<insert id="addSchedule" parameterType="schedule">
-		INSERT
-		INTO schedule (
-			user_id, 
-			schedule_date, 
-			schedule_img, 
-			schedule_title, 
-			hashtag,
-			schedule_createtime,
-			schedule_modifytime,
-			open_range,
-			transportation_code,
-			starthour,
-			schedule_detail) 
-		VALUES (
-			#{userId:VARCHAR},
-			#{scheduleDate:DATE},
-			#{scheduleImg:VARCHAR},
-			#{scheduleTitle:VARCHAR},
-			'',
-			now(),
-			now(),
-			#{openRange:VARCHAR},
-			#{transportationCode:VARCHAR},
-			#{startHour:DATE},
-			#{scheduleDetail:VARCHAR})
-	</insert>
+   <insert id="addSchedule" parameterType="schedule">
+      INSERT
+      INTO schedule (
+         user_id, 
+         schedule_date, 
+         schedule_img, 
+         schedule_title, 
+         hashtag,
+         schedule_createtime,
+         schedule_modifytime,
+         open_range,
+         transportation_code,
+         starthour,
+         schedule_detail) 
+      VALUES (
+         #{userId:VARCHAR},
+         #{scheduleDate:DATE},
+         #{scheduleImg:VARCHAR},
+         #{scheduleTitle:VARCHAR},
+         '',
+         now(),
+         now(),
+         #{openRange:VARCHAR},
+         #{transportationCode:VARCHAR},
+         #{startHour:DATE},
+         #{scheduleDetail:VARCHAR})
+   </insert>
 	
 	<!-- 2. 경유지를 추가하기 위한 메서드 -->
-	<insert id="addWayPoint" parameterType="waypoint">
-		INSERT INTO waypoint
-			(waypoint_no,
-			schedule_no,
-			waypoint_title,
-			waypoint_img,
-			waypoint_x, 
-			waypoint_y, 
-			waypoint_address,
-			waypoint_detail,
-			staytime,
-			movetime,
-			waypoint_nav,
-			waypoint_starthour,
-			waypoint_endhour)
-		VALUES
-			(#{wayPointNo:INTEGER},
-			LAST_INSERT_ID(), 
-			#{wayPointTitle:VARCHAR},
-			#{wayPointImg:VARCHAR},  
-			#{wayPointX:DECIMAL}, 
-			#{wayPointY:DECIMAL}, 
-			#{wayPointAddress:VARCHAR},  
-			#{wayPointDetail:VARCHAR},
-			#{stayTime:DATE},
-			#{moveTime:DATE},
-			#{wayPointNav:VARCHAR},
-			#{wayPointStartHour},
-			#{wayPointEndHour})
-	</insert>
+   <insert id="addWayPoint" parameterType="waypoint">
+      INSERT INTO waypoint
+         (waypoint_no,
+         schedule_no,
+         waypoint_title,
+         waypoint_img,
+         waypoint_x, 
+         waypoint_y, 
+         waypoint_address,
+         waypoint_detail,
+         staytime,
+         movetime,
+         waypoint_nav,
+         waypoint_starthour,
+         waypoint_endhour)
+      VALUES
+         (#{wayPointNo:INTEGER},
+         LAST_INSERT_ID(), 
+         #{wayPointTitle:VARCHAR},
+         #{wayPointImg:VARCHAR},  
+         #{wayPointX:DECIMAL}, 
+         #{wayPointY:DECIMAL}, 
+         #{wayPointAddress:VARCHAR},  
+         #{wayPointDetail:VARCHAR},
+         #{stayTime:DATE},
+         #{moveTime:DATE},
+         #{wayPointNav:VARCHAR},
+         #{wayPointStartHour},
+         #{wayPointEndHour})
+   </insert>
 	
 	<!-- 3. 일정 상세보기(일정) --> 
 	<select id="getSchedule" parameterType="Int" resultMap="scheduleSelectMap">
@@ -123,4 +123,54 @@
 		IN (SELECT * FROM ( SELECT MAX(schedule_no) FROM schedule) AS a ) 
 	</update>		
 
+	<!-- 6. 마이페이지 내 일정보기 -->
+	<select id="getMyScheduleList" parameterType="String" resultMap="scheduleSelectMap">
+		SELECT *
+		FROM
+		schedule
+		WHERE user_id = #{value}
+	</select>
+	
+	<!-- 7. 일정이 있는지 확인하기 -->
+	<select id="checkSchedule" parameterType="map" resultType="int">
+		SELECT count(*)
+		FROM schedule
+		WHERE schedule_img = #{scheduleImg} AND user_id = #{userId}
+	</select>
+	
+	<!-- 8. 일정 복사하기 -->
+	<insert id="copySchedule" parameterType="schedule" useGeneratedKeys="true" keyProperty="scheduleNo">
+		INSERT
+		INTO schedule (
+			user_id, 
+			schedule_date,
+			schedule_img, 
+			schedule_title, 
+			hashtag,
+			schedule_createtime,
+			schedule_modifytime,
+			open_range,
+			transportation_code,
+			starthour,
+			schedule_detail)
+		VALUES (
+			#{userId},
+			#{scheduleDate},
+			#{scheduleImg},
+			#{scheduleTitle},
+			#{hashTag},
+			now(),
+			now(),
+			#{openRange},
+			#{transportationCode},
+			#{startHour},
+			#{scheduleDetail})
+	</insert>
+	
+	<!-- 9. 일정삭제 -->
+	<delete id="deleteSchedule" parameterType="int">
+		DELETE
+		FROM schedule
+		WHERE schedule_no = #{value}
+	</delete>
 </mapper>

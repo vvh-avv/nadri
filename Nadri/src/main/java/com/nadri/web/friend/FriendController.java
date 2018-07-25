@@ -121,13 +121,11 @@ public class FriendController {
 	@RequestMapping("/addFriend")
 	public String addFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
 		if (parameterMap != null) {
-			int result = friendService.addFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
+			friendService.addFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
 		
-			if (result > 0) {
-				List<Friend> searchFriendList = null;
-				searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchFriendId"));
-				model.addAttribute("searchFriendList", searchFriendList);
-			}
+			List<Friend> searchFriendList = null;
+			searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchFriendId"));
+			model.addAttribute("searchFriendList", searchFriendList);
 		}
 		
 		return "friend/listFriend";

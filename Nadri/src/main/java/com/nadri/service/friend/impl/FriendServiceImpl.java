@@ -87,15 +87,12 @@ public class FriendServiceImpl implements FriendService{
 
 	//친구 요청
 	@Override
-	public int addFriend(String userId, String friendId) throws Exception {
+	public void addFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		int result = 0;
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
 		map.put("friendId", friendId);
-		result = friendDao.addFriend(map);
-		
-		return result;
+		friendDao.addFriend(map);
 	}
 
 	

@@ -97,15 +97,19 @@
 	
 	<!-- 하지수 테스트 -->
 	<select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
-	   SELECT friend_id
-	   FROM friend
-	   WHERE user_id=#{value} AND friend_code=1;
+		SELECT *
+	    FROM friend
+	    WHERE user_id=#{value} AND friend_code='1'
+        UNION ALL
+		SELECT *
+	    FROM friend
+	    WHERE friend_id=#{value} AND friend_code='1'
 	</select>
 
    
 	<!--  친구 여부 확인 -->
 	<select id="checkFriend" parameterType="map" resultType="int">
-	     SELECT *
+	     SELECT count(*)
 	     FROM ( SELECT count(*) isFriend
 	            FROM friend
 	            WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
@@ -113,7 +117,7 @@
 	              SELECT count(*) isFriend
 	            FROM friend
 	            WHERE friend_id=#{userId} AND user_id=#{friendId} AND friend_code=#{friendCode} ) checkFriend
-	     where checkFriend.isFriend not in ('0');
+	     WHERE checkFriend.isFriend not in ('0');
 	</select>
 
 </mapper>

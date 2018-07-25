@@ -18,7 +18,7 @@ public interface FriendDao {
 	public int cancelFriend(Map<String, String> map)throws Exception;
 	
 	//模备 夸没
-	public int addFriend(Map<String, String> map) throws Exception;
+	public void addFriend(Map<String, String> map) throws Exception;
 	
 	//模备 夸没 芭例
 	public int refuseFriend(Map<String, String> map) throws Exception;

@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.simple.JSONObject;
@@ -62,5 +64,36 @@ public class ScheduleDaoImpl implements ScheduleDao{
 	public void updateHashTag(String waypointTitle) throws Exception {
 		sqlSession.update("ScheduleMapper.updateHashTag", waypointTitle);
 	}
+
+	// 6. 마이페이지 내 일정을 보기 위한 메서드
+	@Override
+	public List<Schedule> getMyScheduleList(String userId) throws Exception {
+		return sqlSession.selectList("ScheduleMapper.getMyScheduleList", userId);
+	}
+
+	// 7. 게시판에서 일정복사 눌렀을 때 실행 할 메서드
+	@Override
+	public int checkSchedule(String scheduleImg, String userId) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("scheduleImg", scheduleImg);
+		map.put("userId", userId);
+		
+		return sqlSession.selectOne("ScheduleMapper.checkSchedule", map);
+	}
 	
+	// 8. 일정 복사하기 위한 메서드
+	@Override
+	public void copySchedule(Schedule schedule) throws Exception {
+		sqlSession.insert("ScheduleMapper.copySchedule", schedule);
+	}
+
+	// 9. 일정을 삭제하는 메서드
+	@Override
+	public void deleteSchedule(int scheduleNo) throws Exception {
+		System.out.println("-----일정삭제");
+		sqlSession.delete("ScheduleMapper.deleteSchedule", scheduleNo);
+		System.out.println("-----글삭제");
+		sqlSession.delete("BoardMapper.deleteBoardSchedule", scheduleNo);
+		System.out.println("-----끝");
+	}
 }
