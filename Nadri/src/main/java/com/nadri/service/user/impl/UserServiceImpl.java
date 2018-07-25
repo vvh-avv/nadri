@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.nadri.common.Search;
-import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
-import com.nadri.service.friend.FriendDao;
 import com.nadri.service.user.UserDao;
 import com.nadri.service.user.UserService;
 
@@ -19,7 +17,7 @@ import com.nadri.service.user.UserService;
 //회원관리 서비스 구현
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
-	
+	//field
 	@Autowired
 	@Qualifier("userDaoImpl")
 	private UserDao userDao;

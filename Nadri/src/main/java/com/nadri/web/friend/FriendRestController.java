@@ -51,14 +51,14 @@ public class FriendRestController {
       return friendService.listFriendFromBoard(userId);
    }
    
-   @RequestMapping(value="json/chkFriend/{friendId}")
-   public int chkFriend(@PathVariable String friendId, HttpSession session) throws Exception{
+  //친구 여부 확인
+   @RequestMapping(value="json/chkFriend/{friendId}/{friendCode}")
+   public int chkFriend(@PathVariable String friendId, @PathVariable int friendCode, HttpSession session) throws Exception{
       System.out.println("/friend/json/chkFriend : GET / POST");
       
       User user = (User)session.getAttribute("user");
       
-      return friendService.checkFriend(user.getUserId(), friendId, 1);
+      return friendService.checkFriend(user.getUserId(), friendId, friendCode);
    }
-
 	
 }

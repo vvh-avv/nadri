@@ -12,7 +12,7 @@
 		<result property="userId" column="user_id" jdbcType="VARCHAR" />
 		<result property="friendCode" column="friend_code" jdbcType="VARCHAR" />
 		<result property="friendRequest" column="friend_request" jdbcType="VARCHAR" />
-
+		<result property="userName" column="user_name" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<!-- friendCode - 친구상태면 1, 아니면 0 -->	
@@ -20,7 +20,7 @@
 
 	
 	<!-- 회원의 친구목록 호출 -->
-	<select id="selectFriendList" parameterType="user" resultType="friend">
+	<select id="listFriend" parameterType="string" resultMap="friendSelectMap">
 		<!-- SELECT user.user_id, user.user_name, user.profile_img, friend.friend_request, friend.friend_code
 		FROM user,
 		(
@@ -30,38 +30,22 @@
 		) friend
 		WHERE user.user_id = friend.friend_id
 			AND friend.friend_code = '1' -->
-			<!-- SELECT user_id, friend_id FROM friend WHERE user_id = #{userId} ORDER BY friend_id -->
-			SELECT f.user_id, f.friend_id, u.profile_img FROM friend f, user u WHERE friend_id = user_id 
+			<!-- SELECT friend_id from friend where friend_id=#{userId} or user_id=#{userId} 		 -->
+			SELECT *
+       FROM friend
+       WHERE user_id=#{value} AND friend_code='1'
+        UNION ALL
+      SELECT *
+       FROM friend
+       WHERE friend_id=#{value} AND friend_code='1'
 	</select>
 	
-	
-	<!-- 친구로 요청할 멤버 검색 -->
-	<select id="searchFriend" parameterType="Map" resultType="friend">
-		SELECT a.user_id, a.profile_img, b.friend_request
-		FROM user a, (
-		SELECT friend_id, friend_request
-		   FROM friend
-		   WHERE user_id = #{userId}
-		   AND friend_request = 'N'
-		   AND friend_id LIKE '%' || #{searchUserId} || '%'
-		UNION
-		SELECT user_id, profile_img
-		    FROM user
-		    WHERE user_id != #{userId}
-		    AND user_id LIKE '%' || #{searchUserId} || '%'
-		    AND user_id NOT IN 
-		    ((SELECT friend_id FROM friend WHERE user_id = #{userId})
-		    UNION (SELECT user_id FROM friend WHERE friend_id = #{userId} AND friend_request = 'N'))
-		) b
-		WHERE a.user_id = b.friend_id 
-		<!-- SELECT user_id, user_name FROM user WHERE user_id like '%' || #{user_id} || '%'  -->
-	</select>
 	
 	
 	<!-- 친구 수락 -->
 	<insert id="acceptFriend" parameterType = "java.util.List">
-		INSERT INTO friend (user_id, friend_id, friend_code)
-		VALUES(#{userId}, #{friendId}, '1')
+		INSERT INTO friend (user_id, friend_id, user_name, friend_code)
+		VALUES(#{userId}, #{userName}, '1')
 	</insert>
 	
 	
@@ -74,8 +58,8 @@
 	
 	<!-- 친구 요청 -->
 	<insert id = "addFriend" parameterType = "java.util.Map">
-		INSERT INTO friend (user_id, friend_id, friend_code, friend_request)
-		VALUES(#{userId}, #{friendId}, '0', 'Y')
+		INSERT INTO friend (user_id, friend_id, user_name, friend_code, friend_request)
+		VALUES(#{userId}, #{friendId}, #{userName}, '0', 'Y')
 	</insert>
 	
 	
@@ -86,34 +70,44 @@
 	</delete>	
 
 
-
 	<!-- 친구 요청 거절 -->
 	<delete id = "refuseFriend" parameterType = "java.util.Map">
 		DELETE FROM friend
 		WHERE user_id = #{friendId} AND friend_id = #{userId}
 	</delete>
+
+	<!-- 친구 정보 조회 -->
+	<select id = "getFriend" parameterType="string" resultMap="friendSelectMap">
+		SELECT * FROM friend WHERE friend_id = #{friendId}
+	</select>
 	
 	
 	
 	<!-- 하지수 테스트 -->
 	<select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
-	   SELECT friend_id
-	   FROM friend
-	   WHERE user_id=#{value} AND friend_code=1;
-	</select>
+      SELECT *
+       FROM friend
+       WHERE user_id=#{value} AND friend_code='1'
+        UNION ALL
+      SELECT *
+       FROM friend
+       WHERE friend_id=#{value} AND friend_code='1'
+   	</select>
 
-   
+	
 	<!--  친구 여부 확인 -->
-	<select id="checkFriend" parameterType="map" resultType="int">
-	     SELECT *
-	     FROM ( SELECT count(*) isFriend
-	            FROM friend
-	            WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
-	              UNION ALL
-	              SELECT count(*) isFriend
-	            FROM friend
-	            WHERE friend_id=#{userId} AND user_id=#{friendId} AND friend_code=#{friendCode} ) checkFriend
-	     where checkFriend.isFriend not in ('0');
-	</select>
+   	<select id="checkFriend" parameterType="map" resultType="int">
+        SELECT count(*)
+        FROM ( SELECT count(*) isFriend
+               FROM friend
+               WHERE user_id=#{userId} AND friend_id=#{friendId} AND friend_code=#{friendCode}
+                 UNION ALL
+                 SELECT count(*) isFriend
+               FROM friend
+               WHERE friend_id=#{userId} AND user_id=#{friendId} AND friend_code=#{friendCode} ) checkFriend
+        WHERE checkFriend.isFriend not in ('0');
+   	</select>
+   	
+   	
 
 </mapper>

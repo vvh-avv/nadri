@@ -112,12 +112,11 @@
 
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
-	  <a href="/user/getUser.jsp">내 정보 보기</a><br/><br/>
-	  <a href="/user/updateUser.jsp">내 정보 수정</a><br/><br/>
-	  <a href="/friend/listFriend.jsp">친구 목록</a><br/><br/>
+	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
+	  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
 	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
-	  <a href="#">작성한 일정</a><br/><br/>
-	  <a href="#">일정 바구니</a><br/><br/>
+	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
 	  <a href="#">장소 바구니</a><br/><br/>
 	
 		<br/><br/><br/><br/><br/><br/><br/><br/>

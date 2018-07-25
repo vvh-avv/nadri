@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
+import com.nadri.service.friend.FriendService;
 
 
 @Repository("friendDaoImpl")
@@ -34,51 +36,70 @@ public class FriendDaoImpl implements FriendDao{
 	@Override
 	public int acceptFriend(List<Map<String, String>> list) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("friend.acceptFriend", list);
+		return sqlSession.insert("FriendMapper.acceptFriend", list);
 	}
 
 	//친구 삭제
 	@Override
 	public int deleteFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.delete("friend.deleteFriend", map);
+		System.out.println("deleteFriend start: "+ map);
+		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", map));
+		return sqlSession.delete("FriendMapper.deleteFriend", map);
 	}
 
 	//친구 요청 취소
 	@Override
 	public int cancelFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.delete("friend.cancelFriend", map);
+		return sqlSession.delete("FriendMapper.cancelFriend", map);
 	}
 
 	//친구 요청
 	@Override
 	public int addFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("friend.addFriend", map);
+		return sqlSession.insert("FriendMapper.addFriend", map);
 	}
 
 	//친구 요청 거절
 	@Override
 	public int refuseFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.delete("friend.refuseFriend", map);
+		return sqlSession.delete("FriendMapper.refuseFriend", map);
 	}
 	
-	//사용자 아이디와 검색할 아이디를 이용, 유저 목록 리턴
+	//친구 리스트
+	@Override
+	public List<Friend> listFriend(@PathVariable String userId) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("-------------------------------------DaoImpl---------------------------------------");
+		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+		List<String> friendId = new ArrayList<String>();
+		
+		for(int i = 0; i<friend.size(); i++) {
+			friendId.add(friend.get(i).getFriendId());
+		}
+		
+		System.out.println("friendDaoImpl: "+sqlSession.selectList("FriendMapper.listFriend", userId));
+		return sqlSession.selectList("FriendMapper.listFriend", userId);
+	}
+	
+
+	//친구 정보 조회
+	@Override
+	public Friend getFriend(String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("FriendMapper.getFriend", friendId);
+	}	
+
+	
 	@Override
 	public List<Friend> searchFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("friend.searchFriend", map);
+		return sqlSession.selectList("FriendMapper.searchFriend", map);
 	}
 	
-	@Override
-	public List<Friend> selectFriendList(User user) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("friend.selectFriendList", user);
-	}
-		
-
 
 	//하지수 테스트
 	   @Override
@@ -102,7 +123,7 @@ public class FriendDaoImpl implements FriendDao{
 	      Map<String, Object> map = new HashMap<String, Object>();
 	      map.put("userId", userId);
 	      map.put("friendId", friendId);
-	      map.put("status", status);
+	      map.put("friendCode", status);
 	      
 	      Integer returnValue = sqlSession.selectOne("FriendMapper.checkFriend", map);
 	      if(returnValue==null) { returnValue=0; }
@@ -110,6 +131,10 @@ public class FriendDaoImpl implements FriendDao{
 	      return returnValue;
 	   }
 
+	   
+
+
+	
 	
 
 	

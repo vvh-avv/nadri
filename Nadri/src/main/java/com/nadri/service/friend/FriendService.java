@@ -1,11 +1,9 @@
 package com.nadri.service.friend;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.service.domain.Friend;
-import com.nadri.service.domain.User;
 
 public interface FriendService {
 	
@@ -27,13 +25,19 @@ public interface FriendService {
 	//멤버의 친구 목록
 	public List<Friend> searchFriend(String userId, String searchUserId)throws Exception;	
 
-	public List<Friend> selectFriendList(User user) throws Exception;
+	public List<Friend> listFriend(String userId) throws Exception;
+
+	//친구 정보 조회
+	public Friend getFriend(String friendId) throws Exception;
+	
 	
 	
 	//하지수 테스트
    public String listFriendFromBoard(@PathVariable String userId) throws Exception;
    
    public int checkFriend(String userId, String friendId, int friendCode) throws Exception;
+
+
 
 
    

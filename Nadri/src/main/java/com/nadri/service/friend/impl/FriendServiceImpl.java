@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
-import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
 import com.nadri.service.friend.FriendService;
 
@@ -30,21 +28,11 @@ public class FriendServiceImpl implements FriendService{
 	//method
 	//친구 목록
 	@Override
-	public List<Friend> selectFriendList(User user) throws Exception {
+	public List<Friend> listFriend(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return friendDao.selectFriendList(user);
-	}
-	
-	
-	//멤버의 친구 목록
-	@Override
-	public List<Friend> searchFriend(String userId, String searchUserId) throws Exception {
-		// TODO Auto-generated method stub
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
-		map.put("searchUserId", searchUserId);
-		
-		return friendDao.searchFriend(map);
+		System.out.println("-------------------------------------ServiceImpl-------------------------------------");
+		System.out.println("serviceImpl-listFriend-userId: "+ userId);
+		return friendDao.listFriend(userId);
 	}
 	
 
@@ -126,6 +114,14 @@ public class FriendServiceImpl implements FriendService{
 		return result; 
 	}
 
+	//친구 정보 조회
+	@Override
+	public Friend getFriend(String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		return friendDao.getFriend(friendId);
+	}
+	
+
 	
 
 	
@@ -142,6 +138,25 @@ public class FriendServiceImpl implements FriendService{
 		// TODO Auto-generated method stub
 		return friendDao.checkFriend(userId, friendId, friendCode);
 	}
+
+	//멤버의 친구 목록
+	@Override
+	public List<Friend> searchFriend(String userId, String searchUserId) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("searchUserId", searchUserId);
+		
+		return friendDao.searchFriend(map);
+	}
+
+	
+
+	
+
+	
+
+	
 
 	
 
