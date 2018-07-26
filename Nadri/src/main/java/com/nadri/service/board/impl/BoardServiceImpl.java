@@ -82,7 +82,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getMyBoardList(userId);
 	}
 
-	@Override
 	public int checkBoard(int boardCode, String userId) throws Exception {
 		return boardDao.checkBoard(boardCode, userId);
 	}
@@ -94,7 +93,6 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	//º¸»ó
-	@Override
 	public int getMyCount(String keyword, String userId) throws Exception {
 		return boardDao.getMyCount(keyword, userId);
 	}

@@ -18,9 +18,6 @@ public interface BoardDao {
 	
 	public void deleteBoard(int boardNo) throws Exception;
 	
-	//메인화면 추천게시물
-	public List<Board> getRecomBoard(Search search) throws Exception;
-	
 	//좋아요
 	public int getLikeCount(int boardNo) throws Exception;
 	
