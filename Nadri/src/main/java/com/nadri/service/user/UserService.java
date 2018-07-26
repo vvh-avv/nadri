@@ -1,10 +1,8 @@
 package com.nadri.service.user;
 
-import java.util.List;
 import java.util.Map;
 
 import com.nadri.common.Search;
-import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
 
 public interface UserService {

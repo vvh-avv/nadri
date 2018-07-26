@@ -12,11 +12,17 @@
 	<!-- 참조 : http://getbootstrap.com/css/   -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- Bootstrap CDN -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+	<!-- sweet alert CDN -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<!-- toolbar -->
    <script src="/javascript/toolbar.js"></script>
@@ -32,19 +38,43 @@
 	
 	<!--  javascript -->
 	<script type="text/javascript">
-	 $(function() {
-		 $( "#deleteFriend" ).on("click" , function() {
-			
-			alert("친구를 삭제하실 건가요?");
-			fncDeleteFriend();
-		 });
-	 });
+	//친구 삭제
+	var friendId = ${friend.friendId};
+	$(function() {
+		 $( ".text-center" ).on("click" , function() {
+		 	$.ajax({
+		 		url:'/friend/json/deleteFriend/',
+		 		success:function(data){
+		 				swal("친구가 삭제되었습니다","success");
+		 		}
+		 	})
+		 })
+	})
+
+	 
+	//친구 추가
+	 $(function() {	 	
+		$(".text-center").on("click", function(){
+			$.ajax({
+				url:"/friend/json/acceptFriend/"+friendId,
+				success:function(data){
+					if(data =1){//이미 친구
+						swal("이미 친구인 유저입니다","error");
+					}else{
+						$.ajax({
+							uri:"/friend/json/acceptFriend/"+friendId,
+							success:function(){
+								swal("친구가 되었습니다","success");
+							}
+						})
+					}
+				}
+			})	
+		})	 
+	 })
 		
-	 function fncDeleteFriend(){
-		$("form").attr("method", "POST").attr("action", "/friend/deleteFriend").submit();
-		alert("등록된 친구를 삭제했습니다");
-	 }
-		
+	
+	 
 	</script>
 
 </head>
@@ -56,7 +86,7 @@
 	
 	
 	<!-- side bar -->
-	<div class="col-sm-2" style="margin-left:3%">
+	<div class="col-xs-2 col-md-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -70,40 +100,44 @@
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	</div>
 	
-	<div class="col-sm-7" style="margin-left:3%">
+	<div class="col-xs-7 col-md-7" style="margin-left:3%">
 	<div class="container">	
 	<!-- center area -->
 		<div class="page-header text-info">
 	       <h3>친구목록조회</h3>
 	    </div>
 	 
-	 <form class="form-horizontal">
+	 <form id="form" class="form-horizontal">
    	<!-- TABLE -->
    	<table class="table table-hover table-striped">
 	<thead>
 		<tr>
-			<th class="text-center">No</th>
-			<th class="text-center">ID</th>
-			<th class="text-center">친구추가</th>
-			<th class="text-center">친구삭제</th>
+			<th align="center">No</th>
+			<th align="center">ID</th>
+			<th align="center">친구추가</th>
+			<th align="center">친구삭제</th>
 		</tr>
 	</thead>
 	
 	<tbody>
+	
 		<c:forEach var="friend" items="${fList }">
 			<tr>
-				<td class="text-center">${friend.friendNo }</td>
-				<td class="text-center">${friend.friendId }</td>
-				<td class="text-center">
-				<c:if test="${friend.friendCode == 0 && friend.friendRequest == 'Y' }">
-					<button id="addFriend" class="btn btn-default">친구추가</button>
+				<td align="center">${friend.friendNo }</td>
+				<td align="center">${friend.friendId }</td>
+				
+				<td class="text-center" >
+				<c:if test="${ friend.friendCode == '0' }">
+					<button type="button" class="btn btn-primary" id="acceptFriend">친구추가</button>
 				</c:if>
 				</td>
-				<td class="text-center">
-				<c:if test="${friend.friendCode == 1 }">
-					<button id="deleteFriend" class="btn btn-danger">삭제</button>
+
+				<td class="text-center" >
+				<c:if test="${friend.friendCode == '1' }">
+					<button type="button" class="btn btn-danger" id="deleteFriend">삭제</button>
 				</c:if> 
 				</td>
+				
 			</tr>
 		</c:forEach>
 	</tbody>

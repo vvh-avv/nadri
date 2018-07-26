@@ -34,20 +34,23 @@ public class FriendDaoImpl implements FriendDao{
 	//method
 	//模备 眠啊
 	@Override
-	public int acceptFriend(List<Map<String, String>> list) throws Exception {
+	public void acceptFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("FriendMapper.acceptFriend", list);
+		System.out.println("DaoImpl - acceptFriend start"+map);
+		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", map));
+		sqlSession.insert("FriendMapper.acceptFriend", map);
 	}
 
 	//模备 昏力
 	@Override
-	public int deleteFriend(Map<String, String> map) throws Exception {
+	public int deleteFriend(String friendId) throws Exception {
 		// TODO Auto-generated method stub
 
-		System.out.println("deleteFriend start: "+ map);
-		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", map));
+		System.out.println("deleteFriend start");	
+		System.out.println("deleteFriend start: "+ friendId);
+		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", friendId));
 
-		return sqlSession.delete("FriendMapper.deleteFriend", map);
+		return sqlSession.delete("FriendMapper.deleteFriend", friendId);
 	}
 
 	//模备 夸没 秒家

@@ -73,11 +73,16 @@ public class FriendController {
 
 	
 	//模备 眠啊
-	@RequestMapping(value="acceptFriend")
-	public String acceptFriend(String userId, String friendId)throws Exception{
-		friendService.acceptFriend(userId, friendId);
-		return "redirect:/friend/listFriend?userId="+userId;
-	}
+	/*@RequestMapping(value="acceptFriend", method=RequestMethod.GET )
+	public String acceptFriend(@RequestParam("friendId") String friendId, Model model)throws Exception{
+		System.out.println("controller - acceptFriend start");
+		Friend friend = friendService.getFriend(friendId);
+		System.out.println("acceptFriend 搬苞 眠啊等 模备: "+friendId);
+		model.addAttribute("Friend", friend);
+		System.out.println("acceptFriend - model俊 淬变 模备"+friend);
+	
+		return "forward:/friend/listFriend.jsp";
+	}*/
 	
 	
 	//模备 沥焊 炼雀
@@ -92,12 +97,6 @@ public class FriendController {
 		return "forward:/friend/getFreind.jsp";
 	}
 	
-	//模备 昏力
-	@RequestMapping(value="deleteFriend", method=RequestMethod.POST)
-	public String deleteFriend(String userId, String friendId)throws Exception{
-		friendService.deleteFriend(userId, friendId);
-		return "forward:/friend/listFriend?userId="+userId;
-	}
 	
 	
 	//模备 夸没	

@@ -8,10 +8,12 @@ import com.nadri.service.domain.Friend;
 public interface FriendService {
 	
 	//模备 夸没 荐遏
-	public int acceptFriend(String userId, String friendId) throws Exception;
+	/*public void acceptFriend(Friend friend) throws Exception;*/
+	public void acceptFriend(String userId, String friendId)throws Exception;
 	
 	//模备 昏力
-	public int deleteFriend(String userId, String friendId) throws Exception;
+	public int deleteFriend(String friendId) throws Exception;
+	/*public int deleteFriend(String userId, String friendId, int friendCode)throws Exception;*/
 	
 	//模备 夸没矫
 	public void addFriend(String userId, String friendId) throws Exception;
@@ -36,6 +38,16 @@ public interface FriendService {
    public String listFriendFromBoard(@PathVariable String userId) throws Exception;
    
    public int checkFriend(String userId, String friendId, int friendCode) throws Exception;
+
+
+
+   
+
+
+
+
+
+
 
 
 

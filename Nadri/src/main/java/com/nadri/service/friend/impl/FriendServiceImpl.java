@@ -38,39 +38,26 @@ public class FriendServiceImpl implements FriendService{
 
 	//模备 夸没 荐遏
 	@Override
-	public int acceptFriend(String userId, String friendId) throws Exception {
+	public void acceptFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		int result = 0;
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		
-			Map<String, String> map1 = new HashMap<String, String>();
-			map1.put("userId", userId);
-			map1.put("friendId", friendId);
-			friendDao.deleteFriend(map1);
-			
-			Map<String, String> map2 = new HashMap<String, String>();
-			map2.put("userId", userId);
-			map2.put("friendId", friendId);
-			
-			list.add(map1);
-			list.add(map2);
-			
-			result = friendDao.acceptFriend(list);
-					
-			return result;
+			System.out.println("---------------ServiceImpl - acceptFriend------------");
+			System.out.println("serviceimpl - acceptFriend - userId: "+userId);
+			System.out.println("serviceimpl - acceptFriend - friendId: "+friendId);
+			System.out.println("---------------acceptFriend------------");
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userId", userId);
+			map.put("friendId", friendId);
+			friendDao.acceptFriend(map);
 	}
 
 	//模备 昏力
 	@Override
-	public int deleteFriend(String userId, String friendId) throws Exception {
+	public int deleteFriend(String friendId) throws Exception {
 		// TODO Auto-generated method stub
-		int result = 0;
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		result = friendDao.deleteFriend(map);
-		
-		return result;
+		System.out.println("---------------ServiceImpl - deleteFriend------------");
+		System.out.println(friendId);
+		System.out.println("---------------deleteFriend------------");
+		return friendDao.deleteFriend(friendId);
 	}
 
 	//模备 夸没
@@ -115,6 +102,9 @@ public class FriendServiceImpl implements FriendService{
 	@Override
 	public Friend getFriend(String friendId) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("----------------------------------------------------");
+		System.out.println("serviceimpl - getFriend: "+friendDao.getFriend(friendId));
+		System.out.println("----------------------------------------------------");
 		return friendDao.getFriend(friendId);
 	}
 	
