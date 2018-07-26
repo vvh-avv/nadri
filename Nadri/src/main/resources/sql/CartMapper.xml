@@ -47,12 +47,11 @@
 					#{cartImg:VARCHAR})		
 	 </insert>
 	 
-	 <select id="getSpotCartList" parameterType="search" resultMap="cartSelectMap" >
-	 	SELECT *
-	 	FROM cart
-	 	WHERE user_id = #{searchKeyword}
-	 	AND cart_code='0'
-	 	LIMIT 5,10;
-	 </select>
+	 <select id="getSpotCartList" parameterType="String" resultMap="cartSelectMap" >
+       SELECT *
+       FROM cart
+       WHERE user_id = #{value}
+       ORDER BY cart_time desc
+    </select>
 
 </mapper>

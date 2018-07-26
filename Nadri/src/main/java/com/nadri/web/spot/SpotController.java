@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.Spot;
+import com.nadri.service.domain.User;
 import com.nadri.service.spot.SpotService;
 
 //==> 장소와 관련된 메서드 Controller
@@ -63,6 +66,7 @@ public class SpotController {
 			jsonObject.put("spotTitle", a.getSpotTitle());
 			jsonObject.put("spotImg", a.getSpotImg());
 			jsonObject.put("spotCode", a.getSpotCode());
+			jsonObject.put("spotNo", a.getSpotNo());
 			jsonArray.add(jsonObject);
 		}
 	
@@ -74,10 +78,8 @@ public class SpotController {
 			return "forward:/spot/parkSpot.jsp";
 		} else if(spotCode == 4) {
 			return "forward:/spot/riverSpot.jsp";
-		} else if(spotCode == 10) {
-			return "forward:/spot/samdaeSpot.jsp";
-		} else if(spotCode == 11) {
-			return "forward:/spot/suyoSpot.jsp";
+		} else if(spotCode == 1) {
+			return "forward:/spot/restaurantSpot.jsp";
 		} else if(spotCode == 30) {
 			return "forward:/spot/babySpot.jsp";
 		} else if(spotCode == 31) {
@@ -135,7 +137,7 @@ public class SpotController {
 	}
 	
 	@RequestMapping( value="getSpot" , method=RequestMethod.GET)
-    public String getProduct( @RequestParam("spotNo") int spotNo , Model model, HttpServletRequest request ) throws Exception {
+    public String getProduct( @RequestParam("spotNo") int spotNo , Model model, HttpSession session ) throws Exception {
       
       System.out.println("/spot/getSpot : GET");
       
@@ -191,5 +193,5 @@ public class SpotController {
         
         return "forward:/spot/getFestival.jsp";
 	}
-		
+	
 }

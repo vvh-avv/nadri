@@ -35,7 +35,7 @@
 		WHERE spot_code LIKE CONCAT(#{keyword},'%')
 		ORDER BY spot_readcnt
 	</select>
-
+	
 	<select id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
 	  	<![CDATA[
 	  	SELECT * 
@@ -125,4 +125,14 @@
 	 <select id="getTotalSpot" resultType="int">
 	 	SELECT COUNT(spot_no) AS totalspot FROM spot;
 	 </select>
+	 
+	 <!-- 장소 찾는 이벤트 입니다! -->
+ 	<select id="getSearchSpotList" parameterType="search" resultMap="spotSelectMap">
+		SELECT *
+		FROM spot 
+		WHERE (spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+        OR spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+        OR spot_address LIKE CONCAT('%',#{searchKeyword},'%'))
+        and spot_code LIKE CONCAT(#{searchSpot},'%')
+	</select>
 </mapper>

@@ -22,7 +22,7 @@ public class BoardServiceTest {
 	@Qualifier("boardServiceImpl")
 	private BoardServiceImpl boardService;
 	
-	@Test
+	//@Test
 	public void addBoard() throws Exception{
 		Board board = new Board();
 		User user = new User();

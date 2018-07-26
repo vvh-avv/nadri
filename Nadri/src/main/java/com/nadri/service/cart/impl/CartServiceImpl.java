@@ -38,8 +38,8 @@ public class CartServiceImpl implements CartService{
 	
 	// 2. spot Cart를 가져오는 메서드
 	@Override
-	public List<Cart> getSpotCartList(Search search) throws Exception {
-		return cartDao.getSpotCartList(search);
+	public List<Cart> getSpotCartList(String userId) throws Exception {
+		return cartDao.getSpotCartList(userId);
 	}
 
 }
