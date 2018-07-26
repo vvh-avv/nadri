@@ -1,8 +1,6 @@
 package com.nadri.service.board.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,8 +42,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Board> getBoardList(Search search) throws Exception {		
-		List<Board> list = boardDao.getBoardList(search);
+	public List<Board> getBoardList(Search search, String userId) throws Exception {		
+		List<Board> list = boardDao.getBoardList(search, userId);
 		
 		return list;
 	}
@@ -82,6 +80,7 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getMyBoardList(userId);
 	}
 
+	@Override
 	public int checkBoard(int boardCode, String userId) throws Exception {
 		return boardDao.checkBoard(boardCode, userId);
 	}
@@ -92,9 +91,23 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getRecomBoard(search);
 	}
 	
+	//메인화면 추천게시물 (회원/친구좋아요)
+	@Override
+	public List<Board> getRecomUserLike(Search search, String userId) throws Exception {
+		return boardDao.getRecomUserLike(search, userId);
+	}
+
+	//메인화면 추천게시물 (회원/작성글)
+	@Override
+	public List<Board> getRecomUserBoard(Search search, String userId) throws Exception {
+		return boardDao.getRecomUserBoard(search, userId);
+	}
+	
 	//보상
+	@Override
 	public int getMyCount(String keyword, String userId) throws Exception {
 		return boardDao.getMyCount(keyword, userId);
 	}
+
 
 }

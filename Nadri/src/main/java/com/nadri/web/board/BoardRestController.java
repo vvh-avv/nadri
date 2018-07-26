@@ -1,7 +1,9 @@
 package com.nadri.web.board;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
@@ -71,7 +74,7 @@ public class BoardRestController {
 	}
 
 	@RequestMapping(value="json/addBoard/{scheduleNo}", method=RequestMethod.POST) //일정 게시물 작성
-	public void addBoard( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
+	public int addBoard( @PathVariable int scheduleNo, HttpSession session) throws Exception{
 		System.out.println("/board/json/addBoard/{scheduleNo} : POST");
 		
 		Schedule schedule = scheduleService.getSchedule(scheduleNo);
@@ -88,6 +91,8 @@ public class BoardRestController {
 		board.setBoardCode(scheduleNo);
 		
 		boardService.addBoard(board);
+		//보상에 필요
+		return boardService.getMyCount("board", board.getUser().getUserId());
 	}
 	
 	@RequestMapping(value="json/deleteBoard/{boardNo}", method=RequestMethod.POST)
@@ -97,12 +102,14 @@ public class BoardRestController {
 		Board board = boardService.getBoard(boardNo);
 		
 		String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
-				
-		//업로드된 기존파일 삭제
-		if( board.getBoardImg().contains(",") ) {
-			for( String fileName : board.getBoardImg().split(",")) {
-				new File(uploadPath+fileName).delete();
-				System.out.println(fileName+" 삭제완료");
+		
+		if( board.getBoardImg()!=null ) { //이미지가 존재할 때
+			//업로드된 기존파일 삭제
+			if( board.getBoardImg().contains(",") ) {
+				for( String fileName : board.getBoardImg().split(",")) {
+					new File(uploadPath+fileName).delete();
+					System.out.println(fileName+" 삭제완료");
+				}
 			}
 		}
 		
@@ -113,6 +120,8 @@ public class BoardRestController {
 	public List<Board> getBoardList( @PathVariable int currentPage, HttpSession session ) throws Exception{
 		System.out.println("/board/json/getBoardList : POST");
 		
+		System.out.println("@넘어온 페이지 : "+ currentPage);
+		
 		Search search = new Search();
 		search.setStartRowNum( (currentPage+1)*pageSize );
 		search.setPageSize(pageSize);
@@ -121,7 +130,7 @@ public class BoardRestController {
 			search.setMemberFlag(1);
 		}
 		
-		List<Board> list = boardService.getBoardList(search);
+		List<Board> list = boardService.getBoardList(search, ((User)session.getAttribute("user")).getUserId());
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
 			//회원일 경우 session 으로 좋아요 여부 가져오기
@@ -154,13 +163,18 @@ public class BoardRestController {
 	
 	//좋아요
 	@RequestMapping(value="json/addLike/{boardNo}", method=RequestMethod.POST)
-	public int addLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
+	public Map<String, Object> addLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
 		System.out.println("/board/json/addLike : POST");
 		
 		User user = (User)session.getAttribute("user");
 		boardService.addLike(boardNo, user.getUserId()); //추가하고
 
-		return boardService.getLikeCount(boardNo); //변경된 개수 리턴
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("likeCnt", boardService.getLikeCount(boardNo)); //변경된 개수 리턴
+		//보상에 필요
+		map.put("myLikeCnt", boardService.getMyCount("like", user.getUserId()));
+		
+		return map;
 	}
 
 	@RequestMapping(value="json/deleteLike/{boardNo}", method=RequestMethod.POST)
@@ -175,29 +189,32 @@ public class BoardRestController {
 	
 	//댓글
 	@RequestMapping(value="json/addComment/{userId}", method=RequestMethod.POST) 
-	public Comment addComment( @RequestBody Comment comment, @PathVariable String userId ) throws Exception{
+	public Map<String, Object> addComment( @RequestBody Comment comment, @PathVariable String userId ) throws Exception{
 		System.out.println("/board/json/addComment : POST");
 		
-		/* 알림시 사용
+		//* 알림시 사용
 		String cc = comment.getCommentContent(); //넘어온 내용
+		String returnFriend = "";
 		if( cc.contains("@") ) { //친구소환
 			String[] friend = cc.split("@");
 			for( int i=1; i<friend.length; i++) { //여기서 알림추가
-				String friendId = friend[i].split(" ")[0];
-				comment.setFriend( userService.getUser(friendId) );
+				returnFriend += friend[i].split(" ")[0]+",";
 			}
-		}else { //친구소환X
-			System.out.println("@친구소환X");
 		}
-		//*/
 		
 		comment.setUser( userService.getUser(userId) );
 		commentService.addComment(comment);
 		
 		Comment returnComm = commentService.getComment(comment.getCommentNo());
 		returnComm.setUser( userService.getUser( returnComm.getUser().getUserId() ) );
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("comment", returnComm);
+		map.put("returnFriend", returnFriend);
+		//보상에 필요
+		map.put("myCommCnt", boardService.getMyCount("comment", userId));
 		
-		return returnComm;
+		return map;
 	}
 
 	@RequestMapping(value="json/deleteComment/{boardNo}/{commentNo}", method=RequestMethod.POST) 
@@ -209,56 +226,73 @@ public class BoardRestController {
 		return commentService.getCommentCount(boardNo); //변경된 개수 리턴
 	}
 
-	//메인화면 추천게시물 (최신)
-	@RequestMapping(value="recomBoardNew")
-	public String recomBoardNew(Model model) throws Exception{
-		System.out.println("/board/recomBoardNew : GET / POST");
+	//메인화면 추천게시물 (비회원)
+	@RequestMapping(value="recomBoard/{condition}")
+	public String recomBoard(@PathVariable String condition, Model model) throws Exception{
+		System.out.println("/board/recomBoard : GET / POST");
 		
 		Search search = new Search();
-		search.setSearchCondition("최신");
+		if(condition=="new") {
+			search.setSearchCondition("최신");
+		}else if(condition=="day") {
+			search.setSearchCondition("일간");
+		}else if(condition=="week") {
+			search.setSearchCondition("주간");
+		}else if(condition=="month") {
+			search.setSearchCondition("월간");
+		}
+		
 		List<Board> list = boardService.getRecomBoard(search);
 		
-		model.addAttribute("recomBoardNew", list);
+		model.addAttribute("recomBoard", list);
 		
-		return "forward:/index.jsp";
+		return "forward:/";
 	}
-	//메인화면 추천게시물 (일간)
-	@RequestMapping(value="recomBoardDay")
-	public String recomBoardDay(Model model) throws Exception{
-		System.out.println("/board/recomBoardDay : GET / POST");
+	//메인화면 추천게시물 (회원/친구좋아요)
+	@RequestMapping(value="recomUserLike/{condition}")
+	public String recomUserLike(@PathVariable String condition, Model model, HttpSession session) throws Exception{
+		System.out.println("/board/recomUserLike : GET / POST");
 		
 		Search search = new Search();
-		search.setSearchCondition("일간");
-		List<Board> list = boardService.getRecomBoard(search);
+		if(condition=="new") {
+			search.setSearchCondition("최신");
+		}else if(condition=="day") {
+			search.setSearchCondition("일간");
+		}else if(condition=="week") {
+			search.setSearchCondition("주간");
+		}else if(condition=="month") {
+			search.setSearchCondition("월간");
+		}
 		
-		model.addAttribute("recomBoardDay", list);
+		User user = (User)session.getAttribute("user");
+		List<Board> list = boardService.getRecomUserLike(search, user.getUserId());
 		
-		return "forward:/index.jsp";
+		model.addAttribute("recomUserLike", list);
+		
+		return "forward:/";
 	}
-	//메인화면 추천게시물 (주간)
-	@RequestMapping(value="recomBoardWeek")
-	public String recomBoardWeek(Model model) throws Exception{
-		System.out.println("/board/recomBoardWeek : GET / POST");
+	//메인화면 추천게시물 (회원/작성글)
+	@RequestMapping(value="recomUserBoard/{condition}")
+	public String recomUserBoard(@PathVariable String condition, Model model, HttpSession session) throws Exception{
+		System.out.println("/board/recomUserBoard : GET / POST");
 		
 		Search search = new Search();
-		search.setSearchCondition("주간");
-		List<Board> list = boardService.getRecomBoard(search);
+		if(condition=="new") {
+			search.setSearchCondition("최신");
+		}else if(condition=="day") {
+			search.setSearchCondition("일간");
+		}else if(condition=="week") {
+			search.setSearchCondition("주간");
+		}else if(condition=="month") {
+			search.setSearchCondition("월간");
+		}
 		
-		model.addAttribute("recomBoardWeek", list);
+		User user = (User)session.getAttribute("user");
+		List<Board> list = boardService.getRecomUserBoard(search, user.getUserId());
 		
-		return "forward:/index.jsp";
+		model.addAttribute("recomUserBoard", list);
+		
+		return "forward:/";
 	}
-	//메인화면 추천게시물 (월간)
-	@RequestMapping(value="recomBoardMonth")
-	public String recomBoardMonth(Model model) throws Exception{
-		System.out.println("/board/recomBoardMonth : GET / POST");
-		
-		Search search = new Search();
-		search.setSearchCondition("월간");
-		List<Board> list = boardService.getRecomBoard(search);
-		
-		model.addAttribute("recomBoardMonth", list);
-		
-		return "forward:/index.jsp";
-	}
+	
 }

@@ -1,5 +1,6 @@
 package com.nadri.service.board.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardDao;
 import com.nadri.service.domain.Board;
+import com.nadri.service.domain.Friend;
 
 @Repository("boardDaoImpl")
 public class BoardDaoImpl implements BoardDao{
@@ -40,8 +42,22 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSession.selectOne("BoardMapper.getBoard", boardNo);
 	}
 
-	public List<Board> getBoardList(Search search) throws Exception {
-		return sqlSession.selectList("BoardMapper.getBoardList", search);
+	public List<Board> getBoardList(Search search, String userId) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		
+		if( search.getMemberFlag()==1 ) { //회원일 경우
+			map.put("userId", userId);
+			
+			List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+			List<String> friendId = new ArrayList<String>();
+			for( int i=0; i<friend.size(); i++ ) {
+				friendId.add( friend.get(i).getUserId() );
+			}
+			map.put("list", friendId);
+		}
+		
+		return sqlSession.selectList("BoardMapper.getBoardList", map);
 	}
 
 	public void deleteBoard(int boardNo) throws Exception {
@@ -90,11 +106,41 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSession.selectOne("BoardMapper.checkBoard", map);
 	}
 	
-	//메인화면 추천게시물
+	//메인화면 추천게시물 (비회원)
 	public List<Board> getRecomBoard(Search search) throws Exception{
 		return sqlSession.selectList("BoardMapper.getRecomBoard", search);
 	}
-
+	
+	//메인화면 추천게시물 (회원/친구좋아요)
+	public List<Board> getRecomUserLike(Search search, String userId) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+			
+		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+		List<String> friendId = new ArrayList<String>();
+		for( int i=0; i<friend.size(); i++ ) {
+			friendId.add( friend.get(i).getUserId() );
+		}
+		map.put("list", friendId);
+		
+		return sqlSession.selectList("BoardMapper.getRecomUserLike", map);
+	}
+	
+	//메인화면 추천게시물 (회원/작성글)
+	public List<Board> getRecomUserBoard(Search search, String userId) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		
+		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
+		List<String> friendId = new ArrayList<String>();
+		for( int i=0; i<friend.size(); i++ ) {
+			friendId.add( friend.get(i).getUserId() );
+		}
+		map.put("list", friendId);
+		
+		return sqlSession.selectList("BoardMapper.getRecomUserBoard", map);
+	}
+	
 	//보상
 	@Override
 	public int getMyCount(String keyword, String userId) throws Exception {
