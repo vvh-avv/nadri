@@ -1,5 +1,6 @@
 package com.nadri.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import com.nadri.service.user.UserService;
 //회원관리 서비스 구현
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
-	
+	//field
 	@Autowired
 	@Qualifier("userDaoImpl")
 	private UserDao userDao;
@@ -117,6 +118,11 @@ public class UserServiceImpl implements UserService{
 		return userDao.findUserId(user);
 	}
 
+	//회원 비밀번호 찾기
+	@Override
+	public void findUserPassword(User user) throws Exception {
+		// TODO Auto-generated method stub
+	}
 	
 	
 
@@ -126,21 +132,4 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return userDao.getUserLog(userId, number, duration);
 	}
-
-
-
-
-
-
-
-
-
-	
-
-
-	
-
-	
-
-
 }

@@ -4,12 +4,12 @@ package com.nadri.common;
 public class Search {
 	
 	///Field
-	private int curruntPage;
-	private String searchCondition;
-	private String searchKeyword;
-	private int pageSize;
-	private int endRowNum;
-	private int startRowNum;
+	private int curruntPage ;
+	private String searchCondition ;
+	private String searchKeyword ;
+	private int pageSize ;
+	private int endRowNum ;
+	private int startRowNum ;
 
 	private int searchSpot;
 	private int memberFlag; //회원과 비회원일 때 게시물 목록 불러오는 조건이 달라서 추가함 HJS
@@ -72,11 +72,11 @@ public class Search {
 
 	//==> Select Query 시 ROWNUM 마지막 값 
 	public int getEndRowNum() {
-		return getCurrentPage()*getPageSize();
+		return endRowNum;
 	}
 	//==> Select Query 시 ROWNUM 시작 값
 	public int getStartRowNum() {
-		return (getCurrentPage()-1)*getPageSize()+1;
+		return startRowNum;
 	}
 
 	public void setStartRowNum(int startRowNum) {

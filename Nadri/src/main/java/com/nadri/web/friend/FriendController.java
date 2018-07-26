@@ -3,7 +3,6 @@ package com.nadri.web.friend;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +10,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nadri.common.Page;
-import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendService;
+import com.nadri.service.user.UserDao;
 import com.nadri.service.user.UserService;
 
 @Controller
@@ -36,6 +34,9 @@ public class FriendController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
+	@Autowired
+	@Qualifier("userDaoImpl")
+	private UserDao userDao;
 	
 	@Value("#{commonProperties['pageUnit']}")
 	// @Value("#{commonProperties['pageUnit'] ?: 3}")
@@ -52,85 +53,86 @@ public class FriendController {
 		System.out.println(this.getClass());
 	}
 	
-	
 	//method
-	//친구 맺기
-	@RequestMapping(value = "addFriend", method = RequestMethod.POST)
-	public String addFriend(@ModelAttribute("friend") Friend friend, Model model) throws Exception {
-		System.out.println("/friend/addFriend:POST");
+	@RequestMapping(value = "listFriend", method= {RequestMethod.GET, RequestMethod.POST})
+	public String listFriend(HttpSession session, Model model)throws Exception{
 
-		System.out.println("friendController addFriend ");
-		//내비게이션?? - 결과적으로는 필요없는??: rest controller에서 버튼 등의 형식으로 처리할 확률 높음
-		return "forward:/friend/addFriend.jsp";	
-	}
-	
-	//친구 리스트
-	@RequestMapping(value = "listFriend",method=RequestMethod.GET)
-	public String listFriend(@ModelAttribute("search") Search search, HttpSession session, Model model ,HttpServletRequest request) throws Exception {
-		System.out.println("friend/listFriend : GET");
-		//유저 아이디 세션에서 불러와 담기
-		String userId = ((User) session.getAttribute("user")).getUserId();
-		//현재 페이지 설정
-		if(search.getCurrentPage()==0) {
-			search.setCurrentPage(1);
-		}
-		search.setPageSize(pageSize);
-		search.setSearchKeyword(((User) session.getAttribute("user")).getUserId());
-		//map에 친구 리스트 담기
-		Map<String, Object> map = friendService.listFriend(search);
-		System.out.println("Controller - listFriend:"+search);
+		String userId = ((User)session.getAttribute("user")).getUserId();
 		
-		Friend friend;
-		String[] str;
+		System.out.println("/friend/listFriend start: "+userId);
+		List<Friend> fList = friendService.listFriend(userId);
 		
-		List list = (List) map.get("list");
+		System.out.println("-------------------------------------listFriend controller-------------------------------------");
+		System.out.println("controller fList: "+fList);
+		System.out.println("--------------------------------------------------------------------------");
+		model.addAttribute("fList", fList);
+		System.out.println("after fList: "+fList);
 		
-		for(int i = 0; i < list.size(); i++) {
-			friend = (Friend) list.get(i);
-			//문자열에 친구 맺은 날 담기
-			str = friend.getCreatedDate().split("-");
-			friend.setCreatedDate(str[0]+"년"+str[1]+"월");
-			list.set(i, friend);
-		}
-		
-		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
-		//친구 추천 리스트화
-		List<Friend> list2 = friendService.recommendFriend(userId);
-
-		model.addAttribute("list", list);
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
-		model.addAttribute("recommendList", list2);
-		request.setAttribute("countFriend",friendService.countFriend(userId));
-		System.out.println("friendController - listFriend: "+list2);
-		//내비게이션
 		return "forward:/friend/listFriend.jsp";
 	}
+
 	
-	//친구 조회(확인)
-	@RequestMapping(value="getFriend", method=RequestMethod.POST)
-	public String getFriend(@RequestParam(value="friendId",required=false)String friendId, Model model, HttpSession session) throws Exception{		
-		System.out.println("friend/getFriend:POST");
-		//친구 정보 가져오기
-		Friend friend=friendService.getFriend(friendId);
-		//친구 정보 모델에 담기
-		model.addAttribute("friend",friend);
-		//내비게이션
-		return "forward:/friend/getFriend.jsp";
+	//친구 추가
+	/*@RequestMapping(value="acceptFriend", method=RequestMethod.GET )
+	public String acceptFriend(@RequestParam("friendId") String friendId, Model model)throws Exception{
+		System.out.println("controller - acceptFriend start");
+		Friend friend = friendService.getFriend(friendId);
+		System.out.println("acceptFriend 결과 추가된 친구: "+friendId);
+		model.addAttribute("Friend", friend);
+		System.out.println("acceptFriend - model에 담긴 친구"+friend);
+	
+		return "forward:/friend/listFriend.jsp";
+	}*/
+	
+	
+	//친구 정보 조회
+	@RequestMapping(value="getFriend", method=RequestMethod.GET)
+	public String getFriend(@RequestParam("friendId") String friendId, Model model)throws Exception{
+		System.out.println("/friend/getFriend: GET");
+		
+		Friend friend = friendService.getFriend(friendId);
+		
+		model.addAttribute("friend", friend);
+		
+		return "forward:/friend/getFreind.jsp";
 	}
 	
 	
-	//친구 수정(변경)
-	@RequestMapping(value="updateFriend", method=RequestMethod.GET)
-	public String updateFriend(@RequestParam(value="friendId",required=false)String friendId,Model model)throws Exception{
-		System.out.println("/friend/updateFriend:GET");
-		//친구 정보 가져오기
-		Friend friend=friendService.getFriend(friendId);
-		//모델에 정보담기
-		model.addAttribute("friend",friend);
-		//내비게이션
-		return "forward:/friend/updateFriend.jsp";
+	
+	//친구 요청	
+	@RequestMapping(value="addFriend")
+	public String addFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
+		if (parameterMap != null) {
+			friendService.addFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
+			
+			List<Friend> searchFriendList = null;
+			searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchFriendId"));
+			model.addAttribute("searchFriendList", searchFriendList);
+			}
+
+		return "friend/listFriend";
+	}
+	
+	
+	//친구 요청 취소
+	@RequestMapping(value="cancelFriend")
+	public String cancelFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
+		if (parameterMap != null) {
+			friendService.cancelFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
+			
+				List<Friend> searchFriendList = null;
+				searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchUserId"));
+				model.addAttribute("searchFriendList", searchFriendList);
+		}
+		return "friend/listFriend";
+	}
+	
+	
+	//친구 요청 거절
+	@RequestMapping(value="refuseFriend")
+	public String refuseFriend(String userId, String friendId, HttpSession session) throws Exception{
+		friendService.refuseFriend(userId, friendId);
+		return "redirect:/friend/listFriend?userId="+userId;
 	}
 	
 }

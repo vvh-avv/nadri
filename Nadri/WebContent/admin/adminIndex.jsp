@@ -21,8 +21,14 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
+<!-- flexslider CDN (슬라이드쇼) -->
+<link rel="stylesheet" href="/css/flexslider.css" type="text/css">
+<script src="/javascript/flexslider.js"></script>
+
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
+<link rel="stylesheet" href="/css/adminIndexSmall.css">
+<script src="/javascript/adminIndex.js"></script>
 <title>너나들이 관리자 페이지</title>
 
 </head>
@@ -31,7 +37,7 @@
 
 		/* index page animation start */
 
-		$('.adminmenus > div').on('click', function() {
+		$('.admin-sub-navbar > div').on('click', function() {
 			var way = $(this).attr('class');
 			if (way == "inquire") {
 				self.location = '/admin/listInquire';
@@ -50,71 +56,151 @@
 
 	})
 </script>
-<body>
+<body onload="realtimeClock()">
 
-	<nav class="navbar navbar-default navbar-fixed-top"
-		style="padding: 0px 20px;">
-		<div class="navbar-left" style="padding-right: 16px;">
-			<a href="/admin/adminIndex">admin page</a>
+	<nav class="admin-navbar">
+		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
+		<div class="navbar-side">
+			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
+			<div class="profile-photo"></div>
 		</div>
-		<div class="container-fluid">
-			<div class="adminmenus">
-				<div class="userList">회원목록</div>
-				<div class="graph">통계내역</div>
-				<div class="spot">백과관리</div>
-				<div class="inquire">문의관리</div>
+	</nav>
+	<nav class="admin-sub-navbar">
+		<div class="userList">회원목록</div>
+		<div class="graph">통계보기</div>
+		<div class="spot">백과관리</div>
+		<div class="inquire">문의관리</div>
+	</nav>
+	<div class="container">
+	<div class="alert-one">지난 접속 이후 새로운 문의가 <span>12개</span> 있습니다.</div>
+		<div class="row boxes-first">
+			<div class="col-md-4 col-xs-12">
+			<c:if test="${userList.size()==0}">
+				<div class="no-reg-user">최근 일주일간 가입한 회원의 목록이 없습니다.</div>
+			</c:if>
+			<c:if test="${userList.size() > 0}">
+				<div class="reg-user">최근가입회원</div>
+				<div class="table-responsive">
+ 					<table class="table reg-table">						
+ 						<tr>
+ 							<th class="table-first-line">회원아이디</th>
+ 							<th class="table-first-line">회원명</th>
+ 							<th class="table-first-line">가입일</th>
+ 						</tr>
+ 						<c:set var="i" value="0" />
+						<c:forEach var="user" items="${userList}">
+						<c:set var="i" value="${ i+1 }" />
+ 						<tr>
+ 							<td>${user.userId}</td>
+ 							<td>${user.userName}</td>
+ 							<td>${user.regDate}</td>
+ 						</tr>
+ 						</c:forEach>
+ 						<tr>
+ 							<td></td>
+ 							<td></td>
+ 							<td></td>
+ 						</tr>
+ 					</table>
+ 				</div>
+ 				</c:if>
+			</div>
+			<div class="col-md-8 col-xs-12 popularbox">
+				<c:if test="${boardList.size()==0}">
+				<div class="no-reg-user">최근 일주일간 가입한 회원의 목록이 없습니다.</div>
+				</c:if>
+				<c:if test="${boardList.size() > 0}">
+					<c:set var="i" value="0" />
+					<c:forEach var="board" items="${boardList}">
+					<c:set var="i" value="${ i+1 }" />
+						<div class="stacking stacking${i}" style="background-size:cover; background:url(/images/board/posts/${board.boardImg}); background-position-y:center; background-position-x:center;">
+							<div class="stack-text">이번주 인기 게시물</div>
+							<div class="filler"></div>
+						</div>
+					</c:forEach>
+					<div class="stack-chooser">		
+ 					<c:set var="i" value="0" />
+					<c:forEach var="board" items="${boardList}">
+					<c:set var="i" value="${ i+1 }" />
+						<div class="choose" name="choose${i}"></div>
+ 					</c:forEach> 
+					</div>
+ 				</c:if>
 			</div>
 		</div>
-		<div class="navbar-right" style="padding-right: 16px;">
-			<a href="/"><img src="/images/common/home.png"
-				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-
-	<div class="container">
-		<div class="indexBox">
-			
-			<div class="row" style="width:100%;">
-				<div class="col-md-6 col-xs-12" style="padding:12px 15px 0px 15px;">
-				 	최근 가입 회원목록 >>
-				 	<c:if test="${userList.size()==0}">
-						<div class="container">
-							<div>회원 목록이 하나도 없어요.</div>
-						</div>
-					</c:if>
-					<c:if test="${userList.size() > 0}">
-					<div class="table-responsive" style="font-size:0.6em;">
-						<table class="table table-hover" style="margin-bottom:0px; margin-top:15px;">
-							<tr>
-								<th> 회원아이디 </th>
-								<th> 회원이름 </th>
-								<th> 가입일 </th>
-							</tr>
-							<c:set var="i" value="0" />
-							<c:forEach var="user" items="${userList}">
-							<c:set var="i" value="${ i+1 }" />
-							<tr>
-								<td>${user.userId}</td>
-								<td>${user.userName}</td>
-								<td>${user.regDate}</td>
-							</tr>
-							</c:forEach>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-						</table>
+		<div class="row box-second">
+			<div class="col-md-12 col-xs-12">
+				<div class="row" style="height:100%">
+					<div class="col-md-8 col-xs-12" style="height:100%">
+						<canvas id="log-chart"></canvas>
 					</div>
-					</c:if>
-				</div>	
-				<div class="col-md-6 col-xs-12">
-				
+					<div class="col-md-4 inquire-text">
+						<div>이번주 문의</div>
+						<div>유형별 갯수</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row boxes-third">
+			<div class="col-md-6 col-xs-12">
+				<div class="search-top">실시간 인기검색어</div>
+				<ul class="popular-search">
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+					<li>검색어</li>
+				</ul>
+			</div>
+			<div class="col-md-6 col-xs-12 last-box" style="background-color:#32aff9;">
+				<div class="clock">
+					<div class="date"></div>
+					<div class="time"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<!-- chart -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+	<script type="text/javascript">
+		
+		var ctx = document.getElementById("log-chart");
+		var myDoughnutChart = new Chart(ctx, {
+		    type: 'doughnut',
+		    data: {
+		        datasets: [{
+		            data: [10, 20, 30, 30, 50],
+		        	backgroundColor:[ '#5ebdff','#57aeea', '#4b9ad0','#3c82b1','#2d658a' ]
+		        }],
+	        labels: [
+	            '유저신고',
+	            '게시물신고',
+	            '댓글신고',
+	            '정정신청',
+	            '기타문의'
+	        ],
+		    options: {scales : {
+						yAxes : [ {
+							ticks : {
+								beginAtZero : true
+							}
+						} ]
+					}
+				}
+		    }});
+		
+	</script>
 </body>
 </html>

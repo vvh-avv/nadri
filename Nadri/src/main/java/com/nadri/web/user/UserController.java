@@ -1,6 +1,7 @@
 package com.nadri.web.user;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class UserController {
 	
 	//유저 가입: post방식
 	@RequestMapping(value="addUser", method=RequestMethod.POST)
-	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file, @RequestParam("type") String type ) throws Exception {
+	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file ) throws Exception {
 		
 		System.out.println("/user/addUser : POST");
 		System.out.println("useradd - :" +user);
@@ -92,21 +93,35 @@ public class UserController {
 			System.out.println("변경된 파일명 : "+fileOriginName);
 			
 			File f = new File(uploadPath+"\\"+fileOriginName); 
-			file[i].transferTo(f);
+			file[i].transferTo(f) ;
+			
+
+			
 			if(i==0) { fileMultiName += fileOriginName; }
 			else{ fileMultiName += ","+fileOriginName; }
 		}
+			File f = new File("C:/Users/Bit/git/nadri/Nadri/WebContent/chatFiles/" + user.getUserId() ) ;
+			boolean result = f.mkdir() ;
+			
+			if( result ) {
+				System.out.println(" 성공 ") ;
+			} else {
+				System.out.println(" 실패 ") ;
+			}
+		
 		System.out.println("*"+fileMultiName);
 		user.setProfileImg(fileMultiName);
 			
 		userService.addUser(user);
+		
+
 		
 		return "redirect:/user/loginView.jsp";
 	}
 	
 	//유저 정보 조회
 	@RequestMapping(value="getUser", method=RequestMethod.GET)
-	public String getUser( @RequestParam("userId") String userId , Model model ) throws Exception {
+	public String getUser( @RequestParam(value="userId", required=false) String userId , Model model ) throws Exception {
 		System.out.println("/user/getUser : GET");
 		
 		User user = userService.getUser(userId);
@@ -118,7 +133,7 @@ public class UserController {
 	
 	//유저 정보 수정: get방식
 	@RequestMapping(value="updateUser", method=RequestMethod.GET)
-	public String updateUser( @RequestParam("userId") String userId , Model model ) throws Exception{
+	public String updateUser( @RequestParam(value="userId", required=false) String userId , Model model ) throws Exception{
 		System.out.println("/user/updateUser : GET");
 		
 		User user = userService.getUser(userId);
@@ -198,7 +213,7 @@ public class UserController {
 			session.setAttribute("user", dbUser);
 		}
 		
-		return "redirect:/index.jsp";
+		return "redirect:/";
 	}
 	
 	//로그아웃
@@ -271,11 +286,9 @@ public class UserController {
 		System.out.println("/user/quitUser : POST");
 		
 		userService.quitUser(userId);
+		session.invalidate();
 		
-		System.out.println("/////////////////////////");
-		
-			
-		return "forward:/user/logout";
+		return "redirect:/index.jsp";
 	}
 
 	//아이디 찾기 화면 소환

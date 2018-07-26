@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="/chat.css" rel="stylesheet" id="bootstrap-css">
+<meta charset="utf-8">
+	<script>
+		$(function(){
+			$('#qnimate').addClass('popup-box-on') ; 	
+			
+		}) ;
+		
+		var name = document.getElementById('senderId') ;
+	 	
+		$(".dz-hidden-input").prop("disabled", true ) ;
+				Dropzone.options.dropzone = {
+				clickable: false,
+				//autoDiscover: false,
+				paramName : "file" ,
+				url : "upload" ,
+				method: "post",
+				acceptedFiles: 'image/*, .mp4, .mkv, .avi',
+				dictDefaultMessage: "",
+				previewsContainer : ".direct-chat-messages",
+				thumbnailWidth: 100,
+			    thumbnailHeight: 100,
+			    previewTemplate:
+			    	'<div style="display:none"></div>',
+
+		 			success : function() {
+		 				$('.direct-chat-messages').scrollTop($('.direct-chat-messages')[0].scrollHeight) ;
+		 			}
+		} ;
+		$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	</script>
+	
+    <style>
+      .name{ width: 10%;}
+      .message{ width: 70%; }
+      .chat{ width: 10%; }
+    </style>
+   </head>
+  <body>
+  
+  		<div class="popup-box chat-popup" id="qnimate">
+         	<div class="popup-head">
+				<div class="popup-head-left pull-left"><img src="2.jpg" alt="iamgurdeeposahan"><label id="topReceiverId"></label></div>
+					  <div class="popup-head-right pull-right">
+						<div class="btn-group">
+    								  <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
+									   <i class="glyphicon glyphicon-cog"></i> </button>
+									  <ul role="menu" class="dropdown-menu pull-right">
+										<li><a href="#">Media</a></li>
+										<li><a href="#">Block</a></li>
+										<li><a href="#">Clear Chat</a></li>
+										<li><a href="#">Email Chat</a></li>
+									  </ul>
+						</div>
+						<button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+						<i class="glyphicon glyphicon-remove"></i></button>
+                      </div>
+			  </div>
+			<div class="popup-messages">
+			<div class="dropzone" id="dropzone" >
+    		<div class="direct-chat-messages" id="chatMessage">
+                  </div>
+            </div>
+            </div>
+			
+			<div class="popup-messages-footer">
+			<textarea id="status_message" placeholder="Type a message..." rows="0" cols="40" name="message"></textarea>
+			<div class="btn-footer">
+			<button class="bg_none"><i class="glyphicon glyphicon-picture"></i> </button>
+			<button class="bg_none"><i class="glyphicon glyphicon-user"></i> </button>
+            <button class="bg_none"><i class="glyphicon glyphicon-plane"></i> </button>
+            <button class="bg_none" id="emoticon"><i class="glyphicon glyphicon-dashboard"></i> </button>
+			<button class="bg_none pull-right" id="like"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+			</div>
+			</div>
+        </div>
+      <br>
+      <br>
+  	  <input type="hidden" value="" id="receiverId"/>
+      <input type="hidden" value="" id="chatRoomNo"/>
+      <input type="hidden" value="" id="senderId"/>
+    <script>
+
+    var socket = io.connect('http://localhost:3000') ;
+	//새로고침 시에도 채팅 창 아래로 이동.
+	$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	
+	$("#status_message").keydown(function(key) {
+		//이 주석이 있어야 실행이 되는데 도저히 이해가 안간다...
+		if(key.keyCode ==13) {
+			if( $("#status_message").val() != null &&  $("#status_message").val() != ""  ) {
+				var chatRoomNo =  $("#chatRoomNo").val() ;
+				socket.emit('sendMessage', $('#senderId').val(), $('#status_message').val() , chatRoomNo, $('#receiverId').val()) ;
+				key.preventDefault() ;
+				$('#status_message').val('') ;
+			} //End of second if
+		} //End of first if
+	}) ; //End of keyDown
+	//받은 메시지 추가하기
+	socket.on('receiveMessage', function( senderId , message , currentTime, protocol , chatRoomInner ) {
+	//chatRoomInner 이 0이면 없는 것. 1이면 있는 것
+	//내가 보낸 경우
+	 if( $("#senderId").val() == senderId  ) {
+	 //텍스트인 경우
+		 if( protocol == null || protocol == '0' ) {
+		 		$('.direct-chat-messages').append(
+					'<div class="direct-chat-msg doted-border">' +
+					'<div class="direct-chat-info clearfix">' +
+					'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+					'</div>' +
+					'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+					'<div class="direct-chat-text pull-right" align="left">' + message + 
+					'</div><div class="direct-chat-info clearfix">' +
+					'<br><span class="direct-chat-timestamp pull-left">'  + 
+					currentTime.substring(11 , 16) +
+					'</span>' +
+					'</div></div>' 
+				) ;
+		 		
+		} else if( protocol == '1' ) {
+			
+				$('.direct-chat-messages').append (
+	   				'<div class="direct-chat-msg doted-border">' +
+					'<div class="direct-chat-info clearfix">' +
+					'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+					'</div>' +
+					'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+					'<img align="right" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + message.chatRoomNo + '&fileName='+ message.fileName + '&protocol=' + protocol  +'"/>' + 
+					'<br></div><div class="direct-chat-info clearfix">' +
+					'<br><br><br><br><br><span class="direct-chat-timestamp pull-left">'  + 
+					currentTime.substring(11 , 16) +
+					'</span>' +
+					'</div>'
+				) ;
+			} //End of else if
+			//내가보낸 이모티콘
+			else if( protocol == '2' ) {
+				$('.direct-chat-messages').append(
+			   			'<div class="direct-chat-msg doted-border">' +
+						'<div class="direct-chat-info clearfix">' +
+						'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+						'</div>' +
+						'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+						'<img  align="right" style="width: 125px; height: 125px;" src="/img?chatRoomNo=' + message.chatRoomNo + '&fileName='+ message.fileName + '&protocol=' + protocol  +'"/>' +
+						'<br><div class="direct-chat-info clearfix">' +
+						'<br><br><br><br><br><span class="direct-chat-timestamp pull-left">'  + 
+						currentTime.substring(11 , 16) +
+						'</span>' +
+						'</div>'
+				 	) ;
+			} //End of else if
+			window.parent.postMessage( chatRoomInner , "http://localhost:8080" ) ;	
+			
+		 $(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	 } //상대방이 보낸 메시지 
+			else {
+				//문자일 경우 
+				if( protocol == null || protocol == '0' ) {
+					$('.direct-chat-messages').append(
+						'<div class="direct-chat-msg doted-border">' +
+						'<div class="direct-chat-info clearfix">' +
+						'<span class="direct-chat-name pull-left">' + senderId + '</span>' +
+						'</div>' +
+						'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="left">' +
+						'<div class="direct-chat-text" align="left">' + message + 
+						'</div><div class="direct-chat-info clearfix">' +
+						'<span class="direct-chat-timestamp pull-right">'  + 
+						currentTime.substring(11 , 16) +
+						'</span>' +
+						'</div></div>' ) ;
+			 	} //사진일 경우
+				else if( protocol == '1') {
+					$('.direct-chat-messages').append(
+					'<div class="direct-chat-msg doted-border">' +
+					'<div class="direct-chat-info clearfix">' +
+					'<span class="direct-chat-name pull-left">' + senderId + '</span>' +
+					'</div>' +
+					'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="left">' +
+					'<img align="left" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + message.chatRoomNo + '&fileName='+ message.fileName + '&protocol=' + protocol  +'"/>' +   
+					'<br><br><br><br><br></div><div class="direct-chat-info clearfix">' +
+					'<span class="direct-chat-timestamp pull-right">'  + 
+					currentTime.substring(11 , 16) +
+					'</span>' +
+					'</div></div>' ) ;
+				} //End of 상대가 나한테 사진 보냈을 때
+				//상대방이 이모티콘
+				else if( protocol == '2' ) {
+					$('.direct-chat-messages').append(
+				   			'<div class="direct-chat-msg doted-border">' +
+							'<div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-name pull-left">' + senderId + '</span>' +
+							'</div>' +
+							'<img alt="message user image" src="2.jpg" align="left">' +
+							'<img  align="left" style="width: 125px; height: 125px;" src="/img?chatRoomNo=' + message.chatRoomNo + '&fileName='+ message.fileName + '&protocol=' + protocol  +'"/>' +
+							'<br><div class="direct-chat-info clearfix">' +
+							'<br><br><br><br><br><span class="direct-chat-timestamp pull-right">'  + 
+							currentTime.substring(11 , 16) +
+							'</span>' +
+							'</div>'
+					 	) ;
+				} //End of else if
+				$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+			} //end of else 
+			$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+  			
+	}) ;//End of receiverMessage
+	
+	socket.on('change name', function(senderId , receiverId , chatRoomNo) {
+		$('#senderId').val(senderId) ;
+  		$('#receiverId').val(receiverId) ;
+  		$("#chatRoomNo").val(chatRoomNo) ;
+  		
+		if( receiverId.split(',').length > 2 ) {
+			var temp = receiverId.split(',') ;
+			$("#topReceiverId").text( temp[0] + ', ' + temp[1] + ', ' +  ', …' ) ;
+		} else {
+			$("#topReceiverId").text( receiverId ) ;
+		}
+	}) ;	
+	
+	//기존에 채팅 내용 append
+	socket.on('appendingContent' , function(chattingList , chatRoomNo) {
+		   var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+		   var today = new Date(chattingList[0].sending_date.substring(0 , 10)).getDay();
+			$('.direct-chat-messages').append(
+				'<div class="chat-box-single-line">' +
+				'<abbr class="timestamp">' + chattingList[0].sending_date.substring(0 , 10) + ' '+ week[today] + '</abbr>' +
+				'</div>'
+			) ;
+		
+		for(var i = 0  ;  i < chattingList.length ; i++) {
+			//날짜 계산.
+			if( i > 0 ) {
+				if( chattingList[i].sending_date.substring( 9 , 10 ) != chattingList[i-1].sending_date.substring( 9 , 10 ) ) {
+					today = new Date(chattingList[i].sending_date.substring(0 , 10)).getDay();
+					
+					$('.direct-chat-messages').append(
+					'<div class="chat-box-single-line">' +
+					'<abbr class="timestamp">' + chattingList[i].sending_date.substring(0 , 10) + ' '+ week[today] + '</abbr>' +
+					'</div>'
+					) ; //End of 날짜 append
+				}//End of 날짜식 조건
+			}//End of 날짜 계산
+		
+			//내가 보낼 때 
+			if( $("#senderId").val() == chattingList[i].sender_id  ) {
+				//TEXT문자 일때
+				if(chattingList[i].protocol == null || chattingList[i].protocol == '0' ) {
+					$('.direct-chat-messages').append(
+							'<div class="direct-chat-msg doted-border">' +
+							'<div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+							'</div>' +
+							'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+							'<div class="direct-chat-text pull-right" align="left">' + chattingList[i].message + 
+							'</div><div class="direct-chat-info clearfix">' +
+							'<br><span class="direct-chat-timestamp pull-left">'  + 
+							chattingList[i].sending_date.substring(11 , 16) +
+							'</span>' +
+							'</div></div>'
+					) ;
+					
+				} //End of Text문자
+			
+				//사진일 때
+				else if( chattingList[i].protocol == '1' ) {
+					
+			    	$('.direct-chat-messages').append(
+			   			'<div class="direct-chat-msg doted-border">' +
+						'<div class="direct-chat-info clearfix">' +
+						'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+						'</div>' +
+						'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+						'<img align="right" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + chatRoomNo + '&fileName='+ chattingList[i].fileName + '&protocol=' + chattingList[i].protocol  +'"/>' +
+						'<br></div><div class="direct-chat-info clearfix">' +
+						'<br><br><br><br><br><span class="direct-chat-timestamp pull-left">'  + 
+						chattingList[i].sending_date.substring(11 , 16) +
+						'</span>' +
+						'</div>'
+				 	) ;
+			    	
+				} //End of else if
+				
+				//이모티콘 일때
+				else if( chattingList[i].protocol == '2' ) {
+			    	$('.direct-chat-messages').append(
+			   			'<div class="direct-chat-msg doted-border">' +
+						'<div class="direct-chat-info clearfix">' +
+						'<span class="direct-chat-name pull-right"> 나 ' + '</span>' +
+						'</div>' +
+						'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="right">' +
+						'<img align="right" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + chatRoomNo + '&fileName='+ chattingList[i].fileName + '&protocol=' + chattingList[i].protocol  +'"/>' +
+						'<br><div class="direct-chat-info clearfix">' +
+						'<br><br><br><br><br><span class="direct-chat-timestamp pull-left">'  + 
+						chattingList[i].sending_date.substring(11 , 16) +
+						'</span>' +
+						'</div>'
+				 	) ;
+			    	
+				} //End of else if
+				$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+			} //End of 내가 보낸 메시지
+			//상대방이 보낸 메시지
+			else {
+				if(chattingList[i].protocol == null || chattingList[i].protocol == '0' ) {
+						$('.direct-chat-messages').append(
+							'<div class="direct-chat-msg doted-border">' +
+							'<div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-name pull-left">' + chattingList[i].sender_id + '</span>' +
+							'</div>' +
+							'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="left">' +
+							'<div class="direct-chat-text" align="left">' + chattingList[i].message + 
+							'</div><div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-timestamp pull-right">'  + 
+							chattingList[i].sending_date.substring(11 , 16) +
+							'</span>' +
+							'</div></div>' 
+						) ; //End of append
+					
+				} //End of if
+				else if( chattingList[i].protocol == '1' ) {
+					$('.direct-chat-messages').append(
+							'<div class="direct-chat-msg doted-border">' +
+							'<div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-name pull-left">' + chattingList[i].sender_id + '</span>' +
+							'</div>' +
+							'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="left">' +
+							'<img align="left" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + chatRoomNo + '&fileName='+ chattingList[i].fileName + '&protocol=' + chattingList[i].protocol  +'"/>' +
+							'<br><br><br><br><br><br><div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-timestamp pull-right">'  + 
+							chattingList[i].sending_date.substring(11 , 16) +
+							'</span>' +
+							'</div>' 
+						) ; //End of append		
+					
+				} 				
+				//상대방이 이모티콘 보냈을 때
+				else if( chattingList[i].protocol == '2' ) {
+			    	$('.direct-chat-messages').append(
+				   			'<div class="direct-chat-msg doted-border">' +
+							'<div class="direct-chat-info clearfix">' +
+							'<span class="direct-chat-name pull-left">' + chattingList[i].sender_id  + '</span>' +
+							'</div>' +
+							'<img alt="message user image" src="2.jpg" class="direct-chat-img" align="left">' +
+							'<img align="left" style= "width: 125px; height: 125px;" src="/img?chatRoomNo=' + chatRoomNo + '&fileName='+ chattingList[i].fileName + '&protocol=' + chattingList[i].protocol  +'"/>' +
+							'<br><div class="direct-chat-info clearfix">' +
+							'<br><br><br><br><br><span class="direct-chat-timestamp pull-right">'  + 
+							chattingList[i].sending_date.substring(11 , 16) +
+							'</span>' +
+							'</div>'
+					 	) ;			
+				} 
+			}//end of else
+				$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+		} //End of for
+		$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	}) ; //End of socket
+	$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	
+	//좋아요 이모티콘 눌렀을 때
+	$("#like").on('click', function() {
+		//내가 눌렀을 때
+		$.get("/emoticon?fileName=like.jpg") ;
+	}) ; //End of like button
+	
+	//이모티콘 눌렀을 때
+	$("#emoticon").on('click', function() {
+		//내가 눌렀을 때
+		$.get("/emoticon?fileName=aa.jpg") ;
+	}) ; //End of like button
+	$(".popup-messages").scrollTop($(".popup-messages")[0].scrollHeight) ;
+	
+	
+	$("#removeClass").on('click', function() {
+		socket.emit('close' , $('#chatRoomNo').val() , $('#senderId').val() ) ;
+		$('#qnimate').removeClass('popup-box-on') ;
+		window.parent.postMessage( "closeChatRoom" + $("#chatRoomNo").val() , "http://localhost:8080" ) ;
+	}) ;
+	
+    </script>   
+  </body>
+</html>

@@ -4,4 +4,72 @@
 
 <mapper namespace="ChatRoomMapper">
 
+<resultMap id="ChatRoomSelectMap" type="chatRoom">
+<result property="chatRoomNo" column="chatRoom_no" jdbcType="NUMERIC" />
+<result property="userId" 	column="user_id"  jdbcType="VARCHAR"/>
+ <result property="userId" 	column="receiver_id"  jdbcType="VARCHAR"/>
+<result property="userProfileImg" 	column="profile_img"  jdbcType="VARCHAR"/>
+</resultMap>
+
+<resultMap type="user" id="userMap">
+<result property="userId" column="user_id" jdbcType="VARCHAR" />
+<result property="userName" column="user_name" jdbcType="VARCHAR" />
+<result property="password" column="password" jdbcType="VARCHAR" />
+<result property="email" column="email" jdbcType="VARCHAR" />
+<result property="profileImg" column="profile_img" jdbcType="VARCHAR" />
+<result property="sex" column="sex" jdbcType="VARCHAR" />
+<result property="phone" column="phone" jdbcType="VARCHAR" />
+<result property="age" column="age" jdbcType="INTEGER" />   
+<result property="introduce" column="introduce" jdbcType="VARCHAR" />
+<result property="role" column="role" jdbcType="VARCHAR" />
+<result property="regDate" column="reg_date" jdbcType="DATE" />
+<result property="lastLogin" column="last_login" jdbcType="DATE" />
+<result property="status" column="status" jdbcType="VARCHAR" />
+<result property="ip" column="ip" jdbcType="VARCHAR" />
+<result property="infoOption" column="info_option" jdbcType="VARCHAR" />
+<result property="quitDate" column="quit_date" jdbcType="DATE" />
+<result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+</resultMap>
+
+<insert id="addChatRoom" parameterType="chatRoom">
+INSERT
+INTO chatRoom ( user_id  )
+VALUES(	 #{userId}  )
+</insert>
+
+
+<!-- select 결과로 출력될 테이블 설정 from 기준 테이블명 join 조인할 테이블명 on 조인할 조건 where 검색조건 -->
+
+<!-- REPLACE( REPLACE( user_id , CONCAT( #{userId} , ',') , '' ) , CONCAT(',' , #{userId}) , '' ) user_id FROM chatRoom -->
+<select id="chatRoomList" parameterType="java.util.HashMap" resultMap="ChatRoomSelectMap">
+ SELECT chatRoom.chatRoom_no , 
+ REPLACE( REPLACE( chatRoom.user_id , CONCAT( #{userId} , ',') , '' ) , CONCAT(',' , #{userId}) , '' ) user_id , 
+ user.profile_img AS profile_img FROM user user , chatRoom chatRoom 
+ WHERE ( chatRoom.user_id LIKE CONCAT ( '%' ,  #{userId} , '%' ) ) AND
+ REPLACE( REPLACE( chatRoom.user_id , CONCAT( #{userId} , ',') , '' ) , CONCAT(',' , #{userId}) , '' ) LIKE CONCAT( '%' , user.user_id , '%')
+</select>
+
+ <!-- 
+ <select id="updateChatRoom" parameterType="chatRoom" resultMap="ChatRoomSelectMap">
+ UPDATE chatRoom
+<set>
+ users += #{user_id}
+</set>
+<where>
+ chatRoom_No = #{chatRoomNo}
+</where>
+</select>
+-->
+
+<select id="getChatRoom2" parameterType="java.util.HashMap" resultMap="ChatRoomSelectMap"> 
+ SELECT chatRoom_no , REPLACE( REPLACE( user_id , CONCAT( #{userId1} , ',') , '' ) , CONCAT(',' , #{userId1}) , '' ) user_id 
+ FROM chatRoom 
+ WHERE user_id = CONCAT ( CONCAT (#{userId1} , ',') , #{userId2}) OR user_id = CONCAT ( CONCAT (#{userId2} , ',') , #{userId1})
+ 
+</select>
+
+<select id="getChatRoom" parameterType="int" resultMap="ChatRoomSelectMap"> 
+  SELECT chatroom_No , chat_no , users FROM chatRoom 
+  WHERE chatroom_no = #{chatroomNo}
+</select>
 </mapper>

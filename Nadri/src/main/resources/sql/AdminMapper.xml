@@ -70,8 +70,7 @@
 	</insert>
 	
 	<select id="getInquireList" resultMap="inquireMap">
-		SELECT @n := @n + 1 as num, x.*
-  		FROM (SELECT  *
+		SELECT  *
 			FROM inquire
 			<if test="searchCondition != null">
 				<where>
@@ -84,9 +83,7 @@
 				</where>
 			</if>
 			ORDER BY inquire_no
-			LIMIT 9999999999999999) X,
-		(SELECT @n := 0) r
-		limit #{startRowNum}, 3
+		limit #{startRowNum}, 5
 	</select>
 	
 	<select  id="getInquireCount"  parameterType="search"	 resultType="int">
@@ -197,11 +194,12 @@
 		SELECT user_id, user_name, reg_date
 		FROM user
 		WHERE WEEKOFYEAR(reg_date) = WEEKOFYEAR(CURDATE())
+		ORDER BY reg_date
+		limit 7
 	</select>
 	
 	<select id="getUserList" parameterType="search" resultMap="userMap">
-		SELECT @n := @n + 1 as num, x.*
-  		FROM (SELECT  user_id, user_name, reg_date
+		SELECT  user_id, user_name, reg_date
 			FROM user
 			<if test="searchCondition != null">
 				<where>
@@ -214,9 +212,7 @@
 				</where>
 			</if>
 			ORDER BY user_id
-			LIMIT 9999999999999999) X,
-		(SELECT @n := 0) r
-		limit #{startRowNum}, 3
+		limit #{startRowNum}, 5
 	</select>
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
@@ -236,8 +232,7 @@
 	 </select>
 	 
 	 <select id="getSpotList" parameterType="search" resultMap="spot">
-	 	SELECT @n := @n + 1 as num, x.*
-  		FROM (SELECT  *
+	 	SELECT  *
 			FROM spot
 			<if test="searchCondition != null">
 				<where>
@@ -250,9 +245,7 @@
 				</where>
 			</if>
 			ORDER BY spot_no
-			LIMIT 9999999999999999) X,
-		(SELECT @n := 0) r
-		limit #{startRowNum}, 3
+		limit #{startRowNum}, 5
 	 </select>
 	 
  	<select  id="getSpotCount"  parameterType="search"	 resultType="int">
@@ -269,6 +262,22 @@
 					</if>
 				</where>
 			</if> ) countTable			
+	 </select>
+	 
+	 <insert id="getReward" parameterType="reward">
+	 	INSERT into reward (user_id, reward_name, reward_img, reward_get_time,reward_level)
+	 	VALUE (#{userId},#{rewardName},#{rewardImg},NOW(),#{rewardLevel})
+	 </insert>
+	 
+	 <insert id="addWeather" parameterType="weather">
+	 	INSERT INTO weather(weather_code,weather_name,weather_time)
+		value(#{weatherCode},#{weatherName},now())
+	 </insert>
+	 
+	 <select id="getWeather" resultType="string">
+	 	SELECT weather_name FROM weather
+		ORDER BY ABS( DATEDIFF( weather_time, NOW() ) ) 
+		LIMIT 1
 	 </select>
 
 </mapper>

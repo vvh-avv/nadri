@@ -14,8 +14,10 @@ import org.springframework.stereotype.Repository;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.domain.Inquire;
+import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
+import com.nadri.service.domain.Weather;
 
 @Repository("adminDaoImpl")
 public class AdminDaoImpl implements AdminDao{
@@ -158,6 +160,24 @@ public class AdminDaoImpl implements AdminDao{
 		map.put("list", list);
 		map.put("totalCount", count);
 		return map;
+	}
+
+	@Override
+	public void getReward(Reward reward) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("AdminMapper.getReward", reward);
+	}
+
+	@Override
+	public void addWeather(Weather weather) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("AdminMapper.addWeather", weather);
+	}
+
+	@Override
+	public String getWeather() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("AdminMapper.getWeather");
 	}
 
 

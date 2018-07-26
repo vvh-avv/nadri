@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
 import com.nadri.service.spot.SpotService;
@@ -192,5 +193,5 @@ public class SpotController {
         
         return "forward:/spot/getFestival.jsp";
 	}
-		
+	
 }

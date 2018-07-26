@@ -6,7 +6,7 @@
 
 <mapper namespace="UserMapper">
 
-   <resultMap type="user" id="userMap">
+   <resultMap id="userMap" type="user" >
       <result property="userId" column="user_id" jdbcType="VARCHAR" />
       <result property="userName" column="user_name" jdbcType="VARCHAR" />
       <result property="password" column="password" jdbcType="VARCHAR" />
@@ -25,6 +25,8 @@
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
    </resultMap>
+      
+  
 
    <!-- SQL: INSERT -->
    <insert id="insertUser" parameterType="user">
@@ -37,7 +39,7 @@
    </insert>
 
    <!-- SQL: SELECT ONE -->
-   <select id="findUser" parameterType="string" resultMap="userMap">
+   <select id="getUser" parameterType="string" resultMap="userMap">
       SELECT
       user_id, user_name, password, email, profile_img, sex, phone, age, 
                   introduce, role, reg_date, last_login, status, ip, info_option
@@ -79,18 +81,20 @@
    </select>
    
    <!-- SQL: QUIT USER -->
-   <delete id="quitUser" parameterType="String">
+   <!-- <delete id="quitUser" parameterType="String">
       DELETE 
       FROM user
       WHERE user_id = #{value}
-   </delete>
-   <!-- <update id="quitUser" parameterType="user">
+   </delete> -->
+   <update id="quitUser" parameterType="user">
    		UPDATE user
    		<set>
-   		status = 2
+   		status = 2,
+   		quit_date = NOW(),
+   		quit_reason = #{quitReason}
    		</set>
    		WHERE user_id = #{userId}
-   </update> -->
+   </update>
    
     
     <!--  아이디 찾기 -->
@@ -178,6 +182,5 @@
             AND MONTH(inquire_time) = MONTH(CURDATE())
          </if>
         </if>
-   </select>    
-
+   </select>
 </mapper>

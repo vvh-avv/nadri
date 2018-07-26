@@ -14,6 +14,7 @@
 		<result property="hashTag" column="hashtag" jdbcType="VARCHAR"/>
 		<result property="likeCnt" column="likeCnt" jdbcType="INTEGER"/>
 		<result property="commCnt" column="commCnt" jdbcType="INTEGER"/>
+		<result property="boardCode" column="board_code" jdbcType="VARCHAR"/>
 		
 		<association property="user" javaType="user">
 			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
@@ -23,8 +24,8 @@
 	<!-- Board -->
 	<insert id="insertBoard" parameterType="board">
 		INSERT
-		INTO BOARD (user_id, board_time, board_title, board_content, board_img, open_range, hashtag)
-		VALUES (#{user.userId}, NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag});
+		INTO BOARD (user_id, board_time, board_title, board_content, board_img, open_range, hashtag, board_code)
+		VALUES (#{user.userId}, NOW(), #{boardTitle}, #{boardContent}, #{boardImg}, #{openRange}, #{hashTag}, #{boardCode});
 	</insert>
 	
 	<update id="updateBoard" parameterType="board">
@@ -41,16 +42,45 @@
         WHERE board.board_no = #{value}
 	</select>
 	
-	<select id="getBoardList" parameterType="search" resultMap="boardMap">
-        SELECT board.*, comment.commCnt, likes.likeCnt
+	<select id="getBoardList" parameterType="map" resultMap="boardMap">
+    <!-- SELECT board.*, comment.commCnt, likes.likeCnt
         FROM board
 			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
             LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
+		WHERE board.open_range not in (2)
 		<if test="memberFlag==0">
 			HAVING board.open_range=0
 		</if>
 		ORDER BY board.board_time desc
-		LIMIT #{startRowNum},#{pageSize};
+		LIMIT #{startRowNum},#{pageSize}; -->
+		
+		<!-- 모두공개 게시물 -->
+		(SELECT board.*, comment.commCnt, likes.likeCnt
+        FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment ON board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes ON board.board_no = likes.board_no
+		WHERE board.open_range not in (1,2))
+        <if test="search.memberFlag==1">
+			<!-- 친구공개 게시물 +UNION ALL 활용해 결과 값 APPEND -->
+	        UNION ALL
+	        (SELECT board1.*, comment1.commCnt, likes1.likeCnt
+	        FROM board board1
+				LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment1 ON board1.board_no = comment1.board_no
+	            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes1 ON board1.board_no = likes1.board_no
+	        WHERE board1.open_range = 1 AND board1.user_id = #{userId} OR
+		        											<foreach collection="#{list}" item="friendId" open="(" close=")" separator="or">
+	            												 board1.user_id = #{friendId.value}
+	        												</foreach>)
+			<!-- 비공개 게시물 +UNION ALL 활용해 결과 값 APPEND -->
+			UNION ALL
+	        (SELECT board2.*, comment2.commCnt, likes2.likeCnt
+	        FROM board board2
+				LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment2 ON board2.board_no = comment2.board_no
+	            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes2 ON board2.board_no = likes2.board_no
+	        WHERE board2.open_range = 2 AND board2.user_id = #{userId})
+		</if>
+        ORDER BY board_time DESC
+        LIMIT #{search.startRowNum},#{search.pageSize}
 	</select>
 	
 	<delete id="deleteBoard" parameterType="int">
@@ -59,36 +89,11 @@
 		WHERE board_no = #{value}
 	</delete>
 	
-	<!-- 마이페이지 작성한 글 보기 -->
-	<select id="getMyBoardList" parameterType="String" resultMap="boardMap">
-        SELECT board.*, comment.commCnt, likes.likeCnt
-        FROM board
-			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
-            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
-		WHERE board.user_id = #{value}
-	</select>
-	
-	<!-- 메인화면 추천 게시물 -->
-	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
-        SELECT board.*, likes.likeCnt
-        FROM board join ( SELECT board_no, COUNT(*) likeCnt
-							FROM likes <if test="searchCondition.equals('최신')">
-												WHERE likes_time > date_sub(NOW(), interval 1 day)
-											</if>
-											<if test="searchCondition.equals('일간')">
-												BETWEEN date_add(NOW(), interval -1 day)
-											</if>
-											<if test="searchCondition.equals('주간')">
-												BETWEEN date_add(NOW(), interval -1 week)
-											</if>
-											<if test="searchCondition.equals('월간')">
-												BETWEEN date_add(NOW(), interval -1 month)
-											</if>
-											group by board_no ) likes
-        ON board.board_no = likes.board_no
-        GROUP BY board.board_no
-        ORDER BY likes.likeCnt desc;
-	</select>
+	<delete id="deleteBoardSchedule" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE board_code = #{value}
+	</delete>
 	
 	
 	<!-- Likes --> <!-- Rest에서 좋아요시 변경된 개수 리턴할 때 사용 -->
@@ -117,4 +122,109 @@
 		FROM LIKES
 		WHERE board_no=#{boardNo} AND user_id=#{userId}
 	</delete>
+	
+	
+	<!-- 마이페이지 작성한 글 보기 -->
+	<select id="getMyBoardList" parameterType="String" resultMap="boardMap">
+        SELECT board.*, comment.commCnt, likes.likeCnt
+        FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
+		WHERE board.user_id = #{value}
+	</select>
+	
+	<select id="checkBoard" parameterType="map" resultType="int">
+		SELECT count(*)
+		FROM board
+        WHERE user_id = #{userId} AND board_code = #{boardCode}
+	</select>
+	
+	
+	<!-- 메인화면 추천 게시물 (비회원) -->
+	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
+        SELECT board.user_id,board.hashtag,ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt
+        FROM board join ( SELECT board_no, COUNT(*) likeCnt
+							FROM likes WHERE likes_time
+											<if test="searchCondition.equals('최신')">
+												 > date_sub(NOW(), interval 1 day)
+											</if>
+											<if test="searchCondition.equals('일간')">
+												BETWEEN date_add(NOW(), interval -1 day) AND NOW()
+											</if>
+											<if test="searchCondition.equals('주간')">
+												BETWEEN date_add(NOW(), interval -1 week) AND NOW()
+											</if>
+											<if test="searchCondition.equals('월간')">
+												BETWEEN date_add(NOW(), interval -1 month) AND NOW()
+											</if>
+											group by board_no ) likes
+        ON board.board_no = likes.board_no
+        WHERE board.open_range = '0'
+        GROUP BY board.board_no
+        ORDER BY likes.likeCnt desc;
+	</select>
+	<!-- 메인화면 추천 게시물 (회원/친구좋아요) -->
+	<select id="getRecomUserLike" parameterType="map" resultMap="boardMap">
+		SELECT board.*
+        FROM board
+			JOIN (SELECT board_no, likes_time FROM likes WHERE likes_time
+																				<if test="search.searchCondition.equals('최신')">
+																					 > date_sub(NOW(), interval 1 day)
+																				</if>
+																				<if test="search.searchCondition.equals('일간')">
+																					BETWEEN date_add(NOW(), interval -1 day) AND NOW()
+																				</if>
+																				<if test="search.searchCondition.equals('주간')">
+																					BETWEEN date_add(NOW(), interval -1 week) AND NOW()
+																				</if>
+																				<if test="search.searchCondition.equals('월간')">
+																					BETWEEN date_add(NOW(), interval -1 month) AND NOW()
+																				</if>
+																					AND
+																				<foreach collection="#{list}" item="friendId" open="(" close=")" separator="or">
+						            												user_id = #{friendId.value}
+						        												</foreach> ) inTable
+		ON board.board_no = inTable.board_no
+		WHERE board.open_range NOT IN (2)
+		GROUP BY board.board_no
+        ORDER BY inTable.likes_time desc;
+	</select>
+	<!-- 메인화면 추천 게시물 (회원/작성글) -->
+	<select id="getRecomUserBoard" parameterType="map" resultMap="boardMap">
+		SELECT *
+        FROM board
+        WHERE <foreach collection="#{list}" item="friendId" open="(" close=")" separator="or">
+				  	 user_id = #{friendId.value}
+				  </foreach>
+					AND open_range NOT IN (2) AND board_time
+																			<if test="search.searchCondition.equals('최신')">
+																				 > date_sub(NOW(), interval 1 day)
+																			</if>
+																			<if test="search.searchCondition.equals('일간')">
+																				BETWEEN date_add(NOW(), interval -1 day) AND NOW()
+																			</if>
+																			<if test="search.searchCondition.equals('주간')">
+																				BETWEEN date_add(NOW(), interval -1 week) AND NOW()
+																			</if>
+																			<if test="search.searchCondition.equals('월간')">
+																				BETWEEN date_add(NOW(), interval -1 month) AND NOW()
+																			</if>
+        ORDER BY board_time desc;
+	</select>
+	
+	
+	<!-- 보상 -->
+	<select id="getMyCount" parameterType="map" resultType="int">
+		SELECT count(*)
+			<if test="keyword.equals('board')">
+				FROM board
+			</if>
+			<if test="keyword.equals('comment')">
+				FROM comment
+			</if>
+			<if test="keyword.equals('like')">
+				FROM likes
+			</if>
+		WHERE user_id = #{userId}
+	</select>
 </mapper>

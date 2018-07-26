@@ -1,9 +1,11 @@
 package com.nadri.web.admin;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,16 +20,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
 import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
+import com.nadri.service.board.BoardService;
+import com.nadri.service.comment.CommentService;
+import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
@@ -48,9 +50,17 @@ public class AdminController {
 	private SpotService spotService;
 
 	@Autowired
+	@Qualifier("boardServiceImpl")
+	private BoardService boardService;
+	
+	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
-
+	
+	@Autowired
+	@Qualifier("commentServiceImpl")
+	private CommentService commentService;
+	
 	public AdminController() {
 		System.out.println(this.getClass());
 	}
@@ -58,8 +68,7 @@ public class AdminController {
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	
-	@Value("#{commonProperties['pageSize']}")
-	int pageSize;
+	int pageSize = 5;
 
 	@Value("#{provinceProperties}")
 	Map<String, String> map = new HashMap<String, String>();
@@ -67,8 +76,31 @@ public class AdminController {
 	@RequestMapping(value = "adminIndex")
 	public String adminIndex(Model model) throws Exception {
 		System.out.println("adminIndex -> controller 들어옴");
-		List<User> list = adminService.latestRegUsers();
-		model.addAttribute("userList",list);
+		Search search = new Search();
+		search.setSearchCondition("주간");
+		List<User> userList = adminService.latestRegUsers();
+		List<Board> boardList = boardService.getRecomBoard(search);
+		System.out.println("board의 갯수 = "+boardList.size());
+		
+		for(Board board:boardList) {
+			System.out.println(board);
+			System.out.println("boardList 의 이미지 = "+board.getBoardImg());
+			if(board.getBoardImg().equals("no_img")) {
+				board.setBoardImg("no_image.jpg");
+			}else {
+				if (board.getBoardImg().contains(",")) {
+					int comma = board.getBoardImg().indexOf(",");
+					String imgSingle = board.getBoardImg().substring(0, comma);
+					board.setBoardImg(imgSingle);
+				}else {
+					System.out.println("1개의 정상적 이미지만 가진 착한 게시물");
+				}
+								
+			}
+		}
+	    
+		model.addAttribute("userList",userList);
+		model.addAttribute("boardList",boardList);
 		return "/admin/adminIndex.jsp";
 	}
 
@@ -77,19 +109,22 @@ public class AdminController {
 		
 		System.out.println("listInquire -> controller 들어옴");
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getInquireList(search);
-		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		List<Inquire> list = new ArrayList<Inquire>();
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
-		model.addAttribute("list", map.get("list"));
+		model.addAttribute("list", list);
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		
@@ -129,15 +164,18 @@ public class AdminController {
 
 		System.out.println("getSpotList -> controller 들어옴");
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getSpotList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
@@ -737,16 +775,21 @@ public class AdminController {
 	public String getUserList(Model model,Search search) throws Exception {
 
 		System.out.println("getUserList -> controller 들어옴");
+		
+		System.out.println(search.getCurruntPage());
 
-		if(search.getCurrentPage() == 0 ){
-			search.setCurrentPage(1);
+		if(search.getCurruntPage() <= 1 ){
+			search.setCurruntPage(0);
+			search.setStartRowNum(0);
+		}else {
+			search.setStartRowNum((search.getCurruntPage()-1)*pageSize);
 		}
 		search.setPageSize(pageSize);
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getUserList(search);
 		
-		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결

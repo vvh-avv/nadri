@@ -1,0 +1,67 @@
+@charset "EUC-KR";
+
+ @media only screen and (max-width : 600px){
+ 
+ .admin-navbar {
+	padding:0px 30px;
+}
+
+.title{
+	font-size:5vw;
+}
+
+.boxes-first{
+	display:block;
+	margin:5px;
+}
+
+.boxes-first > div{
+	margin:10px 0px 0px 0px;
+	padding:10px;
+}
+
+.box-second > div{
+	height:265px;
+}
+
+.alert-one{
+	width:100%;
+	font-size:3.5vw;
+}
+
+.admin-sub-navbar{
+	padding:0px 10px;
+}
+
+.glyphicon-home{
+	margin-right:15px;
+}
+
+.inquire-text{
+	display:none;
+}
+
+.boxes-third{
+	margin-bottom:20px;
+}
+
+.popular-search{
+	font-size:25%;
+	margin-left:5%;
+	line-height:1.5em;
+}
+
+.search-top{
+	font-size:27%;
+	margin:0 0 10px 0;
+}
+
+.clock{
+	font-size:30px;
+}
+
+#log-chart{
+	margin-top:2.5%;
+}
+ 
+}
