@@ -1,0 +1,9 @@
+{
+	"chatList" : 
+				[
+{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"3","sending_date":"2018-07-25 16:55:04","protocol":"0","flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"3","sending_date":"2018-07-25 16:57:39","protocol":"0","flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"5","sending_date":"2018-07-25 16:58:54","protocol":"0","flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"3","sending_date":"2018-07-25 16:59:02","protocol":"0","flag":"Y"}
+,{"sender_id":"user01","receiver_id":"user02","message":"안녕하세요~","sending_date":"2018-07-25 16:59:05","protocol":"0","flag":"Y"}

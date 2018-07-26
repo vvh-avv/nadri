@@ -17,9 +17,6 @@ public interface BoardDao {
 	public List<Board> getBoardList(Search search) throws Exception;
 	
 	public void deleteBoard(int boardNo) throws Exception;
-
-	//마이페이지 작성한 글보기
-	public List<Board> getMyBoardList(String userId) throws Exception;
 	
 	//메인화면 추천게시물
 	public List<Board> getRecomBoard(Search search) throws Exception;
@@ -32,4 +29,16 @@ public interface BoardDao {
 	public void addLike(int boardNo, String userId) throws Exception;
 	
 	public void deleteLike(int boardNo, String userId) throws Exception;
+
+	//마이페이지 작성한 글보기
+	public List<Board> getMyBoardList(String userId) throws Exception;
+
+	public int checkBoard(int boardCode, String userId) throws Exception;
+	
+	//메인화면 추천게시물
+	public List<Board> getRecomBoard(Search search) throws Exception;
+
+	//보상
+	public int getMyCount(String keyword, String userId) throws Exception;
+
 }

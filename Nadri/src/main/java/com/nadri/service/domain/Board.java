@@ -20,6 +20,7 @@ public class Board {
 	private int likeCnt;
 	private String commLastTime;
 	private List<Comment> comment;
+	private int boardCode; //0:일반게시물 //그외 : 스케줄번호
 	
 	//Constructor
 	public Board() {
@@ -130,9 +131,17 @@ public class Board {
 		this.comment = comment;
 	}
 	
+	public int getBoardCode() {
+		return boardCode;
+	}
+
+	public void setBoardCode(int boardCode) {
+		this.boardCode = boardCode;
+	}
+	
 	@Override
 	public String toString() {
-		return "BoardVO : [user]"+user+"[boardNo] "+boardNo+" [boardDate] "+boardDate+
+		return "BoardVO : [boardCode] "+boardCode+" [user]"+user+"[boardNo] "+boardNo+" [boardDate] "+boardDate+
 				" [boardTitle] "+boardTitle+" [boardContent] "+boardContent+
 				" [boardImg] "+boardImg+" [openRange] "+openRange+" [hashTag] "+hashTag+
 				" [commCnt] "+commCnt+" [likeCnt] "+likeCnt+" [commLastTime] "+commLastTime+

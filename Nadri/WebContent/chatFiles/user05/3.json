@@ -1,0 +1,16 @@
+{
+	"chatList" : 
+				[
+{"protocol":"0", "sender_id" : "user03", "receiver_id" : "user04,user05", "message" : "rr" , "sending_date" : "2018-07-04 13:07" ,"flag": "N"}
+,{"sender_id":"user05","receiver_id":"user03,user04","message":".","sending_date":"2018-07-21 19:40:51","protocol":"0","flag":"Y"}
+,{"sender_id":"user05","receiver_id":"user03,user04","message":".","sending_date":"2018-07-22 11:19:36","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":".","sending_date":"2018-07-22 14:03:39","protocol":"0","flag":"N"}
+,{"sender_id":"user04","receiver_id":"user03,user05","message":"3","sending_date":"2018-07-22 14:03:42","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"3","sending_date":"2018-07-22 14:03:47","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"2","sending_date":"2018-07-22 14:03:54","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"3","sending_date":"2018-07-22 14:08:51","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"2","sending_date":"2018-07-22 14:09:03","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"2","sending_date":"2018-07-22 14:12:03","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"1","sending_date":"2018-07-22 14:12:16","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"2","sending_date":"2018-07-22 14:12:29","protocol":"0","flag":"N"}
+,{"sender_id":"user03","receiver_id":"user04,user05","message":"3","sending_date":"2018-07-22 14:12:36","protocol":"0","flag":"Y"}

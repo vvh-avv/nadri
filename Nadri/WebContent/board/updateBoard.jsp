@@ -25,6 +25,9 @@
 <link rel="stylesheet" href="/css/toolbar.css">
 
 <style>
+	.container{
+		margin-top: 10px;
+	}
 	.well > div{
 		cursor : pointer;
 	}
@@ -228,15 +231,10 @@ $(function(){
    <%@ include file="/layout/toolbar.jsp"%>
    
 	<div class="container">
-		<div class="col-md-2"> <!-- 내 일정 목록 -->
-			<div id="cartList">
-				1<br>2<br>3<br>  <!-- 일정바구니 불러올 예정 ,,,,, -->
-			</div>
-		</div>
 		
 		<form class="form-horizontal" enctype="multipart/form-data">
       	<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
-			<div class="col-md-8">
+			<div class="col-md-10">
 				<div class="form-group">
 					<!-- 제목 + 파일업로드 -->
 					<div class="row">
@@ -256,9 +254,11 @@ $(function(){
 				
 				<!-- 업로드 한 파일 미리보기 -->
 				<div class="imgPreview">
+					<c:if test="${board.boardImg!=null}">
 					<c:forTokens var="images" items="${board.boardImg}" delims=",">
     					<img class="thumb-image" src="/images/board/posts/${images}"/>
 					</c:forTokens>
+					</c:if>
 				</div>
 				<input type="hidden" id="boardImg" name="boardImg" value="${board.boardImg}">
 				

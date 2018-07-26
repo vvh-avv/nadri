@@ -233,14 +233,8 @@ $(function(){
    <%@ include file="/layout/toolbar.jsp"%>
 	
 	<div class="container addBody">
-		<div class="col-md-2"> <!-- 내 일정 목록 -->
-			<div id="cartList">
-				1<br>2<br>3<br>  <!-- 일정바구니 불러올 예정 ,,,,, -->
-			</div>
-		</div>
-		
 		<form class="form-horizontal" enctype="multipart/form-data">
-			<div class="col-md-8">
+			<div class="col-md-10">
 				<div class="form-group">
 					<!-- 제목 + 파일업로드 -->
 					<div class="row">
@@ -292,7 +286,6 @@ $(function(){
 				<button type="button" class="btn btn-primary btn-md btn-block">작성하기</button>
 				<button type="button" class="btn btn-default btn-md btn-block">다시작성</button>
 			</div>
-			
 		</form>
 	</div><!--e.o.container-->
 	

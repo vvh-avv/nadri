@@ -133,7 +133,7 @@
       display : none;
    }
    /* 화면이 작아졌을 때 유저정보가 위로 가게끔 설정 */
-   @media only screen and (max-width: 600px) {
+   @media only screen and (max-width: 992px) {/*600px) {*/
       .container{
          display: flex;
          flex-direction: column;
@@ -176,10 +176,17 @@
    }
    #commListDelete img{
       cursor: pointer;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       float: right;
     }
+   #commListInquire img{
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+      float: right;
+      margin-right: .3em;
+   }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
 	}
@@ -201,14 +208,13 @@
 	    color: #555;
 	    margin-left: 5px;
    }
-   .aSection,
+   .aSection{
+   	 padding: 16px;
+   	 height: 100px;
+   }
    .b1Section,
    .b2Section{
    	  padding: 16px;
-   }
-   .cSection{
-   	 padding-right: 16px;
-   	 padding-left: 16px;
    }
    #commContent{
      width: 100%;
@@ -274,6 +280,10 @@
    	 float:left;
      margin-bottom:10px;
    }
+   
+   .swal-text{
+   	  text-align: center;
+   }
 </style>
 
 <script>
@@ -301,7 +311,7 @@ $(function(){
    
    //*페이지 로드 시 댓글 태그로 보여주기
    var array = $("div[id^='commList']").length;
-   for(var i=0; i<array; i++){
+   for(var i=1; i<array; i++){
 	   $("#commListContent"+i).html( ccTag( $("#commListContent"+i).text() ) );
    }
    
@@ -325,16 +335,23 @@ $(function(){
    $("#deleteBoard").on("click", function(){
 	   swal({
 		   title: "게시물을 정말 삭제하시겠습니까?",
-		   text: "게시물을 삭제하면 게시물에 포함된\n좋아요, 댓글, 이미지가 모두 삭제됩니다.",
+		   text: "게시물에 포함된 좋아요, 댓글, 이미지가 모두 삭제됩니다.",
 		   icon: "warning",
 		   buttons: ["취소", "삭제"],
 		   dangerMode: true,
 		 })
 		 .then((willDelete) => {
 		   if (willDelete) {
-		     swal("게시물이 정상적으로 삭제되었습니다.", {
-		       icon: "success",
-		     });
+			 $.ajax({
+				 url : "/board/json/deleteBoard/"+$("#boardNo").val().trim(),
+				 method : "POST",
+				 success : function(){
+				    swal("게시물이 정상적으로 삭제되었습니다.", {
+					       icon: "success",
+					});
+					self.location = "/board/listBoard";
+				 }
+			 }) //e.o.ajax
 		   } else {
 		     swal("취소하였습니다.",{
 		    	 icon: "error",
@@ -349,12 +366,32 @@ $(function(){
       }
    })
    
-   $("#addCart").on("click", function(){
-      alert("일정바구니추가하자..")
+   $("#copySchedule").on("click", function(){
+	   var scheduleNo = $("#boardCode").val();
+	   
+		  $.ajax({
+			  url : "/restschedule/checkSchedule/"+scheduleNo,
+			  method : "POST",
+			  success : function(data){
+				  if(data==1){ //이미 일정 복사를 한 경우
+					  swal ( "일정복사 실패!" ,  "이미 일정을 복사하셨습니다.\n마이페이지 내 '내 일정'에서 확인해주시길 바랍니다." ,  "error" )
+				  }else{ //일정복사를 해야하는 경우
+					  $.ajax({
+						  url : "/restschedule/addSchedule/"+scheduleNo,
+						  method : "POST",
+						  success : function(){
+							  swal("일정복사 성공!", "마이페이지 내 '내 일정'에서 확인 가능합니다.", "success");
+						  }
+					  }) //e.o.ajax
+				  }
+			  }
+	   }) //e.o.ajax
    })
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
+	   alert("아이디 : " + $(this).attr("id")) ;
+	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 		  return;
@@ -368,12 +405,29 @@ $(function(){
                $("#likePrint").text("좋아요 "+data+"개");
             }
          })
+         
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + $("#boardNo").val().trim() + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
+         })
+         
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
             url : "/board/json/deleteLike/"+$("#boardNo").val().trim(),
             method : "POST",
-            success : function(data, status){
+            success : function(data, status) {
                $("#likePrint").text("좋아요 "+data+"개");
             }
          })
@@ -440,7 +494,8 @@ $(function(){
 						   //댓글 리스트 추가
 						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
 								 str += "<span id='commListContent'>"+addTag+"</span>"
-								        + "<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>";
+								        +"<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+								        +"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 						   $("#commListAll").append(str);
 							//댓글마지막 시간도 실행
 							var timeStampType = comment.commentTime;
@@ -459,18 +514,26 @@ $(function(){
    })
    //*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-	  swal("Hi~"); 
+	  swal($(this).text()+" 님과 친구가 되어보세요~"); 
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
-   $(document).on("mouseover", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").removeAttr("style");
-		}
+   $(document).on("mouseover", "div[id^='commList']", function() {
+	   if( ${!empty sessionScope.user} ) {
+	   		$(this).children('span:eq(3)').removeAttr("style");
+
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').removeAttr("style");
+			}
+	   }
 	})
    //*댓글 마우스가 떠나면 삭제버튼 다시 노출감추기 => 회원만 가능 => 본인만 가능
    $(document).on("mouseleave", "div[id^='commList']", function(){
-	   if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-		   $(this).find("span:last").attr("style","display:none;");  
+	   if( ${!empty sessionScope.user} ){
+			$(this).children("span:eq(3)").attr("style","display:none;");
+			
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').attr("style","display:none;");
+			}
 	   }
    })
    //*댓글삭제
@@ -486,6 +549,16 @@ $(function(){
 		   }
 	   }) //e.o.ajax
     })
+	 //*댓글신고
+	 $(document).on("click","span[id^='commListInquire']", function(){
+		 var counter = $(this).attr('name');
+		   $('.inquireLink').val(counter);
+		   $('.inquireLink').attr('disabled', 'disabled');
+		   $('.inquireCode').val('2').prop("selected", true);
+		   $('.inquireCode').attr('disabled', 'disabled');
+		   $('.reportUser').css('visibility', 'hidden');
+		   $('.reportLink').css('visibility', 'visible');
+	 })
    
    //*공유 클릭시 SNS 아이콘 노출
    $("#shareIcon>.icon").on("click", function(){
@@ -567,6 +640,7 @@ $(function(){
    })
    
    //*유저프로필 모달창
+   var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    $('.userModal').on('show.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
   		var modal = $(this);
@@ -577,32 +651,73 @@ $(function(){
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
   		modal.find('button:last').attr("name",recipient[2]);
+  		modalFriendId = recipient[2];
   		
   		//클릭한 사람이 친구인지 아닌지 확인
   		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
-  	  		$.ajax({
-  	  			url : "/friend/json/chkFriend/"+recipient[2],
-  	  			success : function(data){
-  	  				if(data==1){ //친구임
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
-  	  				}else{ //친구가 아님
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
-  	  				}
-  	  			}
-  	  		})
+  			if( '${sessionScope.user.userId}' == modalFriendId ){  //본인일 경우
+				$("#addFriend").remove();
+				$("#chatFriend").remove();
+  			}else{ //본인이 아니면 실제 로직 수행
+  	  	  		$.ajax({
+  	  	  			url : "/friend/json/chkFriend/"+recipient[2]+"/1",
+  	  	  			success : function(data){
+  	  	  				if(data==1){ //친구임
+  	  	  					$("#addFriend").remove();
+  	  	  					$("#chatFriend").remove();
+  	  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
+  	  	  				}else{ //친구가 아님
+  	  	  					$("#addFriend").remove();
+  	  	  					$("#chatFriend").remove();
+  	  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
+  	  	  				}
+  	  	  			}
+  	  	  		}) //e.o.ajax
+  			}
   		}
 	})
    //*유저프로필 모달창 내 친구추가
    $(document).on("click", "#addFriend", function(){
-	   alert("친구추가를 합시다..");
+	   $.ajax({
+		   url : "/friend/json/chkFriend/"+modalFriendId+"/0",
+		   success : function(data){
+			   if(data==1){ //친구요청이 이미 된 경우
+				   swal ( "친구추가 실패!" ,  "이미 상대방에게 친구요청이 갔습니다!" ,  "error" );
+			   }else{ //친구요청이 안 된 경우
+				   $.ajax({
+					   url : "/friend/json/addFriend/"+modalFriendId,
+					   success : function(){
+						   swal("친구추가 완료!", "상대방의 친구수락을 기다려보세요!", "success");
+					   }
+				   }) //e.o.ajax
+			   }
+		   }
+	   }) //e.o.ajax
    })
    //*유저프로필 모달창 내 대화하기
     $(document).on("click", "#chatFriend", function(){
-	   alert("대화를 합시다..");
+
+	   //대화하기
+	   var receiverId = {
+		   "receiverId" :  receiverId
+	   } ;
+    
+	   
+    	$.ajax({
+  	  			url : "/chatRoom/json/getChatRoom2" ,
+  	  			data : receiverId,
+  	  			dataType : "json",
+  	  			type : "POST",
+  	  			success : function(data) {
+  	  				alert(data) ;
+  	  			} ,
+  	  			error : function( error ) {
+  	  					alert("에러 : " + error ) ;
+  	  			}
+    	}) ; //End of ajax
+
+	   alert(modalFriendId+"대화를 합시다..");
+	   $(".userModal").modal('hide');
    })
    //*유저프로필 모달창 내 신고하기
    $("#inquireUser").on("click", function(){
@@ -704,6 +819,7 @@ $(function(){
                          $('.inquire_form')[0].reset();
                          $('#inquireModal').modal('hide');
                          console.log(data);
+                         
                       }
                    }
                 });
@@ -756,15 +872,18 @@ $(function(){
 	<!-- 메인 툴바 -->
    <%@ include file="/layout/toolbar.jsp"%>
 
-   <!-- 더보기 버튼 클릭시 노출될 항목 --> 
+	<input type="hidden" id="boardCode" value="${board.boardCode}">
+   <!-- 더보기 버튼 클릭시 노출될 항목 -->
    <span id="moreContent">
    	  <!-- 현재 로그인 한 유저가 게시물 작성자와 같아야지만 수정/삭제 메뉴를 보여줌 -->
-   	  <c:if test="${board.user.userId=='user01'}">
+   	  <c:if test="${board.user.userId==sessionScope.user.userId}">
       	<span class="moreDetail" id="modifyBoard">게시물수정</span><br>
       	<span class="moreDetail" id="deleteBoard">게시물삭제</span><br>
    	  </c:if>
       <span class="moreDetail" id="inquireBoard" name="${board.boardNo}" data-toggle="modal" data-target="#inquireModal">게시물신고</span><br>
-      <span class="moreDetail" id="addCart">일정바구니 추가</span>
+      <c:if test="${board.boardCode!=0 && sessionScope.user.userId!=board.user.userId}">
+      	<span class="moreDetail" id="copySchedule">일정 복사하기</span>
+      </c:if>
    </span>
                
    <div class="container getBody">
@@ -809,6 +928,7 @@ $(function(){
                   	<c:if test="${board.openRange=='0'}"><img class="iconOpen" src="/images/board/open_all.png" data-toggle="tooltip" data-placement="bottom" title="전체공개"></c:if> <!-- 전체공개 아이콘 -->
                   	<c:if test="${board.openRange=='1'}"><img class="iconOpen" src="/images/board/open_friends.png" data-toggle="tooltip" data-placement="bottom" title="친구공개"></c:if> <!-- 친구공개 아이콘 -->
                   	<c:if test="${board.openRange=='2'}"><img class="iconOpen" src="/images/board/open_self.png" data-toggle="tooltip" data-placement="bottom" title="비공개"></c:if> <!-- 비공개 아이콘 -->
+                  	<c:if test="${board.boardCode!=0}"> · <img class="iconOpen" src="/images/board/schedule.png"></c:if>
                   </div>
                </div>
                <c:if test="${!empty sessionScope.user}">
@@ -822,7 +942,11 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+<<<<<<< HEAD
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}">></c:if>
+=======
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
+>>>>>>> refs/remotes/origin/master
                   <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;
@@ -852,6 +976,7 @@ $(function(){
 						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
 						<span id="commListContent${i}">${comment.commentContent}</span>
 						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span>
+						<span id="commListInquire" id="inquireUser" name="${comment.commentNo}" style="display:none;" data-toggle="modal" data-target="#inquireModal"><img src="/images/board/inquire.png"></span>
 					</div>
 	            </c:forEach>
 	        </div>
@@ -881,7 +1006,7 @@ $(function(){
 				<br>
 				<div class="modalUserId"><b>아&nbsp;&nbsp;이&nbsp;&nbsp;디 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br>
-				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
+				<div class="modalUserIntroduce"><b>자 기 소 개</b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
 				<c:if test="${!empty sessionScope.user}">
 					<div class="modalUserButton">

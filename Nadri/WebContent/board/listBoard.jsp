@@ -184,10 +184,17 @@
    }
    #commListDelete img{
       cursor: pointer;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       float: right;
     }
+   #commListInquire img{
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+      float: right;
+      margin-right: .3em;
+   }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
 	}
@@ -281,6 +288,10 @@
       float: left;
       margin-bottom: 10px;
    }
+   
+   .swal-text{
+   	  text-align: center;
+   }
 </style>
 
 <script>
@@ -338,25 +349,30 @@ $(function(){
 		            	$(data).each(function(){
 		            		var boardNo = this.boardNo;
 		            		tag += "<span id='moreContent"+boardNo+"'>"
-		            			+"<span class='moreDetail"+boardNo+"' id='inquireBoard' name="+boardNo+" data-toggle='modal' data-target='#inquireModal'>게시물신고</span>"
-		            			+"<br><span class='moreDetail"+boardNo+"' id='addCart'>일정바구니 추가</span>"
-		            			+"</span>"
-		            			+"<article class='"+boardNo+"'>"
-		            			+"<div class='aSection'> <div class='userList'> <div id='userProfile'>"
-		            			+"<img src='/images/profile/"+this.user.profileImg+"' class='img-circle' data-toggle='modal' data-target='.userModal' data-whatever='"+this.user.profileImg+","+this.user.userName+","+this.user.userId+","+this.user.introduce+"'>"                        
-		            			+"</div> <div class='userInfoAndBoardDate'> <div id='userInfo'> <b>"+this.user.userName+"</b> ("+this.user.userId+") </div>"
-		            			+"<div id='boardDate' style='width:auto;'> <span id='boardDetail'>";
+		            			+"<span class='moreDetail"+boardNo+"' id='inquireBoard' name="+boardNo+" data-toggle='modal' data-target='#inquireModal'>게시물신고</span><br>";
+		            			if(this.boardCode!=0 && this.user.userId!=${sessionScope.user.userId}){
+		            				tag += "<span class='moreDetail"+boardNo+"' id='copySchedule'>일정 복사하기</span>";
+		            			}
+			            			tag += "</span>"
+			            			+"<article class='"+boardNo+"'>"
+			            			+"<div class='aSection'> <div class='userList'> <div id='userProfile'>"
+			            			+"<img src='/images/profile/"+this.user.profileImg+"' class='img-circle' data-toggle='modal' data-target='.userModal' data-whatever='"+this.user.profileImg+","+this.user.userName+","+this.user.userId+","+this.user.introduce+"'>"                        
+			            			+"</div> <div class='userInfoAndBoardDate'> <div id='userInfo'> <b>"+this.user.userName+"</b> ("+this.user.userId+") </div>"
+			            			+"<div id='boardDate' style='width:auto;'> <span id='boardDetail'>";
 		            			if(this.boardDate){
 		            				var date = new Date(this.boardDate);
 		            				tag += formatDate(date);
 		            			}
 		            				tag += "</span> · ";
 		            			if(this.openRange=='0'){
-		            				tag += "<img class='iconOpen' src='/images/board/open_all.png' data-toggle='tooltip' data-placement='top' title='전체공개'>";
+		            				tag += "<img class='iconOpen' src='/images/board/open_all.png' data-toggle='tooltip' data-placement='bottom' title='전체공개'>";
 		            			}else if(this.openRange=='1'){
-		            				tag += "<img class='iconOpen' src='/images/board/open_friends.png' data-toggle='tooltip' data-placement='top' title='친구공개'>";
+		            				tag += "<img class='iconOpen' src='/images/board/open_friends.png' data-toggle='tooltip' data-placement='bottom' title='친구공개'>";
 		            			}else{
-		            				tag += "<img class='iconOpen' src='/images/board/open_self.png' data-toggle='tooltip' data-placement='top' title='비공개'>";
+		            				tag += "<img class='iconOpen' src='/images/board/open_self.png' data-toggle='tooltip' data-placement='bottom' title='비공개'>";
+		            			}
+		            			if(this.boardCode!=0){
+		            				tag += " · <img class='iconOpen' src='/images/board/schedule.png'>";
 		            			}
 			            			tag += "</div></div>";
 			            		if( ${!empty sessionScope.user} ){
@@ -401,7 +417,8 @@ $(function(){
 			            			for( i=0; i<this.comment.length; i++ ){
 			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
-			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>"	
+			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+			            				+ "<span id='commListInquire' id='inquireUser' name='"+this.comment[i].commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>"	
 			            			}
 			            			tag += "<div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
 			            		}
@@ -433,8 +450,8 @@ $(function(){
 	})
 
 	//*슬라이드쇼 시작
-   $(document).on("flexslider", ".flexslider", function(){
-	//$('.flexslider').flexslider({
+   //$(document).on("flexslider", "div[class^='flexslider']", function(){
+	$("div[class^='flexslider']").flexslider({
 	   animation: "slide"
 	});
 
@@ -464,18 +481,24 @@ $(function(){
       self.location="/board/updateBoard?BoardNo="+$(this).parent().next().attr("class");
    })
    $(document).on("click", "span[id^='deleteBoard']", function(){
+	   var boardNo = $(this).attr("class").replace(/[^0-9]/g,"");
 	   swal({
 		   title: "게시물을 정말 삭제하시겠습니까?",
-		   text: "게시물을 삭제하면 게시물에 포함된\n좋아요, 댓글, 이미지가 모두 삭제됩니다.",
+		   text: "게시물에 포함된 좋아요, 댓글, 이미지가 모두 삭제됩니다.",
 		   icon: "warning",
 		   buttons: ["취소", "삭제"],
 		   dangerMode: true,
 		 })
 		 .then((willDelete) => {
 		   if (willDelete) {
-		     swal("게시물이 정상적으로 삭제되었습니다.", {
-		       icon: "success",
-		     });
+				$.ajax({
+					url : "/board/json/deleteBoard/"+boardNo,
+					method : "POST",
+					success : function(){
+					   swal("게시물이 정상적으로 삭제되었습니다.", { icon: "success", });
+					   $("article[class='"+boardNo+"']").remove();
+					}
+				 }) //e.o.ajax
 		   } else {
 		     swal("취소하였습니다.",{
 		    	 icon: "error",
@@ -483,8 +506,26 @@ $(function(){
 		   }
 	   });
    })
-   $(document).on("click", "span[id^='addCart']", function(){
-      alert("일정바구니추가하자..")
+   $(document).on("click", "span[id^='copySchedule']", function(){
+	  var scheduleNo = $(this).attr("id").replace(/[^0-9]/g,"");
+   
+	  $.ajax({
+		  url : "/restschedule/checkSchedule/"+scheduleNo,
+		  method : "POST",
+		  success : function(data){
+			  if(data==1){ //이미 일정 복사를 한 경우
+				  swal ( "일정복사 실패!" ,  "이미 일정을 복사하셨습니다.\n마이페이지 내 '내 일정'에서 확인해주시길 바랍니다." ,  "error" )
+			  }else{ //일정복사를 해야하는 경우
+				  $.ajax({
+					  url : "/restschedule/addSchedule/"+scheduleNo,
+					  method : "POST",
+					  success : function(){
+						  swal("일정복사 성공!", "마이페이지 내 '내 일정'에서 확인 가능합니다.", "success");
+					  }
+				  }) //e.o.ajax
+			  }
+		  }
+	  }) //e.o.ajax
    })
    //*더보기 영역 외 클릭시 fadeOut();
    $(document).mouseup(function(e){
@@ -494,8 +535,8 @@ $(function(){
    })
    
    //*하트 클릭
-   $(document).on("click", "span[id^='likeIcon']>.icon", function(){
-		if( ${empty sessionScope.user} ){
+   $(document).on("click", "span[id^='likeIcon']>.icon", function() {
+		if( ${empty sessionScope.user} ) {
 			swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 			return;
 		}
@@ -511,6 +552,7 @@ $(function(){
                $("#likePrint"+num).text("좋아요 "+data+"개");
             }
          })
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
@@ -526,7 +568,7 @@ $(function(){
    
    //*댓글 클릭
    $(document).on("click", "span[id^='commIcon']", function(){
-	  if( ${empty sessionScope.user} ){
+	  if( ${empty sessionScope.user} ) {
 			  swal ( "댓글입력 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 			  return;
 	  }
@@ -584,7 +626,8 @@ $(function(){
 					   $("#commPrint"+num).text("댓글 "+(Number(cnt)+1)+"개");
 					   //댓글 리스트 추가
 					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
-							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span></div>";
+							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+							 	+"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 					   $("#commLastTime"+num).prev().append(str);
 						//댓글마지막 시간도 실행
 						var timeStampType = comment.commentTime;
@@ -603,20 +646,30 @@ $(function(){
 	})
 	//*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-		swal("Hi~"); 
+		swal($(this).text()+" 님과 친구가 되어보세요~"); 
 	})
+	
 	//*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
    $(document).on("mouseover", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").removeAttr("style");	
-		}
+	   if( ${!empty sessionScope.user} ){
+	   		$(this).children('span:eq(3)').removeAttr("style");
+
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').removeAttr("style");
+			}
+	   }
 	})
 	//*댓글 마우스가 떠나면 삭제버튼 다시 노출감추기 => 회원만 가능 => 본인만 가능
    $(document).on("mouseleave", "div[id^='commList']", function(){
-		if( ${!empty sessionScope.user} && $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){
-			$(this).find("span:last").attr("style","display:none;");	
-		}
+	   if( ${!empty sessionScope.user} ){
+			$(this).children("span:eq(3)").attr("style","display:none;");
+			
+			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
+		   		$(this).children('span:eq(2)').attr("style","display:none;");
+			}
+	   }
 	})
+	
 	//*댓글삭제
    $(document).on("click", "span[id^='commListDelete']", function(){
 		//alert( $(this).attr("class") );
@@ -629,6 +682,16 @@ $(function(){
 				$("."+commNo).parent().remove();
 			}
 		}) //e.o.ajax
+	 })
+	 //*댓글신고
+	 $(document).on("click","span[id^='commListInquire']", function(){
+		 var counter = $(this).attr('name');
+		   $('.inquireLink').val(counter);
+		   $('.inquireLink').attr('disabled', 'disabled');
+		   $('.inquireCode').val('2').prop("selected", true);
+		   $('.inquireCode').attr('disabled', 'disabled');
+		   $('.reportUser').css('visibility', 'hidden');
+		   $('.reportLink').css('visibility', 'visible');
 	 })
    
    //*공유 클릭시 SNS 아이콘 노출
@@ -699,6 +762,7 @@ $(function(){
    })
    
    //*유저프로필 모달창
+   var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    $('.userModal').on('show.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
   		var modal = $(this);
@@ -709,32 +773,85 @@ $(function(){
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
   		modal.find('button:last').attr("name",recipient[2]);
+  		modalFriendId = recipient[2];
 
   		//클릭한 사람이 친구인지 아닌지 확인
-  		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
+
+  		if( ${!empty sessionScope.user} ) { //회원만 확인 가능
   	  		$.ajax({
   	  			url : "/friend/json/chkFriend/"+recipient[2],
-  	  			success : function(data){
+  	  			success : function(data) {
   	  				if(data==1){ //친구임
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
+  	  					$("#addFriend").remove() ;
+  	  					$("#chatFriend").remove() ;
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>") ;
   	  				}else{ //친구가 아님
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
+  	  					$("#addFriend").remove() ;
+  	  					$("#chatFriend").remove() ;
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>") ;
   	  				}
   	  			}
   	  		})
+
+  		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
+  			if( '${sessionScope.user.userId}' == modalFriendId ){  //본인일 경우
+				$("#addFriend").remove();
+				$("#chatFriend").remove();
+  			}else{
+  	  			$.ajax({
+  	  	  			url : "/friend/json/chkFriend/"+recipient[2],
+  	  	  			success : function(data){
+  	  	  				if(data==1){ //친구임
+  	  	  					$("#addFriend").remove();
+  	  	  					$("#chatFriend").remove();
+  	  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
+  	  	  				}else{ //친구가 아님
+  	  	  					$("#addFriend").remove();
+  	  	  					$("#chatFriend").remove();
+  	  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
+  	  	  				}
+  	  	  			}
+  	  	  		}) //e.o.ajax  				
+  			}
   		}
-	})
+	}
    //*유저프로필 모달창 내 친구추가
    $(document).on("click", "button[id^='addFriend']", function(){
-	   alert("친구추가를 합시다..");
+	   $.ajax({
+		   url : "/friend/json/chkFriend/"+modalFriendId+"/0",
+		   success : function(data){
+			   if(data==1){ //친구요청이 이미 된 경우
+				   swal ( "친구추가 실패!" ,  "이미 상대방에게 친구요청이 갔습니다!" ,  "error" );
+			   }else{ //친구요청이 안 된 경우
+				   $.ajax({
+					   url : "/friend/json/addFriend/"+modalFriendId,
+					   success : function(){
+						   swal("친구추가 완료!", "상대방의 친구수락을 기다려보세요!", "success");
+					   }
+				   }) //e.o.ajax
+			   }
+		   }
+	   }) //e.o.ajax
    })
    //*유저프로필 모달창 내 대화하기
    $(document).on("click", "button[id^='chatFriend']", function(){
-	   alert("대화를 합시다..");
+	   //대화하기
+	   var receiverId = {
+		   "receiverId" :  modalFriendId
+	   } ;
+    	$.ajax({
+  	  			url : "/chatRoom/json/getChatRoom2" ,
+  	  			data : receiverId,
+  	  			type : "GET",
+  	  			dataType : "json",
+  	  			contentType : "application/json; charset=UTF-8",
+  	  			success : function(data) {
+  	  				makeChat(data) ;
+  	  			} ,
+  	  			error : function( error ) {
+  	  					alert("에러 : " + error ) ;
+  	  			}
+    	}) ; //End of ajax
   })
    //*유저프로필 모달창 내 신고하기
    $("button[id^='inquireUser']").on("click", function(){
@@ -878,14 +995,16 @@ $(function(){
          $('.reportUser').css('visibility', 'hidden');
          $('.reportLink').css('visibility', 'visible');
       })
-	
-})
+   })
+ })   
 </script>
 </head>
 
 <body>
-	<!-- 상단에 둥둥 떠있는 아이콘 (게시물작성으로 이동) --> 
-	<img class="gotoBoard" src="/images/board/gotoBoard.png">
+	<!-- 상단에 둥둥 떠있는 아이콘 (게시물작성으로 이동) -->
+	<c:if test="${!empty sessionScope.user}">
+		<img class="gotoBoard" src="/images/board/gotoBoard.png">
+	</c:if>
 	<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 	<img class="gotoTop" src="/images/common/gotoTop.png">
 	
@@ -895,10 +1014,12 @@ $(function(){
 	<!-- 페이징처리를 위함 -->
 	<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}">
 	
+	<!-- commList 마다 고유 k값 부여 -->
+	<c:set var="k" value="0"/>
+	
 	<div class="container ListBody">
 		<c:set var="i" value="0"/>
 		<c:forEach var="board" items="${list}">
-		<c:set var="i" value="${i+1}"/>
 			
 		<!-- 더보기 버튼 클릭시 노출될 항목 --> 
 	    <span id="moreContent${board.boardNo}">
@@ -908,7 +1029,9 @@ $(function(){
 	      	<span class="moreDetail${board.boardNo}" id="deleteBoard">게시물삭제</span><br>
 	   	  </c:if>
 	      <span class="moreDetail${board.boardNo}" id="inquireBoard" name="${board.boardNo}" data-toggle="modal" data-target="#inquireModal">게시물신고</span><br>
-	      <span class="moreDetail${board.boardNo}" id="addCart">일정바구니 추가</span>
+	      <c:if test="${board.boardCode!=0 && sessionScope.user.userId!=board.user.userId}">
+	      	<span class="moreDetail${board.boardNo}" id="copySchedule${board.boardCode}">일정 복사하기</span>
+	      </c:if>
 	    </span>
 		
 	  <article class="${board.boardNo}">
@@ -919,9 +1042,10 @@ $(function(){
                   <div id="userInfo"><b>${board.user.userName}</b> (${board.user.userId})</div>
                   <div id="boardDate" style="width:auto;">
                   	<span id="boardDetail"><fmt:formatDate value="${board.boardDate}" pattern="MM월 dd일   a hh:mm"/></span> · 
-                  	<c:if test="${board.openRange=='0'}"><img class="iconOpen" src="/images/board/open_all.png" data-toggle="tooltip" data-placement="top" title="전체공개"></c:if> <!-- 전체공개 아이콘 -->
-                  	<c:if test="${board.openRange=='1'}"><img class="iconOpen" src="/images/board/open_friends.png" data-toggle="tooltip" data-placement="top" title="친구공개"></c:if> <!-- 친구공개 아이콘 -->
-                  	<c:if test="${board.openRange=='2'}"><img class="iconOpen" src="/images/board/open_self.png" data-toggle="tooltip" data-placement="top" title="비공개"></c:if> <!-- 비공개 아이콘 -->
+                  	<c:if test="${board.openRange=='0'}"><img class="iconOpen" src="/images/board/open_all.png" data-toggle="tooltip" data-placement="bottom" title="전체공개"></c:if> <!-- 전체공개 아이콘 -->
+                  	<c:if test="${board.openRange=='1'}"><img class="iconOpen" src="/images/board/open_friends.png" data-toggle="tooltip" data-placement="bottom" title="친구공개"></c:if> <!-- 친구공개 아이콘 -->
+                  	<c:if test="${board.openRange=='2'}"><img class="iconOpen" src="/images/board/open_self.png" data-toggle="tooltip" data-placement="bottom" title="비공개"></c:if> <!-- 비공개 아이콘 -->
+                  	<c:if test="${board.boardCode!=0}"> · <img class="iconOpen" src="/images/board/schedule.png"></c:if>
                   </div>
                </div>
                <c:if test="${!empty sessionScope.user}">
@@ -982,10 +1106,12 @@ $(function(){
 	            <c:set var="j" value="0"/>
 				<c:forEach var="comment" items="${board.comment}">
 				<c:set var="j" value="${j+1}"/>
+				<c:set var="k" value="${k+1}"/>
 					<div id="commList">
 						<span id="commListUser" data-toggle="modal" data-target=".userModal" data-whatever="${comment.user.profileImg},${comment.user.userName},${comment.user.userId},${comment.user.introduce}"> <img src="/images/profile/${comment.user.profileImg}" class="img-circle"/> ${comment.user.userId} </span>
-						<span id="commListContent${j}">${comment.commentContent}</span>
-						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span>
+						<span id="commListContent${k}">${comment.commentContent}</span>
+						<span id="commListDelete" class="${comment.commentNo}" style="display:none;"><img src="/images/board/delete2.png"></span> 
+						<span id="commListInquire" id="inquireUser" name="${comment.commentNo}" style="display:none;" data-toggle="modal" data-target="#inquireModal"><img src="/images/board/inquire.png"></span>
 					</div>
 	            </c:forEach>
 	        </div>
@@ -1014,7 +1140,7 @@ $(function(){
 				<br>
 				<div class="modalUserId"><b>아&nbsp;&nbsp;이&nbsp;&nbsp;디 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br>
-				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
+				<div class="modalUserIntroduce"><b>자 기 소 개 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
 				<c:if test="${!empty sessionScope.user}">
 					<div class="modalUserButton">

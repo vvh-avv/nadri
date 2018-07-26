@@ -1,5 +1,6 @@
 package com.nadri.service.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,9 @@ public interface UserDao {
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
 
-	 
+	//비밀번호 찾기
+	public void findUserPassword(User user) throws Exception;
+	
 	// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 	public int getTotalCount(Search search) throws Exception ;
 	
@@ -49,14 +52,6 @@ public interface UserDao {
 	
 	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
-	public Map<String,Object> getUserLog(String userId,int number,String duration);
-
-
-	
-	
-	
-
-
-
+	public Map<String,Object> getUserLog(String userId,int number,String duration) ;
 
 }

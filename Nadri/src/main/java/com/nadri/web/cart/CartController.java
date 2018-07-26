@@ -2,13 +2,13 @@ package com.nadri.web.cart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.service.cart.CartService;
 
-//==> 장바구니 RestController
-@RestController
+@Controller
 @RequestMapping("/cart/*")
 public class CartController {
 

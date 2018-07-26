@@ -110,19 +110,10 @@
 				
 				var write = $('.inquireWrite').val();
 				var write_enc = encodeURI(encodeURIComponent(write));
-				
-				var inquireLink = $('.inquireLink').val();
-				
-				if(inquireLink == ''){
-					
-					console.log("링크가 없어요~");
-					inquireLink = "null";
-					
-				}
-				
+										
 				$.ajax({
 					type : "POST",
-					url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
+					url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/1",
 					//dataType: 'json', //not sure but works for me without this
 					data : formData,
 					contentType: false,//this is requireded please see answers above
@@ -132,7 +123,7 @@
 						if (status == "success") {
 							$('body').removeClass('waiting');
 							$('form')[0].reset();
-							$('#inquireModal').modal('hide');
+							$('#myModal').modal('hide');
 							console.log(data);
 						}
 					}
@@ -334,13 +325,13 @@ select {
 		<div class="topbox">
 			<img
 				src="../images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-				alt="x" class="profile inquireUser" data-toggle="modal" data-target="#inquireModal"
+				alt="x" class="profile inquireUser" data-toggle="modal" data-target="#myModal"
 				name="user01">
 			<h6>user01 (김고양이)</h6>
-			<button class="inquireCorrect" name="15" data-toggle="modal" data-target="#inquireModal">정정신청</button>
-			<button class="inquireUnblock" name="user05" data-toggle="modal" data-target="#inquireModal">항의하기</button>
-			<button class="inquireComment" name="user04" data-toggle="modal" data-target="#inquireModal">항의하기</button>
-			<span name="user03" class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#inquireModal"></span>
+			<button class="inquireCorrect" name="15" data-toggle="modal" data-target="#myModal">정정신청</button>
+			<button class="inquireUnblock" name="user05" data-toggle="modal" data-target="#myModal">항의하기</button>
+			<button class="inquireComment" name="user04" data-toggle="modal" data-target="#myModal">항의하기</button>
+			<span name="user03" class="glyphicon glyphicon-option-horizontal boardReport" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
 	<br />
@@ -350,14 +341,14 @@ select {
 		<div class="topbox" id="12345">
 			<img
 				src="../images/test/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
-				alt="x" class="profile" data-toggle="modal" data-target="#inquireModal">
+				alt="x" class="profile" data-toggle="modal" data-target="#myModal">
 			<h6>user02 (김야옹이)</h6>
-			<span class="glyphicon glyphicon-option-horizontal inquireBoard" data-toggle="modal" data-target="#inquireModal"></span>
+			<span class="glyphicon glyphicon-option-horizontal inquireBoard" data-toggle="modal" data-target="#myModal"></span>
 		</div>
 	</div>
 	
 <!-- 신고 Modal content -->
-	<div class="modal fade" id="inquireModal" role="dialog">
+	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

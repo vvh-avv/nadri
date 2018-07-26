@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
+<meta charset="utf-8">
+	<script>
+	 	var name = document.getElementById('name') ;
+	 	
+	 	$(".dz-hidden-input").prop("disabled", true ) ;
+				Dropzone.options.dropzone = {
+				clickable: false,
+				//autoDiscover: false,
+				paramName : "file" ,
+				url : "upload" ,
+				method: "post",
+				acceptedFiles: 'image/*, .mp4, .mkv, .avi',
+				dictDefaultMessage: "DropZone íì±í ä¸­",
+				previewsContainer : "#chatLog",
+				thumbnailWidth: 100,
+			    thumbnailHeight: 100,
+			    previewTemplate:
+			    	'<div style="display:none"></div>',
+//			    	  '<div class="dz-preview" id="preview-dropzone">' +
+//		  			  '<div class="dz-details">' +
+//		    		'</span></div>'+
+//		    	 	'<img data-dz-thumbnail />' +
+//		  			'</div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>' +
+//		  			'<div class="dz-success-mark"><span>â</span></div>' +
+//		  			'<div class="dz-error-mark"><span>â</span></div>' +
+//		  			'<div class="dz-error-message"><span data-dz-errormessage></span></div>' +
+//		 			'</div>' ,
+		 			success : function() {
+		 				$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+		 			}
+		 			
+		 		//ì±ê³µíì ê²½ì°
+		 		//drop: function(){
+		} ;
+	$(function(){
+		$("#emoticon").on("click" , function() {
+			
+			//$('#chatLog').append(userId + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + content.fileName + "'></div>") ;
+			//$('#chatLog').append($("#name").val() + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  $("#chattingRoomNo").val() + "&fileName=a.jpg"  + "'></div>") ;
+			$.get("/emoticon?fileName=123.png");
+
+		}) ;	
+	})
+	</script>
+	
+    <style>
+      .name{ width: 10%;}
+      .message{ width: 70%; }
+      .chat{ width: 10%; }
+    </style>
+   </head>
+  <body>
+  	
+    <div class="dropzone" id="dropzone" >
+      <textarea id="chatLog" readonly  style="width: 95%; height: 450px; "></textarea>
+     </div>
+      <input id="name" class="name" type="text" readonly value="">
+      <input id="message" class="message" type="text">
+      <input type="submit" class="chat" value="chat"/>
+      <input type="hidden" value="" id="receiverId"/>
+      <input type="hidden" value="" id="chattingRoomNo"/>
+      <input type="hidden" value="a.jpg" id="file.originalname"/>
+      <br>
+      <br>
+      <div class="dropzone" id="dropzone" >
+  	  <input type="file" value="ì¬ì§ì ì¡" multiple/>
+  	  </div>
+  	  <input type="button" value="ì´ëª¨í°ì½" id="emoticon" />
+    <script>
+    	
+    	var socket = io.connect('http://192.168.0.43:3000') ;
+    	
+    	  $("#message").keydown(function(key) {
+    		//Messageê° nullì´ ìë ë
+    		
+    		 if(key.keyCode ==13) {
+				if( $("#message").val() != null &&  $("#message").val() != "") {
+					var chattingRoomNo =  location.search.split('?')[1].split('=')[1].split('&')[0];
+    				socket.emit('sendMessage', $('#name').val(), $('#message').val() , chattingRoomNo) ;
+        			$('#message').val("") ;
+        			$("#message").focus() ;
+
+      			} //End of second if
+			} //End of first if
+      	}) ; //End of keyDown
+      
+      socket.on('receiveMessage', function( content , userId) {
+    	 var chattingRoomNo = content.chattingRoomNo ;
+    	 //var a = "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + content.fileName + "'></div>" ;
+    	 if(content.protocol == null) {
+    	  $('#chatLog').append(userId + " : " + content + '\n') ;
+      } else if(content.protocol == '1') {
+    	  $('#chatLog').append(userId + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + content.fileName + "'></div>") ;
+      } else if(content.protocol == '2') {
+    	  $('#chatLog').append(userId + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + content.fileName + "'></div>") ;
+      } else if(content.protocol == '3') {
+    	  $('#chatLog').append(userId + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" +"emoticon/" + content.fileName + "'></div>") ;
+      }
+      
+      $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+      }) ;//End of receiverMessage
+    	
+      socket.on('change name', function(senderId , receiverId , chattingRoomNo) {
+        $('#name').val(senderId) ;
+        $('#receiverId').val(receiverId) ;
+        $("#chattingRoomNo").val(chattingRoomNo) ;
+      }) ;
+      
+      socket.on('appendingContent' , function(chattingList , chattingRoomNo) {
+      
+		for(var i = 0  ;  i < chattingList.length ; i++) {
+    		if(chattingList[i].protocol == null || chattingList[i].protocol == '0' ) {
+    			//ë´ê° ë³´ë¸ ê±°ë©´ ì¤ë¥¸ìª½ ìë ê±°ë©´ ì¼ìª½
+    			if( $("#name").val() == chattingList[i].sender_id  ) {
+    				//$("#chatLog").css("margin-right" , "auto");
+    				$('#chatLog').append( '<style="margin-right: auto;"/>' + chattingList[i].sender_id + " : " + chattingList[i].message+ '\n' ) ;
+    	        	$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+    			} 
+    			//ë´ê° ë³´ë¸ê² ìë ë
+    			else {
+    				$('#chatLog').append(chattingList[i].sender_id + " : " + chattingList[i].message+ '\n' ) ;
+    	        	$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+    			}
+    		}
+    		 else if( chattingList[i].protocol == '1' ) {    			
+    		    $('#chatLog').append(chattingList[i].sender_id + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + chattingList[i].fileName + "'></div>") ;
+    	    	$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+    	      } //End of else if
+    	      else if( chattingList[i].protocol == '2' ) {
+    	    	  $('#chatLog').append(chattingList[i].sender_id + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" + chattingList[i].fileName + "'></div>") ;
+      	    	  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+    	      }
+    	      else if( chattingList[i].protocol == '3' ) {
+    	    	  $('#chatLog').append(chattingList[i].sender_id + " : " + "<div><img style= 'width: 100px; height: 100px;' src='/img?chattingRoomNo=" +  chattingRoomNo + "&fileName=" +"emoticon/" + chattingList[i].fileName + "'></div>") ;
+      	    	  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight) ;
+    	      } 
+    		
+		
+		} //End of for
+      }) ; //End of socket
+    </script>   
+   
+  </body>
+</html>

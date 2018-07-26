@@ -2,8 +2,17 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//WebContent/javascript/adminInquire.js=euc-kr
+=======
+encoding//WebContent/chatFiles/user02/1.json=UTF-8
+encoding//WebContent/chatFiles/user02/2.json=UTF-8
+encoding//WebContent/chatFiles/user03/2.json=UTF-8
+>>>>>>> refs/remotes/origin/master
 encoding//WebContent/javascript/common.js=euc-kr
+<<<<<<< HEAD
 encoding//WebContent/javascript/index.js=euc-kr
+=======
+>>>>>>> refs/remotes/origin/master
 encoding//WebContent/javascript/juangeolocation.js=EUC-KR
 encoding//WebContent/javascript/toolbar.js=euc-kr

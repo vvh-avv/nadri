@@ -1,5 +1,6 @@
 package com.nadri.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	public User getUser(String userId) throws Exception {
-		return sqlSession.selectOne("UserMapper.findUser", userId);
+		return sqlSession.selectOne("UserMapper.getUser", userId);
 	}
 	
 	public void updateUser(User user) throws Exception {
@@ -70,6 +71,12 @@ public class UserDaoImpl implements UserDao{
 	public User findUserId(User user) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("UserMapper.findUserId", user);
+	}
+	
+	//회원 비밀번호 찾기
+	@Override
+	public void findUserPassword(User user) throws Exception {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -136,15 +143,4 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
-
-
-
-
-
-	
-
-	
-	
-	
-	
 }
