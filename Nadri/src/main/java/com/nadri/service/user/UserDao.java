@@ -1,5 +1,6 @@
 package com.nadri.service.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,14 +50,6 @@ public interface UserDao {
 	
 	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
-	public Map<String,Object> getUserLog(String userId,int number,String duration);
-
-
-	
-	
-	
-
-
-
+	public Map<String,Object> getUserLog(String userId,int number,String duration) ;
 
 }

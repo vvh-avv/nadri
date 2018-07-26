@@ -1,5 +1,7 @@
 package com.nadri.service.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -55,12 +57,4 @@ public interface UserService {
 	//회원 활동 불러오기
 	public Map<String,Object> getUserLog(String userId,int number,String duration);
 
-
-
-
-
-
-
-
-	
 }

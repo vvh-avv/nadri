@@ -253,7 +253,7 @@ html, body {
 
 .sidemenu {
    position: absolute;
-   right: 2vw;
+   right: 9vw;
    top: 5vh;
    display: flex;
    transition: all 1s;

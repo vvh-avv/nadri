@@ -1,5 +1,5 @@
 {
-	"chattingList" : 
+	"chatList" : 
 				[
 {"protocol":"0", "sender_id" : "user03", "receiver_id" : "user04,user05", "message" : "rr" , "sending_date" : "2018-07-04 13:07" ,"flag": "N"}
 ,{"sender_id":"user03","receiver_id":"user04,user05","message":"�꽦�꽦","sending_date":"2018-07-22 12:02:05","protocol":"0","flag":"Y"}

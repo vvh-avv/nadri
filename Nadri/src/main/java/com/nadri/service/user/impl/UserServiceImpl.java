@@ -1,5 +1,6 @@
 package com.nadri.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,21 +127,6 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return userDao.getUserLog(userId, number, duration);
 	}
-
-
-
-
-
-
-
-
-
-	
-
-
-	
-
-	
 
 
 }

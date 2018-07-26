@@ -25,6 +25,7 @@ var multer = require("multer") ;
 var upload  = multer({ dest : 'uploads/'})
 
 app.get('/',function(request, response) {
+  var flag = 0 ;
   chatRoomNo = request.query.chatRoomNo ;
   senderId = request.query.senderId ;
   receiverId = request.query.receiverId ;
@@ -120,28 +121,29 @@ var count=0 ;
 	  
 	  if(data != null && flag === 0) {
 		  data += "] }" ;
-		  chattingList = JSON.parse(data) ;
+		  chatList = JSON.parse(data) ;
+		  
 		  
 		  //이름 변경
 		  io.to(socket.id).emit('change name', senderId , receiverId , chatRoomNo) ;
 		  //채팅 내역 출력.
-		  io.emit( 'appendingContent' , chattingList.chattingList , chatRoomNo ) ;
-		  //flag = 1 ;
+		  io.emit( 'appendingContent' , chatList.chatList , chatRoomNo ) ;
+		  
 	  }
   }) ;
   
   //방에 입장 시키기
-  socket.join(chatRoomNo) ;
+  socket.join( chatRoomNo ) ;
   
   //텍스트 메시지만 보낼 때
   socket.on('sendMessage', function(senderId , message , chatRoomNo, receiverId) {
-	var currentTime = moment().format("YYYY-MM-DD HH:mm:ss") ;
+	var currentTime = moment().format( "YYYY-MM-DD HH:mm:ss" ) ;
 	var protocol = '0' ;
     var chat =  '{"sender_id":"'+ senderId + '","receiver_id":"' +  receiverId + '","message":"' + message + 
     '","sending_date":"' + currentTime + '","protocol":"' + protocol +'"' + ',"flag":' + '"Y"}' ; 
     
     //1이면 현재 방안에 있는 것. 알림 보낼 필요 X
-    var userId = receiverId.split(",") ;
+    var userId = receiverId.split( "," ) ;
     var chatRoomInner = '' ; //채팅방 안에 있는 확인해주는 데이터
     
     fs.appendFile( './WebContent/chatFiles/' + senderId + '/' + 
@@ -152,7 +154,9 @@ var count=0 ;
    }) ;
     
     for(var i = 0 ; i < userId.length ; i++) {
-       	chat ='{"sender_id":"'+ senderId + '","receiver_id":"' +  receiverId + '","message":"' + message + 
+    	console.log(userId[i]) ;
+    	
+       	chat ='{"sender_id":"'+ senderId + '","receiver_id":"' +  userId[i] + '","message":"' + message + 
         '","sending_date":"' + currentTime + '","protocol":"' + protocol +'"' ;
     	
     	
@@ -164,7 +168,7 @@ var count=0 ;
  		//0이면 현재 방안에 없는 것. 알림 보낼 필요 O
  	    else {
  	    	chat += ',"flag":' + '"N"}' ;
- 	    	chatRoomInner += userId[i] + 0 + ',';
+ 	    	chatRoomInner += userId[i] + 5 + ',';
  	    }
     	
     	//파일 쓰기
@@ -176,10 +180,10 @@ var count=0 ;
 	   }) ;
     	
  
-    }//End of for
+    } //End of for
     
     //한번만 전송하기 위해 반복문 안에 안씀.
-    io.to(chatRoomNo).emit('receiveMessage', senderId , message , currentTime,  protocol, chatRoomInner ) ;
+    io.to(chatRoomNo).emit( 'receiveMessage', senderId , message , currentTime,  protocol, chatRoomInner ) ;
 
 //    var opts = {
 //		    host: '192.168.0.43' ,
@@ -208,14 +212,17 @@ var count=0 ;
   }) ;
   
   socket.on('close' , function(chatRoomNo , senderId) {
-	chatRoomClientList = chatRoomClientList.replace( '\{'+ chatRoomNo + ':' +senderId + '\}'  , '' ) ;
-	console.log( chatRoomClientList ) ;
-	 }) ;
+	  console.log(' close! ')
+	  chatRoomClientList = chatRoomClientList.replace( '{'+ chatRoomNo + ':' +senderId + '}'  , '' ) ;
+	  console.log( "chatRoomClientList : " + chatRoomClientList ) ;
+	  console.log( "senderId : " + senderId) ;
+  }) ;
 }) ;
  
  io.on('disconnect' , function() {
-	 chatRoomClientList = chatRoomClientList.replace( '\{'+ chatRoomNo + ':' + senderId + '\}'  , '' ) ;
-	 console.log( chatRoomClientList ) ;
+	 chatRoomClientList = chatRoomClientList.replace( '{'+ chatRoomNo + ':' + senderId + '}'  , '' ) ;
+	 console.log( "chatRoomClientList : " + chatRoomClientList ) ;
+	 console.log( "senderId : " + senderId) ;
  }) ;
  
 http.listen(3000, function(req ,res){

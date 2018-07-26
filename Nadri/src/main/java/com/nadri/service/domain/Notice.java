@@ -10,6 +10,7 @@ public class Notice {
 	private String content ;
 	private boolean flag ;
 	private int count ;
+	private String userProfileImg ;
 	
 	public int getNoticeNo() {
 		return noticeNo;
@@ -83,8 +84,16 @@ public class Notice {
 		this.noticeCode = noticeCode;
 	}
 
+	public String getUserProfileImg() {
+		return userProfileImg;
+	}
+
+	public void setUserProfileImg(String userProfileImg) {
+		this.userProfileImg = userProfileImg;
+	}
+
 	public String toString() {
 		return " noticeNo : " + noticeNo + " senderId : " + senderId + " receiverId : " + receiverId + " otherPk : " + otherPk + " content : " + content +
-				" flag : " + flag + " count : " + count + " noticeCode : " + noticeCode ;
+				" flag : " + flag + " count : " + count + " noticeCode : " + noticeCode  + " profileImg : " + userProfileImg ;
 	}
 }

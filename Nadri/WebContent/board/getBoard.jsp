@@ -362,6 +362,8 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
+	   alert("아이디 : " + $(this).attr("id")) ;
+	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 		  return;
@@ -375,12 +377,29 @@ $(function(){
                $("#likePrint").text("좋아요 "+data+"개");
             }
          })
+         
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + $("#boardNo").val().trim() + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
+         })
+         
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
             url : "/board/json/deleteLike/"+$("#boardNo").val().trim(),
             method : "POST",
-            success : function(data, status){
+            success : function(data, status) {
                $("#likePrint").text("좋아요 "+data+"개");
             }
          })
@@ -470,8 +489,8 @@ $(function(){
 	  swal("Hi~"); 
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
-   $(document).on("mouseover", "div[id^='commList']", function(){
-	   if( ${!empty sessionScope.user} ){
+   $(document).on("mouseover", "div[id^='commList']", function() {
+	   if( ${!empty sessionScope.user} ) {
 	   		$(this).children('span:eq(3)').removeAttr("style");
 
 			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
@@ -583,6 +602,7 @@ $(function(){
    })
    
    //*유저프로필 모달창
+   var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    $('.userModal').on('show.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
   		var modal = $(this);
@@ -593,6 +613,7 @@ $(function(){
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
   		modal.find('button:last').attr("name",recipient[2]);
+  		modalFriendId = recipient[2];
   		
   		//클릭한 사람이 친구인지 아닌지 확인
   		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
@@ -618,7 +639,24 @@ $(function(){
    })
    //*유저프로필 모달창 내 대화하기
     $(document).on("click", "#chatFriend", function(){
-	   alert("대화를 합시다..");
+	   //대화하기
+	   var receiverId = {
+		   "receiverId" :  receiverId
+	   } ;
+    
+	   
+    	$.ajax({
+  	  			url : "/chatRoom/json/getChatRoom2" ,
+  	  			data : receiverId,
+  	  			dataType : "json",
+  	  			type : "POST",
+  	  			success : function(data) {
+  	  				alert(data) ;
+  	  			} ,
+  	  			error : function( error ) {
+  	  					alert("에러 : " + error ) ;
+  	  			}
+    	}) ; //End of ajax
    })
    //*유저프로필 모달창 내 신고하기
    $("#inquireUser").on("click", function(){
@@ -720,6 +758,7 @@ $(function(){
                          $('.inquire_form')[0].reset();
                          $('#inquireModal').modal('hide');
                          console.log(data);
+                         
                       }
                    }
                 });
@@ -838,7 +877,7 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}">></c:if>
                   <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

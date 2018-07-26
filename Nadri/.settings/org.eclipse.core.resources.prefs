@@ -2,6 +2,7 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
+encoding//WebContent/chatFiles/user02/1.json=UTF-8
 encoding//WebContent/chatFiles/user02/2.json=UTF-8
 encoding//WebContent/chatFiles/user03/2.json=UTF-8
 encoding//WebContent/javascript/common.js=euc-kr

@@ -48,13 +48,34 @@ public class ChatRoomDaoImpl implements ChatRoomDao {
 			// TODO Auto-generated method stub
 			HashMap<String , Object> map = new HashMap<String , Object>() ;
 			map.put("search", search) ;
-			map.put("userId", userId) ;
+			map.put("userId", "user01") ;
 			List<ChatRoom> list = sqlSession.selectList("ChatRoomMapper.chatRoomList" , map ) ;
-			System.out.println("1");
-			for(ChatRoom i : list) {
-				System.out.println( i ) ;
+			
+			for(int i = 0 ; i < list.size() ; i++) {
+				for(int j = i + 1 ; j < list.size() ; j++) {
+					if( list.get(i).getChatRoomNo() == list.get(j).getChatRoomNo() ) {
+						if( list.get(i).getUserProfileImg().split(",").length >= 4 ) {
+							list.remove(j) ;
+							break ;
+						} else {
+							list.get(i).setUserProfileImg( list.get(i).getUserProfileImg() + "," + list.get(j).getUserProfileImg() ) ;
+							list.remove(j) ;
+						}
+					}
+				}
 			}
-			return sqlSession.selectList("ChatRoomMapper.chatRoomList" , map ) ;
+			
+			if( list.get(list.size() - 1).getChatRoomNo() == list.get(list.size() - 2).getChatRoomNo()  ) {
+				if( list.get( list.size() - 1 ).getUserProfileImg().split(",").length >= 4 ) {
+					list.remove( list.size() - 2 ) ;
+					
+				} else {
+					list.get( list.size() - 1 ).setUserProfileImg( list.get( list.size() - 1 ).getUserProfileImg() + "," + list.get( list.size() - 2 ).getUserProfileImg() ) ;
+					list.remove( list.size() - 2 ) ;
+				}
+			}
+			
+			return list ;
 		}
 		
 		@Override
@@ -72,9 +93,11 @@ public class ChatRoomDaoImpl implements ChatRoomDao {
 		@Override
 		public ChatRoom getChatRoom2(String userId1 , String userId2) throws Exception {
 			HashMap<String , String> map = new HashMap<String , String>() ;
+			System.out.println("userId1 : " + userId1 + " userId2 : " + userId2) ;
+			
 			map.put("userId1" , userId1) ;
 			map.put("userId2" , userId2) ;
-			ChatRoom chatRoom = sqlSession.selectOne("ChatRoomMapper.getchatRoom2", map) ;
+			ChatRoom chatRoom = sqlSession.selectOne("ChatRoomMapper.getChatRoom2", map) ;
 			if ( chatRoom == null) {
 				return  new ChatRoom() ;
 			}

@@ -502,8 +502,8 @@ $(function(){
    })
    
    //*하트 클릭
-   $(document).on("click", "span[id^='likeIcon']>.icon", function(){
-		if( ${empty sessionScope.user} ){
+   $(document).on("click", "span[id^='likeIcon']>.icon", function() {
+		if( ${empty sessionScope.user} ) {
 			swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 			return;
 		}
@@ -519,6 +519,7 @@ $(function(){
                $("#likePrint"+num).text("좋아요 "+data+"개");
             }
          })
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
@@ -534,7 +535,7 @@ $(function(){
    
    //*댓글 클릭
    $(document).on("click", "span[id^='commIcon']", function(){
-	  if( ${empty sessionScope.user} ){
+	  if( ${empty sessionScope.user} ) {
 			  swal ( "댓글입력 불가" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 			  return;
 	  }
@@ -728,6 +729,7 @@ $(function(){
    })
    
    //*유저프로필 모달창
+   var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    $('.userModal').on('show.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
   		var modal = $(this);
@@ -738,20 +740,21 @@ $(function(){
   		modal.find('.myFormControl:odd').val(recipient[2]);
   		modal.find('.myFormControl:last').val(recipient[3]);
   		modal.find('button:last').attr("name",recipient[2]);
+  		modalFriendId = recipient[2];
 
   		//클릭한 사람이 친구인지 아닌지 확인
-  		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
+  		if( ${!empty sessionScope.user} ) { //회원만 확인 가능
   	  		$.ajax({
   	  			url : "/friend/json/chkFriend/"+recipient[2],
-  	  			success : function(data){
+  	  			success : function(data) {
   	  				if(data==1){ //친구임
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>");
+  	  					$("#addFriend").remove() ;
+  	  					$("#chatFriend").remove() ;
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>") ;
   	  				}else{ //친구가 아님
-  	  					$("#addFriend").remove();
-  	  					$("#chatFriend").remove();
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>");
+  	  					$("#addFriend").remove() ;
+  	  					$("#chatFriend").remove() ;
+  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>") ;
   	  				}
   	  			}
   	  		})
@@ -763,7 +766,23 @@ $(function(){
    })
    //*유저프로필 모달창 내 대화하기
    $(document).on("click", "button[id^='chatFriend']", function(){
-	   alert("대화를 합시다..");
+	   //대화하기
+	   var receiverId = {
+		   "receiverId" :  modalFriendId
+	   } ;
+    	$.ajax({
+  	  			url : "/chatRoom/json/getChatRoom2" ,
+  	  			data : receiverId,
+  	  			type : "GET",
+  	  			dataType : "json",
+  	  			contentType : "application/json; charset=UTF-8",
+  	  			success : function(data) {
+  	  				makeChat(data) ;
+  	  			} ,
+  	  			error : function( error ) {
+  	  					alert("에러 : " + error ) ;
+  	  			}
+    	}) ; //End of ajax
   })
    //*유저프로필 모달창 내 신고하기
    $("button[id^='inquireUser']").on("click", function(){

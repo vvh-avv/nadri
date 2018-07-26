@@ -64,7 +64,7 @@ public class UserController {
 	
 	//유저 가입: post방식
 	@RequestMapping(value="addUser", method=RequestMethod.POST)
-	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file, @RequestParam("type") String type ) throws Exception {
+	public String addUser( @ModelAttribute("user") User user, MultipartHttpServletRequest request,  @RequestParam("file") MultipartFile[] file ) throws Exception {
 		
 		System.out.println("/user/addUser : POST");
 		System.out.println("useradd - :" +user);
@@ -92,14 +92,28 @@ public class UserController {
 			System.out.println("변경된 파일명 : "+fileOriginName);
 			
 			File f = new File(uploadPath+"\\"+fileOriginName); 
-			file[i].transferTo(f);
+			file[i].transferTo(f) ;
+			
+
+			
 			if(i==0) { fileMultiName += fileOriginName; }
 			else{ fileMultiName += ","+fileOriginName; }
 		}
+			File f = new File("C:/Users/Bit/git/nadri/Nadri/WebContent/chatFiles/" + user.getUserId() ) ;
+			boolean result = f.mkdir() ;
+			
+			if( result ) {
+				System.out.println(" 성공 ") ;
+			} else {
+				System.out.println(" 실패 ") ;
+			}
+		
 		System.out.println("*"+fileMultiName);
 		user.setProfileImg(fileMultiName);
 			
 		userService.addUser(user);
+		
+
 		
 		return "redirect:/user/loginView.jsp";
 	}

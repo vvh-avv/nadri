@@ -5,7 +5,55 @@
 <link rel="stylesheet" href="/css/chatRoomInner.css">
 
 <script>
-var chatCount = 0;
+function deleteIframe(chatRoomNo) {
+	alert( chatRoomNo.substring( chatRoomNo.indexOf('m') + 1 , chatRoomNo.length ) ) ;
+	$('#iframe' + chatRoomNo.substring( chatRoomNo.indexOf('m') + 1 , chatRoomNo.length )).html('') ;
+}
+
+
+function makeChat(chatRoom) {
+	var counter = 0 ;
+	senderId = "<c:out value="${user.userId}" />" ;
+	chatRoomCountFlag = 0 ;
+		if (chatRoomCountFlag == 0) {
+			$('body').append (
+					'<iframe id="iframe' + chatRoomNo + '" allowTransparency="true" style="border: 0px' + 
+					' solid transparent; position:fixed; bottom:0 ; left: 70%; width: 24%; height: 417px; background:none transparent; "' +
+					' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+					'&receiverId=' + receiverId + '"/>' ) ;
+				chatRoomCountFlag++;
+		} //End of if
+		else if (chatRoomCountFlag == 1) {
+			$('body').append (
+					'<iframe id="iframe' + chatRoomNo + '"  allowTransparency="true" style="border: 0px' + 
+					' solid transparent; position:fixed; bottom:0 ; left: 40%; width: 24%; height: 417px; background:none transparent; "' +
+					' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+					'&receiverId=' + receiverId + '"/>' );
+			chatRoomCountFlag++;
+		} //End of else if
+		else if (chatRoomCountFlag == 2) {
+			$('body').append (
+					'<iframe id="iframe' + chatRoomNo + '"  allowTransparency="true" style="border: 0px' + 
+					' solid transparent; position:fixed; bottom:0 ; left: 10%; width: 24%; height: 417px; background:none transparent; "' +
+					' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+					'&receiverId=' + receiverId + '"/>' );
+				chatRoomCountFlag++;
+		} else {
+			alert('채팅창은 최대 3개 까지만 가능합니다.') ;
+		}
+}
+
+//새로고침해도 채팅방 유지
+// $(window).bind({
+//     beforeunload: function(ev) {
+//         ev.preventDefault();
+//     } ,
+//     unload: function(ev) {
+//         ev.preventDefault();
+//     }
+// }) ;
+
+//jQuery 시작
 $(function() {
 	var chatRoomList = '' ;
 	var noticeList = '' ;
@@ -13,25 +61,30 @@ $(function() {
 	var chatRoomCountFlag = 0 ;
 	const chatRoomCount = 5 ;
 	
-	$('#noticeList').on('click' , function() {
+	$('#noticeRoomList').on('click' , function() {
 		if (flag == 0) {
+			
 			$.ajax({
 				url: "/notice/json/getNoticeList" ,
 				type : "POST",
 				async : false ,
 				success : function(data) {
+					
 					for(var i = 0 ; i < data.noticeList.length ; i++ ) {
+						
 						noticeList += '<li class="active bounceInDown">' +
-    	            	'<a href="#" class="clearfix">' +
-        				'<img style="float: left;" src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">' + 		
-        			    '<div class="friend-name">' +
+	                	'<a href="#" class="clearfix"><img style="float: left;" src="../images/profile/' + 
+						data.noticeList[i].userProfileImg + '" alt="" class="img-circle">' +
+						'<div class="friend-name">' +
 						'<strong>' + data.noticeList[i].senderId + '</strong>' +
-        		    	'</div>' +
-        		    	'<div class="last-message text-muted">' + data.noticeList[i].content + '</div>' +
-	        			'<input type="hidden" value="' + data.noticeList[i].notice+ '"/>' ;	
+            		    '</div>' +
+            		    '<div class="last-message text-muted">' + data.noticeList[i].content + '</div>' +
+            			'<input type="hidden" id="noticeCode" value="' + data.noticeList[i].noticeCode + '"/>' +
+            			'<input type="hidden" id="otherPk" value="' + data.noticeList[i].otherPk + '"/>' +
+            			'<input type="hidden" id="noticeNo" value="' + data.noticeList[i].noticeNo + '"/>' +
+            			'<input type="hidden" id="noticeMap" value="' + data.noticeMap + '"/></a></li>' ;
 					}
 				} , //End of success
-				
 				error : function(error) {
 					alert("실패") ;
 				} //End of error
@@ -40,7 +93,7 @@ $(function() {
 			$("#noticeContainer").css("display", "block") ;
 			flag = 1 ;
 			noticeList = '' ;
-		} // End of if
+		} //End of if
 		else if(flag == 1) {
 			$("#noticeFriendList").html('') ;
 			$("#noticeContainer").css("display", "none") ;
@@ -48,56 +101,62 @@ $(function() {
 		}
 	}) ; //End of click
 	
+	
 	//after click notice
 	$('#noticeFriendList').on( 'click', '.clearfix', function() {
 				flag = 0 ;
 
 				var senderId = "<c:out value="${ user.userId }"/>"
-				var receiverId = $(this).children('').text().trim() ;
+				var receiverId = $(this).children('.friend-name').text().trim() ;
+				var otherPk = $(this).children('#otherPk').val() ;
+				var noticeCode = $(this).children('#noticeCode').val() ;
+				var noticeNo = $(this).children('#noticeNo').val() ;
+				var noticeMap = $(this).children('#noticeMap').val() ;
 				
 				var json = {
 					"senderId" :  senderId  ,
 					"receiverId" : receiverId ,
-					
-				} ;
+					"otherPk" : otherPk ,
+					"noticeCode" : noticeCode } ;
 				
-				//채팅방 내용 업데이트 시키기(읽음으로.)
+				//notice 내용 업데이트 시키기(읽음으로.)
 				$.ajax ({
 					type : "GET",
-					url : "/chatRoom/json/updateChat",
-					datatype : 'json' ,
+					url : "/notice/json/updateNotice?noticeNo=" + noticeNo,
 					async : false ,
-					contentType : "application/json; charset=UTF-8" ,
-					data : json ,
 					success : function(data) {
+						alert( data ) ;
+						alert( noticeCode ) ;
+						switch (noticeCode) {
+						//신고
+						case '0' :  
+									break ;
+						//좋아요
+						case '1' :
+							alert('좋아요 실행') ;
+							self.location = "/board/getBoard?boardNo=" + otherPk ;
+									break ;
+						//친구요청
+						case '2' :
+									break ;
+						//태그									
+						case '3' :
+							self.location = "/board/getBoard?boardNo=" + otherPk ;
+							break ;
+						default :
+							alert('디폴트실행..') ;
+						}
+						
+						noticeCode = $(this).children('#noticeCode').val() ;
 					} ,
 					error : function(error) {
-						alert( error ) ; 
+						alert( "에러 : " + error ) ; 
 					}
 				}) ; //End of ajax
+				
+				$("#noticeFriendList").html('') ;
+				$("#noticeContainer").css("display", "none") ;
 	}) ;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	//*채팅방 클릭시
@@ -129,42 +188,48 @@ $(function() {
 				}) ; //End of ajax
 				
 				if (chatRoomCountFlag == 0) {
-					$('body')	.append (
-						'<iframe allowTransparency="true" style="border: 1px solid transparent; position:fixed; bottom:0 ; width: 95%; height: 100%; background:none transparent; " '
-						+ 'src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + '&receiverId=' + receiverId + '"/>' ) ;
+					$('body').append (
+						'<iframe id="iframe' + chatRoomNo + '"  allowTransparency="true" style="border: 0px' + 
+						' solid transparent; position:fixed; bottom:0 ; left: 70%; width: 24%; height: 417px; background:none transparent; "' +
+						' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+						'&receiverId=' + receiverId + '"/>' );
 					chatRoomCountFlag++;
 				} //End of if
 				else if (chatRoomCountFlag == 1) {
-					$('body')	.append (
-							'<iframe allowTransparency="true" style="border: 1px solid transparent; position:fixed; bottom:0 ; width: 65%; height: 100%; background:none transparent; " '
-							+ 'src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + '&receiverId=' + receiverId + '"/>' ) ;
+					$('body').append (
+							'<iframe id="iframe' + chatRoomNo + '"  allowTransparency="true" style="border: 0px' + 
+							' solid transparent; position:fixed; bottom:0 ; left: 40%; width: 24%; height: 417px; background:none transparent; "' +
+							' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+							'&receiverId=' + receiverId + '"/>' );
 					chatRoomCountFlag++;
 				} //End of else if
 				else if (chatRoomCountFlag == 2) {
-					$('body')	.append (
-							'<iframe allowTransparency="true" style="border: 1px solid transparent; position:fixed; bottom:0 ; width: 35%; height: 100%; background:none transparent; " '
-							+ 'src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + '&receiverId=' + receiverId + '"/>' ) ;
+					$('body').append (
+							'<iframe id="iframe' + chatRoomNo + '"  allowTransparency="true" style="border: 0px' + 
+							' solid transparent; position:fixed; bottom:0 ; left: 10%; width: 24%; height: 417px; background:none transparent; "' +
+							' src="http://localhost:3000/?chatRoomNo=' + chatRoomNo + '&senderId=' + senderId + 
+							'&receiverId=' + receiverId + '"/>' );
 						chatRoomCountFlag++;
 				}
 				else {
 					alert('채팅창은 최대 3개 까지만 가능합니다.') ;
 				}
-				
+				//채팅방은 초기화
 				$("#chatFriendList").html('') ;
 				$("#chatRoomContainer").css("display", "none") ;
 	}) ; //End of on click 
 	
-	//*창 떠있을 때, 다른 화면 누르면 닫히는 기능.
+//*창 떠있을 때, 다른 화면 누르면 닫히는 기능.
 	$('body').click(function(e) {
 		
-		if ($("#noticeContainer").css('display') == 'block') {
-			if (!($("#noticeContainer").has(e.target).length) && !($("#noticeList").has(e.target).length)) {
-				$("#noticeFriendList").html('') ;
-				$("#noticeContainer").css("display", "none") ;
-				flag = 0 ;
-				noticeList = '' ;
-			}
-		}
+// 		if ($("#noticeContainer").css('display') == 'block') {
+// 			if (!($("#noticeContainer").has(e.target).length) && !($("#noticeList").has(e.target).length)) {
+// 				$(".friendAlert").html('') ;
+// 				$("#noticeContainer").css("display", "none") ;
+// 				flag = 0 ;
+// 				noticeList = '' ;
+// 			}
+// 		}
 		
 		if ($("#chatRoomContainer").css('display') == 'block') {
 			if (!($("#chatRoomContainer").has(e.target).length) && !($("#chatRoomList").has(e.target).length) ) {
@@ -186,22 +251,67 @@ $(function() {
 					today = new Date() ;
 
 					for (var i = 0; i < chatRoomCount; i++) {
+						
 						if( today.getDate() - data[i].sending_date.substring(8,10) != 0) {
 							data[i].sending_date = data[i].sending_date.substring( 0 , 10 ) ;
 						}
 						chatRoomList += 
 							'<li class="active bounceInDown">' +
-		                	'<a href="#" class="clearfix">' +
-                			'<img style="float: left;" src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">' + 		
-                		    '<div class="friend-name">' +
+		                	'<a href="#" class="clearfix">' ; 		
+                		    var userImg = data[i].chatRoom.userProfileImg.split(',') ;
+                		    
+                		    switch ( data[i].chatRoom.userProfileImg.split(',').length ) {
+                		    case 1 : 
+                		    	chatRoomList +=  '<img style="float: left;" src="../images/profile/' + data[i].chatRoom.userProfileImg + '" alt="" class="img-circle">' ;
+                		    	break ;
+                		    case 4 : 
+                		    	chatRoomList += '<div class="big-box"style="float: left;">' +
+                		    	'<div class="small-box1" style="background : url(' + 
+                		    	'../images/profile/' + userImg[0] + ') center no-repeat' +
+                		    	' background-size : 10%;"></div>' +
+                		        '<div class="small-box1" style="background : url(' +
+                		        '../images/profile/' + userImg[1] + ') center no-repeat;' +
+                		        ' background-size : 300px; left:50%;"></div>' +
+                		        '<div class="small-box1" style="background : url(' +
+                		        '../images/profile/' + userImg[2] + ') center no-repeat;' +
+                		        ' background-size : 300px; top:50%;"></div>' +
+                		        '<div class="small-box1" style="background : url(' +
+                		        ' ../images/profile/' + userImg[3] +   ' ) center no-repeat;' +
+                		        ' background-size : 300px; top:50%; left:50%;"></div></div>'
+                		    	break ;
+                		    case 3 :
+                   		    	chatRoomList += '<div class="big-box"style="float: left;">' +
+                		    	'<div class="small-box1" style="background : url(' + 
+                		    	'../images/profile/' + userImg[0] + ') center no-repeat' +
+                		    	' background-size : 10%;"></div>' +
+                		        '<div class="small-box1" style="background : url(' +
+                		        '../images/profile/' + userImg[1] + ') center no-repeat;' +
+                		        ' background-size : 300px; left:50%;"></div>' +
+                		        '<div class="small-box1" style="background : url(' +
+                		        '../images/profile/' + userImg[2] + ') center no-repeat;' +
+                		        ' background-size : cover; top:50%; width:100%;"></div></div>' ;
+                		    	break ;
+                		    case 2 : 
+                		    	chatRoomList += '<div class="big-box"style="float: left;">' +
+                		    	'<div class="small-box1" style="height : 100%; background : url(' + 
+                		    	'../images/profile/' + userImg[0] + ') center no-repeat' +
+                		    	' background-size : cover;"></div>' +
+                		        '<div class="small-box1" style="height : 100%; background : url(' +
+                		        '../images/profile/' + userImg[1] + ') center no-repeat;' +
+                		        ' background-size : cover; left:50%;"></div></div>'
+                		    	break ;
+                		    }
+                		    chatRoomList +=  '<div class="friend-name">' +
 							'<strong>' + data[i].chatRoom.userId + '</strong>' +
                 		    '</div>' +
                 		    '<div class="last-message text-muted">' + data[i].message + '</div>' +
-                			'<small class="time text-muted">' + data[i].sending_date + '</small>' +
+                			'<small class="time text-muted">' + data[i].sending_date.substring( 11 , 16 ) + '</small>' +
                 			'<input type="hidden" value="' + data[i].chatRoom.chatRoomNo + '"/>' ;
                 			// 읽음 유무 판단
                 			if( data[i].chatRoom.flag > 0) {
 	                			chatRoomList += '<small class="chat-alert label label-danger" align="middle">'+ data[i].chatRoom.flag + '</small></a></li>' ; 	
+                			} else {
+                				chatRoomList += '</a></li>' ;
                 			}
 	                		    
 					} //End of for
@@ -225,39 +335,11 @@ $(function() {
 	
 	//send notice
 	function noticeSending(noticeJson) {
-		var aa = {
-				'"senderId"' : '"user02"' ,
-				'"receiverId"' : '"user01"' ,  
-				'"noticeCode"' : '"0"' 
-		} ;
 		
-		$.ajax({
-			url : "/notice/json/addNotice" ,
-			type : "POST",
-			datatype : 'json' ,
-			async : false ,
-			data : aa ,
-			contentType : "application/json; charset=UTF-8",
-			success : function() {
-				noticeSendingWs("user01") ;
-				alert('성공') ;
-			} ,
-			error : function( error ) {
-				alert('에러 : ' + error ) ;
-			}
-		}) ;
+		noticeSendingWs(noticeJson) ;
+		alert('성공') ;
+		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }) ; //End of jQuery
 
@@ -282,7 +364,7 @@ if (userId != null) {
 
 	//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
 	webSocket.onmessage = function(message) {
-		alert('알림도착!') ;
+		alert( message.data ) ;
 		$("#msg_count").text(++chatCount) ;
 	} ;
 	
@@ -296,9 +378,13 @@ if (userId != null) {
 	window.addEventListener('message', function(event) {
 		if ( event.origin.indexOf('http://localhost:3000/') ) {
 			// The data has been sent from your site
-			//채팅 프로토콜
-			var protocol = 2 ;
-			webSocket.send(event.data ) ;
+			if( event.data.indexOf('closeChatRoom') != -1 ) {
+				alert( event.data) ;
+				deleteIframe(event.data) ;
+			} else {
+				webSocket.send( event.data ) ;	
+			}
+			
 		} else {
 			alert('다른사이트에서 접근') ;
 		}
@@ -307,6 +393,24 @@ if (userId != null) {
 }//End of websocket if
 
 </script>
+<style>
+.big-box{
+   width:45px ;
+   height:45px ;
+   border:6px solid #757575;
+   position:relative;     /* 중요한 부분 이미지를 묶고있는 가장 큰 엘레먼트가 반드시 이 속성가져야함 */
+   overflow:hidden; /* 안에 넣은 이미지가 넘치지않게 하는 중요요소 */
+   border-radius : 50%;
+   border: 1px solid transparent ;
+}
+
+.small-box1{
+   position : absolute;
+   width:50%;
+   height:50%;  
+}
+
+</style>
 <div class="topbar">
 
    <a href="/index.jsp"> 
@@ -316,22 +420,38 @@ if (userId != null) {
    
 
    <div class="collapse navbar-collapse">
-      <input type="text" class="searcher" placeholder="검색어를 입력해주세요."
-         name="searchKeyword">
+      <input type="text" class="searcher" placeholder="검색어를 입력해주세요." name="searchKeyword">
       <div class="sidemenu">
+      
          <c:if test="${!empty user}">
             <c:if test="${user.role==0}">
-               <img src="/images/common/chat_white.png" class="icons chat">
-               <a href="/user/listUser"> <img
-                  src="/images/profile/${user.profileImg}"
-                  class="profile" title="let's go to my page">
+            	
+            	<a href="#" id="noticeRoomList">
+               <img src="/images/common/bell_white.png" class="icons bell">
                </a>
+               
+				<a href="#" id="chatRoomList">
+               <img src="/images/common/chat_white.png" class="icons chat" style="top:12%; right:10%;">
+               </a>
+      		 
+              <img src="/images/profile/${user.profileImg}"
+                  class="profile" title="let's go to my page" style="">
+               
             </c:if>
+            
             <c:if test="${user.role==1}">
+               
                <img src="/images/common/chat_white.png" class="icons chat">
                <img src="/images/profile/${user.profileImg}" class="profile" title="let's go to Admin page">
             </c:if>
          </c:if>
+         
+         
+         
+         
+         
+         
+         
       </div>
       <c:if test="${empty user}">
          <div class="right-box">
@@ -363,25 +483,26 @@ if (userId != null) {
          <div class="col-md-12" style="text-align:center; font-size: 1vw;">${user.userId}</div>
    </div>
    
-   <ul style="list-style-type: none;">
-      <li class="friendAlert"> 친 구 알 림 <span style="color:red; font-weight:700;">1</span> </li>
-      <li class="friendSmall"> <img src="/images/profile/${user.profileImg}" class="profileImg2"> 님이 친구신청을 하셨습니다. </li>
-      <li class="friendSmall"> 알림2 </li>
-      <li class="friendSmall"> 알림3 </li>
-      <li> 나 들 이 백 과 </li>
-      <li> 게 시 판 </li>
-      <li> 일 정 작 성 </li>
-   </ul>
-   
-</div>
-<div style="display:flex; flex-direction: col; justify-content: flex-start;">
-   <ul class="toggleMenuMob">
-      <li class="userMenus"> 닫 기 X </li>
-      <li class="userMenus"> 마 이 페 이 지 </li>
-      <li class="userMenus"> 나 들 이 백 과 </li>
-      <li class="userMenus"> 게 시 판 </li>
-      <li class="userMenus"> 일 정 작 성 </li>
-   </ul>
+	<div class="notificationContainer" style="display: none; top : 12% ; right : 3% ;" id="chatRoomContainer">
+		<div id="notificationTitle">채팅방</div>
+		<div class="col-md-15 bg-white">
+			<ul class="friend-list" id="chatFriendList">
+				<!--             여기에 채팅방 리스트가 출력됨. -->
+			</ul>
+		</div>
+	</div>
+	
+	<div class="notificationContainer" style="display: none; top : 12% ; right : 3% ;" id="noticeContainer">
+		<div id="notificationTitle">알림</div>
+		<div class="col-md-15 bg-white">
+			<ul class="friend-list" id="noticeFriendList">
+				<!--             여기에 채팅방 리스트가 출력됨. -->
+			</ul>
+		</div>
+	</div>	
+	
+	
+	
 </div>
 <div>
 

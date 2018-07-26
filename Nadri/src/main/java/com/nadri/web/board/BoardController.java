@@ -211,7 +211,7 @@ public class BoardController {
 	
 	@RequestMapping(value="listBoard")
 	public String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception{
-		System.out.println("/board/getBoardList : GET / POST");
+		System.out.println("/board/getBoardList : GET / POST") ;
 		
 		if(search.getCurrentPage()==0 ){
 			search.setCurrentPage(0);
