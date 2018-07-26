@@ -1,6 +1,7 @@
 package com.nadri.web.schedule;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -114,4 +115,20 @@ public class ScheduleController {
 		return "forward:/schedule/getSchedule.jsp";
 	}
 	
+	//마이페이지 내 일정을 보기 위한 메서드 입니다.
+	@RequestMapping(value="getMyScheduleList")
+	public String getMyScheduleList(Model model, HttpSession session) throws Exception{
+		System.out.println("/schedule/getMyScheduleList : GET / POST");
+		
+		User user = (User)session.getAttribute("user");
+		
+		if(user==null) { //세션이 끊겼을 경우
+			return "redirect:/";
+		}
+		List<Schedule> list = scheduleService.getMyScheduleList(user.getUserId());
+		
+		model.addAttribute("list", list);
+		
+		return "forward:/user/mypageScheduleList.jsp";
+	}
 }

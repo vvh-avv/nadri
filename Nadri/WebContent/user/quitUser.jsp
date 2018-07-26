@@ -59,7 +59,6 @@
 			alert("패스워드를 반드시 입력하셔야 합니다.");
 			return;
 		}
-			
 		$("form").attr("method" , "POST").attr("action" , "/user/quitUser").submit();
 	}
 	</script>

@@ -1,0 +1,4 @@
+{
+	"chatList" : 
+				[
+{"protocol":"0", "sender_id" : "user01", "receiver_id" : "user02", "message" : "aaa" , "sending_date" : "2018-07-04 13:07:00" ,"flag":"Y"}

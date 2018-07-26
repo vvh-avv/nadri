@@ -47,16 +47,6 @@ public class BoardDaoImpl implements BoardDao{
 	public void deleteBoard(int boardNo) throws Exception {
 		sqlSession.delete("BoardMapper.deleteBoard", boardNo);
 	}
-
-	//마이페이지 작성한 글보기
-	public List<Board> getMyBoardList(String userId) throws Exception{
-		return sqlSession.selectList("BoardMapper.getMyBoardList", userId);
-	}
-	
-	//메인화면 추천게시물
-	public List<Board> getRecomBoard(Search search) throws Exception{
-		return sqlSession.selectList("BoardMapper.getRecomBoard", search);
-	}
 	
 	//좋아요
 	public int getLikeCount(int boardNo) throws Exception{
@@ -85,5 +75,33 @@ public class BoardDaoImpl implements BoardDao{
 		map.put("userId", userId);
 		
 		sqlSession.delete("BoardMapper.deleteLike", map);
+	}
+
+	//마이페이지 작성한 글보기
+	public List<Board> getMyBoardList(String userId) throws Exception{
+		return sqlSession.selectList("BoardMapper.getMyBoardList", userId);
+	}
+
+	public int checkBoard(int boardCode, String userId) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardCode", boardCode);
+		map.put("userId", userId);
+		
+		return sqlSession.selectOne("BoardMapper.checkBoard", map);
+	}
+	
+	//메인화면 추천게시물
+	public List<Board> getRecomBoard(Search search) throws Exception{
+		return sqlSession.selectList("BoardMapper.getRecomBoard", search);
+	}
+
+	//보상
+	@Override
+	public int getMyCount(String keyword, String userId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("keyword", keyword);
+		map.put("userId", userId);
+		
+		return sqlSession.selectOne("BoardMapper.getMyCount", map);
 	}
 }

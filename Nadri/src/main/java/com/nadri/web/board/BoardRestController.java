@@ -1,7 +1,9 @@
 package com.nadri.web.board;
 
+import java.io.File;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
 import com.nadri.service.comment.CommentService;
 import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Comment;
+import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendService;
+import com.nadri.service.schedule.ScheduleService;
 import com.nadri.service.user.UserService;
 
 @RestController
@@ -43,17 +48,64 @@ public class BoardRestController {
 	@Qualifier("friendServiceImpl")
 	private FriendService friendService;
 	
+	@Autowired
+	@Qualifier("scheduleServiceImpl")
+	private ScheduleService scheduleService;
+	
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
+
+	@Value("#{imgpathProperties['board']}")
+	String imgPath;
 	
 	public BoardRestController() {
 		System.out.println(this.getClass());
 	}
 	
 	//게시물
+	@RequestMapping(value="json/addBoard", method=RequestMethod.POST) //일반 게시물 작성 //안드로이드용
+	public void addBoard( @RequestBody Board board ) throws Exception{
+		System.out.println("/board/json/addBoard : POST");
+		
+		boardService.addBoard(board);
+	}
+
+	@RequestMapping(value="json/addBoard/{scheduleNo}", method=RequestMethod.POST) //일정 게시물 작성
+	public void addBoard( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
+		System.out.println("/board/json/addBoard/{scheduleNo} : POST");
+		
+		Schedule schedule = scheduleService.getSchedule(scheduleNo);
+		User user = (User)session.getAttribute("user");
+		user = userService.getUser(user.getUserId());
+		
+		Board board = new Board();
+		board.setBoardTitle(schedule.getScheduleTitle());
+		board.setBoardContent(schedule.getScheduleDetail());
+		board.setBoardImg(schedule.getScheduleImg());
+		board.setOpenRange(schedule.getOpenRange());
+		board.setHashTag(schedule.getHashTag());
+		board.setUser(user);
+		board.setBoardCode(scheduleNo);
+		
+		boardService.addBoard(board);
+	}
+	
 	@RequestMapping(value="json/deleteBoard/{boardNo}", method=RequestMethod.POST)
-	public void deleteBoard( @PathVariable int boardNo ) throws Exception{
+	public void deleteBoard( @PathVariable int boardNo, HttpServletRequest request ) throws Exception{
 		System.out.println("/board/json/deleteBoard : POST");
+		
+		Board board = boardService.getBoard(boardNo);
+		
+		String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
+				
+		//업로드된 기존파일 삭제
+		if( board.getBoardImg().contains(",") ) {
+			for( String fileName : board.getBoardImg().split(",")) {
+				new File(uploadPath+fileName).delete();
+				System.out.println(fileName+" 삭제완료");
+			}
+		}
+		
 		boardService.deleteBoard(boardNo);
 	}
 	
@@ -89,6 +141,15 @@ public class BoardRestController {
 		}
 
 		return list;
+	}
+	
+	@RequestMapping(value="json/checkBoard/{boardCode}", method=RequestMethod.POST)
+	public int checkBoard( @PathVariable int boardCode, HttpSession session ) throws Exception{ //작성한 일정이 포스팅이 이미 됐는지 체크
+		System.out.println("/board/json/checkBoard : POST");
+		
+		User user = (User)session.getAttribute("user");
+		
+		return boardService.checkBoard(boardCode, user.getUserId());
 	}
 	
 	//좋아요

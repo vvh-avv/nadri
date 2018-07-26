@@ -64,14 +64,15 @@ public class ChatRoomDaoImpl implements ChatRoomDao {
 					}
 				}
 			}
-			
-			if( list.get(list.size() - 1).getChatRoomNo() == list.get(list.size() - 2).getChatRoomNo()  ) {
-				if( list.get( list.size() - 1 ).getUserProfileImg().split(",").length >= 4 ) {
-					list.remove( list.size() - 2 ) ;
-					
-				} else {
-					list.get( list.size() - 1 ).setUserProfileImg( list.get( list.size() - 1 ).getUserProfileImg() + "," + list.get( list.size() - 2 ).getUserProfileImg() ) ;
-					list.remove( list.size() - 2 ) ;
+			if( list.size() >= 3 ) {
+				if( list.get(list.size() - 1).getChatRoomNo() == list.get(list.size() - 2).getChatRoomNo()  ) {
+					if( list.get( list.size() - 1 ).getUserProfileImg().split(",").length >= 4 ) {
+						list.remove( list.size() - 2 ) ;
+						
+					} else {
+						list.get( list.size() - 1 ).setUserProfileImg( list.get( list.size() - 1 ).getUserProfileImg() + "," + list.get( list.size() - 2 ).getUserProfileImg() ) ;
+						list.remove( list.size() - 2 ) ;
+					}
 				}
 			}
 			

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>작성한 글 보기</title>
+<title>너, 나들이</title>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -25,8 +25,6 @@
 <!-- toolbar.js CDN -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
-<!-- board.js -->
-<script src="/javascript/board.js"></script>
 
 <style>
 	.container{
@@ -80,9 +78,25 @@ $(function(){
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
 	
+	<!-- 서브메뉴 노출 -->
+	<div class="col-sm-2" style="margin-left:3%">
+	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
+	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
+	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
+	  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
+	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
+	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
+	  <a href="#">장소 바구니</a><br/><br/>
+	  
+	  	<br/><br/><br/><br/><br/><br/><br/><br/>
+  		<a href="/user/logout">로그아웃</a><br/><br/>
+	
+	</div>
+	
 	<div class="container">
-		<!-- 서브메뉴 노출 -->
-		<div class="col-md-2">서브메뉴</div>
+		
+		
 		
 		<!-- 작성한 글 리스트 뜨는 부분 -->
 		<div class="col-md-10">
@@ -91,10 +105,10 @@ $(function(){
 				<article class="${board.boardNo}">
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
-						<c:if test="${board.boardImg==''}">
+						<c:if test="${board.boardImg==null}">
 							<img src="http://placehold.it/250X250" class="img-thumbnail">
 						</c:if>
-						<c:if test="${board.boardImg!=''}">
+						<c:if test="${board.boardImg!=null}">
 							<c:if test="${(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg.split(',')[0]}" class="img-thumbnail"> </c:if>
 							<c:if test="${!(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg}" class="img-thumbnail"> </c:if>
 						</c:if>

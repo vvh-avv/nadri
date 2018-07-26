@@ -413,7 +413,7 @@ if (userId != null) {
 </style>
 <div class="topbar">
 
-   <a href="/index.jsp"> 
+   <a href="/"> 
    <img src="/images/common/title_colored.png" class="title">
    </a>
    

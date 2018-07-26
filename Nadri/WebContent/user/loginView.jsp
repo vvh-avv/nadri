@@ -14,6 +14,9 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
+<script src="/javascript/toolbar.js"></script>
+<link rel="stylesheet" href="/css/toolbar.css">
+
 <!-- 카카오 로그인 -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
@@ -27,8 +30,7 @@
 <!-- 네이버 로그인 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+
 
 <style>
 	body > div.comtainer{
@@ -70,8 +72,16 @@
 			success : function(JSONData, status){
 				
 				if(JSONData.userId != "none"){
-					
+					var userStatus = JSONData.userStatus;
 					if( JSONData.password == $("#password").val() ){
+						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+					}else if(userStatus == '1'){
+						alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						self.location = "/index.jsp";
+					}else if(userStatus == '2'){
+						alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						self.location = "/index.jsp";
+					}else if(userStatus == '0'){
 						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else{
 						$("#message").text("비밀번호를 다시 확인하세요").css("color", "red");
@@ -90,13 +100,24 @@
 	$(function(){
 		$("#userId").focus();
 
+	
 		$("#logInButton").on("click", function(){
 			fncLogin();
 		});
+		
 
 		$("a.btn.btn-primary.btn").on("click", function(){
 			self.location="/user/addUser";
 		});	
+	});
+	
+	//enter key로 로그인
+	$(function(){
+		$("#userId, #password").keydown(function(e){
+			if(e.keyCode ==13){
+				fncLogin();
+			}
+		});
 	});
 
 	
@@ -311,6 +332,9 @@
 		   		//설정정보를 초기화하고 연동 준비
 				naverLogin.init();
 			})
+		  
+		  
+	
 	
 </script>
 
