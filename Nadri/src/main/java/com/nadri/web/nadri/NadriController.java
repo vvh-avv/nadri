@@ -110,7 +110,7 @@ public class NadriController {
 		return "/indexReal.jsp";
 	}
 	
-/*	@PostConstruct*/
+	@PostConstruct
 	@Scheduled(cron="0 0,30 * * * *")
 	@RequestMapping(value="postSend.do", method={RequestMethod.GET, RequestMethod.POST})
 	public void postSend() throws Exception {

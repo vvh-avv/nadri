@@ -25,7 +25,6 @@
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-
 <link rel="stylesheet" type="text/css"
 	href="/css/fonts/kirang/fonts.css" />
 <link rel="stylesheet" type="text/css" href="/css/fonts/JuA/fonts.css" />
@@ -104,12 +103,17 @@
 						<span class="glyphicon glyphicon-ice-lolly"
 							style="color: #9E9E9E;" id="jolly-icon"></span>
 					</div>
+					
+					<div class="middle-section">
+						<div class=""></div>
+					</div>
+					
 					<div class="side-section">
-						<span class="glyphicon glyphicon-chevron-left"></span> <span
-							class="glyphicon glyphicon-search"></span> <span
-							class="glyphicon glyphicon-comment"></span> <span
-							class="glyphicon glyphicon-user"></span> <span
-							class="glyphicon glyphicon-user"></span>
+						<span class="glyphicon glyphicon-chevron-left top-icons"></span> 
+						<span class="glyphicon glyphicon-search top-icons"></span> 
+						<span class="glyphicon glyphicon-comment top-icons"></span> 
+						<span class="glyphicon glyphicon-user top-icons"></span> 
+						<span class="glyphicon glyphicon-log-in top-icons"></span>
 					</div>
 				</div>
 			</div>
