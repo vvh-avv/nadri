@@ -292,6 +292,10 @@
    .swal-text{
    	  text-align: center;
    }
+   .rewardModal
+   /*,.swal-overlay*/{
+   	  background-image: url("/images/board/reward.gif");
+   	}
 </style>
 
 <script>
@@ -305,6 +309,30 @@ function refreshDate(){
 }
 
 $(function(){
+	//보상 (게시물)
+	if( ${myBoardCnt}==5 ){
+		swal({
+			title: "축하합니다!",
+			text: "게시물 5회작성 미션을 클리어 하셨습니다!",
+			button: false,
+			className: "rewardModal"
+		});
+	}else if( ${myBoardCnt}==10 ){
+		swal({
+			title: "축하합니다!",
+			text: "게시물 10회작성 미션을 클리어 하셨습니다!",
+			button: false,
+			className: "rewardModal"
+		});
+	}else if( ${myBoardCnt}==15 ){
+		swal({
+			title: "축하합니다!",
+			text: "게시물 15회작성 미션을 클리어 하셨습니다!",
+			button: false,
+			className: "rewardModal"
+		});
+	}
+	
 	//마지막으로 작성된 댓글시간 출력을 함수 바로 실행
 	refreshDate();
 	//그리고 10초 뒤 또 실행하도록 설정
@@ -328,9 +356,10 @@ $(function(){
 		}
 		
 		//*2.무한스크롤
-		if (maxHeight <= currentScroll) { //+50을 한 이유는 사용자가 반드시 최하단이 아니라 하단보다 조금 위에 위치했더라도 데이터를 불러올 수 있도록 하기 위함
+		if (maxHeight <= currentScroll) { //+10을 한 이유는 사용자가 반드시 최하단이 아니라 하단보다 조금 위에 위치했더라도 데이터를 불러올 수 있도록 하기 위함
 			console.log("무한스크롤~");
-		
+			$('#boardLoading').css('display','block');
+			
 			$.ajax({
 				url : "/board/json/getBoardList/"+$("#currentPage").val(),
 	            method : "POST",
@@ -340,9 +369,10 @@ $(function(){
 				},
 	            success : function(data, status){
 	            	if(data==""){
-	            		//alert("더 불러올 데이터가 없습니다.");
+	    				$('#boardLoading').remove();
 	            		swal ( "확인" ,  "더 불러올 데이터가 존재하지 않습니다." ,  "error" )
-	            	}else{
+	            	}else{;
+	    				$('#boardLoading').css('display','none');
 		            	$("#currentPage").val( Number($("#currentPage").val())+1 ); //현재페이지 증가 +1
 		            	
 		            	var tag = "";
@@ -350,7 +380,7 @@ $(function(){
 		            		var boardNo = this.boardNo;
 		            		tag += "<span id='moreContent"+boardNo+"'>"
 		            			+"<span class='moreDetail"+boardNo+"' id='inquireBoard' name="+boardNo+" data-toggle='modal' data-target='#inquireModal'>게시물신고</span><br>";
-		            			if(this.boardCode!=0 && this.user.userId!=${sessionScope.user.userId}){
+		            			if(this.boardCode!=0 && this.user.userId!='${sessionScope.user.userId}'){
 		            				tag += "<span class='moreDetail"+boardNo+"' id='copySchedule'>일정 복사하기</span>";
 		            			}
 			            			tag += "</span>"
@@ -548,8 +578,32 @@ $(function(){
          $.ajax({
             url : "/board/json/addLike/"+num,
             method : "POST",
-            success : function(data, status){
-               $("#likePrint"+num).text("좋아요 "+data+"개");
+            success : function(map, status){
+            	//보상 (좋아요)
+            	if( map.myLikeCnt==5 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 5회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==10 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 10회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==15 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 15회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}
+            	
+               $("#likePrint"+num).text("좋아요 "+map.likeCnt+"개");
             }
          })
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
@@ -617,19 +671,44 @@ $(function(){
 						boardNo : num,
 						commentContent : $(this).val()
 					}),
-				   success : function(comment){
-					   var addTag = ccTag(comment.commentContent);
-					   console.log(addTag);
+				   success : function(map){
+					 	//보상 (댓글)
+						if( map.myCommCnt==5 ){
+							swal({
+								title: "축하합니다!",
+								text: "댓글 5회작성 미션을 클리어 하셨습니다!",
+								button: false,
+								className: "rewardModal"
+							});
+						}else if( map.myCommCnt==10 ){
+							swal({
+								title: "축하합니다!",
+								text: "댓글 10회작성 미션을 클리어 하셨습니다!",
+								button: false,
+								className: "rewardModal"
+							});
+						}else if( map.myCommCnt==15 ){
+							swal({
+								title: "축하합니다!",
+								text: "댓글 15회작성 미션을 클리어 하셨습니다!",
+								button: false,
+								className: "rewardModal"
+							});
+						}
+					 
+					   console.log(map.returnFriend); //태그한 친구 확인
 					   
+					   var addTag = ccTag(map.comment.commentContent);
+					   //댓글 개수 변경
 					   var cnt = $("#commPrint"+num).text().replace(/[^0-9]/g,"");
 					   $("#commPrint"+num).text("댓글 "+(Number(cnt)+1)+"개");
 					   //댓글 리스트 추가
-					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
-							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
-							 	+"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
+					   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+map.comment.user.profileImg+","+map.comment.user.userName+","+map.comment.user.userId+","+map.comment.user.introduce+"'> <img src='/images/profile/"+map.comment.user.profileImg+"' class='img-circle'/> "+map.comment.user.userId+" </span>";
+							 str += "<span id='commListContent'>"+addTag+"</span><span id='commListDelete' class='"+map.comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+							 	+"<span id='commListInquire' id='inquireUser' name='"+map.comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 					   $("#commLastTime"+num).prev().append(str);
 						//댓글마지막 시간도 실행
-						var timeStampType = comment.commentTime;
+						var timeStampType = map.comment.commentTime;
 						var dateType = new Date(timeStampType);
 						var lastTime = formatDate2(dateType);
 						$("#commLastTime"+num).attr("class", lastTime);
@@ -1028,7 +1107,12 @@ $(function(){
             <div class="flexslider">
                <ul class="slides">
                   <c:forTokens var="images" items="${board.boardImg}" delims=",">
-                      <li><img src="/images/board/posts/${images}"/></li>
+                  	  <c:if test="${board.boardCode==0}">
+                  	  	<li><img src="/images/board/posts/${images}"/></li>
+                  	  </c:if>
+                  	  <c:if test="${board.boardCode!=0}">
+                  	  	<li><img src="/images/schedule/${images}"/></li>
+                  	  </c:if>
                   </c:forTokens>
                </ul>
             </div>
@@ -1173,7 +1257,11 @@ $(function(){
 	      </div>
 	   </div>
 	   <!-- 신고 Modal content 끝 -->   
-   
+	   
+	<div style="display:none" id="boardLoading">
+		<img src="/images/board/loading3.gif" style="margin-left:40%;">
+	</div>
+
 </body>
 
 </html>

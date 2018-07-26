@@ -284,6 +284,10 @@
    .swal-text{
    	  text-align: center;
    }
+   .rewardModal
+   /*,.swal-overlay*/{
+   	  background-image: url("/images/board/reward.gif");
+   	}
 </style>
 
 <script>
@@ -399,8 +403,32 @@ $(function(){
          $.ajax({
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
             method : "POST",
-            success : function(data, status){
-               $("#likePrint").text("좋아요 "+data+"개");
+            success : function(map, status){
+            	//보상 (좋아요)
+            	if( map.myLikeCnt==5 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 5회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==10 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 10회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==15 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 15회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}
+            	
+               $("#likePrint").text("좋아요 "+map.likeCnt+"개");
             }
          })
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
@@ -466,20 +494,45 @@ $(function(){
 							boardNo : $("#boardNo").val().trim(),
 							commentContent : $(this).val()
 						}),
-					   success : function(comment){
-						   var addTag = ccTag(comment.commentContent);
+					   success : function(map){
+						    //보상 (댓글)
+							if( map.myCommCnt==5 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 5회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}else if( map.myCommCnt==10 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 10회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}else if( map.myCommCnt==15 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 15회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}
+						    
+						   console.log(map.returnFriend); //태그한 친구 확인
 						   
+						   var addTag = ccTag(map.comment.commentContent);
 						   //댓글 개수 변경
 						   var cnt = $("#commPrint").text().replace(/[^0-9]/g,"");
 						   $("#commPrint").text("댓글 "+(Number(cnt)+1)+"개");
 						   //댓글 리스트 추가
-						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
+						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+map.comment.user.profileImg+","+map.comment.user.userName+","+map.comment.user.userId+","+map.comment.user.introduce+"'> <img src='/images/profile/"+map.comment.user.profileImg+"' class='img-circle'/> "+map.comment.user.userId+" </span>";
 								 str += "<span id='commListContent'>"+addTag+"</span>"
-								        +"<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
-								        +"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
+								        +"<span id='commListDelete' class='"+map.comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+								        +"<span id='commListInquire' id='inquireUser' name='"+map.comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 						   $("#commListAll").append(str);
 							//댓글마지막 시간도 실행
-							var timeStampType = comment.commentTime;
+							var timeStampType = map.comment.commentTime;
 							var dateType = new Date(timeStampType);
 							var lastTime = formatDate2(dateType);
 							$("#commLastTime").attr("class", lastTime);

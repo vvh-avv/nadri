@@ -63,10 +63,8 @@ public class ScheduleController {
 		// 세션에서 userId 를 가져옵니다!
 		String userId=((User) session.getAttribute("user")).getUserId();
 		
-		search.setSearchKeyword(userId);
-		
 		// model에 담습니다!
-		model.addAttribute("cart", cartService.getSpotCartList(search));
+		model.addAttribute("cart", cartService.getSpotCartList(userId));
 		
 		return "forward:/schedule/addSchedule.jsp";
 	}

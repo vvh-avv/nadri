@@ -22,7 +22,7 @@ public class BoardServiceTest {
 	@Qualifier("boardServiceImpl")
 	private BoardServiceImpl boardService;
 	
-	@Test
+	//@Test
 	public void addBoard() throws Exception{
 		Board board = new Board();
 		User user = new User();
@@ -35,7 +35,7 @@ public class BoardServiceTest {
 		board.setBoardImg("test.jpg");
 		board.setOpenRange("0");
 		board.setHashTag("#test");
-		board.setBoardCode("1");
+		board.setBoardCode(1);
 		
 		boardService.addBoard(board);
 		System.out.println("testAddBoard() board : "+board);

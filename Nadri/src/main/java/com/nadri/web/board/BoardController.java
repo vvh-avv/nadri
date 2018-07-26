@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nadri.common.Search;
 import com.nadri.service.board.BoardService;
@@ -68,7 +69,8 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.POST)
 	public String addBoard(@ModelAttribute("board") Board board, @RequestParam("file") MultipartFile[] file,
-									MultipartHttpServletRequest request, Model model) throws Exception{
+									MultipartHttpServletRequest request, Model model,
+									RedirectAttributes redirectAttributes) throws Exception{
 		System.out.println("/board/addBoard : POST");
 		
 		String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
@@ -112,8 +114,8 @@ public class BoardController {
 		
 		boardService.addBoard(board);
 		
-		//보상기능에 필요 //생각을 더 해보는걸로 ..
-		//model.addAttribute("boardCnt", boardService.getMyCount("board", board.getUser().getUserId()));
+		//보상기능에 필요
+		redirectAttributes.addAttribute("myBoardCnt", boardService.getMyCount("board", board.getUser().getUserId()));
 		
 		return "redirect:/board/listBoard";
 	}
@@ -210,37 +212,43 @@ public class BoardController {
 
 		Board board = boardService.getBoard(boardNo);
 		
-		if(board==null) { //해당 게시물이 존재하지 않을 때
+		if( board==null ) { //해당 게시물이 존재하지 않을 때
 			return "forward:/mainError.jsp";
 		}
-		
-		User user = userService.getUser(board.getUser().getUserId());
-		board.setUser(user);
+		System.out.println("@"+board.getOpenRange());
+		System.out.println("@"+board.getUser().getUserId());
+		if( board.getOpenRange()=="2" && board.getUser().getUserId()==((User)session.getAttribute("user")).getUserId() ) { //비공개 게시물에 본인이 아닐 경우
+			User user = userService.getUser(board.getUser().getUserId());
+			board.setUser(user);
 
-		if(session.getAttribute("user")!=null) {
-			int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
-			model.addAttribute("likeFlag", likeFlag);
-		}
-		
-		//댓글이 있을 때만 수행
-		if( board.getCommCnt()>0 ) {
-			List<Comment> comment = commentService.getCommentList(boardNo);
-			for( int i=0; i<comment.size(); i++) {
-				comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+			if(session.getAttribute("user")!=null) {
+				int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
+				model.addAttribute("likeFlag", likeFlag);
 			}
-			board.setComment(comment);
 			
-			String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
-			board.setCommLastTime(commLastTime);
+			//댓글이 있을 때만 수행
+			if( board.getCommCnt()>0 ) {
+				List<Comment> comment = commentService.getCommentList(boardNo);
+				for( int i=0; i<comment.size(); i++) {
+					comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+				}
+				board.setComment(comment);
+				
+				String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+				board.setCommLastTime(commLastTime);
+			}
+			
+			model.addAttribute("board", board);
+			
+			return "forward:/board/getBoard.jsp";
+		}else {
+			return "forward:/lockError.jsp";
 		}
-		
-		model.addAttribute("board", board);
-		
-		return "forward:/board/getBoard.jsp";
 	}
 	
 	@RequestMapping(value="listBoard")
-	public String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session) throws Exception{
+	public String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session,
+										@RequestParam(value="myBoardCnt", defaultValue="0") int boardCnt) throws Exception{
 		System.out.println("/board/getBoardList : GET / POST");
 		
 		if(search.getCurrentPage()==0 ){
@@ -248,11 +256,14 @@ public class BoardController {
 		}
 		search.setPageSize(pageSize);
 		
+		String userId="";
 		if(session.getAttribute("user")!=null) { //비회원0, 회원1
 			search.setMemberFlag(1);
+			userId = ((User)session.getAttribute("user")).getUserId();
 		}
 		
-		List<Board> list = boardService.getBoardList(search);
+		List<Board> list = boardService.getBoardList(search, userId);
+		
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
 			//회원일 경우 session 으로 좋아요 여부 가져오기
@@ -273,6 +284,8 @@ public class BoardController {
 		
 		model.addAttribute("list", list);
 		model.addAttribute("search", search);
+		//보상기능에 필요
+		model.addAttribute("myBoardCnt", boardCnt);
 		
 		return "forward:/board/listBoard.jsp";
 	}

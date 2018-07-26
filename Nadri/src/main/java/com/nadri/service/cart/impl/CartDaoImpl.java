@@ -35,8 +35,8 @@ public class CartDaoImpl implements CartDao{
 
 	// 2. spot Cart를 가져오는 메서드
 	@Override
-	public List<Cart> getSpotCartList(Search search) throws Exception {
-		return sqlSession.selectList("CartMapper.getSpotCartList", search);
+	public List<Cart> getSpotCartList(String userId) throws Exception {
+		return sqlSession.selectList("CartMapper.getSpotCartList", userId);
 	}
 
 }

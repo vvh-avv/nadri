@@ -26,7 +26,7 @@ public class FriendRestController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	
-	
+	 
 	@Value("#{commonProperties['pageUnit']}")
 	// @Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;

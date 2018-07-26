@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.Spot;
+import com.nadri.service.domain.User;
 import com.nadri.service.spot.SpotService;
 
 //==> 장소와 관련된 메서드 Controller
@@ -191,5 +194,5 @@ public class SpotController {
         
         return "forward:/spot/getFestival.jsp";
 	}
-		
+	
 }

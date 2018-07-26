@@ -44,8 +44,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Board> getBoardList(Search search) throws Exception {		
-		List<Board> list = boardDao.getBoardList(search);
+	public List<Board> getBoardList(Search search, String userId) throws Exception {		
+		List<Board> list = boardDao.getBoardList(search, userId);
 		
 		return list;
 	}
@@ -93,10 +93,23 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getRecomBoard(search);
 	}
 	
+	//메인화면 추천게시물 (회원/친구좋아요)
+	@Override
+	public List<Board> getRecomUserLike(Search search, String userId) throws Exception {
+		return boardDao.getRecomUserLike(search, userId);
+	}
+
+	//메인화면 추천게시물 (회원/작성글)
+	@Override
+	public List<Board> getRecomUserBoard(Search search, String userId) throws Exception {
+		return boardDao.getRecomUserBoard(search, userId);
+	}
+	
 	//보상
 	@Override
 	public int getMyCount(String keyword, String userId) throws Exception {
 		return boardDao.getMyCount(keyword, userId);
 	}
+
 
 }
