@@ -88,4 +88,9 @@ public class SpotDaoImpl implements SpotDao{
 		return sqlSession.selectOne("SpotMapper.getTotalSpot");
 	}
 	
+	// 8. 검색한 장소를 가져옵니다.
+	public List<Spot> getSearchSpotList(Search search) throws Exception {
+		return sqlSession.selectList("SpotMapper.getSearchSpotList", search);
+	}
+	
 }

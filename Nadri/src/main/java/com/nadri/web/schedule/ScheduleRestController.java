@@ -28,9 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.User;
 import com.nadri.service.domain.WayPoint;
@@ -117,112 +115,113 @@ public class ScheduleRestController {
 		return map;
 	}
 	
-	//게시판에서 일정복사 눌렀을 때 실행 할 메서드
-	@RequestMapping( value="checkSchedule/{scheduleNo}", method=RequestMethod.POST)
-	public int checkSchedule( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
-		System.out.println("/restschedule/checkSchedule : POST");
-		
-		User user = (User)session.getAttribute("user");
-		String scheduleImg = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
-		System.out.println("@@@"+scheduleImg);
-		
-		return scheduleService.checkSchedule(scheduleImg, user.getUserId());
-	}
+	 //게시판에서 일정복사 눌렀을 때 실행 할 메서드
+	   @RequestMapping( value="checkSchedule/{scheduleNo}", method=RequestMethod.POST)
+	   public int checkSchedule( @PathVariable int scheduleNo, HttpSession session ) throws Exception{
+	      System.out.println("/restschedule/checkSchedule : POST");
+	      
+	      User user = (User)session.getAttribute("user");
+	      String scheduleImg = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
+	      System.out.println("@@@"+scheduleImg);
+	      
+	      return scheduleService.checkSchedule(scheduleImg, user.getUserId());
+	   }
+	   
+	   //게시판에서 일정복사 요청이 들어왔을 때 실행 할 메서드
+	   @RequestMapping( value="addSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
+	   public void addSchedule( @PathVariable int scheduleNo, HttpServletRequest request ) throws Exception{
+	      System.out.println("/restschedule/addSchedule : POST");
+	      
+	      User user = (User)request.getSession().getAttribute("user");
+	      Schedule schedule = scheduleService.getSchedule(scheduleNo);
+	      schedule.setUserId(user.getUserId());
+	      if( schedule.getTransportationCode()==null ) {
+	         schedule.setTransportationCode("0");
+	      }
+	      
+	      //스케줄이미지 복사
+	      System.out.println("@1 이미지 복사 시작");
+	      String fileName = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
+	      
+	      System.out.println("@2 새로운 이미지 이름 : " + fileName);
+	      //Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
+	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName);
+	      
+	      System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
+	      //Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
+	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg());
+	      System.out.println("@4 원본 이미지 경로 : " + originFilePath);
+	      Files.copy(originFilePath, newFilePath);
+	      System.out.println("@5 이미지 복사 성공");
+
+	      schedule.setScheduleImg( fileName );
+	      
+	      /*File newFile = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+	      MultipartFile multipartFile = (MultipartFile) newFile;
+	      multipartFile.transferTo(newFile);*/
+
+	      scheduleService.copySchedule(schedule);
+	      
+	      //경유지 복사 후 추가
+	      List<WayPoint> waypoint = scheduleService.getWayPoint(scheduleNo);
+	      for(int i=0; i<waypoint.size(); i++) {
+	         waypoint.get(i).setScheduleNo(schedule.getScheduleNo());
+	         scheduleService.addWayPoint(waypoint.get(i));
+	      }
+	   }
+
+	   //일정을 삭제하는 메서드
+	   @RequestMapping( value="deleteSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
+	   public void deleteSchedule( @PathVariable int scheduleNo ) throws Exception{
+	      System.out.println("/restschedule/deleteSchedule : POST");
+	      
+	      scheduleService.deleteSchedule(scheduleNo);
+	   }
+	   
+	   //단축 URL 생성 메서드
+	   @RequestMapping( value="shortURL/{scheduleNo}", method=RequestMethod.POST )
+	   public void shortURL( @PathVariable int scheduleNo ) throws Exception{
+	      System.out.println("/restschedule/shortURL : POST");
+	      
+	      String shortURL = "";
+	      
+	      String clientId = "5AfhNVnshdE7BfTk171x";//애플리케이션 클라이언트 아이디값";
+	        String clientSecret = "cPhvir9bp7";//애플리케이션 클라이언트 시크릿값";
+	        try {
+	            String text = "http://localhost:8080/schedule/getSchedule?scheduleNo="+scheduleNo;
+	            String apiURL = "https://openapi.naver.com/v1/util/shorturl?url=" + text;
+	            System.out.println("*"+apiURL);
+	            URL url = new URL(apiURL);
+	            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+	            con.setRequestMethod("GET");
+	            con.setRequestProperty("X-Naver-Client-Id", clientId);
+	            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+	            int responseCode = con.getResponseCode();
+	            BufferedReader br;
+	            if(responseCode==200) { // 정상 호출
+	                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	            } else {  // 에러 발생
+	                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+	            }
+	            String inputLine;
+	            StringBuffer response = new StringBuffer();
+	            while ((inputLine = br.readLine()) != null) {
+	                response.append(inputLine);
+	            }
+	            br.close();
+	            
+	            //System.out.println("@넘어온 값 : "+response.toString());
+	            
+	            JSONObject jsonObj = (JSONObject)JSONValue.parse(response.toString());
+	            shortURL = (String) ((JSONObject)jsonObj.get("result")).get("url");
+	            
+	            //클립보드 복사
+	            StringSelection stringSelection = new StringSelection(shortURL);
+	            Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+	            clpbrd.setContents(stringSelection, null);
+	        } catch (Exception e) {
+	            System.out.println(e);
+	        }
+	   }
 	
-	//게시판에서 일정복사 요청이 들어왔을 때 실행 할 메서드
-	@RequestMapping( value="addSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
-	public void addSchedule( @PathVariable int scheduleNo, HttpServletRequest request ) throws Exception{
-		System.out.println("/restschedule/addSchedule : POST");
-		
-		User user = (User)request.getSession().getAttribute("user");
-		Schedule schedule = scheduleService.getSchedule(scheduleNo);
-		schedule.setUserId(user.getUserId());
-		if( schedule.getTransportationCode()==null ) {
-			schedule.setTransportationCode("0");
-		}
-		
-		//스케줄이미지 복사
-		System.out.println("@1 이미지 복사 시작");
-		String fileName = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
-		
-		System.out.println("@2 새로운 이미지 이름 : " + fileName);
-		//Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
-		Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName);
-		
-		System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
-		//Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
-		Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg());
-		System.out.println("@4 원본 이미지 경로 : " + originFilePath);
-		Files.copy(originFilePath, newFilePath);
-		System.out.println("@5 이미지 복사 성공");
-
-		schedule.setScheduleImg( fileName );
-		
-		/*File newFile = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
-		MultipartFile multipartFile = (MultipartFile) newFile;
-		multipartFile.transferTo(newFile);*/
-
-		scheduleService.copySchedule(schedule);
-		
-		//경유지 복사 후 추가
-		List<WayPoint> waypoint = scheduleService.getWayPoint(scheduleNo);
-		for(int i=0; i<waypoint.size(); i++) {
-			waypoint.get(i).setScheduleNo(schedule.getScheduleNo());
-			scheduleService.addWayPoint(waypoint.get(i));
-		}
-	}
-
-	//일정을 삭제하는 메서드
-	@RequestMapping( value="deleteSchedule/{scheduleNo}",  method=RequestMethod.POST ) 
-	public void deleteSchedule( @PathVariable int scheduleNo ) throws Exception{
-		System.out.println("/restschedule/deleteSchedule : POST");
-		
-		scheduleService.deleteSchedule(scheduleNo);
-	}
-	
-	//단축 URL 생성 메서드
-	@RequestMapping( value="shortURL/{scheduleNo}", method=RequestMethod.POST )
-	public void shortURL( @PathVariable int scheduleNo ) throws Exception{
-		System.out.println("/restschedule/shortURL : POST");
-		
-		String shortURL = "";
-		
-		String clientId = "5AfhNVnshdE7BfTk171x";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "cPhvir9bp7";//애플리케이션 클라이언트 시크릿값";
-        try {
-            String text = "http://localhost:8080/schedule/getSchedule?scheduleNo="+scheduleNo;
-            String apiURL = "https://openapi.naver.com/v1/util/shorturl?url=" + text;
-            System.out.println("*"+apiURL);
-            URL url = new URL(apiURL);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("X-Naver-Client-Id", clientId);
-            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
-            int responseCode = con.getResponseCode();
-            BufferedReader br;
-            if(responseCode==200) { // 정상 호출
-                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            } else {  // 에러 발생
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-            }
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            br.close();
-            
-            //System.out.println("@넘어온 값 : "+response.toString());
-            
-            JSONObject jsonObj = (JSONObject)JSONValue.parse(response.toString());
-            shortURL = (String) ((JSONObject)jsonObj.get("result")).get("url");
-            
-            //클립보드 복사
-            StringSelection stringSelection = new StringSelection(shortURL);
-            Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clpbrd.setContents(stringSelection, null);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-	}
 }
