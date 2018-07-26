@@ -1,15 +1,15 @@
-// Áö±Ý ±×³É °ª ´Ã·ÁÁÖ±âÀ§ÇÑ ÇÃ·¡±×
+// ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
 var a = 0;
 
 var map, markerW0, markerW1, markerW2, markerW3, markerW4, markerW5, markerW6, marker;
-var markerLayer_w0 = new Tmap.Layer.Markers("waypoint0");// ½ÃÀÛ ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w1 = new Tmap.Layer.Markers("waypoint1");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w2 = new Tmap.Layer.Markers("waypoint2");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w3 = new Tmap.Layer.Markers("waypoint3");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w4 = new Tmap.Layer.Markers("waypoint4");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w5 = new Tmap.Layer.Markers("waypoint5");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer_w6 = new Tmap.Layer.Markers("waypoint6");// °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î »ý¼º
-var markerLayer = new Tmap.Layer.Markers(); //¸¶Ä¿µéÀ» ¸¶Ä¿·¹ÀÌ¾î¿¡ ³Ö½À´Ï´Ù.
+var markerLayer_w0 = new Tmap.Layer.Markers("waypoint0");// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w1 = new Tmap.Layer.Markers("waypoint1");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w2 = new Tmap.Layer.Markers("waypoint2");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w3 = new Tmap.Layer.Markers("waypoint3");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w4 = new Tmap.Layer.Markers("waypoint4");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w5 = new Tmap.Layer.Markers("waypoint5");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer_w6 = new Tmap.Layer.Markers("waypoint6");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+var markerLayer = new Tmap.Layer.Markers(); //ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ì¾î¿¡ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
 var routeLayer = new Tmap.Layer.Vector("route");
 routeLayer.style ={
     fillColor:"#FF0000",
@@ -20,7 +20,7 @@ routeLayer.style ={
     pointRadius: 2,
     title: "this is a red line"	
 };
-var lonlat = new Tmap.LonLat(127.02758300000005,37.494541).transform("EPSG:4326", "EPSG:3857");// ±âº» À§Ä¡¸¦ ¼³Á¤ÇÏ´Â °÷ ÀÔ´Ï´Ù!
+var lonlat = new Tmap.LonLat(127.02758300000005,37.494541).transform("EPSG:4326", "EPSG:3857");// ï¿½âº» ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½Ô´Ï´ï¿½!
 var geolocation = navigator.geolocation;
 
 var icon_s = icon("s");
@@ -32,7 +32,7 @@ var icon_5 = icon("5");
 var icon_6 = icon("6");
 
 
-// ÀÌºÎºÐÀº ¸Ê¿¡ µé¾î°¥ Àü¿ªº¯¼öÀÔ´Ï´Ù! 
+// ï¿½ÌºÎºï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½î°¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½! 
 var start_x;
 var start_y;
 var end_x;
@@ -41,79 +41,80 @@ var end_y;
 var input_s = false;
 var input_e = false;
 
-// È¨ÆäÀÌÁö ·Îµù°ú µ¿½Ã¿¡ ¸ÊÀ» È£ÃâÇÒ ÇÔ¼ö
+// È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¿ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 function initTmap(){
     map = new Tmap.Map({
-        div:'map_div',
+        div:'map',
         width : "100%",
         height : "60%",
     });
     
-    map.ctrl_nav.disableZoomWheel(); //Áöµµ È®´ëÃà¼Ò ±â´ÉÀ» ¸·½À´Ï´Ù
+    map.ctrl_nav.disableZoomWheel(); //ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
 
     //map.events.register("click", map, onClick);
     
-    map.addLayer(markerLayer_w0); // ¸Ê¿¡ ½ÃÀÛ ¸¶Ä¿·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w1); // ¸Ê¿¡ ³¡ ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w2); // ¸Ê¿¡ °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w3); // ¸Ê¿¡ °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w4); // ¸Ê¿¡ °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w5); // ¸Ê¿¡ °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
-    map.addLayer(markerLayer_w6); // ¸Ê¿¡ °æÀ¯Áö ¸¶Ä¿ ·¹ÀÌ¾î Ãß°¡
+    map.addLayer(markerLayer_w0); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w1); // ï¿½Ê¿ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w2); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w3); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w4); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w5); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
+    map.addLayer(markerLayer_w6); // ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ß°ï¿½
     map.addLayer(markerLayer);
 
-    // HTML5ÀÇ geolocationÀ¸·Î »ç¿ëÇÒ ¼ö ÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
-    // ÇöÀç À§Ä¡ Á¤º¸¸¦ ¾ò¾î¿À´Â ¸Þ¼­µåÀÌ´Ù. »ç¿ëÀÚ°¡ Çã¿ëÀ» ÇÒ °æ¿ì ½ÇÇàµÈ´Ù.
-        // GeoLocationÀ» ÀÌ¿ëÇØ¼­ Á¢¼Ó À§Ä¡¸¦ ¾ò¾î¿É´Ï´Ù.
+    // HTML5ï¿½ï¿½ geolocationï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½Ì´ï¿½. ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È´ï¿½.
+        // GeoLocationï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½É´Ï´ï¿½.
         if (geolocation)    geoLocation("w0");
-        
-      //ÁöµµÀÇ ÁÜ·¹º§À» ÇÑ´Ü°è ¿Ã¸®´Â ÇÔ¼öÀÔ´Ï´Ù.
-        function zoomIn(){
-        	map.zoomIn(); //Áöµµ¸¦ 1·¹º§ ¿Ã¸³´Ï´Ù.
-        }
-        // ÁöµµÀÇ ÁÜ·¹º§À» ÇÑ´Ü°è ³»¸®´Â ÇÔ¼öÀÔ´Ï´Ù.
-        function zoomOut(){
-        	map.zoomOut(); //Áöµµ¸¦ 1·¹º§ ³»¸³´Ï´Ù.
-        }
 }
 
-// ³ªÀÇ À§Ä¡Á¤º¸¸¦ ³ªÅ¸³¾ ¸Þ¼­µå
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 
-//ÀÌ ¸Þ¼­µå´Â ÀÔÀåÇÏÀÚ¸¶ÀÚ ÀÚ½ÅÀÇ À§Ä¡ °ªÀ» »ðÀÔ½ÃÄÑÁÖ´Â ¸Þ¼­µå ÀÔ´Ï´Ù.
+//ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.
 function geoLocation(location) {
     navigator.geolocation.getCurrentPosition(function(position){
-        // ¸¶Ä¿°¡ Ç¥½ÃµÉ À§Ä¡¸¦ geolocationÀ¸·Î ¾ò¾î¿Â ÁÂÇ¥·Î »ý¼ºÇÕ´Ï´Ù
-        lat = position.coords.latitude; // À§µµ
-        lon = position.coords.longitude; // °æµµ
+        // ï¿½ï¿½Ä¿ï¿½ï¿½ Ç¥ï¿½Ãµï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ geolocationï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½
+        lat = position.coords.latitude; // ï¿½ï¿½ï¿½ï¿½
+        lon = position.coords.longitude; // ï¿½æµµ
 
         moveCoordinate(location, lon, lat);
     });
 }
 
-//setXY , setMarker , map.setCenter... ¼¼°¡Áö ¸Þ¼­µå¸¦ ÇÑ¹ø¿¡!!
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´Ü°ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
+function zoomIn(){
+	map.zoomIn(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½Ï´ï¿½.
+}
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´Ü°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
+function zoomOut(){
+	map.zoomOut(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+}
+
+//setXY , setMarker , map.setCenter... ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½Ñ¹ï¿½ï¿½ï¿½!!
 function moveCoordinate (value, x, y) {
-    var PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator ÁÂÇ¥°èÀÎ
+	//alert("moveCoordinate ï¿½ï¿½ï¿½Ì´ï¿½ value : "+value);
+    var PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½
 														// EPSG:3857
-    var PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO ÁÂÇ¥°èÀÎ
+    var PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½
 														// EPSG:4326
 
     lonlat = new Tmap.LonLat(x, y).transform(PR_4326, PR_3857);
 
     setXY(value, x, y);
     
-    setMarker(value,lonlat); //¸¶Ä¿ ¸¸µé¾îÁÖ±â
+    setMarker(value,lonlat); //ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
 
-    map.setCenter(lonlat,13); // geolocationÀ¸·Î ¾ò¾î¿Â ÁÂÇ¥·Î ÁöµµÀÇ Áß½ÉÀ» ¼³Á¤ÇÕ´Ï´Ù.
+    map.setCenter(lonlat,13); // geolocationï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 }
 
-// ¸Ê Å¬¸¯ÇÒ °æ¿ì ¸¶Ä¿ Ç¥½Ã ¸Þ¼­µå
+// ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ Ç¥ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 /*function onClick(e){
 	alert(e.xy);
-    lonlat = map.getLonLatFromViewPortPx(e.xy).transform("EPSG:3857", "EPSG:4326");// Å¬¸¯ÇÏ¸é ±×ºÎºÐÀÇ ÁÂÇ¥°ªÀÌ ³ª¿À´Âµ¥ ±×°ÍÀ» º¯È¯ÇÕ´Ï´Ù. ex)x=929,y=340
+    lonlat = map.getLonLatFromViewPortPx(e.xy).transform("EPSG:3857", "EPSG:4326");// Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½×ºÎºï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Õ´Ï´ï¿½. ex)x=929,y=340
     x = lonlat.lon; 
-    //alert(x); º¯È¯µÈ x°ª
+    //alert(x); ï¿½ï¿½È¯ï¿½ï¿½ xï¿½ï¿½
     y = lonlat.lat;
-    //alert(y); º¯È¯µÈ y°ª
+    //alert(y); ï¿½ï¿½È¯ï¿½ï¿½ yï¿½ï¿½
 
     if(input_s == 0) {
         if(input_e == 0) {
@@ -135,7 +136,7 @@ function moveCoordinate (value, x, y) {
     }
 }*/
 
-function resetResult() { // Ãâ·Â Á¤º¸ ¸®¼Â
+function resetResult() { // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     $("#result").text("");
     $("#result1").text("");
     $("#result2").text("");
@@ -143,69 +144,62 @@ function resetResult() { // Ãâ·Â Á¤º¸ ¸®¼Â
 }
 
 function setLocation(value, x, y, lonlat) {
-    if (value == "#waypoint0"){
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint0");
+    if (value == "#wayPointAddress1"){
     	setXY("w0", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
         setMarker("w0");
     } else if(value == "#waypoint1") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint1");
         setXY("w1", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w1"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w1"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     } else if(value == "#waypoint2") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint2");
         setXY("w2", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w2"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w2"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     } else if(value == "#waypoint3") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint3");
         setXY("w3", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w3"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w3"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     } else if(value == "#waypoint4") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint4");
         setXY("w4", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w4"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w4"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     } else if(value == "#waypoint5") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint5");
         setXY("w5", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w5"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w5"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     } else if(value == "#waypoint6") {
-    	alert("in setLocation() xy°ªÀ» °¡Áö°í ÀÌ ¸Þ¼Òµå·Î µé¾î¿Ô´Ù! #waypoint6");
         setXY("w6", x, y);
-        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ¾Ë¸Â´Â ÆûÀ¸·Î lonlat°ªÀ» º¯È¯ÇÑ´Ù. lon=14142351.201816,lat=4508358.524059502
-        setMarker("w6"); // ¸¶Ä¿ ¸¸µå´Â ºÎºÐ
+        lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); // ï¿½Ë¸Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ lonlatï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½. lon=14142351.201816,lat=4508358.524059502
+        setMarker("w6"); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
     }
 }
 
-// ¸¶Ä¿¸¦ »ý¼ºÇØÁÖ´Â °÷ÀÔ´Ï´Ù.
+// ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
 function setMarker(value) {
     if(value == "w0") {
-        markerLayer_w0.removeMarker(markerW0); // ¸¶Ä¿ °´Ã¼¸¦ ·¹ÀÌ¾î¿¡¼­ Á¦°ÅÇÕ´Ï´Ù.
-        markerW0 = new Tmap.Marker(lonlat, icon_s); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w0.addMarker(markerW0);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerLayer_w0.removeMarker(markerW0); // ï¿½ï¿½Ä¿ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+        markerW0 = new Tmap.Marker(lonlat, icon_s); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w0.addMarker(markerW0);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w1") {
-    	//markerLayer_e.removeMarker(markerB); // ¸¶Ä¿ °´Ã¼¸¦ ·¹ÀÌ¾î¿¡¼­ Á¦°ÅÇÕ´Ï´Ù.
-        markerW1 = new Tmap.Marker(lonlat, icon_1); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w1.addMarker(markerW1);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+    	//markerLayer_e.removeMarker(markerB); // ï¿½ï¿½Ä¿ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+        markerW1 = new Tmap.Marker(lonlat, icon_1); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w1.addMarker(markerW1);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w2"){
-        markerW2 = new Tmap.Marker(lonlat, icon_2); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w2.addMarker(markerW2);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerW2 = new Tmap.Marker(lonlat, icon_2); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w2.addMarker(markerW2);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w3"){
-        markerW3 = new Tmap.Marker(lonlat, icon_3); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w3.addMarker(markerW3);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerW3 = new Tmap.Marker(lonlat, icon_3); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w3.addMarker(markerW3);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w4"){
-        markerW4 = new Tmap.Marker(lonlat, icon_4); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w4.addMarker(markerW4);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerW4 = new Tmap.Marker(lonlat, icon_4); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w4.addMarker(markerW4);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w5"){
-        markerW5 = new Tmap.Marker(lonlat, icon_5); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w5.addMarker(markerW5);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerW5 = new Tmap.Marker(lonlat, icon_5); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w5.addMarker(markerW5);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     } else if(value == "w6"){
-        markerW6 = new Tmap.Marker(lonlat, icon_6); // ¸¶Ä¿ Á¤º¸ µî·Ï
-        markerLayer_w6.addMarker(markerW6);// ¸¶Ä¿°´Ã¼¸¦ ·¹ÀÌ¾î¿¡ Ç¥ÃâÇÕ´Ï´Ù.
+        markerW6 = new Tmap.Marker(lonlat, icon_6); // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        markerLayer_w6.addMarker(markerW6);// ï¿½ï¿½Ä¿ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ Ç¥ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     }
 }
 
@@ -219,7 +213,7 @@ function icon(value) {
     return icon;
 }
 
-//¸¶Ä¿¸¦ ¾ø¾Ö´Â Àå¼ÒÀÔ´Ï´Ù.
+//ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
 function removeMarker(value) {
     if(value == "s") {
         markerLayer_s.removeMarker(markerA);
@@ -236,42 +230,42 @@ function removeMarker(value) {
     }
 }
 
-// °æ·ÎÃ£±â¿¡ µé¾î°¥ xy°ªÀ» ÇØÁÙºÎºÐÀ» ¼¼ÆÃÇÏ´Â ºÎºÐ!!
+// ï¿½ï¿½ï¿½Ã£ï¿½â¿¡ ï¿½ï¿½î°¥ xyï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÙºÎºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Îºï¿½!!
 function setXY(value, x, y) {
     if(value == "w0") {
     	start_x = x;
     	start_y = y;
-        searchAdress("#waypoint0", y, x);
+        searchAdress("#wayPointAddress0", y, x);
     } else if(value == "w1") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint1", y, x);
+        searchAdress("#wayPointAddress1", y, x);
     } else if(value == "w2") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint2", y, x);
+        searchAdress("#wayPointAddress2", y, x);
     } else if(value == "w3") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint3", y, x);
+        searchAdress("#wayPointAddress3", y, x);
     } else if(value == "w4") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint4", y, x);
+        searchAdress("#wayPointAddress4", y, x);
     } else if(value == "w5") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint5", y, x);
+        searchAdress("#wayPointAddress5", y, x);
     } else if(value == "w6") {
     	end_x = x;
         end_y = y;
-        searchAdress("#waypoint6", y, x);
+        searchAdress("#wayPointAddress6", y, x);
     } else {
         console.log("value Error");
     }
 }
 
-//Áö±Ý±îÁö Â®´ø ¸ðµç ±æÃ£±â¸¦ ¾ø¾Û´Ï´Ù.
+//ï¿½ï¿½ï¿½Ý±ï¿½ï¿½ï¿½ Â®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã£ï¿½â¸¦ ï¿½ï¿½ï¿½Û´Ï´ï¿½.
 function reset () { 
     $("#waypoint0").val(null);
     $("#waypoint1").val(null);
@@ -283,13 +277,13 @@ function reset () {
     //map.removeLayer(routeLayer);
 }
 
-//°ªÀÌ ÀÖ³ª ¾ø³ª valudation check ºÎºÐÀÏ»Ó!!
+//ï¿½ï¿½ï¿½ï¿½ ï¿½Ö³ï¿½ ï¿½ï¿½ï¿½ï¿½ valudation check ï¿½Îºï¿½ï¿½Ï»ï¿½!!
 function search(input) {
-	//¿©±â¼­ input °ªÀº #waypoint(i) °ªÀÔ´Ï´Ù!!!
+	//ï¿½ï¿½ï¿½â¼­ input ï¿½ï¿½ï¿½ï¿½ #waypoint(i) ï¿½ï¿½ï¿½Ô´Ï´ï¿½!!!
     if($(input).val()=="") {
-        alert("ÀÔ·Â°ªÀÌ ¾ø½À´Ï´Ù.");
+        alert("ì£¼ì†Œë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”!");
     } else {
-     // Áï °ªÀÌ ÀÖ´Ù¸é
+     // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
         if($(input).val() != null) {
             $.ajax({
                 method: "GET",
@@ -301,23 +295,23 @@ function search(input) {
                 success: function(data) {
                     var obj = JSON.stringify(data);
                     obj = JSON.parse(obj);
-                    // º§·ùµ¥ÀÌ¼Ç Ã¼Å©! Áï Á¤º¸°¡ ÀÖ´Ù¸é...
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ Ã¼Å©! ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½...
                     if(obj.coordinateInfo != undefined) {
-                    	//coordinate¾È¿¡´Â Áö¸®Á¤º¸°¡ ¸ðµÎ µé¾îÀÖ´Ù!
+                    	//coordinateï¿½È¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½!
                        var coordinate = obj.coordinateInfo.coordinate[0];
-                       //lon¸¸ °É·¯³»¸é ¸ðµç °ÍÀ» °É·¯³¾¼ö ÀÖ±â¶§¹®¿¡ ÀÌ·¸°Ô Á¤ÇÑ µí ÇÏ´Ù!
+                       //lonï¿½ï¿½ ï¿½É·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï´ï¿½!
                        if(coordinate.lon != "") {
-                    	   //coordinateÀÇ lon°ª°ú lat°ªÀ» ÃßÃâÇØ³»¼­ sOrE·Î º¸³½´Ù. ¿©±â¼­ inputÀº #waypoint(i)
+                    	   //coordinateï¿½ï¿½ lonï¿½ï¿½ï¿½ï¿½ latï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ sOrEï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½â¼­ inputï¿½ï¿½ #waypoint(i)
                             sOrE(input, coordinate.lon, coordinate.lat);
                        } else if(coordinate.newLon != "") {
-                    	   //¹ºÁö¸ð¸£°ÚÁö¸¸ ½ÅÁÖ¼ÒÀÎ°Å°°´Ù!!
+                    	   //ï¿½ï¿½ï¿½ï¿½ï¿½ð¸£°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½Î°Å°ï¿½ï¿½ï¿½!!
                             sOrE(input, coordinate.newLon, coordinate.newLat);
                        }
                     } else {
                         if (input == "#waypoint0") {
-                            alert("Ãâ¹ßÁö ÁÖ¼Ò°¡ Àß¸øµÇ¾ú½À´Ï´Ù.");
+                            alert("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                         } else {
-                        	 alert("°æÀ¯Áö ÁÖ¼Ò°¡ Àß¸øµÇ¾ú½À´Ï´Ù.");
+                        	 alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                         }
                     }
                 },
@@ -329,22 +323,22 @@ function search(input) {
     }
 }
 
-//°æ·Î Å½»ö ±á±áÇÏ´Â ºÎºÐ!! onclick ¸Þ¼­µå·Î½á ºÒ·¯µé¾î¿Â´Ù.
+//ï¿½ï¿½ï¿½ Å½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Îºï¿½!! onclick ï¿½Þ¼ï¿½ï¿½ï¿½Î½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 function go() {
     if (input_s == 1 && input_e == 1) {
         distance();
     }  else if(input_e == 1) {
     	distance();
     } else if(input_s == 0){
-        alert("Ãâ¹ßÁö¸¦ µî·ÏÇÏ¼¼¿ä!");
+        alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½!");
     } else {
-        alert("°æÀ¯Áö¸¦ µî·ÏÇÏ¼¼¿ä!");
+        alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½!");
     }
 }
 
 var headers = {}; 
-//headers["appKey"]="cadda216-ac54-435a-a8ea-a32ba3bb3356";// ½ÇÇàÀ» À§ÇÑ Å° ÀÔ´Ï´Ù.
-headers["appKey"]="81d71b60-e7b0-4a49-8eff-e265fd5a44d1";// ½ÇÇàÀ» À§ÇÑ Å° ÀÔ´Ï´Ù. ³»²¨
+//headers["appKey"]="cadda216-ac54-435a-a8ea-a32ba3bb3356";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å° ï¿½Ô´Ï´ï¿½.
+headers["appKey"]="81d71b60-e7b0-4a49-8eff-e265fd5a44d1";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å° ï¿½Ô´Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½
 
 function distance() {
     if (start_x != null && end_x != null) {
@@ -360,22 +354,21 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-              //Ãâ¹ßÁö ¸íÄªÀÔ´Ï´Ù.
-        		startName : "Ãâ¹ßÁö",
-        		//¸ñÀûÁö ¸íÄªÀÔ´Ï´Ù.
-        		endName : "µµÂøÁö"
+              //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Äªï¿½Ô´Ï´ï¿½.
+        		startName : "ï¿½ï¿½ï¿½ï¿½ï¿½",
+        		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Äªï¿½Ô´Ï´ï¿½.
+        		endName : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
                 obj = JSON.parse(obj);
-                alert(JSON.stringify(obj));
                 
                 var total = obj.features[0].properties;
                 var time = "";
                 /*if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "½Ã°£ " + Math.floor(total.totalTime%3600/60) + "ºÐ";
+                    time = Math.floor(total.totalTime/3600) + "ï¿½Ã°ï¿½ " + Math.floor(total.totalTime%3600/60) + "ï¿½ï¿½";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "ºÐ ";
+                    time = Math.floor(total.totalTime%3600/60) + "ï¿½ï¿½ ";
                 }*/
 
                 map.addLayer(routeLayer);
@@ -387,13 +380,13 @@ function distance() {
 
                 //$("#b"+a+"").val(time);
                 $("#wayPointMoveTime"+a+"").val(Math.floor(total.totalTime%3600/60));
-                //$("#result3").append("ÅÃ½Ãºñ: " + total.taxiFare);
+                //$("#result3").append("ï¿½Ã½Ãºï¿½: " + total.taxiFare);
                 
-                // ÇÃ·¡±×°ªÀ» ´Ã¸³´Ï´Ù.
+                // ï¿½Ã·ï¿½ï¿½×°ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½Ï´ï¿½.
                 a++;
                 
                 try{
-                //È¦¼ö¸¸µ¹·Á¾ßÁö ±×¿¡ ÇÕ´çÇÑ °ª¸¸ »Ì¾Æ³¾ ¼ö ÀÖ´Ù!
+                //È¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¿ï¿½ ï¿½Õ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ³ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½!
                 for (var i =0 ; obj.features.length ; i+=2){
                 	var nav;
                 	nav += "#"+obj.features[i].properties.description;
@@ -403,13 +396,13 @@ function distance() {
                 	
                 }
                         
-                //´ÙÀ½¹ø ±æÃ£±â¸¦ À§ÇØ¼­ ¾ç°ªÀ» ¹Ù²Ù¾îÁÝ´Ï´Ù.
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã£ï¿½â¸¦ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ç°ªï¿½ï¿½ ï¿½Ù²Ù¾ï¿½ï¿½Ý´Ï´ï¿½.
                 start_x =end_x;
                 start_y =end_y;
             },
-            //Àß¸øµÈ µµÂøÁö¸¦ ÁöÁ¤ÇßÀ» °æ¿ì!!
+            //ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½!!
             error:function(request,status,error){
-                alert("Ãâ¹ßÁö È¤Àº µµÂøÁö¸¦ Àß¸ø ÁöÁ¤ÇÏ¿´½À´Ï´Ù.");
+                alert("ï¿½ï¿½ï¿½ï¿½ï¿½ È¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                 reset();
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
@@ -418,6 +411,7 @@ function distance() {
 }
 
 function searchAdress(input, lat, lon) {
+	//alert("searchAdress input! : " +input);
     $.ajax({
         method: "GET",
         url: "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1",
@@ -433,10 +427,10 @@ function searchAdress(input, lat, lon) {
             } else {
                 alertAdress(input);
             }
-            $(input).val(obj.addressInfo.fullAddress);//ÀÎÇ²¿¡´Ù°¡ value¸¦ »ðÀÔÇÕ´Ï´Ù. (±×°÷À» °Ë»öÇß´Ù´Â °ÍÀ» ¾Ë·ÁÁÖ±â À§ÇØ¼­!)
+            $(input).val(obj.addressInfo.fullAddress);//ï¿½ï¿½Ç²ï¿½ï¿½ï¿½Ù°ï¿½ valueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. (ï¿½×°ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ß´Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½!)
         },
         error:function(request,status,error){
-        	//Á¦°øÇØÁÖÁö ¾Ê´Â ÁÖ¼ÒÀÌ´Ï±î ÀÌÀü¿¡ Ã¼Å©ÇÑ ¸¶Ä¿¸¦ ¾ø¾ÖÁÝ´Ï´Ù.
+        	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½Ö¼ï¿½ï¿½Ì´Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ý´Ï´ï¿½.
             alertAdress(input);
             console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
@@ -444,7 +438,7 @@ function searchAdress(input, lat, lon) {
 }
 
 function alertAdress(input) {
-    alert("Á¦°øµÇÁö ¾Ê´Â ÁÖ¼Ò ¹üÀ§ÀÔ´Ï´Ù.");
+    alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.");
         if(input == "#waypoint0") {
             removeMarker("s");
         } else if(input == "#waypoint1"){
@@ -454,67 +448,67 @@ function alertAdress(input) {
         }
 }
 
-//¿©±â¿¡¼­´Â x,y°æ·Î°ª ¼ÂÆÃÇØÁÖ°í ÇÃ·¡±×¸¦ ¹Ù²ãÁÝ´Ï´Ù! cf) inputÀº #waypoint(i) , coordinate.newLon, coordinate.newLat
+//ï¿½ï¿½ï¿½â¿¡ï¿½ï¿½ï¿½ï¿½ x,yï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ ï¿½Ã·ï¿½ï¿½×¸ï¿½ ï¿½Ù²ï¿½ï¿½Ý´Ï´ï¿½! cf) inputï¿½ï¿½ #waypoint(i) , coordinate.newLon, coordinate.newLat
 function sOrE (input, x, y) {
-    if(input == "#waypoint0") {
-    	//waypoint0 Áï Ãâ¹ßÀÌ¶ó¸é...
-    	start_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	start_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputS(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù.
+    if(input == "#wayPointAddress0") {
+    	//waypoint0 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½...
+    	start_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	start_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputS(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½.
         moveCoordinate("w0", x,y);
-    } else if(input == "#waypoint1") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-        end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-        end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress1") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+        end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+        end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w1", x,y);
-    } else if(input == "#waypoint2") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress2") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w2", x,y);
-    } else if(input == "#waypoint3") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress3") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w3", x,y);
-    } else if(input == "#waypoint4") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress4") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w4", x,y);
-    } else if(input == "#waypoint4") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress4") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w2", x,y);
-    } else if(input == "#waypoint5") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress5") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w5", x,y);
-    } else if(input == "#waypoint6") {
-    	//waypoint0ÀÌ ¾Æ´Ñ °æÀ¯Áö¶ó¸é?
-    	end_x = x; //°æ·Î°ªÀ» ¼ÂÆÃx
-    	end_y = y; //°æ·Î°ªÀ» ¼ÂÆÃy
-        startInputE(); //ÇÃ·¡±×¸¦ 1·Î ¹Ù²Û´Ù. ÀÌÀ¯°¡ ¹¹Áö??
+    } else if(input == "#wayPointAddress6") {
+    	//waypoint0ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+    	end_x = x; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½x
+    	end_y = y; //ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½y
+        startInputE(); //ï¿½Ã·ï¿½ï¿½×¸ï¿½ 1ï¿½ï¿½ ï¿½Ù²Û´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
         moveCoordinate("w6", x,y);
     } else  {
-        alert("Àß¸øµÈ °ªÀ» ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.");
+        alert("ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼Ì½ï¿½ï¿½Ï´ï¿½.");
     }
 }
 
-// ÇÃ·¡±× ½ÃÀÛ input
+// ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ input
 function startInputS() {
     input_s = 1;
 }
 
-//ÇÃ·¡±× ³¡ input
+//ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ input
 function endInputS() {
     input_s = 0;
 }

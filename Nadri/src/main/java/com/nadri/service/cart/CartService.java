@@ -11,6 +11,6 @@ public interface CartService {
 	public void addCartSpot(Cart cart) throws Exception; 
 	
 	// 2. spot Cart를 가져오는 메서드
-	public List<Cart> getSpotCartList(Search search) throws Exception;
+	public List<Cart> getSpotCartList(String userId) throws Exception;
 
 }

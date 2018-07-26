@@ -123,4 +123,55 @@
 		IN (SELECT * FROM ( SELECT MAX(schedule_no) FROM schedule) AS a ) 
 	</update>		
 
+
+ <!-- 6. 마이페이지 내 일정보기 -->
+   <select id="getMyScheduleList" parameterType="String" resultMap="scheduleSelectMap">
+      SELECT *
+      FROM
+      schedule
+      WHERE user_id = #{value}
+   </select>
+   
+   <!-- 7. 일정이 있는지 확인하기 -->
+   <select id="checkSchedule" parameterType="map" resultType="int">
+      SELECT count(*)
+      FROM schedule
+      WHERE schedule_img = #{scheduleImg} AND user_id = #{userId}
+   </select>
+   
+   <!-- 8. 일정 복사하기 -->
+   <insert id="copySchedule" parameterType="schedule" useGeneratedKeys="true" keyProperty="scheduleNo">
+      INSERT
+      INTO schedule (
+         user_id, 
+         schedule_date,
+         schedule_img, 
+         schedule_title, 
+         hashtag,
+         schedule_createtime,
+         schedule_modifytime,
+         open_range,
+         transportation_code,
+         starthour,
+         schedule_detail)
+      VALUES (
+         #{userId},
+         #{scheduleDate},
+         #{scheduleImg},
+         #{scheduleTitle},
+         #{hashTag},
+         now(),
+         now(),
+         #{openRange},
+         #{transportationCode},
+         #{startHour},
+         #{scheduleDetail})
+   </insert>
+   
+   <!-- 9. 일정삭제 -->
+   <delete id="deleteSchedule" parameterType="int">
+      DELETE
+      FROM schedule
+      WHERE schedule_no = #{value}
+   </delete>
 </mapper>

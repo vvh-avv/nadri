@@ -17,8 +17,8 @@ public class WayPoint {
 	private String wayPointAddress;
 	private String wayPointDetail;
 	private String wayPointNav;
-	private int stayTime;
-	private int moveTime;
+	private String stayTime;
+	private String moveTime;
 	private String wayPointStartHour;
 	private String wayPointEndHour;
 	
@@ -59,11 +59,11 @@ public class WayPoint {
 		return wayPointDetail;
 	}
 
-	public int getStayTime() {
+	public String getStayTime() {
 		return stayTime;
 	}
 
-	public int getMoveTime() {
+	public String getMoveTime() {
 		return moveTime;
 	}
 
@@ -99,11 +99,11 @@ public class WayPoint {
 		this.wayPointDetail = wayPointDetail;
 	}
 
-	public void setStayTime(int stayTime) {
+	public void setStayTime(String stayTime) {
 		this.stayTime = stayTime;
 	}
 
-	public void setMoveTime(int moveTime) {
+	public void setMoveTime(String moveTime) {
 		this.moveTime = moveTime;
 	}
 	

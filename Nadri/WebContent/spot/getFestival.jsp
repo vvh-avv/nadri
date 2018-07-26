@@ -13,8 +13,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<!-- 구글맵을 불러쓰기위한 CDN -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <!-- 툴바 넣는 CDN 입니다 -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
@@ -22,6 +20,10 @@
 <script src="/javascript/juanMap.js"></script> 
 <!-- sweetAlert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- materialize 넣는 css -->
+<script src="/javascript/materialize.js"></script>
+<link rel="stylesheet" href="/css/materialize.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <html>
 <style>
 html, body {
@@ -44,7 +46,16 @@ html, body {
      width: 50px;
      height: 50px;
      z-index:999;
-   }	
+   }
+   
+   /*모달 위치 비교 css */
+.modal {
+	top : 20%;
+} 
+
+.container {
+    text-align: center;
+}  	
 </style>
 <script type="text/javascript">
 
@@ -66,7 +77,7 @@ $(function(){
         $("body").scrollTop(0);
     });
     
-	$("button.btn.btn-primary").on("click", function() {
+    $("#listbutton").on("click", function() {
 		history.go(-1);
 	});
 	
@@ -111,7 +122,7 @@ function addCartSpot(){
         });
         
         var nowposition = new google.maps.LatLng(JSON.stringify(${a.response.body.items.item.mapy}), JSON.stringify(${a.response.body.items.item.mapx})),    
-        message = '여기에요!'
+        message = '<div style="font-family : seoul"><div>여기에요!</div></div>';
         
     	displayMarker(nowposition, message);
       }
@@ -150,8 +161,6 @@ function addCartSpot(){
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 
 	<%@ include file="/layout/toolbar.jsp"%>
-		<div class="wrapper">
-			<%-- Content Wrapper. Contains page content --%>
 			<div class="container">
 				<%-- Content Header (Page header) --%>
 				<div class="jumbotron" id="map">
@@ -171,29 +180,47 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소명</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${a.response.body.items.item.title}</div>
+										<div class="col-xs-8 col-md-10">${a.response.body.items.item.title}</div>
 									</div>
 								</div>
 								<hr />
+								
+								<c:if test="${not empty a.response.body.items.item.firstimage}">
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소이미지</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">
-												<img src='${a.response.body.items.item.firstimage}' width="250" height="250" />
+										<div class="col-xs-8 col-md-10">
+												<img class="materialboxed"  src='${a.response.body.items.item.firstimage}' width="300" height="200" />
+										</div>
+									</div>
+								</div>
+
+								<hr />		
+								</c:if>
+								
+								<c:if test="${empty a.response.body.items.item.firstimage}">
+								<div class="box-body">
+									<div class="row">
+										<div class="col-xs-4 col-md-2 ">
+											<strong>장소이미지</strong>
+										</div>
+										<div class="col-xs-8 col-md-10">
+												<img class="materialboxed"  src='/images/spot/festivaldefault.jpg' width="300" height="200" />
 										</div>
 									</div>
 								</div>
 
 								<hr />
+								</c:if>
 
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2">
 											<strong>상세정보</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${a.response.body.items.item.overview}</div>
+										<div class="col-xs-8 col-md-10">${a.response.body.items.item.overview}</div>
 									</div>
 								</div>
 
@@ -204,7 +231,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>주소</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${a.response.body.items.item.addr1}</div>
+										<div class="col-xs-8 col-md-10">${a.response.body.items.item.addr1}</div>
 									</div>
 								</div>
 
@@ -217,7 +244,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>연락처</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${a.response.body.items.item.tel}</div>
+										<div class="col-xs-8 col-md-10">${a.response.body.items.item.tel}</div>
 									</div>
 								</div>
 
@@ -231,7 +258,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소URL</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${a.response.body.items.item.homepage}</div>
+										<div class="col-xs-8 col-md-10">${a.response.body.items.item.homepage}</div>
 									</div>
 								</div>
 
@@ -243,7 +270,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소구</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">
+										<div class="col-xs-8 col-md-10">
 										     ${a.response.body.items.item.telname}
 										</div>
 									</div>
@@ -254,11 +281,11 @@ function addCartSpot(){
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
-											<strong>장소 작성일자</strong> / <strong>수정일자</strong>
+											<strong>작성일자</strong> / <strong>수정일자</strong>
 										</div>	
 											<c:set var="createdtime" value="${a.response.body.items.item.createdtime}"/>
 											<c:set var="modifiedtime" value="${a.response.body.items.item.modifiedtime}"/>
-										<div class="col-xs-8 col-md-4">
+										<div class="col-xs-8 col-md-10">
 											 ${fn:substring(createdtime,0,8) } / ${fn:substring(modifiedtime,0,8) }
 										</div>
 									</div>
@@ -266,65 +293,41 @@ function addCartSpot(){
 							</div>
 							
 							<hr/>
-
+							</div>
 							<div class="box-footer">
-								<button type="button" class="btn btn-secondary"><i class="fa fa-list"></i> 목록으로</button>
-								<div class="pull-right">
-										<button type="button" class="btn btn-secondary"><i class="fa fa-save"></i> 신고하기</button>
-										<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장바구니</button>
+								<div class="pull-left">
+									<button type="button" class="btn btn-secondary" id="listbutton"><i class="fa fa-list"></i> 목록으로</button>
 								</div>
-					</div>
-
-				<!-- 장바구니추가 modal 창 start -->
+								<div class="pull-right">
+									<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
+									<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
+								</div>
+							</div>
+				
 				<form id=cart>
-					<input type="hidden" name="spotNo" value="${a.response.body.items.item.contentid}" />
 					<div class="modal fade" id="cartModal" role="dialog">
-						<div class="modal-dialog">
+						<div class="modal-dialog" id="cartModal">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">장바구니 추가</h4>
+									<h4 class="modal-title">장소바구니 추가</h4>
 								</div>
 								<div class="modal-body">
+										<input type="hidden"id="spotNo" name="spotNo" value="${a.response.body.items.item.contentid}" >
 									<div class="form-group">
-										<label for="spotNo">장소번호</label> <input class="form-control"
-											id="spotNo" name="spotNo" value="${a.response.body.items.item.contentid}" readonly>
+										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
+										<input class="form-control" id="cartTitle" name="cartTitle" value="${a.response.body.items.item.title}" >
 									</div>
-									<div class="form-group">
-										<label for="cartTitle">카트이름(=장소이름일수도..)</label> <input
-											class="form-control" id="cartTitle" name="cartTitle" 
-											value="${a.response.body.items.item.title}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartX">장소x</label> <input
-											class="form-control" id="cartX" name="cartX"
-											value="${a.response.body.items.item.mapx}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartY">장소y</label> <input
-											class="form-control" id="cartY" name="cartY"
-											value="${a.response.body.items.item.mapy}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartAddress">장소주소</label> 
-										<input class="form-control" id="cartAddress" name="cartAddress"
-											value="${a.response.body.items.item.addr1}" readonly>
-									</div>
+										<input type="hidden" id="cartX" name="cartX" value="${a.response.body.items.item.mapx}" >
+                                        <input type="hidden"  id="cartY" name="cartY" value="${a.response.body.items.item.mapy}" >
+										<input type="hidden" id="cartAddress" name="cartAddress" value="${a.response.body.items.item.addr1}">
 									<div class="form-group">
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
 									</div>
-									<div class="form-group">
-										<label for="userId">추가자아이디</label> <input
-											class="form-control" id="userId" name="userId"
-											value="${sessionScope.user.userId}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="userId">장소이미지</label> <input
-											class="form-control" id="cartImg" name="cartImg"
-											value="${a.response.body.items.item.firstimage}" readonly>
-									</div>
-								</div>
+									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}">
+									<input type="hidden" id="cartImg" name="cartImg" value="${a.response.body.items.item.firstimage}" >
+							</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
 									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
@@ -336,8 +339,9 @@ function addCartSpot(){
 				
 				
 			</div>
-
-		</div>
+				
+<!-- 구글맵을 불러쓰기위한 CDN -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 </body>
 </html>
 

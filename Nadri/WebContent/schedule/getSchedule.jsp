@@ -190,19 +190,9 @@ $(function(){
 	});
 </script>
 </head>
-<body>
-
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png">
-<div id="schedule">
       <%@ include file="/layout/toolbar.jsp"%>
-	<header style ="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
-		<div class="cd-nugget-info">
-			<span> <polygon class="cd-nugget-info-arrow" points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " /> </span>
-			<p id="scheduleTitle">${schedule.scheduleTitle}</p>
-		</div>
-		<!-- cd-nugget-info -->
-	</header>
 	<ul class="countdown">
 		<li><span class="days">00</span>
 			<p class="days_ref">days</p></li>
@@ -216,16 +206,28 @@ $(function(){
 		<li><span class="seconds">00</span>
 			<p class="seconds_ref">seconds</p></li>	
 	</ul>
+	<body>
+	<div id="schedule">
 	<ul class="countdown">
+		<header style="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
+			<div class="cd-nugget-info">
+				<span> <polygon class="cd-nugget-info-arrow"
+						points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " />
+				</span>
+				<p id="scheduleTitle">${schedule.scheduleTitle}</p>
+			</div>
+			<!-- cd-nugget-info -->
+		</header>
+		<div class="container">
+		<br/>
 		<div>
 			<span id="SKY"></span>
 			미세먼지 : <span id="finedust"></span>
-		</div>
+		</div>	
 		<img src="/images/spot/icon/pop.png"><span id="POP" ></span> %
 		<img src="/images/spot/icon/ren.png"><span id="REN"></span> %
 			최고  : <span id="T3H"></span><img src="/images/spot/icon/celsius.png"> 평균 : <span id="TMX"></span><img src="/images/spot/icon/celsius.png">
 	</ul>
-
 	<section class="cd-timeline js-cd-timeline">
 		<div class="cd-timeline__container">
 		
@@ -258,7 +260,7 @@ $(function(){
 					<c:set var="i" value="${i+1}" />
 					<div class="cd-timeline__content js-cd-content">
 							<p>
-					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel">
+					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel" begin="1">
 				       * : ${sel}<br>
 				   </c:forTokens>
 				</p>
@@ -307,8 +309,9 @@ $(function(){
 			<button type="button" class="btn btn-secondary" id="pdfdown">PDFDOWN</button>
 		</div>
 		<!-- 여기안에다가 집어넣으면 몇개더 들어갑니다! -->
-	</div>
 	</section>
+	</div>
+	</div>
 	<!-- cd-timeline -->
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
 </body>

@@ -45,40 +45,8 @@ var icons = {
 	},
 	suyo : {
 		icon : iconBase + 'suyo.png'
+	},
+	picnic : {
+		icon : iconBase + 'picnic.png'
 	}
 };
-
-//marker animation으로 찍기!
-function addMarkerWithTimeout(position, timeout) {
-	window.setTimeout(function() {
-		marker = new google.maps.Marker({
-			position : position,
-			//icon: icons[feature.type].icon,
-			map : map
-		}, timeout);
-	})
-} // end of addMarkerWithTimeout
-
-// Sets the map on all markers in the array.
-function setMapOnAll(map) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
-}
-
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
-  setMapOnAll(null);
-}
-
-// Shows any markers currently in the array.
-function showMarkers() {
-  setMapOnAll(map);
-}
-
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
-  clearMarkers();
-  markers = [];
-  locations = [];
-}

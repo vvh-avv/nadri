@@ -39,4 +39,7 @@ public interface SpotService {
 	
 	// 8. 전체 장소의 갯수를 가져옵니다.
 	public int getTotalSpot() throws Exception;
+	
+	// 9. 검색한 장소를 가져옵니다.
+	public List<Spot> getSearchSpotList(Search search) throws Exception;
 }
