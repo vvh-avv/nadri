@@ -140,11 +140,11 @@ body {
 	position:absolute;
 	right:0;
 	top : 10px;
-	visibility: hidden;
+/* 	visibility: hidden; */
 }
 
-.glyphicon{
-	top:0px;
+.top-icons{
+	top:5px;
 	font-size:20px;
 	color: #404548;
 	font-weight:800;

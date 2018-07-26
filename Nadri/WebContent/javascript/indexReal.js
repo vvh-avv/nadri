@@ -125,6 +125,19 @@ $(function(){
 			$('.title-section').css('top','10px');
 		}
 	})
+	
+	$('.spots').on('click',function(){
+		var id = $(this).attr('id');
+		if(id == 'rivers'){
+			self.location = '/spot/getSpotList?spotCode=4';
+		}else if(id == 'parks'){
+			self.location = '/spot/getSpotList?spotCode=0';
+		}else if(id == 'festivals'){
+			self.location = '/spot/getFestivalList';
+		}else{
+			self.location = '/spot/getSpotList?spotCode=1';
+		}
+	})
 
 	
 })
