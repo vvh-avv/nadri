@@ -506,7 +506,7 @@ function deleteWayPoint(){
 		<c:set var="i" value="0" />
 				<c:forEach var="cart" items="${cart}">
 					<c:set var="i" value="${i+1}" />
-					<table>
+					<table class="${cart.cartNo}">
   					<tr class="ct_list_pop">
 						<tr>
 							<td rowspan="3"><i class="material-icons">place</i></td>
