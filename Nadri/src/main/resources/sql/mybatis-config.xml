@@ -28,6 +28,7 @@
 		<typeAlias alias="user" type="com.nadri.service.domain.User" />
 		<typeAlias alias="friend" type="com.nadri.service.domain.Friend" />
 		<typeAlias alias="waypoint" type="com.nadri.service.domain.WayPoint" />
+		<typeAlias alias="weather" type="com.nadri.service.domain.Weather" />
 	</typeAliases>
 	
 	<mappers>

@@ -1,6 +1,10 @@
 package com.nadri.web.admin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,11 +88,17 @@ public class AdminController {
 			if(board.getBoardImg().equals("no_img")) {
 				board.setBoardImg("no_image.jpg");
 			}else {
-				int comma = board.getBoardImg().indexOf(",");
-				String imgSingle = board.getBoardImg().substring(0, comma);
-				board.setBoardImg(imgSingle);				
+				if (board.getBoardImg().contains(",")) {
+					int comma = board.getBoardImg().indexOf(",");
+					String imgSingle = board.getBoardImg().substring(0, comma);
+					board.setBoardImg(imgSingle);
+				}else {
+					System.out.println("1개의 정상적 이미지만 가진 착한 게시물");
+				}
+								
 			}
 		}
+	    
 		model.addAttribute("userList",userList);
 		model.addAttribute("boardList",boardList);
 		return "/admin/adminIndex.jsp";

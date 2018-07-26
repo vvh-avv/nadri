@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
@@ -24,7 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
+import com.nadri.service.domain.Reward;
 import com.nadri.service.user.UserService;
+import com.nadri.service.domain.User;
 
 
 @RestController
@@ -182,6 +187,23 @@ public class AdminRestController {
 		}else {			
 			return "success";
 		}
+	}
+	
+	@RequestMapping(value="getReward/{rewardName}/{rewardLevel}")
+	public String getReward(@PathVariable String rewardName,@PathVariable String rewardLevel,HttpServletRequest request) {
+		System.out.println("getReward -> Restcontroller µé¾î¿È");
+		HttpSession session = request.getSession(true);
+		User user = (User)session.getAttribute("user");
+		String userId = user.getUserId();
+		Reward reward = new Reward();
+		
+		reward.setUserId(userId);
+		reward.setRewardName(rewardName);
+		reward.setRewardLevel(rewardLevel);
+		
+		adminService.getReward(reward);
+		
+		return "Done";
 	}
 
 }

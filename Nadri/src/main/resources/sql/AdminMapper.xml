@@ -263,5 +263,21 @@
 				</where>
 			</if> ) countTable			
 	 </select>
+	 
+	 <insert id="getReward" parameterType="reward">
+	 	INSERT into reward (user_id, reward_name, reward_img, reward_get_time,reward_level)
+	 	VALUE (#{userId},#{rewardName},#{rewardImg},NOW(),#{rewardLevel})
+	 </insert>
+	 
+	 <insert id="addWeather" parameterType="weather">
+	 	INSERT INTO weather(weather_code,weather_name,weather_time)
+		value(#{weatherCode},#{weatherName},now())
+	 </insert>
+	 
+	 <select id="getWeather" resultType="string">
+	 	SELECT weather_name FROM weather
+		ORDER BY ABS( DATEDIFF( weather_time, NOW() ) ) 
+		LIMIT 1
+	 </select>
 
 </mapper>

@@ -82,7 +82,7 @@
 			<c:forEach var="board" items="${list_board}" end="2">
 			<c:set var="i" value="${i+1}"/>
 				<div class="col-md-4 col-xs-6 board-box">
-					<img src="/images/board/${board.board_img}" class="boardImg" style="width:100%; height:200px;">
+					<img src="/images/board/posts/${board.board_img}" class="boardImg" style="width:100%; height:200px;">
 					<div class="boardBox">
 						<h3>${board.board_title}</h3>
 						${board.board_content}
@@ -106,7 +106,7 @@
 			<c:forEach var="schedule" items="${list_schedule}" end="3">
 			<c:set var="i" value="${i+1}"/>
 				<div class="col-md-6 col-xs-12 board-box">
-					<img src="${schedule.img}" class="boardImg" style="width:100%; height:200px;">
+					<img src="/images/schedule/${schedule.img}" class="boardImg" style="width:100%; height:200px;">
 					<div class="boardBox">
 						<h3>${schedule.title}</h3>
 						${schedule.content}
