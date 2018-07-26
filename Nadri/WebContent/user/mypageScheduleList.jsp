@@ -49,8 +49,8 @@
 	}
 	
 	.thumbImg img{
-		width: 250px;
-		height: 250px;
+		width: 240px;
+		height: 240px;
 		opacity: 1;
 		transition: .5s ease;
 	}
@@ -158,7 +158,7 @@ $(function(){
 		     content: {
 		       title: $("."+scheduleNo+" #scheduleTitle").text(),
 		       description: $("."+scheduleNo+" #scheduleDetail").text()+'\n'+$("."+scheduleNo+" #scheduleHashTag").text(),
-		       imageUrl: 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+		       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 		       link: {
 		         mobileWebUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo,
 		         webUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo
@@ -270,7 +270,7 @@ $(function(){
 					<!-- 마우스 오버시 보여지는 부분 -->
 					<div class="links" style="text-align:center;">
 						<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
-						<span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
+						<span id="scheduleDetail">${schedule.scheduleDetail}<br></span>
 						<span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
 						<button type="button" class="btn btn-default btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
 						<button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button><br>

@@ -10,7 +10,7 @@
 <meta property="og:description" content="내용" />
 <meta property="article:author" content="작성자" />
 <meta property="og:url" content="http://localhost:8080/board/getBoard?boardNo=1" />
-<meta property="og:image" content="http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg" />
+<meta property="og:image" content="https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png" />
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -629,7 +629,7 @@ $(function(){
 	     content: {
 	       title: $("#boardTitle").text(),
 	       description: $("#hashTag").text()+'\n'+$("#boardContent").text(),
-	       imageUrl: 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+	       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 	       link: {
 	         mobileWebUrl: 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val(),
 	         webUrl: 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val()
@@ -666,7 +666,7 @@ $(function(){
 		            'og:url': 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val(),
 		            'og:title': $("#boardTitle").text(),
 		            'og:description': $("#boardContent").text(),
-		            'og:image': 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+		            'og:image': 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 		        }
 		    })
 		});
@@ -995,11 +995,7 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-<<<<<<< HEAD
                   <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}">></c:if>
-=======
-                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
->>>>>>> refs/remotes/origin/master
                   <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

@@ -383,31 +383,49 @@ function happy(number){
 	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
 	<div id="Home" class="tabcontent">
-	<br/>
-		<c:set var="i" value="0" />
-				<c:forEach var="cart" items="${cart}">
-					<c:set var="i" value="${i+1}" />
-					<table>
-  					<tr class="ct_list_pop">
-						<tr>
-							<td rowspan="3"><span class="badge">${ i }</span></td>
-						    <td rowspan="3" ><img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}"></td>
-						    <th id="cartTitle${i}">${cart.cartTitle}</th>
-                            <td rowspan="3"><button class="btn btn-info" onclick="happy('${i}')" >추가</button></td>
-						</tr>
-						<span id="cartContents">
-							<tr>    
-							    <td width="200px" id="cartAddress${i}">${cart.cartAddress}</td>
-							</tr>
-							<tr>
-							    <td width="200px" id="cartDetail${i}">${cart.cartDetail}</td>
-							</tr>
-						</span>
-					</table>
-						<br/>
-				</c:forEach>
-				<button class="btn success">장바구니..</button>
-	</div>
+	   <br/>
+	      <c:set var="i" value="0" />
+	            <c:forEach var="cart" items="${cart}">
+	               <c:set var="i" value="${i+1}" />
+	               <table class="table-responsive ${cart.cartNo}">
+	                 <tr class="ct_list_pop">
+	                  <tr>
+	                     <td rowspan="3"><i class="material-icons">place</i></td>
+	                      <td rowspan="3" ><img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}"></td>
+	                      <th id="cartTitle${i}">${cart.cartTitle}</th>
+	                            <td rowspan="3"><div class="dropdown">
+	                         <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"> 경유지선택
+	                         <span class="caret"></span></button>
+	                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+	                           <li ><a tabindex="-1" onclick="addToSchedule('${i}',0)">첫번째</a></li>
+	                           <li ><a tabindex="-1" onclick="addToSchedule('${i}',1)">두번째</a></li>
+	                           <li ><a tabindex="-1"onclick="addToSchedule('${i}',2)">세번째</a></li>
+	                           <li><a tabindex="-1" onclick="addToSchedule('${i}',3)">네번째</a></li>
+	                           <li ><a tabindex="-1" onclick="addToSchedule('${i}',4)">다섯번째</a></li>
+	                           <li ><a tabindex="-1" onclick="addToSchedule('${i}',5)">여섯번째</a></li>
+	                            <li ><a tabindex="-1" onclick="addToSchedule('${i}',6)">일곱번째</a></li>
+	                         </ul>
+	                      </div>
+	                            </td>
+	                  </tr>
+	                  <span id="cartContents">
+	                     <tr>    
+	                         <td width="200px" id="cartAddress${i}">${cart.cartAddress}</td>
+	                     </tr>
+	                     <tr>
+	                         <td width="200px" id="cartDetail${i}">${cart.cartDetail}</td>
+	                     </tr>
+	                        <input type="hidden" id="cartX${i}" value="${cart.cartX}">
+	                         <input type="hidden" id="cartY${i}" value="${cart.cartY}">
+	                  </span>
+	               </table>
+	                  <br/>
+	            </c:forEach>
+	            <button class="btn success">장바구니..</button>
+	            <div class="custom-select" style="width:200px;">
+	          
+		</div>
+   </div>
 	
 	<div id="News" class="tabcontent">
 	  <h3>News</h3>
