@@ -267,7 +267,7 @@
 		}
 	})
 
-	/* $(function googleLogin() {
+	 $(function googleLogin() {
 	    gapi.load('auth2', function(){
 	    	// GoogleAuth 라이브러리에 대한 싱글 톤을 가져 와서 클라이언트를 설정합니다.
 	      auth2 = gapi.auth2.init({
@@ -319,13 +319,13 @@
 		        function(error) {
 		          alert(JSON.stringify(error, undefined, 2));
 		        });
-		  } */
+		  } 
 		  
 		//네이버 로그인
 			$(function(){
 		   		var naverLogin = new naver.LoginWithNaverId({
 					clientId: "HOBzhSrHnwuHLQpiDnzI",
-					callbackUrl: "http://localhost:8080/user/naverCallback.jsp",
+					callbackUrl: "http://127.0.0.1:8080/user/naverCallback.jsp",
 					isPopup: true,
 					loginButton: {color: "green", type: 3, height: 45}
 				});

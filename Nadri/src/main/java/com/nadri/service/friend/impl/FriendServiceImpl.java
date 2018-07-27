@@ -37,8 +37,8 @@ public class FriendServiceImpl implements FriendService{
 	
 
 	//模备 夸没 荐遏
-	@Override
-	public void acceptFriend(String userId, String friendId) throws Exception {
+	/*@Override
+	public int acceptFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
 			System.out.println("---------------ServiceImpl - acceptFriend------------");
 			System.out.println("serviceimpl - acceptFriend - userId: "+userId);
@@ -47,17 +47,34 @@ public class FriendServiceImpl implements FriendService{
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userId", userId);
 			map.put("friendId", friendId);
-			friendDao.acceptFriend(map);
+			return friendDao.acceptFriend(map);
+	}*/
+	
+	@Override
+	public int acceptFriend(Friend friend) throws Exception {
+		// TODO Auto-generated method stub
+			System.out.println("---------------ServiceImpl - acceptFriend------------");
+			System.out.println("serviceimpl - acceptFriend : "+friend);
+			System.out.println("---------------acceptFriend------------");
+
+			return friendDao.acceptFriend(friend);
 	}
+	
 
 	//模备 昏力
 	@Override
-	public int deleteFriend(String friendId) throws Exception {
+	public int deleteFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("---------------ServiceImpl - deleteFriend------------");
 		System.out.println(friendId);
+		System.out.println(userId);
 		System.out.println("---------------deleteFriend------------");
-		return friendDao.deleteFriend(friendId);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("friendId", friendId);
+		
+		return friendDao.deleteFriend(map);
 	}
 
 	//模备 夸没
