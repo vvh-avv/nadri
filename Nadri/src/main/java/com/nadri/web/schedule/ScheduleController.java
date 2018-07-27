@@ -80,7 +80,7 @@ public class ScheduleController {
 		String fileName = multipartFile.getOriginalFilename();
 		
 		// 颇老 按眉 积己
-		File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+		File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 		
 		multipartFile.transferTo(file);
 		

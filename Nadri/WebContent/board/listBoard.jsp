@@ -445,7 +445,7 @@ $(function(){
 			            			+"<div id='commListAll'>";
 			            		if(this.comment!=null){
 			            			for( i=0; i<this.comment.length; i++ ){
-			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
+			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.userName+","+this.comment[i].user.userId+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
 			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
 			            				+ "<span id='commListInquire' id='inquireUser' name='"+this.comment[i].commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>"	

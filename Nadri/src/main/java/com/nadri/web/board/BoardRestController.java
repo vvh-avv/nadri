@@ -138,10 +138,13 @@ public class BoardRestController {
 				list.get(i).setLikeFlag( boardService.getLikeFlag( list.get(i).getBoardNo(), ((User)session.getAttribute("user")).getUserId()) );	
 			}
 			//댓글이 있을 때만 수행
+			System.out.println("=============댓글이 있음");
 			if( list.get(i).getCommCnt()>0 ) {
 				List<Comment> comment = commentService.getCommentList(list.get(i).getBoardNo());
 				for( int j=0; j<comment.size(); j++) {
+					System.out.println("======================"+comment.get(j).getUser().getUserId());
 					comment.get(j).setUser( userService.getUser( (comment.get(j).getUser().getUserId()) ) );
+					System.out.println("======================"+comment.get(j).getUser());
 				}
 				list.get(i).setComment(comment);
 				String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
