@@ -54,4 +54,22 @@
        ORDER BY cart_time desc
     </select>
 
+	<delete id="deleteCart" parameterType="int">
+		DELETE
+		FROM cart
+		WHERE cart_no = #{value}
+	</delete>
+
+	<update id="updateCart" parameterType="int">
+		UPDATE cart
+		SET cart_code=#{cartCode}, cart_detail=#{cartDetail}, cart_title=#{cartTitle}, cart_address=#{cartAddress}, cart_img=#{cartImg}, stamp_code=#{stampCode}
+		WHERE cart_no = #{cartNo}
+	</update>
+
+	<select id="getCart" parameterType="int" resultMap="cartSelectMap">
+		SELECT *
+		FROM cart
+		WHERE cart_no = #{value}
+	</select>
+
 </mapper>

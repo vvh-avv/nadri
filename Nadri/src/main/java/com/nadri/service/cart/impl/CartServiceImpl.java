@@ -42,4 +42,19 @@ public class CartServiceImpl implements CartService{
 		return cartDao.getSpotCartList(userId);
 	}
 
+	@Override
+	public void deleteCart(int cartNo) throws Exception {
+		cartDao.deleteCart(cartNo);
+	}
+
+	@Override
+	public void updateCart(Cart cart) throws Exception {
+		cartDao.updateCart(cart);
+	}
+
+	@Override
+	public Cart getCart(int cartNo) throws Exception {
+		return cartDao.getCart(cartNo);
+	}
+
 }
