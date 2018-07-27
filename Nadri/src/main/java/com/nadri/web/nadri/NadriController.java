@@ -106,6 +106,7 @@ public class NadriController {
 		
 		model.addAttribute("boardList",board_list);
 		model.addAttribute("videoName",videoName);
+		model.addAttribute("nadriCounter",3785);
 		
 		return "/indexReal.jsp";
 	}

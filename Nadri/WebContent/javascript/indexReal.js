@@ -38,11 +38,13 @@ $(function(){
 		if(t_chk){	
 			$('.head-section').css('height','70px');
 			$(this).css('top','70px');
+			$('.top-icons').css('font-size','20px');
 			t_chk = false;
 		}else{
 			$('.head-section').css('height','10px');
 			$(this).css('top','10px');
 			$(this).css('cursor','pointer');
+			$('.top-icons').css('font-size','0px');
 			t_chk = true;
 		}
 		
@@ -117,12 +119,18 @@ $(function(){
 			$('.title-section').css('opacity','0');
 			$('.title-section').css('pointer-events','none');
 			$('.title-section').css('top','70px');
-		} else {
+			$('.top-icons').css('font-size','20px');
+			$('.top-icons').css('transition','font-size 1s');
+		}else if($(document).scrollTop() > 100){
+			$('.odometer').html(odo);
+		}else {
 			$('.head-section').css('height','10');
 			$('.head-section').css('border-bottom','10px solid #404548');
 			$('.title-section').css('opacity','1');
 			$('.title-section').css('pointer-events','all');
 			$('.title-section').css('top','10px');
+			$('.top-icons').css('font-size','0px');
+			$('.top-icons').css('transition','font-size 0.1s');
 		}
 	})
 	
@@ -138,6 +146,24 @@ $(function(){
 			self.location = '/spot/getSpotList?spotCode=1';
 		}
 	})
+	
+	$('.side-section > span').on('click',function(){
+		var id = $(this).attr('id');
+		if(id == 'login-open'){
+			self.location = '/user/loginView';
+		}
+	})
+	
+	$('.post-title').on('click',function(){
+		var id = $(this).attr('id');
+		self.location = '/board/getBoard?boardNo='+id;
+	});
+
+	$('.schedule-button').on('click',function(){
+		self.location = '/schedule/addSchedule';
+	});
+	
+	
 
 	
 })
