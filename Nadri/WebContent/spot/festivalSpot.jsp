@@ -116,14 +116,7 @@ td {
 </style>
 
 <head>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
-jQuery(document).ready(function( $ ) {
-    $('.counter').counterUp({
-        delay: 10,
-        time: 1500
-    });
-});
 
 $(function(){
 	$("#park").on("click", function(){
@@ -146,11 +139,11 @@ $(function(){
 		location.href = "/spot/getSearchSpot";
 	})
 
-	});
-
+});
 
 //맨위로 올라가게 만들어 주는 script
 $(function() {
+	
 	//*스크롤감지
 	$(window).scroll(function() {
 		var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -276,9 +269,9 @@ $(function() {
 				+ '<li class="list-group-item">'
 				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 				+ '<li class="list-group-item">'
-				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>대표전화  </b>'+ locations[i].tel+ '</li>'
+				+ '<i class="glyphicon glyphicon-earphone"></i><b>대표전화  </b>'+ locations[i].tel+ '</li>'
 				+ '<li class="list-group-item">'
-				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>조회수  </b>'+ locations[i].readcount+ '</li>'
+				+ '<i class="glyphicon glyphicon-book"></i><b>조회수  </b>'+ locations[i].readcount+ '</li>'
 				+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
 				+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-info">축제/전시</span></li>'
 				+ '<a href="/spot/getFestival?spotNo='+ locations[i].contentid+'"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
@@ -318,7 +311,6 @@ $(function() {
 		<nav>
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	      <li><span class="counter" style="display: inline-block;font-weight: 450; color: black; font-size: 70px"><fmt:formatNumber value="${total}" pattern="##,###"/></span>개의 장소를 검색해 보세요!</li>
 	        <li><span id="park">공원</span></li>
 	        <li><span id="restaurant">맛집</span></li>
 	        <li><span id="festival">축제/전시</span></li>
@@ -326,7 +318,7 @@ $(function() {
 	        <li><span id="search">검색</span></li>
 	      </ul>
 	    </div>
-	  </nav>
+  </nav>
 
 <div id="map">
 	<br /> <br />
@@ -373,6 +365,4 @@ $(function() {
 	</div>
 </body>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
-<script src="/javascript/jquery.counterup.min.js"></script>
 </html>

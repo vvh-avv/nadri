@@ -32,7 +32,6 @@
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="/css/materialize.css">
 
 <html>
 <head>
@@ -390,7 +389,7 @@ $(function () {
 			c += ' <div id="scheduleDetail2"></div>';
 			c += '<button type="button" class="btn btn-success" id="modalButton">나들이추가</button>';
 			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>';
-			c += ' <input  style="display:block;" type="file" id="files" name="files" onchange="readURL(this)">'; 
+			c += ' <input  style="display:block;" type="file" id="files" name="files" onchange="readURL(this)" value="picnicdefault.jpg">'; 
 			c += '</div>';
 			c += ' <div id="img-cover"></div>';
 		    $("#img").append(c);
@@ -492,6 +491,105 @@ function deleteWayPoint(){
 	}
 }
 
+//바구니 수정, 삭제 감지 스크립트
+$(function(){
+   $("button[id^='updateCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      var cartTitle = $("."+cartNo).find("th[id^='cartTitle']").text();
+      var cartDetail = $("."+cartNo).find("td[id^='cartDetail']").text();
+
+      swal({
+           title: cartTitle+' 장소 설명 수정',
+           text: '변경을 원하시는 설명문구를 입력해주시길 바랍니다.',
+           content: {
+             element: 'input',
+             attributes: {
+               defaultValue: cartDetail,
+             }
+           }
+         })
+         .then(function (inputData){
+            $.ajax({
+               url : "/restcart/updateCart/"+cartNo+"/"+escape(encodeURIComponent(inputData)),
+               method : "POST",
+               contentType: "application/x-www-form-urlencoded; charset=EUC-KR",
+               success : function(){
+                  swal({
+                       title: "수정 완료!",
+                       text: inputData+"로 정상 수정되었습니다!",
+                       icon: "success"
+                     });
+               }
+            }) //e.o.ajax
+            
+            $("."+cartNo).find("td[id^='cartDetail']").text(inputData);
+         })
+         
+   })
+   
+   $("button[id^='deleteCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      
+      swal({
+            title: "장소를 정말 삭제하시겠습니까?",
+            text: "삭제하시면 복구가 불가합니다.",
+            icon: "warning",
+            buttons: ["취소", "삭제"],
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+               $.ajax({
+                  url : "/restcart/deleteCart/"+cartNo,
+                  method : "POST",
+                  success : function(){
+                     swal("삭제되었습니다.");
+                     $("."+cartNo).remove();
+                  }
+               }) //e.o.ajax
+            } else {
+              swal("취소하였습니다.");
+            }
+         });
+   })
+   
+   var updateCartImgNo = "";
+   $("img[id^='cartImg']").on("click", function(){
+      updateCartImgNo = $(this).closest("table").attr("class");
+      $("#file").click();
+   })
+   
+   $("#file").on("change", function(){
+      imgPreview(this);
+   })
+   
+   function imgPreview(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+   
+           reader.onload = function (e) {
+              $("."+updateCartImgNo).find("img").attr('src', e.target.result);
+              
+              $.ajax({
+                url : "/restcart/updateCartImg/"+updateCartImgNo,
+                method : "POST",
+                  dataType : "json",
+                  headers : {
+                     "Accept" : "application/json",
+                     "Content-Type" : "application/json"
+                  },
+                  data : JSON.stringify({
+                     cartImg : e.target.result
+                  }),
+                  success : function(){
+                  }
+             }) //e.o.ajax
+              
+           }
+           reader.readAsDataURL(input.files[0]);
+        }
+    }
+})
 
 </script>
 </head>
@@ -526,6 +624,10 @@ function deleteWayPoint(){
 							       <li ><a tabindex="-1" onclick="addToSchedule('${i}',6)">일곱번째</a></li>
 							    </ul>
 							 </div>
+							 
+							  <!-- 하지수테스트 -->
+							 <button class="btn btn-xs" type="button" id="updateCart">수정</button>
+							 <button class="btn btn-xs" type="button" id="deleteCart">삭제</button>
                             </td>
 						</tr>
 						<span id="cartContents">

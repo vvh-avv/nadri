@@ -25,7 +25,6 @@
 		SELECT *
 		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
 		ORDER BY spot_readcnt
-		limit 0, 10;
 		]]>
 	</select>
 

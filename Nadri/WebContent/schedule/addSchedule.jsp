@@ -485,6 +485,7 @@ function deleteWayPoint(){
 }
 //바구니 수정, 삭제 감지 스크립트
 $(function(){
+	
    $("button[id^='updateCart']").on("click", function(){
       var cartNo = $(this).closest("table").attr("class");
       var cartTitle = $("."+cartNo).find("th[id^='cartTitle']").text();
@@ -516,7 +517,6 @@ $(function(){
             
             $("."+cartNo).find("td[id^='cartDetail']").text(inputData);
          })
-         
    })
    
    $("button[id^='deleteCart']").on("click", function(){
@@ -548,10 +548,10 @@ $(function(){
    var updateCartImgNo = "";
    $("img[id^='cartImg']").on("click", function(){
       updateCartImgNo = $(this).closest("table").attr("class");
-      $("#file").click();
+      $("#fileImg").click();
    })
    
-   $("#file").on("change", function(){
+   $("#fileImg").on("change", function(){
       imgPreview(this);
    })
    
@@ -581,7 +581,8 @@ $(function(){
            reader.readAsDataURL(input.files[0]);
         }
     }
-    </script> 
+})
+</script> 
     
 </head>
 <body>
@@ -590,6 +591,7 @@ $(function(){
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
 	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
+								<input class="form-control" type="file" id="fileImg" name="fileImg" style="display:none">
 
 	<div id="Home" class="tabcontent">
 	<br/>
@@ -602,7 +604,6 @@ $(function(){
 							<td rowspan="3"><i class="material-icons">place</i></td>
 						    <td rowspan="3" >
 						    	<img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}">
-								<input class="form-control" type="file" id="file" name="file" style="display:none">
 						    </td>
 						    <th id="cartTitle${i}">${cart.cartTitle}</th>
                             <td rowspan="3"><div class="dropdown">

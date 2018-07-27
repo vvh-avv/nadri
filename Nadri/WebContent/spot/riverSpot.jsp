@@ -157,7 +157,7 @@ $(document).ready(function(){
 										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 										output += ' <p>';
 										output += ' <span class="label label-success">백과</span>';
-										output += ' <span class="label label-danger">공원</span>';
+										output += ' <span class="label label-primary">한강</span>';
 										output += ' </p>';
 										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 										output += '</div>';
@@ -192,43 +192,41 @@ function getRiverList(spotCode){
 			      var item = spot[index]; 
 			      var output = '';
 			      if(spot[i].spotImg != ""){
-				      output += '<div class="item big">';
-				       output += '<div class="thumbnail">';
-				      output += '<img class="materialboxed" src="/images/spot/ ' + spot[i].spotImg + ' " height="100px" width="100%"/>';
-				      output += ' <div class="caption">';
-				      output += '<h3>' + spot[i].spotTitle + '</h3>';
-					  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-					  output += '<p> ' + spot[i].spotAddress+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-					  output += '<p> ' + spot[i].spotPhone+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-					 output += ' <p>';
-					 output += ' <span class="label label-danger">공원</span>';
-					 output += '  <span class="label label-warning">한강</span>';
-					 output += ' </p>';
-					  output += '<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>';
-					  output += '</div>';
-					  output += '</div>'; 
-					  output += '</div>';
+			    	  output += '<div class="col-sm-3 col-md-3">';
+						output += '<div class="thumbnail">';
+						output += ' <div class="caption">';
+						output += '<h5>'+ spot[i].spotTitle+ '</h5>';
+						output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+						output += '<p> '+ spot[i].spotAddress+ '</p>';
+						output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+						output += '<p> '+ spot[i].spotCreateTime+ ' / '+ spot[i].spotModifyTime+ '</p>';
+						output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+						output += ' <p>';
+						output += ' <span class="label label-success">백과</span>';
+						output += ' <span class="label label-primary">한강</span>';
+						output += ' </p>';
+						output += '<p><a href="/spot/getSpot?spotNo='+ spot[i].spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+						output += '</div>';
+						output += '</div>';
+						output += '</div>';
 			      }else{
-			    	  output += '<div class="item normal">';
-				       output += '<div class="thumbnail">';
-				      output += ' <div class="caption">';
-				      output += '<h3>' + spot[i].spotTitle + '</h3>';
-					  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-					  output += '<p> ' + spot[i].spotAddress+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-					  output += '<p> ' + spot[i].spotPhone+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-					 output += ' <p>';
-					 output += ' <span class="label label-danger">공원</span>';
-					 output += '  <span class="label label-warning">한강</span>';
-					 output += ' <span class="label label-primary">편의시설</span>';
-					 output += ' </p>';
-					  output += '<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>';
-					  output += '</div>';
-					  output += '</div>'; 
-					  output += '</div>';
+			    	  output += '<div class="col-sm-3 col-md-3">';
+						output += '<div class="thumbnail">';
+						output += ' <div class="caption">';
+						output += '<h5>'+ spot[i].spotTitle+ '</h5>';
+						output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+						output += '<p> '+ spot[i].spotAddress+ '</p>';
+						output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+						output += '<p> '+ spot[i].spotCreateTime+ ' / '+ spot[i].spotModifyTime+ '</p>';
+						output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+						output += ' <p>';
+						output += ' <span class="label label-success">백과</span>';
+						output += ' <span class="label label-primary">한강</span>';
+						output += ' </p>';
+						output += '<p><a href="/spot/getSpot?spotNo='+ spot[i].spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+						output += '</div>';
+						output += '</div>';
+						output += '</div>';
 			      }
 				  return output; 
 		      })//end of append	
@@ -451,7 +449,7 @@ function getRiverList(spotCode){
 					+ '<li class="list-group-item">'
 					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-danger"> 공원</span></li>'
+					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-primary"> 한강</span></li>'
 					+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
 					+ '</div>';
 
@@ -474,48 +472,6 @@ function getRiverList(spotCode){
 		}
 	}//end of initmap();	
 
-	//장소를 불러오는 코드
-	function getSpotList(spotCode) {
-		$.ajax({
-					type : "GET",
-					url : "/restspot/getSpotList/" + spotCode,
-					headers : {
-						"Content-type" : "application/json",
-						"X-HTTP-Method-Override" : "POST"
-					},
-					dataType : "text",
-					success : function(result) {
-						var result = JSON.parse(result);
-						var spot = result.spot
-						for (var i = 0; i < spot.length; i++) {
-							$('.spotImg').empty();
-							$('.spotImg').append(
-											function(index) {
-												// 변수를 선언합니다. 
-												var item = spot[index];
-												var output = '';
-												output += '<div class="col-sm-4 col-md-4">';
-												output += '<div class="thumbnail">';
-												output += ' <div class="caption">';
-												output += '<h5 text-align="center">'+ spot[i].spotTitle+ '</h5>';
-												output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
-												output += '<p> '+ spot[i].spotAddress+ '</p>';
-												output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 등록날짜 / 수정날짜 </strong>';
-												output += '<p> '+ spot[i].spotCreateTime+ ' / '+ spot[i].spotModifyTime+ '</p>';
-												output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-												output += ' <p>';
-												output += ' <span class="label label-danger">공원</span>';
-												output += ' </p>';
-												output += '<p><a href="/spot/getSpot?spotNo='+ spot[i].spotNo+ '" class="btn btn-primary" role="button">상세보기</a> <a href="#" class="btn btn-default" role="button">장소바구니</a></p>';
-												output += '</div>';
-												output += '</div>';
-												output += '</div>';
-												return output;
-											})//end of append		     		     		      
-						}
-					}
-				});// end of ajax 
-	} // end of getSpotList()
 </script>
 
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
@@ -543,11 +499,11 @@ function getRiverList(spotCode){
 			<div class="jumbotron">
 				<h1>한강</h1>
 					<p>한강의 나들이를 즐겨보세요!</p>
-					  <span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(41)">한강공원</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(42)">주차장</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(43)">안내소</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(44)">자전거</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(45)">편의점</a><span>
+					  <span><a class="waves-effect waves-light btn" role="button" onclick="getRiverList(41)">한강공원</a><span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="getRiverList(42)">주차장</a><span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="getRiverList(43)">안내소</a><span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="getRiverList(44)">자전거</a><span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="getRiverList(45)">편의점</a><span>
 			</div>
 	
 				<div class="spotImg">
@@ -590,7 +546,7 @@ function getRiverList(spotCode){
 																output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 																output += ' <p>';
 																output += ' <span class="label label-success">백과</span>';
-																output += ' <span class="label label-danger">공원</span>';
+																output += ' <span class="label label-primary">한강</span>';
 																output += ' </p>';
 																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 																output += '</div>';

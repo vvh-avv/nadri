@@ -73,6 +73,16 @@ $(document).ready(function(){
 $(function(){
 	
 	
+	$("#nologininquire").on("click", function(){
+       swal("로그인후 이용해주세요!");
+    });
+	
+	$("#nologincart").on("click", function(){
+		swal("로그인후 이용해주세요!");
+    });
+	
+	
+	
     //*스크롤감지
     $(window).scroll(function(){
         var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -369,10 +379,19 @@ function addCartSpot(){
 								<div class="pull-left">
 									<button type="button" class="btn btn-secondary" id="listbutton"><i class="fa fa-list"></i> 목록으로</button>
 								</div>
+								
+								<c:if test="${sessionScope.user.userId != null}">
 								<div class="pull-right">
 									<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
 									<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
 								</div>
+								</c:if>
+								<c:if test="${sessionScope.user.userId == null}">
+								<div class="pull-right">
+									<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
+									<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
+								</div>
+								</c:if>	
 							</div>
 
 				<form id=cart>

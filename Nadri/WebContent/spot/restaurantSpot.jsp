@@ -405,7 +405,7 @@ $(document).ready(function(){
 																output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 																output += ' <p>';
 																output += ' <span class="label label-success">백과</span>';
-																output += ' <span class="label label-danger">공원</span>';
+																output += ' <span class="label label-warning">맛집</span>';
 																output += ' </p>';
 																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 																output += '</div>';

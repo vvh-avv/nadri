@@ -49,8 +49,8 @@
 	}
 	
 	.thumbImg img{
-		width: 240px;
-		height: 240px;
+		width: 250px;
+		height: 250px;
 		opacity: 1;
 		transition: .5s ease;
 	}
@@ -91,7 +91,7 @@
 
 function fncGetList(currentPage) {
 	$("#currentPage").val(currentPage)
-	$("form").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
+	$("#detailForm").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
 }
 
 
@@ -170,7 +170,7 @@ $(function(){
 		     content: {
 		       title: $("."+scheduleNo+" #scheduleTitle").text(),
 		       description: $("."+scheduleNo+" #scheduleDetail").text()+'\n'+$("."+scheduleNo+" #scheduleHashTag").text(),
-		       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
+		       imageUrl: 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
 		       link: {
 		         mobileWebUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo,
 		         webUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo
@@ -285,7 +285,7 @@ $(function(){
 	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
 	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
 	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-	  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
+	  <a href="#">장소 바구니</a><br/><br/>
 	  
 	  	<br/><br/><br/><br/><br/><br/><br/><br/>
   		<a href="/user/logout">로그아웃</a><br/><br/>
@@ -300,7 +300,7 @@ $(function(){
 				</div>
 
 				<div class="col-md-6 text-right">
-					<form class="form-inline" name="detailForm">
+					<form id="detailForm" class="form-inline" name="detailForm">
 
 						<div class="form-group">
 							<select class="form-control" name="searchCondition">
@@ -344,7 +344,7 @@ $(function(){
 					<!-- 마우스 오버시 보여지는 부분 -->
 					<div class="links" style="text-align:center;">
 						<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
-						<span id="scheduleDetail">${schedule.scheduleDetail}<br></span>
+						<span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
 						<span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
 						<button type="button" class="btn btn-default btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
 						<button type="button" class="btn btn-default btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
