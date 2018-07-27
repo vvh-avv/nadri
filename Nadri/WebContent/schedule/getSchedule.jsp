@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/images/common/favicon.ico">
@@ -29,6 +30,10 @@
 <!-- 툴바 넣는 CDN 입니다 -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
+<!-- materialize.js -->
+<script src="/javascript/materialize.js"></script>
+<link rel="stylesheet" href="/css/materialize.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
@@ -105,6 +110,9 @@ ul.countdown li p {
 <script>
 // 맨위로 올라가게 만들어 주는 script
 $(function(){
+	
+	$('.materialboxed').materialbox();
+	
     //*스크롤감지
     $(window).scroll(function(){
         var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -243,8 +251,8 @@ $(function(){
 					<p id="scheduleDetail">${schedule.scheduleDetail}</p>
 					<p>${schedule.hashTag}</p>
 					<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
-				<a href="#0" class="cd-timeline__read-more">Read more</a> <span
-					class="cd-timeline__date">Jan 14</span>
+				<!-- <a href="#0" class="cd-timeline__read-more">Read more</a> -->
+				 <span class="cd-timeline__date">${schedule.scheduleDate}</span>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -264,16 +272,23 @@ $(function(){
 				       * : ${sel}<br>
 				   </c:forTokens>
 				</p>
-						<p>${schedule.scheduleDate}</p>
-						<p>${schedule.hashTag}</p>
+						<p>${schedule.scheduleDate}</p>					
 						<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
+
 					</div>
 					<!-- cd-timeline__content -->
 			</div>
 			<!-- cd-timeline__block -->
 			
 			<div class="cd-timeline__block js-cd-block">
-			<div class="cd-timeline__img cd-timeline__img--movie js-cd-img" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
+			
+			
+			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">		
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
+			</c:if>
+			<c:if test="${fn:length(waypoint.wayPointImg) > 10}">
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});">
+			</c:if>
 				<img src="/images/spot/icon/cd-icon-movie.svg" alt="Movie">
 			</div>
 			<!-- cd-timeline__img -->
@@ -282,7 +297,7 @@ $(function(){
 				<h3>${waypoint.wayPointTitle}</h3>
 					<p>${waypoint.wayPointDetail}</p>
 					<p>${waypoint.wayPointAddress}</p>
-				<span class="cd-timeline__date">Feb 26</span>
+				<span class="cd-timeline__date"></span>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -296,13 +311,8 @@ $(function(){
 			</c:forEach>
 
 			<div class="cd-timeline__content js-cd-content">
-				<h2>Title of section 1</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Iusto, optio, dolorum provident rerum aut hic quasi placeat iure
-					tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus
-					veritatis qui ut.</p>
-				<a href="#0" class="cd-timeline__read-more">Read more</a> <span
-					class="cd-timeline__date">Jan 14</span>
+				<h2>나들이 후기!</h2>
+				<p>${schedule.scheduleReview}</p>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -310,8 +320,6 @@ $(function(){
 		</div>
 		<!-- 여기안에다가 집어넣으면 몇개더 들어갑니다! -->
 	</section>
-	</div>
-	</div>
 	<!-- cd-timeline -->
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
 </body>

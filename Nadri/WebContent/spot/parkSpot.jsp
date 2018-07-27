@@ -103,6 +103,28 @@ padding : 5px;
 <head>
 <script>
 
+$(function(){
+	$("#park").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=0";
+	})
+
+	$("#festival").on("click", function(){
+		location.href = "/spot/getFestivalList";
+	})
+
+	$("#restaurant").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=1";
+	})
+
+	$("#river").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=4";
+	})
+
+	$("#search").on("click", function(){
+		location.href = "/spot/getSearchSpot";
+	})
+
+	});
 $(document).ready(function(){
 	// 움직이게 만들기
 	$('.grid').masonry({
@@ -339,8 +361,9 @@ $(document).ready(function(){
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
 	        <li><span id="park">공원</span></li>
-	        <li><span id="festival">축제/전시</span></li>
 	        <li><span id="restaurant">맛집</span></li>
+	        <li><span id="festival">축제/전시</span></li>
+		<li><span id="river">한강</span></li>
 	        <li><span id="search">검색</span></li>
 	      </ul>
 	    </div>

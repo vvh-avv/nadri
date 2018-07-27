@@ -1,7 +1,9 @@
 package com.nadri.service.schedule;
 
 import java.util.List;
+import java.util.Map;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.WayPoint;
 
@@ -23,7 +25,7 @@ public interface ScheduleDao {
 	public void updateHashTag(String waypointTitle) throws Exception;
 	
    // 6. 마이페이지 내 일정을 보기 위한 메서드
-   public List<Schedule> getMyScheduleList(String userId) throws Exception;
+   public Map<String,Object> getMyScheduleList(Search search) throws Exception;
 
    // 7. 게시판에서 일정복사 눌렀을 때 실행 할 메서드
    public int checkSchedule(String scheduleImg, String userId) throws Exception;
@@ -33,5 +35,8 @@ public interface ScheduleDao {
 
    // 9. 일정을 삭제하는 메서드
    public void deleteSchedule(int scheduleNo) throws Exception;
+   
+   // 10. 일정의 review를 업데이트 합니다.
+   public void updateScheduleReview(Schedule schedule) throws Exception;
 
 }

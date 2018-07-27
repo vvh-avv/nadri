@@ -342,6 +342,7 @@ function addCartSpot(){
 				
 <!-- 구글맵을 불러쓰기위한 CDN -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
+
 </body>
 </html>
 
