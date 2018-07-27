@@ -25,10 +25,13 @@
 <link rel="stylesheet" href="/css/flexslider.css" type="text/css">
 <script src="/javascript/flexslider.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 <link rel="stylesheet" href="/css/adminIndexSmall.css">
 <script src="/javascript/adminIndex.js"></script>
+
 <title>너나들이 관리자 페이지</title>
 
 </head>
@@ -53,16 +56,19 @@
 		})
 
 		/* index page animation end */
+		
+		
 
 	})
 </script>
 <body onload="realtimeClock()">
-
+	<input type="text" name="session" id="session-checker" value="${user.userId}"/>
 	<nav class="admin-navbar">
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">
 			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
-			<div class="profile-photo"></div>
+			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
+			</div>
 		</div>
 	</nav>
 	<nav class="admin-sub-navbar">

@@ -56,6 +56,10 @@
 		margin-bottom:25px;
 	}
 	
+	.popular-title{
+		margin-top:150px;
+	}
+	
 	.popular-boards{
 		height: 250px;
 	}
@@ -76,7 +80,7 @@
 		font-size : 7vw;
 	}
 	
-	.middel-box{
+	.middle-box{
 		height:100px;
 		width:95%;
 		left:2.5%;
@@ -91,6 +95,22 @@
 	.bluff > div{
 		text-align: center;
 		margin-left:0px;
+	}
+	
+	.side-section{
+		width : 100%;
+	}
+	
+	.squar-back{
+		height:1200px;
+	}
+	
+	.share-campaign{
+		font-size:4vw;
+	}
+	
+	.schedule-button{
+		font-size:3vw;
 	}
  
  
