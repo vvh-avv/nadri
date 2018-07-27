@@ -430,8 +430,17 @@ function addToSchedule(i, j){
 		$("#wayPointAddress"+j+"").val(wayPointAddress);
 		
 		// 이미지값
-		wayPointImg=$("#cartImg"+i+"").attr('src');
-		$("#wayPointImg"+j+"").val(wayPointImg);
+		var cartNo = $("#cartImg"+i+"").closest('table').attr('class').replace(/^[0-9]/g,"");
+		$.ajax({
+			url : "/restcart/getCart/"+cartNo,
+			method : "POST",
+			success : function(data){
+				console.log("새로 가져온 파일이름 : "+data.cartImg);
+				$("#wayPointImg"+j+"").val(data.cartImg);				
+			}
+		})
+		//wayPointImg=$("#cartImg"+i+"").attr('src');
+		//$("#wayPointImg"+j+"").val(wayPointImg);
 		
 		//제목값
 		wayPointTitle = $("#cartTitle"+i+"").text();
@@ -565,22 +574,39 @@ $(function(){
               $.ajax({
                 url : "/restcart/updateCartImg/"+updateCartImgNo,
                 method : "POST",
-                  dataType : "json",
-                  headers : {
-                     "Accept" : "application/json",
-                     "Content-Type" : "application/json"
-                  },
-                  data : JSON.stringify({
-                     cartImg : e.target.result
-                  }),
-                  success : function(){
-                  }
+                dataType : "json",
+                headers : {
+                   "Accept" : "application/json",
+                   "Content-Type" : "application/json"
+                },
+                data : JSON.stringify({
+                   cartImg : e.target.result
+                }),
+                success : function(data){
+                	//alert(data);
+                	//$("."+updateCartImgNo).find("img").attr('src',data);
+	             	//$("#cartImg"+i+"").attr('src');
+                }
              }) //e.o.ajax
               
            }
            reader.readAsDataURL(input.files[0]);
         }
-    }
+       
+       
+
+   	//$("."+updateCartImgNo).find("img").attr('src',data);
+   	/*
+		$.ajax({
+			url : "/restcart/getCart/"+updateCartImgNo,
+			method : "POST",
+			success : function(data){
+				console.log("새로 가져온 파일이름 : "+data.cartImg);
+				//$("#wayPointImg"+j+"").val(data.cartImg);
+				$("."+updateCartImgNo).find("img").attr('src','/images/cart/'+data.cartImg);
+			}
+		})
+    }*/
 })
 </script> 
     
@@ -591,7 +617,7 @@ $(function(){
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
 	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
-								<input class="form-control" type="file" id="fileImg" name="fileImg" style="display:none">
+	<input class="form-control" type="file" id="fileImg" name="fileImg" style="display:none">
 
 	<div id="Home" class="tabcontent">
 	<br/>

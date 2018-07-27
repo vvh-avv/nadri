@@ -440,12 +440,12 @@ $(function(){
             method : "GET" ,
             success : function( data ) {
                
-            	alert( "noticeSendingWs함수 호출" ) ;
-            	alert( data.noticeCode ) ;
+            	//alert( "noticeSendingWs함수 호출" ) ;
+            	//alert( data.noticeCode ) ;
             	noticeSendingWs( data.receiverId + data.noticeCode ) ;
              } ,
              error : function( error ) {
-            	 alert( "에러 : " + error ) ;
+            	 //alert( "에러 : " + error ) ;
              }
          })
          

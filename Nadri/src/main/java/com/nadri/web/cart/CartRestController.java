@@ -66,10 +66,10 @@ public class CartRestController{
 	}
 	
 	@RequestMapping(value="updateCartImg/{cartNo}", method=RequestMethod.POST)
-	public void updateCartImg( @PathVariable int cartNo, @RequestBody Cart newCart) throws Exception{
+	public String updateCartImg( @PathVariable int cartNo, @RequestBody Cart newCart) throws Exception{
 		System.out.println("/restcart/updateCartImg : POST");
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");
 		Calendar now = Calendar.getInstance();
 		String fileName = formatter.format(now.getTime())+".jpg";
 		System.out.println("변경된 파일명 : "+fileName);
@@ -85,10 +85,13 @@ public class CartRestController{
 		Cart cart = cartService.getCart(cartNo);
 		
 		//기존 파일 삭제
-		//new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\cart\\"+cart.getCartImg()).delete();
+		new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\cart\\"+cart.getCartImg()).delete();
 
 		cart.setCartImg(fileName);
 		cartService.updateCart(cart);
+		
+		System.out.println("===="+fileName);
+		return fileName;
 	}
 	
 	@RequestMapping(value="deleteCart/{cartNo}", method=RequestMethod.POST)
@@ -98,6 +101,12 @@ public class CartRestController{
 		cartService.deleteCart(cartNo);
 	}
 	
+	@RequestMapping(value="getCart/{cartNo}", method=RequestMethod.POST)
+	public Cart getCart(@PathVariable int cartNo) throws Exception{
+		System.out.println("/restcart/getCart : POST");
+		
+		return cartService.getCart(cartNo);
+	}
 }
 
 

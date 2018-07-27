@@ -82,7 +82,7 @@ public class UserController {
 				break;
 			}
 
-			SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS_"+(i+1));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+(i+1));
 			Calendar now = Calendar.getInstance();
 			
 			//확장자명
@@ -160,7 +160,7 @@ public class UserController {
 				break;
 			}
 
-			SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS_"+(i+1));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+(i+1));
 			Calendar now = Calendar.getInstance();
 			
 			//확장자명
