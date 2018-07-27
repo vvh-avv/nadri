@@ -1,114 +1,200 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-<link rel="shortcut icon" href="/images/common/favicon.ico"> 
-
-<!-- jQuery CDN --> 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
-<!-- Bootstrap CDN --> 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"> 
-<!-- common.js / common.css CDN --> 
-<script src="/javascript/common.js"></script> 
-<link rel="stylesheet" href="/css/common.css"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/images/common/favicon.ico">
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Bootstrap CDN -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<!-- common.js / common.css CDN -->
+<script src="/javascript/common.js"></script>
+<link rel="stylesheet" href="/css/common.css">
+<!-- juanMap.js CDN -->
+<script src="/javascript/juanMap.js"></script>
+<!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! -->
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
 <!-- 툴바 넣는 CDN 입니다 -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
-<!-- juanMap.js CDN --> 
-<script src="/javascript/juanMap.js"></script> 
-<!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! --> 
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-<!-- googleMap CDN -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
+<!-- materialize 넣는 css -->
+<script src="/javascript/materialize.js"></script>
+<link rel="stylesheet" href="/css/materialize.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- 구글맵을 사용하기 위한 CDN -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7-c6GOHSYIeB4RuWDwIbWPdu2oeRTnpI&libraries=geometry,places,drawing"></script>
+<!-- sweet alert를 쓰기위한 CDN -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <html>
 <style>
+@font-face {
+	font-family: 'seoul';
+	src: url('/css/fonts/seoulhangangjangm.eot');
+	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
+		format('embedded-opentype'), url('/css/fonts/seoulhangangjangm.woff2')
+		format('woff2'), url('/css/fonts/seoulhangangjangm.woff')
+		format('woff'), url('/css/fonts/seoulhangangjangm.ttf')
+		format('truetype'),
+		url('/css/fonts/seoulhangangjangm.svg#seoul-hangang-jang-m')
+		format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
 body {
-	height: 100%
+	height: 100%;
+	margin: 0px;
+	font-family : seoul;
 }
 
 #map {
-	height: 80%;
+	height: 70%;
 	width: 100%;
 	clear: both;
 }
 
-<!-- 지도에 떠있는 검색박스를 위한 css입니다 -->
-#floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
-      
-      /*드랍다운 들어가는 css*/
-	.dropbtn {
-		    background-color: #4CAF50;
-		    color: white;
-		    padding: 16px;
-		    font-size: 16px;
-		    border: none;
-		}
+/*맨위로가게만들어주는 css */
+.gotoTop {
+	display: none;
+	cursor: pointer;
+	position: fixed;
+	bottom: 10%;
+	right: 5%;
+	width: 50px;
+	height: 50px;
+	z-index: 999;
+}
 
-		span.dropdown {
-			width: 16.6%;
-			float: left;
-		}
 
-		.dropdown {
-		    position: relative;
-		    display: inline-block;
-		}
+/* jumbotron 이미지를 넣는 부분 입니다!*/
+	.jumbotron {
+	   margin-bottom: 0px;
+	   background-image: url(/images/spot/422.jpg);
+	   background-position: 0% 25%;
+	   background-size: cover;
+	   background-repeat: no-repeat;
+	   color: #393535;
+	   padding-left : 10%;
+	}
 
-		.dropdown-content {
-		    display: none;
-		    position: absolute;
-		    background-color: #f1f1f1;
-		    min-width: 160px;
-		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		    z-index: 1;
-		}
+/*spot에 패딩을 넣는 장소 입니다!!*/
+.spotImg{
+padding : 5px;
+}
 
-		.dropdown-content a {
-		    color: black;
-		    padding: 12px 16px;
-		    text-decoration: none;
-		    display: block;
-		}
-		
-		.dropdown-content a:hover {background-color: #ddd;}
-		
-		.dropdown:hover .dropdown-content {display: block;}
-		
-		.dropdown:hover .dropbtn {background-color: #3e8e41;}
+#searchKeyword {
+	width: 20%;
+	float: left;
+}
+
+/*모달 위치 비교 css */
+.modal {
+	top : 20%;
+} 
+
+/*로딩이미지를 가져옵니다*/
+#loading {
+ width: 100%;  
+ height: 100%;  
+ top: 0px;
+ left: 0px;
+ position: fixed;  
+ display: block;  
+ opacity: 0.7;  
+ background-color: #fff;  
+ z-index: 99;  
+ text-align: center; } 
+  
+#loading-image {  
+ position: absolute;  
+ top: 50%;  
+ left: 50%; 
+ z-index: 100; }
+ 
+ /*버튼 중앙에 오게하는거!!*/
+ .list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
 
 </style>
 
 <head>
 <script>
+$(document).ready(function(){
+	// 맵을 시작하는 메서드입니다.
+	initMap();
+	
+	// search button을 누를때..
+	$("#searchbutton").on("click", function(){
+		geocodeAddress(geocoder, map);
+	});
+	
+	//*스크롤감지
+    $(window).scroll(function(){
+        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+        
+        if(scrollLocation!=0){ //화면을 내리면 gotoTop 뜨게하고
+            $(".gotoTop").fadeIn();
+        }else{                    //화면을 올리면 gotoTop 사라지게하기
+            $(".gotoTop").fadeOut();
+        }
+    })
+ 
+    //*상단에 둥둥 떠있는 아이콘 (상단으로 이동)
+    $(".gotoTop").on("click", function(){
+        $("body").scrollTop(0);
+    });
+    
+	$("#listbutton").on("click", function() {
+		history.go(-1);
+	});
+	
+	$("button.btn.btn-secondary.modalModBtn").on("click", function() {
+		swal("Good job!", "장소바구니에 추가했습니다!!", "success")
+		addCartSpot();
+		//$("#cartModal").modal('hide');
+		//sweetalert쓰기위한 javascript
+	});
+    
+    $(document).on('click','#cartbutton', function(){ 
+    	var cartTitle = $("#modalTitle").text();
+    	var cartX = $("#modalX").val();
+    	var cartY = $("#modalY").val();
+    	var cartAddress = $("#modalAddress").text();
+    	$("#cartTitle").val(cartTitle);
+    	$("#cartX").val(cartX);
+    	$("#cartY").val(cartY);
+    	$("#cartAddress").val(cartAddress);
+    }); //end of click
+	
+}); // 처음 시작될때 클릭버튼 세팅
+
+
+
 	//이 부분은 지도 관련 맵 입니다! 
 	//중앙 위치값을 세팅해 줍니다. 
-	var center = {
-		lat : 37.57593689999999,
-		lng : 126.97681569999997
-	};
-	var map, geocoder, infowindow;
+	var center = {lat : 37.57593689999999,lng : 126.97681569999997};
+	var map;
+	var geocoder = new google.maps.Geocoder();
+	var infowindownew = new google.maps.InfoWindow();
 	var locations = [];
 	var infowindows = [];
 	var contents = [];
@@ -118,44 +204,52 @@ body {
 	function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
 	          zoom: 14,
-	          center: {lat: 37.566535, lng: 126.9779692}
+	          center: {lat: 37.566535, lng: 126.9779692},
+	          scrollwheel : false
 	        });
-		geocoder = new google.maps.Geocoder();
+
+		map.addListener('dragend', function(event) {
+			deleteMarkers();
+			var a = map.getCenter();
+			var lat = ""+a.lat();
+			var lng = ""+a.lng();
+			searchAround(lat,lng);
+		});
+	
 		
-		document.getElementById('submit').addEventListener('click', function() {
-	          geocodeAddress(geocoder, map);
-	        });
-		
-		// 클릭시 이벤트 (클릭시 위치값을 가져와서 거기에 알맞는 마커를 찍습니다!)
+		// 클릭시 가져오는 란입니다!
 		map.addListener('click', function(event) {
-			deleteMarkers()
-			$('.parkImg').empty();
+			$("#searchKeyword").val('');
+			deleteMarkers();
+			$('.spotImg').empty();
 			// 클릭 지점 lat 값 가져오기
 			var lat = ""+event.latLng.lat();
 			// 클릭 지점 lng 값 가져오기
 			var lng = ""+event.latLng.lng();
+			searchAround(lat,lng);
 			var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&language=ko&key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs";
 			$.getJSON(url, function (data) { 
 			     	var address = data.results[0].formatted_address;
-			     	deleteMarkers();
 			     	geocoder.geocode({'address': address}, function(results, status) {
 			            if (status === 'OK') {
-			          	 alert(JSON.stringify(results[0]));
 			          	 var address= results[0].formatted_address;
-			          	 var content = '<div>'+results[0].formatted_address+'</div>'+
-			          	 						   '<div id="location">'+results[0].geometry.location+'</span>'+
-			          	 						   ' <a href="#" id ="abc" class="btn btn-primary btn-block" onclick="aaa()"><b>상세보기</b></a>'+
-			          	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'+
-			          	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="searchAround('+results[0].geometry.location.lat()+','+results[0].geometry.location.lng()+')"><b>주변장소검색</b></a>'+
-			          	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="googleAround()"><b>구글장소검색</b></a>'
-			          	 
+			          	 var content = '<div class="box box-primary" style="font-family : seoul">'+
+												 	'<h4 id="modalTitle">'+$("#searchKeyword").val()+'</h4>'+
+						 						 	'<li class="list-group-item" >'+
+						 							'<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b><span id="modalAddress">'+ results[0].formatted_address+ '</span></li>'+
+						 						   '<input type="hidden" id="modalY" value='+results[0].geometry.location.lat()+'>'+
+						 						  	'<input type="hidden" id="modalX" value='+results[0].geometry.location.lng()+'>'+
+						 						  	'<li class="list-group-item" >'+
+							 						 ' <button type="button" class="btn btn-secondary" id="cartbutton" data-toggle="modal" data-target="#cartModal" align="center">장소바구니 추가</button>'+
+							 						 '</li>'+
+							 						'</div>';
 			          	 var infowindow = new google.maps.InfoWindow({
 			                   content: content
 			                 });
 			          	 
 			             	map.setCenter(results[0].geometry.location);
 			         
-			                marker = new google.maps.Marker({
+			                var marker = new google.maps.Marker({
 			                map: map,
 			                position: results[0].geometry.location,
 			                icon : icons['search'].icon,
@@ -177,6 +271,12 @@ body {
 			     }); 
 		});
 		
+		
+		
+		
+		
+		
+		
 		// 나의 위치를 찍어주는 부분입니다!
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 	 	if (navigator.geolocation) {
@@ -188,18 +288,22 @@ body {
 				lon = position.coords.longitude; // 경도
 
 				var nowposition = new google.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-				message = '<div>현재위치</div>'; // 인포윈도우에 표시될 내용입니다
+				message = '<div style="font-family : seoul"><div>현재위치</div></div>'; // 인포윈도우에 표시될 내용입니다
 
 				// 마커와 인포윈도우를 표시합니다
 				displayMarker(nowposition, message);
+				
+				searchAround(lat, lon);
 
 			});
 
 		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 
-			var nowposition = new google.maps.LatLng(37.57593689999999, 126.97681569999997), message = '현재 위치를 사용할 수 없으시네요!'
+			var nowposition = new google.maps.LatLng(37.57593689999999, 126.97681569999997), message = '<div style="font-family : seoul"><div>현재위치</div></div>'
 
 			displayMarker(nowposition, message);
+			
+			searchAround(lat, lon);
 		}
 		
 		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
@@ -226,21 +330,35 @@ body {
 			map.setCenter(nowposition);
 					
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 	}//end of initmap();	
 	
-	// 맵에대한 정보를 가져옵니다.
+	
+	// 장소를 검색해서 나오는 란입니다!
 	function geocodeAddress(geocoder, map) {
-        var address = document.getElementById('address').value;
-        deleteMarkers();
+		deleteMarkers();
+        var address = $("#searchKeyword").val();
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
+        	  searchAround(results[0].geometry.location.lat(),results[0].geometry.location.lng());
         	 var address= results[0].formatted_address;
-        	 var content = '<div>'+results[0].formatted_address+'</div>'+
-        	 						   '<div id="location">'+results[0].geometry.location+'</span>'+
-        	 						   ' <a href="#" id ="abc" class="btn btn-primary btn-block" onclick="aaa()"><b>상세보기</b></a>'+
-        	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'+
-        	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="searchAround('+results[0].geometry.location.lat()+','+results[0].geometry.location.lng()+')"><b>반경 5km 검색!!</b></a>'+
-        	 						   ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="googleAround()"><b>구글장소검색</b></a>'
+        	 var content = '<div class="box box-primary" style="font-family : seoul">'+
+        	 						 	'<h4 id="modalTitle">'+$("#searchKeyword").val()+'</h4>'+
+        	 						 	'<li class="list-group-item" >'+
+        	 							'<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b><span id="modalAddress">'+ results[0].formatted_address+ '</span></li>'+
+        	 						   '<input type="hidden" id="modalY" value='+results[0].geometry.location.lat()+'>'+
+        	 						  	'<input type="hidden" id="modalX" value='+results[0].geometry.location.lng()+'>'+
+        	 						  	'<li class="list-group-item" >'+
+          	 						   ' <button type="button" class="btn btn-secondary" id="cartbutton" data-toggle="modal" data-target="#cartModal" align="center">장소바구니 추가</button>'+
+          	 						   '</li>'+
+         	 							'</div>';
         	 
         	 var infowindow = new google.maps.InfoWindow({
                  content: content
@@ -248,7 +366,7 @@ body {
         	 
               map.setCenter(results[0].geometry.location);
               //마커를 생성하는 부분입니다.
-              marker = new google.maps.Marker({
+              var marker = new google.maps.Marker({
               map: map,
               position: results[0].geometry.location,
               icon : icons['search'].icon,
@@ -271,9 +389,9 @@ body {
 	
 	function searchAround(lat,lng) { 
 		// 앞서 만들어진 마커를 초기화 시킵니다.
-		deleteMarkers()
+		deleteMarkers();
 		// 앞서 검색한 부분을 초기화시킵니다.
-		 $('.parkImg').empty();
+		 $('.spotImg').empty();
 		//1. ajax를 통해서 리스트를 뽑아옵니다.
 		$.ajax({
 				type : 'POST', // 요청 Method 방식
@@ -291,62 +409,67 @@ body {
 			          var spot = result;
 			          for ( var i = 0 ; i<spot.length ; i++){ 
 			        	  if(parseInt(spot[i].spotCode)>=4100 && parseInt(spot[i].spotCode) <4200){
-				  	          obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'river', spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo };
+				  	          obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'river', addr : spot[i].spotAddress, title : spot[i].spotTitle,  no : spot[i].spotNo };
 				  	          locations.push(obj); 
 				  	        // 주차장
 				  	        }else if (parseInt(spot[i].spotCode)>=4200 && parseInt(spot[i].spotCode) <4300){
-				  	          obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'parking', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo};
+				  	          obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'parking', addr :spot[i].spotAddress, title : spot[i].spotTitle,  no : spot[i].spotNo};
 				  		      locations.push(obj);
 				  		     // 안내소
 				  	        }else if (parseInt(spot[i].spotCode)>=4300 && parseInt(spot[i].spotCode) <4400){
-				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'info' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo};
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'info' , addr : spot[i].spotAddress, title : spot[i].spotTitle,  no : spot[i].spotNo};
 				  			   locations.push(obj);
 				  			 // 자전거 대여소
 				  	        }else if (parseInt(spot[i].spotCode)>=4400 && parseInt(spot[i].spotCode) <4500){
-				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo};
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike', addr :spot[i].spotAddress, title : spot[i].spotTitle,  no : spot[i].spotNo};
 				  			   locations.push(obj);
 				  			 // 편의점
 				  	        }else if (parseInt(spot[i].spotCode)>=4500 && parseInt(spot[i].spotCode) <4600){
-				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'store' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo};
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'store' , addr : spot[i].spotAddress, title : spot[i].spotTitle,  no : spot[i].spotNo};
 				  			    locations.push(obj);
-				  			 // 배달존
-				  	        }else{
-				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'food' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg, spotNo : spot[i].spotNo};
+				  	        }else if (parseInt(spot[i].spotCode) == 10){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'samdae' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
 				  			    locations.push(obj);
+				  	        }else if (parseInt(spot[i].spotCode) == 11){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'suyo' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
+				  	        }else if (parseInt(spot[i].spotCode) == 0){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'park' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
+				  	        }else if (parseInt(spot[i].spotCode) == 11){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'suyo' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
+				  	        }else if (parseInt(spot[i].spotCode) == 30){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'baby' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
+				  	        }else if (parseInt(spot[i].spotCode) == 31){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'car' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
+				  	        }else if (parseInt(spot[i].spotCode) == 32){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
+				  			    locations.push(obj)
 				  	        };
 			        	  
 			        	// 이부분은 마커를 추가해주는 부분입니다.
-				  			for ( var i = 0 ; i < locations.length; i++) { 
+				  		 	for ( var i = 0 ; i < locations.length; i++) { 
 				  	          	markers[i] = new google.maps.Marker({
 				  	            position: locations[i].position,
 				  	          	icon: icons[locations[i].type].icon,
 				  	            map: map
-				  	          });
+				  	          });  
+				  	          	
+				  	          markers.push(markers[i]);
 				  	          //인덱스를 꺼내오기.. 중요!!
 				  	          markers[i].index = i
 
-				  	        contents[i] = '<div class="box box-primary">'+ 
-				            '<div class="box-body box-profile">'+ 
-				              '<img class="profile-user-img img-responsive img-circle" src="/images/spot/ ' + locations[i].spotImg + ' "height="200px" width="200px" >'+ 
-				              '<h3 class="profile-username text-center">' + locations[i].spotTitle + '</h3>'+  
-				              '<ul class="list-group list-group-unbordered">'+ 
-				                '<li class="list-group-item">'+ 
-				               '   <b>위치</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
-				                '</li>'+ 
-				              '  <li class="list-group-item">'+ 
-				                  '<b>대표전화</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
-				                '</li>'+ 
-				                '<li class="list-group-item">'+ 
-				                 ' <b>조회수</b> <a class="pull-right">' + locations[i].spotAddress + '</a>'+ 
-				               ' </li>'+ 
-				             ' </ul>'+ 
-				             '<span> '+
-				             ' <a href="/spot/getSpot?spotNo='+locations[i].spotNo+'" id ="abc" class="btn btn-primary btn-block"><b>상세보기</b></a>'+ 
-				             '<span>'+
-				             '<span> '+
-				             ' <a href="#" id ="marking" class="btn btn-danger btn-block" onclick="marking()"><b>장소바구니추가</b></a>'+ 
-				             '</span>'+
-				            '</div>';
+				  	        contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+								+ '<h5 class="profile-username text-center">'+ locations[i].title+ '</h5>'
+								+ '<li class="list-group-item">'
+								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-default"> 검색</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '</div>';
 
 					  	       // 이벤트 정보 넣기
 					  	      infowindows[i] = new google.maps.InfoWindow({
@@ -357,79 +480,124 @@ body {
 				  	        // 마커를 클릭했을때 이벤트 발생 시키기
 				  	        google.maps.event.addListener(markers[i], 'click', function() {
 				  	       		// 일단 마커를 모두 닫고
-				  	         	for ( var i = 0; i < markers.length ; i++) {
-				  	        	 	infowindows[i].close();
-				  	        	 } 
 				  	        	 infowindows[this.index].open(map, markers[this.index]);
 				  	        	map.panTo(markers[this.index].getPosition());
-				  	        });
-
-				  	      // 마커를 클릭했을때 이벤트 발생 시키기
-				  	        google.maps.event.addListener(markers[i], 'rightclick', function() {
-				  	       		alert("이곳의 위치가 궁금한가?!");
 				  	        });	  	        
-				  	        }// 마커for문
+				  	    }// 마커for문
 			     } 
 			  }//end of success 
 			});// end of ajax 
 		};//end of searchAround()
 
-		
+	 // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+	
+	// Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+      setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+      setMapOnAll(map);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+      clearMarkers();
+      markers = [];
+    }
+
+    //카트 등록을 위한 메소드!
+    function addCartSpot(){
+    	$.ajax({
+    				type : 'post', // 요청 method 방식 
+    				url : '/restcart/addCartSpot',// 요청할 서버의 url
+    				headers : {
+    					"Content-Type" : "application/json",
+    					"X-HTTP-Method-Override" : "POST"
+    				},
+    				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
+    				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+    					spotNo : $("#spotNo").val(),
+    					userId : $("#userId").val(),
+    					cartDetail : $("#cartDetail").val(),
+    					cartTitle : $("#cartTitle").val(),
+    					cartAddress :$("#cartAddress").val(),
+    					cartX : $("#cartX").val(),
+    					cartY : $("#cartY").val(),
+    					cartImg : $("#cartImg").val()
+    				}),
+    				success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+    				}// success
+    	});// ajax
+    };
 </script>
 
-<%-- Content Wrapper. Contains page content --%>
-<div class="content-wrapper">
+<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
+<img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
+<body>
 	<%-- Content Header (Page header) --%>
 	      <%@ include file="/layout/toolbar.jsp"%>
-	<section class="content-header">
-		<span class="dropdown">
-				<button class="btn btn-block btn-info btn-xs" ><a href="/spot/getSpotList?spotCode=0">공원</a></button>
-			</span>
-
-			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs" ><a href="/spot/getFestivalList">축제/전시</a></button>
-				</div>
-			</span>
+	<nav>
+	    <div class="nav-wrapper">
+	      <ul id="nav-mobile" class="right hide-on-med-and-down">
+	        <li><span id="park">공원</span></li>
+	        <li><span id="festival">축제/전시</span></li>
+	        <li><span id="restaurant">맛집</span></li>
+	        <li><span id="search">검색</span></li>
+	      </ul>
+	    </div>
+  </nav>
+  		<div class="jumbotron">
+  				<h1>검색</h1>
+  					<p>찾으시는 장소가 없으세요? 직접 검색해보세요!</p>
+  					 <div class="form-group">
+					    <label class="sr-only" for="searchKeyword">검색어</label>
+					    <div>
+					   	 <input type="text" class="form-control" id="searchKeyword" placeholder="주소나 건물명 위치 장소명등등 적어주세요!" ><a class="waves-effect waves-light btn" id="searchbutton">검색</a></input>					  
+					    </div>
+					  </div>
+		</div>
+  		<div id="map">
+  			<br /> <br />
+  		</div>	
+  		<br />
 			
-			<span class="dropdown">
-				<button class="btn btn-block btn-success btn-xs" >맛집</a></button>
-					<div class="dropdown-content">
-					<a href="/spot/getSpotList?spotCode=10">삼대천왕</a>
-					<a href="/spot/getSpotList?spotCode=11">수요미식회</a>
-				</div>
-			</span>
-			
-			<span class="dropdown">
-				<button class="btn btn-block btn-danger btn-xs" ><a href="/spot/getSpotList?spotCode=4">한강</a></button>
-			</span>
-			
-			<span class="dropdown">
-				<button class="btn btn-block btn-warning btn-xs">편의시설</button>
-				<div class="dropdown-content">
-					<a href="/spot/getSpotList?spotCode=30">수유실</a> 
-					<a href="/spot/getSpotList?spotCode=31">자동차</a>
-					<a href="/spot/getSpotList?spotCode=32">자전거</a>
-				</div>
-			</span>
-	</section>
-
-	<%-- Main content --%>
-	<section class="content container-fluid">
-		<body>
-		<div class="jumbotron">
-  				<h1>직접가고싶은 곳을 검색하세요!</h1>
-  					<div id="floating-panel">
-				      <input id="address" type="textbox" value="비트캠프">
-				      <input id="submit" type="button" value="search">
-				    </div>
-			</div>
-			<div id="map">
-				<br /> <br />
-			</div>
-			<div class="parkImg"></div>
-			<p></p>
-			<div id="dataInfo"></div>
-			<br />
-
-		</body>
+				<!-- 장바구니추가 modal 창 start -->
+				<form id=cart>
+					<div class="modal fade" id="cartModal" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">장소바구니</h4>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
+										<input class="form-control" id="cartTitle" name="cartTitle" value="${spot.spotTitle}" >
+									</div>
+										<input type="hidden" id="cartX" name="cartX" value="${spot.spotX}" readonly>
+										<input type="hidden" id="cartY" name="cartY" value="${spot.spotY}" readonly>
+										<input type="hidden"  id="cartAddress" name="cartAddress" value="${spot.spotAddress}" readonly>
+									<div class="form-group">
+										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
+										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
+									</div>
+										<input type="hidden"  id="userId" name="userId" value="${sessionScope.user.userId}" readonly>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>	
+		
 </html>

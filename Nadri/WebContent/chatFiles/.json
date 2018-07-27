@@ -5,3 +5,7 @@
 ,{"sender_id":"","receiver_id":"user02","message":"a","sending_date":"2018-07-13 13:41:04","protocol":"0"}
 ,{"sender_id":"","receiver_id":"user02","message":"a","sending_date":"2018-07-13 13:41:05","protocol":"0"}
 ,{"sender_id":"","receiver_id":"user02","message":"a","sending_date":"2018-07-13 13:41:14","protocol":"0"}
+,{"sender_id":"","receiver_id":"","message":".","sending_date":"2018-07-24 11:13:47","protocol":"0","flag":"N"}
+,{"sender_id":"","receiver_id":"","message":".","sending_date":"2018-07-24 11:13:47","protocol":"0","flag":"Y"}
+,{"sender_id":"","receiver_id":"","message":".","sending_date":"2018-07-24 11:13:48","protocol":"0","flag":"Y"}
+,{"sender_id":"","receiver_id":"","message":".","sending_date":"2018-07-24 11:13:48","protocol":"0","flag":"N"}

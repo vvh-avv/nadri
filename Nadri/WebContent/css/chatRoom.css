@@ -8,7 +8,6 @@ body {
     font-family: 'Helvetica Neue',Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
 }*/
 
-
 #nav, #nav ul {
 	width: auto !important;
   	float: none !important;
@@ -57,6 +56,7 @@ body {
 }
 #notify_li{position:relative}
 .notificationContainer {
+
 background-color: #fff;
 border: 1px solid rgba(100, 100, 100, .4);
 -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
@@ -78,7 +78,7 @@ color: transparent;
 border: 10px solid black;
 border-color: transparent transparent white;
 margin-top: -20px;
-margin-left: 188px;
+margin-left: 120px;
 }
 #notificationTitle {
 z-index: 1000;
@@ -114,6 +114,6 @@ margin-top: -11px;
 font-size: 11px;
 }
 
-.content {
-    padding-left: 10px;
-}
+/* .content { */
+/*     padding-left: 10px; */
+/* } */

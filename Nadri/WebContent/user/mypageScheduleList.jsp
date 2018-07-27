@@ -27,6 +27,8 @@
 <link rel="stylesheet" href="/css/toolbar.css">
 <!-- sweet alert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- 카카오 공유 -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <style>
 	.container{
@@ -47,8 +49,8 @@
 	}
 	
 	.thumbImg img{
-		width: 250px;
-		height: 250px;
+		width: 240px;
+		height: 240px;
 		opacity: 1;
 		transition: .5s ease;
 	}
@@ -61,6 +63,7 @@
 	  transform: translate(-50%, -50%);
 	  -ms-transform: translate(-50%, -50%);
 	  transition: .5s ease;
+	  width: 80%
 	}
 	.linksIcon {
 	  opacity: 0;
@@ -75,29 +78,39 @@
 	  width: 15px;
 	  height: 15px;
 	}
+	
+	.rewardModal
+   /*,.swal-overlay*/{
+   	  background-image: url("/images/board/reward.gif");
+   	}
+   	
+}
 </style>
 
 <script>
 $(function(){
+	//일정에 마우스 올렸을 때 이미 포스팅 한 일정이면 포스팅 못하도록 버튼 막는 스크립트
 	$("article").on("mouseover", function(){
 		var scheduleNo = $(this).attr("class");
-		
 		$.ajax({
 			url : "/board/json/checkBoard/"+scheduleNo,
 			method : "POST",
 			success : function(data){
+				console.log(data);
 				if(data==1){ //이미 포스팅 한 일정이라면
-					$("#addBoard"+scheduleNo).css("display","none");
+					$("#shareBoard"+scheduleNo).css("display","none");
 				}
 			}
 		})
 	})
 	
+	//일정 클릭시 일정 상세보기로 이동하는 스크립트
 	$("article").on("click", function(){
 		self.location="/schedule/getSchedule?scheduleNo="+$(this).attr("class");
 	})
 	
-	$("button[id^='addBoard']").on("click", function(e){
+	//게시물로 공유
+	$("button[id^='shareBoard']").on("click", function(e){
 		e.stopPropagation();
 		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
 		$.ajax({
@@ -105,11 +118,67 @@ $(function(){
 			method : "POST",
 			success : function(data){
 				swal("글쓰기 완료!", "마이페이지 내 작성한 글 보기에서 확인가능합니다!", "success");
-				$("#addBoard"+scheduleNo).css("display","none");
+				$("#shareBoard"+scheduleNo).css("display","none");
+				
+				//보상 (게시물)
+				if( data==5 ){
+					swal({
+						title: "축하합니다!",
+						text: "게시물 5회작성 미션을 클리어 하셨습니다!",
+						button: false,
+						className: "rewardModal"
+					});
+				}else if( data==10 ){
+					swal({
+						title: "축하합니다!",
+						text: "게시물 10회작성 미션을 클리어 하셨습니다!",
+						button: false,
+						className: "rewardModal"
+					});
+				}else if( data==15 ){
+					swal({
+						title: "축하합니다!",
+						text: "게시물 15회작성 미션을 클리어 하셨습니다!",
+						button: false,
+						className: "rewardModal"
+					});
+				}
 			}
 		}) //e.o.ajax
 	})
 	
+	//SNS로 공유
+	Kakao.init('b3eb26586b770154ea49919a7f59f2d2');
+	$("button[id^='shareSNS']").on("click", function(e){
+		e.stopPropagation();
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		
+		Kakao.Link.sendDefault({
+		     objectType: 'feed',
+		     content: {
+		       title: $("."+scheduleNo+" #scheduleTitle").text(),
+		       description: $("."+scheduleNo+" #scheduleDetail").text()+'\n'+$("."+scheduleNo+" #scheduleHashTag").text(),
+		       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
+		       link: {
+		         mobileWebUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo,
+		         webUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo
+		       }
+		     },
+		     buttons: [{
+		         title: '웹으로 보기',
+		         link: {
+		           mobileWebUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo,
+		           webUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo
+		         }},{
+		         title: '앱으로 보기',
+		         link: {
+		           mobileWebUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo,
+		           webUrl: 'http://localhost:8080/schedule/getSchedule?scheduleNo='+scheduleNo
+		         }}]
+		});
+	})
+	
+	//일정 삭제
 	$("img[id^='deleteSchedule']").on("click", function(e){
 		e.stopPropagation();
 		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
@@ -126,24 +195,42 @@ $(function(){
 					 url : "/restschedule/deleteSchedule/"+scheduleNo,
 					 method : "POST",
 					 success : function(){
-					    swal("일정이 정상적으로 삭제되었습니다.", {
-						       icon: "success",
-						});
+					    swal("일정이 정상적으로 삭제되었습니다.", { icon: "success" });
 					    $("."+scheduleNo).remove();
 					 }
 				 }) //e.o.ajax
 			   } else {
-			     swal("취소하였습니다.",{
-			    	 icon: "error",
-			     });
+			     swal("취소하였습니다.",{ icon: "error" });
 			   }
-		   });
+		});
 	})
+	
+	//일정 수정
+	$("button[id^='updateSchedule']").on("click", function(e){
+		e.stopPropagation();
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		self.location="";
+		alert(scheduleNo+"번 일정을 수정합니다..");
+	})
+	
+	//URL 복사
+	$("button[id^='shortURL']").on("click", function(e){
+		e.stopPropagation();
+
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		$.ajax({
+			url : "/restschedule/shortURL/"+scheduleNo,
+			method : "POST",
+			success : function(){
+				swal("클립보드에 복사되었습니다!", "Ctrl+V 를 이용해 친구들에게 공유해보세요!", "success");
+			}
+		})
+	})
+	
 })
 </script>
 </head>
 <body>
-
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
 	
@@ -179,18 +266,20 @@ $(function(){
 							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/schedule/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
 							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/schedule/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
 						</c:if>
-					
+					</div>
 					<!-- 마우스 오버시 보여지는 부분 -->
 					<div class="links" style="text-align:center;">
-						<b>${schedule.scheduleTitle}</b><br>
-						${schedule.scheduleDetail}<br>
-						${schedule.hashTag}<br><br>
-						<button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button> 
-						<button type="button" class="btn btn-default btn-xs" id="addBoard${schedule.scheduleNo}">게시물로 공유하기</button>
+						<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
+						<span id="scheduleDetail">${schedule.scheduleDetail}<br></span>
+						<span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
+						<button type="button" class="btn btn-default btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
+						<button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button><br>
+						<button type="button" class="btn btn-warning btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
+						<button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button>
 					</div>
 					<div class="linksIcon">
 						<img id="deleteSchedule${schedule.scheduleNo}" src="/images/board/delete2.png">
-					</div></div>
+					</div>
 				</article>
 			</c:forEach>
 			
@@ -199,5 +288,6 @@ $(function(){
 			</c:if>
 		</div>
 	</div> <!-- e.o.container -->
+	
 </body>
 </html>

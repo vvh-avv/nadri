@@ -1,6 +1,10 @@
 package com.nadri.web.admin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
+import com.nadri.service.board.BoardService;
+import com.nadri.service.comment.CommentService;
+import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
@@ -42,9 +50,17 @@ public class AdminController {
 	private SpotService spotService;
 
 	@Autowired
+	@Qualifier("boardServiceImpl")
+	private BoardService boardService;
+	
+	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
-
+	
+	@Autowired
+	@Qualifier("commentServiceImpl")
+	private CommentService commentService;
+	
 	public AdminController() {
 		System.out.println(this.getClass());
 	}
@@ -60,8 +76,31 @@ public class AdminController {
 	@RequestMapping(value = "adminIndex")
 	public String adminIndex(Model model) throws Exception {
 		System.out.println("adminIndex -> controller 들어옴");
-		List<User> list = adminService.latestRegUsers();
-		model.addAttribute("userList",list);
+		Search search = new Search();
+		search.setSearchCondition("주간");
+		List<User> userList = adminService.latestRegUsers();
+		List<Board> boardList = boardService.getRecomBoard(search);
+		System.out.println("board의 갯수 = "+boardList.size());
+		
+		for(Board board:boardList) {
+			System.out.println(board);
+			System.out.println("boardList 의 이미지 = "+board.getBoardImg());
+			if(board.getBoardImg().equals("no_img")) {
+				board.setBoardImg("no_image.jpg");
+			}else {
+				if (board.getBoardImg().contains(",")) {
+					int comma = board.getBoardImg().indexOf(",");
+					String imgSingle = board.getBoardImg().substring(0, comma);
+					board.setBoardImg(imgSingle);
+				}else {
+					System.out.println("1개의 정상적 이미지만 가진 착한 게시물");
+				}
+								
+			}
+		}
+	    
+		model.addAttribute("userList",userList);
+		model.addAttribute("boardList",boardList);
 		return "/admin/adminIndex.jsp";
 	}
 
@@ -80,12 +119,12 @@ public class AdminController {
 		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getInquireList(search);
-		
+		List<Inquire> list = new ArrayList<Inquire>();
 		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결
-		model.addAttribute("list", map.get("list"));
+		model.addAttribute("list", list);
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		

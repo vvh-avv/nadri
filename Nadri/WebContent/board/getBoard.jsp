@@ -10,7 +10,7 @@
 <meta property="og:description" content="내용" />
 <meta property="article:author" content="작성자" />
 <meta property="og:url" content="http://localhost:8080/board/getBoard?boardNo=1" />
-<meta property="og:image" content="http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg" />
+<meta property="og:image" content="https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png" />
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -284,6 +284,10 @@
    .swal-text{
    	  text-align: center;
    }
+   .rewardModal
+   /*,.swal-overlay*/{
+   	  background-image: url("/images/board/reward.gif");
+   	}
 </style>
 
 <script>
@@ -390,6 +394,8 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
+	   alert("아이디 : " + $(this).attr("id")) ;
+	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
 		  return;
@@ -399,16 +405,57 @@ $(function(){
          $.ajax({
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
             method : "POST",
-            success : function(data, status){
-               $("#likePrint").text("좋아요 "+data+"개");
+            success : function(map, status){
+            	//보상 (좋아요)
+            	if( map.myLikeCnt==5 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 5회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==10 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 10회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}else if( map.myLikeCnt==15 ){
+            		swal({
+            			title: "축하합니다!",
+            			text: "좋아요 15회작성 미션을 클리어 하셨습니다!",
+            			button: false,
+            			className: "rewardModal"
+            		});
+            	}
+            	
+               $("#likePrint").text("좋아요 "+map.likeCnt+"개");
             }
          })
+         
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + $("#boardNo").val().trim() + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
+         })
+         
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
             url : "/board/json/deleteLike/"+$("#boardNo").val().trim(),
             method : "POST",
-            success : function(data, status){
+            success : function(data, status) {
                $("#likePrint").text("좋아요 "+data+"개");
             }
          })
@@ -466,20 +513,45 @@ $(function(){
 							boardNo : $("#boardNo").val().trim(),
 							commentContent : $(this).val()
 						}),
-					   success : function(comment){
-						   var addTag = ccTag(comment.commentContent);
+					   success : function(map){
+						    //보상 (댓글)
+							if( map.myCommCnt==5 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 5회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}else if( map.myCommCnt==10 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 10회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}else if( map.myCommCnt==15 ){
+								swal({
+									title: "축하합니다!",
+									text: "댓글 15회작성 미션을 클리어 하셨습니다!",
+									button: false,
+									className: "rewardModal"
+								});
+							}
+						    
+						   console.log(map.returnFriend); //태그한 친구 확인
 						   
+						   var addTag = ccTag(map.comment.commentContent);
 						   //댓글 개수 변경
 						   var cnt = $("#commPrint").text().replace(/[^0-9]/g,"");
 						   $("#commPrint").text("댓글 "+(Number(cnt)+1)+"개");
 						   //댓글 리스트 추가
-						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+comment.user.profileImg+","+comment.user.userName+","+comment.user.userId+","+comment.user.introduce+"'> <img src='/images/profile/"+comment.user.profileImg+"' class='img-circle'/> "+comment.user.userId+" </span>";
+						   var str = "<div id='commList'>	<span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+map.comment.user.profileImg+","+map.comment.user.userName+","+map.comment.user.userId+","+map.comment.user.introduce+"'> <img src='/images/profile/"+map.comment.user.profileImg+"' class='img-circle'/> "+map.comment.user.userId+" </span>";
 								 str += "<span id='commListContent'>"+addTag+"</span>"
-								        +"<span id='commListDelete' class='"+comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
-								        +"<span id='commListInquire' id='inquireUser' name='"+comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
+								        +"<span id='commListDelete' class='"+map.comment.commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+								        +"<span id='commListInquire' id='inquireUser' name='"+map.comment.commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>";
 						   $("#commListAll").append(str);
 							//댓글마지막 시간도 실행
-							var timeStampType = comment.commentTime;
+							var timeStampType = map.comment.commentTime;
 							var dateType = new Date(timeStampType);
 							var lastTime = formatDate2(dateType);
 							$("#commLastTime").attr("class", lastTime);
@@ -498,8 +570,8 @@ $(function(){
 	  swal($(this).text()+" 님과 친구가 되어보세요~"); 
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
-   $(document).on("mouseover", "div[id^='commList']", function(){
-	   if( ${!empty sessionScope.user} ){
+   $(document).on("mouseover", "div[id^='commList']", function() {
+	   if( ${!empty sessionScope.user} ) {
 	   		$(this).children('span:eq(3)').removeAttr("style");
 
 			if( $(this).children("span:first").text().trim()=='${sessionScope.user.userId}' ){ //=>본인일 때
@@ -557,7 +629,7 @@ $(function(){
 	     content: {
 	       title: $("#boardTitle").text(),
 	       description: $("#hashTag").text()+'\n'+$("#boardContent").text(),
-	       imageUrl: 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+	       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 	       link: {
 	         mobileWebUrl: 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val(),
 	         webUrl: 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val()
@@ -594,7 +666,7 @@ $(function(){
 		            'og:url': 'http://localhost:8080/board/getBoard?boardNo='+$("#boardNo").val(),
 		            'og:title': $("#boardTitle").text(),
 		            'og:description': $("#boardContent").text(),
-		            'og:image': 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+		            'og:image': 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 		        }
 		    })
 		});
@@ -677,6 +749,26 @@ $(function(){
    })
    //*유저프로필 모달창 내 대화하기
     $(document).on("click", "#chatFriend", function(){
+
+	   //대화하기
+	   var receiverId = {
+		   "receiverId" :  receiverId
+	   } ;
+    
+	   
+    	$.ajax({
+  	  			url : "/chatRoom/json/getChatRoom2" ,
+  	  			data : receiverId,
+  	  			dataType : "json",
+  	  			type : "POST",
+  	  			success : function(data) {
+  	  				alert(data) ;
+  	  			} ,
+  	  			error : function( error ) {
+  	  					alert("에러 : " + error ) ;
+  	  			}
+    	}) ; //End of ajax
+
 	   alert(modalFriendId+"대화를 합시다..");
 	   $(".userModal").modal('hide');
    })
@@ -780,6 +872,7 @@ $(function(){
                          $('.inquire_form')[0].reset();
                          $('#inquireModal').modal('hide');
                          console.log(data);
+                         
                       }
                    }
                 });
@@ -902,7 +995,7 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}">></c:if>
                   <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

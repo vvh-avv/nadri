@@ -25,6 +25,8 @@
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
    </resultMap>
+      
+  
 
    <!-- SQL: INSERT -->
    <insert id="insertUser" parameterType="user">
@@ -180,6 +182,5 @@
             AND MONTH(inquire_time) = MONTH(CURDATE())
          </if>
         </if>
-   </select>    
-
+   </select>
 </mapper>

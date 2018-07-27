@@ -91,4 +91,9 @@ public class SpotServiceImpl implements SpotService{
 		return spotDao.getTotalSpot();
 	}
 	
+	// 8. 검색한 장소를 가져옵니다.
+	public List<Spot> getSearchSpotList(Search search) throws Exception {
+		return spotDao.getSearchSpotList(search);
+	}
+	
 }

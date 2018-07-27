@@ -4,12 +4,12 @@ package com.nadri.common;
 public class Search {
 	
 	///Field
-	private int curruntPage;
-	private String searchCondition;
-	private String searchKeyword;
-	private int pageSize;
-	private int endRowNum;
-	private int startRowNum;
+	private int curruntPage ;
+	private String searchCondition ;
+	private String searchKeyword ;
+	private int pageSize ;
+	private int endRowNum ;
+	private int startRowNum ;
 
 	private int searchSpot;
 	private int memberFlag; //회원과 비회원일 때 게시물 목록 불러오는 조건이 달라서 추가함 HJS

@@ -13,8 +13,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<!-- 구글맵을 불러쓰기위한 CDN -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 <!-- 툴바 넣는 CDN 입니다 -->
 <script src="/javascript/toolbar.js"></script>
 <link rel="stylesheet" href="/css/toolbar.css">
@@ -22,6 +20,10 @@
 <script src="/javascript/juanMap.js"></script> 
 <!-- sweetAlert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- materialize 넣는 css -->
+<script src="/javascript/materialize.js"></script>
+<link rel="stylesheet" href="/css/materialize.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <html>
 <style>
 html, body {
@@ -45,11 +47,32 @@ html, body {
      height: 50px;
      z-index:999;
    }	
+   
+/*모달 위치 비교 css */
+.modal {
+	top : 20%;
+} 
+
+.container {
+    text-align: center;
+}  
+
+.materialboxed {
+	text-align : center;
+}
 </style>
+
+
 <script type="text/javascript">
 
+$(document).ready(function(){
+    $('.materialboxed').materialbox();
+  });
+  
 //맨위로 올라가게 만들어 주는 script
 $(function(){
+	
+	
     //*스크롤감지
     $(window).scroll(function(){
         var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -66,7 +89,7 @@ $(function(){
         $("body").scrollTop(0);
     });
     
-	$("button.btn.btn-primary").on("click", function() {
+	$("#listbutton").on("click", function() {
 		history.go(-1);
 	});
 	
@@ -79,7 +102,6 @@ $(function(){
 });
 
 function addCartSpot(){
-	//$("#cart").attr("method","POST").attr("action" , "/restcart/addCartSpot").submit();
 	$.ajax({
 				type : 'post', // 요청 method 방식 
 				url : '/restcart/addCartSpot',// 요청할 서버의 url
@@ -111,7 +133,7 @@ function addCartSpot(){
         });
         
         var nowposition = new google.maps.LatLng(${spot.spotY}, ${spot.spotX}),    
-        message = '여기에요!'
+        message = '<div style="font-family : seoul"><div>여기에요!</div></div>'
         
     	displayMarker(nowposition, message);
       }
@@ -142,15 +164,12 @@ function addCartSpot(){
 </script>
 
 <head>
-
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<body class="hold-transition skin-blue sidebar-mini layout-boxed">
+<body>
 
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 
 	<%@ include file="/layout/toolbar.jsp"%>
-		<div class="wrapper">
 			<%-- Content Wrapper. Contains page content --%>
 			<div class="container">
 				<%-- Content Header (Page header) --%>
@@ -158,7 +177,7 @@ function addCartSpot(){
 				</div>
 				<%-- Main content --%>
 					<div class="col-lg-12">
-							<div class="container">
+							<div class="container" text-align = "center">
 								<div class="box-header with-border">
 									<h5 class="text-align-center" style="text-align: center;">
 										선택하신 나들이백과의 <strong class="text-danger">상세정보 </strong>입니다!
@@ -171,36 +190,38 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소명</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotTitle}</div>
+										<div class="col-xs-8 col-md-10">${spot.spotTitle}</div>
 									</div>
 								</div>
 								
 								<hr />
 								
+								<c:if test="${not empty spot.spotImg }">
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소이미지</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">
+										<div class="col-xs-8 col-md-10">
 											<c:if test="${spot.spotCode==0 }">
-												<img src="${spot.spotImg}" width="300" height="300" />
+												<img class="materialboxed" src="${spot.spotImg}" width="300" height="200" />
 											</c:if>
 											<c:if test="${spot.spotCode !=0 }">
-												<img src="/images/spot/${spot.spotImg}" width="300" height="300" />
+												<img class="materialboxed" src="/images/spot/${spot.spotImg}" width="300" height="200" />
 											</c:if>
 										</div>
 									</div>
 								</div>
 
 								<hr />
+								</c:if>
 
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2">
 											<strong>상세정보</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotDetail}</div>
+										<div class="col-xs-8 col-md-10">${spot.spotDetail}</div>
 									</div>
 								</div>
 
@@ -211,7 +232,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>주소</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotAddress}</div>
+										<div class="col-xs-8 col-md-10">${spot.spotAddress}</div>
 									</div>
 								</div>
 
@@ -224,7 +245,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>연락처</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotPhone}</div>
+										<div class="col-xs-8 col-md-10">${spot.spotPhone}</div>
 									</div>
 								</div>
 
@@ -238,7 +259,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소URL</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${not empty spot.spotDetailURL}</div>
+										<div class="col-xs-8 col-md-10"><a href="${spot.spotDetailURL}">${spot.spotDetailURL}</a></div>
 									</div>
 								</div>
 
@@ -250,7 +271,7 @@ function addCartSpot(){
 										<div class="col-xs-4 col-md-2 ">
 											<strong>장소시군구</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">
+										<div class="col-xs-8 col-md-10">
 											<c:if test="${spot.spotProvince == 1}">
 										     강남구
 										  </c:if>
@@ -335,73 +356,50 @@ function addCartSpot(){
 								<div class="box-body">
 									<div class="row">
 										<div class="col-xs-4 col-md-2 ">
-											<strong>장소작성일자</strong> / <strong>수정일자</strong>
+											<strong>작성일자</strong> / <strong>수정일자</strong>
 										</div>
-										<div class="col-xs-8 col-md-4">${spot.spotCreateTime} / ${spot.spotModifyTime}</div> 
+										<div class="col-xs-8 col-md-10">${spot.spotCreateTime} / ${spot.spotModifyTime}</div> 
 									</div>
 								</div>
 							</div>
 							
 							<hr/>
-
+							</div>
 							<div class="box-footer">
-								<button type="button" class="btn btn-secondary"><i class="fa fa-list"></i> 목록으로</button>
-								<div class="pull-right">
-										<button type="button" class="btn btn-secondary"><i class="fa fa-save"></i> 신고하기</button>
-										<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장바구니</button>
+								<div class="pull-left">
+									<button type="button" class="btn btn-secondary" id="listbutton"><i class="fa fa-list"></i> 목록으로</button>
 								</div>
-					</div>
+								<div class="pull-right">
+									<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
+									<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
+								</div>
+							</div>
 
-				<!-- 장바구니추가 modal 창 start -->
 				<form id=cart>
 					<input type="hidden" name="spotNo" value="${spot.spotNo}" />
 					<div class="modal fade" id="cartModal" role="dialog">
-						<div class="modal-dialog">
+						<div class="modal-dialog" id="cartModal">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">장바구니 추가</h4>
 								</div>
 								<div class="modal-body">
+										<input type="hidden"id="spotNo" name="spotNo" value="${spot.spotNo}" >
 									<div class="form-group">
-										<label for="spotNo">장소번호</label> <input class="form-control"
-											id="spotNo" name="spotNo" value="${spot.spotNo}" readonly>
+										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
+										<input class="form-control" id="cartTitle" name="cartTitle" value="${spot.spotTitle}" >
 									</div>
-									<div class="form-group">
-										<label for="cartTitle">카트이름(=장소이름일수도..)</label> <input
-											class="form-control" id="cartTitle" name="cartTitle" 
-											value="${spot.spotTitle}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartX">장소x</label> <input
-											class="form-control" id="cartX" name="cartX"
-											value="${spot.spotX}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartY">장소y</label> <input
-											class="form-control" id="cartY" name="cartY"
-											value="${spot.spotY}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="cartAddress">장소주소</label> 
-										<input class="form-control" id="cartAddress" name="cartAddress"
-											value="${spot.spotAddress}" readonly>
-									</div>
+										<input type="hidden" id="cartX" name="cartX" value="${spot.spotX}" >
+                                        <input type="hidden"  id="cartY" name="cartY" value="${spot.spotY}" >
+										<input type="hidden" id="cartAddress" name="cartAddress" value="${spot.spotAddress}">
 									<div class="form-group">
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
 									</div>
-									<div class="form-group">
-										<label for="userId">추가자아이디</label> <input
-											class="form-control" id="userId" name="userId"
-											value="${sessionScope.user.userId}" readonly>
-									</div>
-									<div class="form-group">
-										<label for="userId">장소이미지</label> <input
-											class="form-control" id="cartImg" name="cartImg"
-											value="${spot.spotImg}" readonly>
-									</div>
-								</div>
+									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}">
+									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
+							</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
 									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
@@ -414,7 +412,8 @@ function addCartSpot(){
 				
 			</div>
 
-		</div>
+<!-- 구글맵을 불러쓰기위한 CDN -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 </body>
 </html>
 

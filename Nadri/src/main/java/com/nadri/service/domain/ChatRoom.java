@@ -1,15 +1,10 @@
 package com.nadri.service.domain;
 
-import java.sql.Date;
-
 public class ChatRoom {
 	private int chatRoomNo ;
-	private Chat chat  ;
 	private String userId ;
-	private String userName ;
-	private String lastContent ;
-	private Date sendingDate ;
-	private int flag ;
+	private String userProfileImg ;
+	private int flag ; 
 	
 	public ChatRoom() {
 		
@@ -22,39 +17,7 @@ public class ChatRoom {
 		this.chatRoomNo = chatRoomNo;
 	}
 	
-	public Chat getChat() {
-		return chat ;
-	}
-	public void setChat(Chat chat) {
-		this.chat = chat ;
-	}
-	public Date getSendingDate() {
-		return sendingDate;
-	}
-	public void setSendingDate(Date sendingDate) {
-		this.sendingDate = sendingDate;
-	}
-	public String getLastContent() {
-		return lastContent;
-	}
-	public void setLastContent(String lastContent) {
-		this.lastContent = lastContent;
-	}
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUsers(String userName) {
-		this.userName = userName;
-	}
-
-	public int getFlag() {
-		return flag;
-	}
-
-	public void setFlag(int flag) {
-		this.flag = flag;
-	}
+	
 	
 	public String getUserId() {
 		return userId;
@@ -64,12 +27,25 @@ public class ChatRoom {
 		this.userId = userId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	
+
+	public String getUserProfileImg() {
+		return userProfileImg;
+	}
+
+	public void setUserProfileImg(String userProfileImg) {
+		this.userProfileImg = userProfileImg;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 
 	public String toString() {
-		return "chatRoomNo : " + chatRoomNo + "userId : " + userId +" userName : " + userName	+ " Chat : " +  chat + " sendingDate : " + sendingDate +
-				  " lastContent : " + lastContent ; 
+		return "chatRoomNo : " + chatRoomNo + "userId : " + userId + " userProfileImg : " + userProfileImg + " falg : " + flag ;
 	}
 }

@@ -93,14 +93,28 @@ public class UserController {
 			System.out.println("변경된 파일명 : "+fileOriginName);
 			
 			File f = new File(uploadPath+"\\"+fileOriginName); 
-			file[i].transferTo(f);
+			file[i].transferTo(f) ;
+			
+
+			
 			if(i==0) { fileMultiName += fileOriginName; }
 			else{ fileMultiName += ","+fileOriginName; }
 		}
+			File f = new File("C:/Users/Bit/git/nadri/Nadri/WebContent/chatFiles/" + user.getUserId() ) ;
+			boolean result = f.mkdir() ;
+			
+			if( result ) {
+				System.out.println(" 성공 ") ;
+			} else {
+				System.out.println(" 실패 ") ;
+			}
+		
 		System.out.println("*"+fileMultiName);
 		user.setProfileImg(fileMultiName);
 			
 		userService.addUser(user);
+		
+
 		
 		return "redirect:/user/loginView.jsp";
 	}

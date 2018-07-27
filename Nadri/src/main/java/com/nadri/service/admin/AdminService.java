@@ -6,8 +6,10 @@ import java.util.Map;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Inquire;
+import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
+import com.nadri.service.domain.Weather;
 
 public interface AdminService {
 	
@@ -30,5 +32,11 @@ public interface AdminService {
 	public Map<String,Object> getUserList(Search search);
 	
 	public Map<String,Object> getSpotList(Search search);
+	
+	public void getReward(Reward reward);
+	
+	public void addWeather(Weather weather);
+	
+	public String getWeather();
 	
 }

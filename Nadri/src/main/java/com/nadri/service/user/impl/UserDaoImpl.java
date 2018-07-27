@@ -1,5 +1,6 @@
 package com.nadri.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -142,17 +143,4 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
-
-	
-
-
-
-
-
-	
-
-	
-	
-	
-	
 }

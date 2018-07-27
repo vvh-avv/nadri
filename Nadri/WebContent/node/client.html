@@ -215,10 +215,16 @@
 	}) ;//End of receiverMessage
 	
 	socket.on('change name', function(senderId , receiverId , chatRoomNo) {
-  		$('#senderId').val(senderId) ;
+		$('#senderId').val(senderId) ;
   		$('#receiverId').val(receiverId) ;
   		$("#chatRoomNo").val(chatRoomNo) ;
-  		$("#topReceiverId").text(receiverId) ;
+  		
+		if( receiverId.split(',').length > 2 ) {
+			var temp = receiverId.split(',') ;
+			$("#topReceiverId").text( temp[0] + ', ' + temp[1] + ', ' +  ', …' ) ;
+		} else {
+			$("#topReceiverId").text( receiverId ) ;
+		}
 	}) ;	
 	
 	//기존에 채팅 내용 append
@@ -377,6 +383,7 @@
 	$("#removeClass").on('click', function() {
 		socket.emit('close' , $('#chatRoomNo').val() , $('#senderId').val() ) ;
 		$('#qnimate').removeClass('popup-box-on') ;
+		window.parent.postMessage( "closeChatRoom" + $("#chatRoomNo").val() , "http://localhost:8080" ) ;
 	}) ;
 	
     </script>   

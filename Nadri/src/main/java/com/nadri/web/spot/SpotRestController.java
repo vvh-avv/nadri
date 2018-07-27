@@ -1,11 +1,5 @@
 package com.nadri.web.spot;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.spot.SpotService;
 
@@ -57,7 +52,7 @@ public class SpotRestController {
 		
 		return map;
 	}
-	
+		
 	@RequestMapping( value="getRiverList/{spotCode}",  method=RequestMethod.GET)
 	public Map getRiverList(@PathVariable int spotCode) throws Exception{
 		
@@ -83,5 +78,13 @@ public class SpotRestController {
 			
 		return spotService.searchAround(spot);
 	}//end of searchArround
+	
+	@RequestMapping(value="/getSearchSpotList" , method=RequestMethod.POST)
+	public @ResponseBody List<Spot> getSearchSpotList(@RequestBody Search search) throws Exception{
+
+		System.out.println("/getSearchSpotList");
+	
+		return spotService.getSearchSpotList(search);
+	}//end of getSearchSpotList
 	
 }

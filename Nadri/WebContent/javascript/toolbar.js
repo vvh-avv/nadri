@@ -176,11 +176,11 @@ $(function(){
       self.location = "/spot/getSpotList?spotCode=0";
    }) 
    
-/*   $('.profile').on('click',function(){
+   $('.profile').on('click',function(){
       $('body').css('overflow','hidden');
       $('.sidecatalogue').css('width','30%');
       $('.floatbackground').css('display','block');
-   })*/
+   })
    
    $('.closeAll').on('click',function(){
       $('body').css('overflow','auto');

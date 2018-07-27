@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Notice;
+import com.nadri.service.domain.User;
 import com.nadri.service.notice.NoticeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,24 +30,34 @@ public class NoticeServiceTest {
 	//@Test
 	public void addNotice() {
 		Notice notice = new Notice() ;
-		notice.setContent("알림") ;
-		notice.setFlag(false) ;
+//		notice.setContent("알림") ;
 		notice.setNoticeCode(1) ;
 		notice.setReceiverId("user01") ;
 		notice.setSenderId("user02") ;
+		notice.setOtherPk( 3 ) ;
+		
+//		notice.setOtherPk(otherPk) ;
+//		notice.setNoticeCode( noticeCode ) ;
+//		notice.setReceiverId(receiverId) ;
+//		notice.setSenderId( ((User)session.getAttribute("user")).getUserId() );
 		
 		noticeService.addNotice(notice) ;
 	}
+	
 	
 	@Test
 	public void getNoticeList() {
 
 		Notice notice = new Notice() ;
 		Search search = new Search() ;
-		System.out.println( noticeCode.get("010") ) ;
-		
 		for(Notice i : noticeService.getNoticeList(search, "user01") ) {
 			System.out.println( i ) ;
 		}
 	}
+	
+	//@Test
+	public void updateNotice() {
+		noticeService.updateNotice( 6 ) ;
+	}
+		
 }

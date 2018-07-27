@@ -1,0 +1,76 @@
+@charset "EUC-KR";
+
+ @media only screen and (max-width : 600px){
+ 
+	.spots > label{
+		display:none;
+	}
+	
+	.spots-list > div{
+		height:75px;
+	}
+	
+	.spot-icon > img{
+	width:100%; 
+	margin-top:0px;
+	margin-left:0px;	
+	}
+	
+	.background-video{
+		height:100vh;
+	}
+	
+	#myVideo{
+		transform:translate(40%,0%);
+	}
+	
+	.main-text{
+		width:50%;
+		height:50%;
+		top:25%;
+		left:25%;
+	}
+	
+	.main-text > div {
+		font-size: 3em;
+	}
+	
+	.small-text{
+		width:50%;
+		height:50%;
+		left:25%;
+		top:35%;
+		letter-spacing:6px;
+	}
+	
+	.video-button{
+		top:500px;
+		right:35%;
+	}
+	
+	.first-line{
+		margin-bottom:25px;
+	}
+	
+	.popular-boards{
+		height: 250px;
+	}
+	
+	.post-title{
+		font-size:3.5vw;
+	}
+	
+	.hashtags{
+		font-size:3vw;
+	}
+	
+	.list-element{
+		height:200px;
+	}
+	
+	.empty-boards > div{
+		font-size : 7vw;
+	}
+ 
+ 
+ }

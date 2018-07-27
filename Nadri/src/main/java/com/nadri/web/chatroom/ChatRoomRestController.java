@@ -2,6 +2,7 @@ package com.nadri.web.chatroom;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -201,6 +202,60 @@ public class ChatRoomRestController {
 			logfile.close() ;
 		}
 		return readPoint ;
+	}
+	
+	@ResponseBody
+	@RequestMapping( value="json/getChatRoom2" , method=RequestMethod.GET) 
+	public ChatRoom getChatRoom2( @RequestParam(value="receiverId") String receiverId , HttpSession session) throws Exception{
+		System.out.println(" getChatRoom2 POST 받은 데이터 : " + receiverId) ;		
+		ChatRoom chatRoom = chatRoomService.getChatRoom2( ((User)session.getAttribute("user")).getUserId() , receiverId ) ;
+		
+		//채팅방 파일이 없을 경우. DB에도 없고.
+		if( chatRoom.getChatRoomNo() == 0 ) {
+			chatRoom.setUserId(  ((User)session.getAttribute("user")).getUserId() + ',' + receiverId ) ;
+		
+			chatRoomService.addChatRoom(chatRoom) ;
+			chatRoom = chatRoomService.getChatRoom2( ((User)session.getAttribute("user")).getUserId() , receiverId ) ;
+			
+			//json 파일 만들기 내꺼
+			File file = new File("C:/Users/Bit/git/nadri/Nadri/WebContent/chatFiles/" + ((User)session.getAttribute("user")).getUserId() + 
+					"/" + chatRoom.getChatRoomNo() + ".json"	) ;
+ 			BufferedWriter bw = new BufferedWriter(new FileWriter(file)) ;
+ 			
+ 			long time = System.currentTimeMillis() ;
+ 			SimpleDateFormat dayTime = new SimpleDateFormat("YYYY-mm-dd hh:mm:ss") ;
+ 			String currentTime = dayTime.format(new Date( time )) ;
+ 			System.out.println("현재시간 : " + currentTime) ;
+ 			
+ 			//비어있는 기본값
+			bw.write("{\r\n" + 
+					"	\"chatList\" : \r\n" + 
+					"				[\r\n" +
+					"{\"protocol\":\"\", \"sender_id\" : \"\", \"receiver_id\" : \"\", \"message\" : \"\" , \"sending_date\" :\"" + currentTime + 
+					"\",\"flag\":\"Y\"" + "}"
+			) ;
+			
+			//json 파일 만들기 상대방 꺼			
+			file = new File("C:/Users/Bit/git/nadri/Nadri/WebContent/chatFiles/" + receiverId + 
+					"/" + chatRoom.getChatRoomNo() + ".json"	) ;
+			if(bw != null) {
+				bw.close() ; 
+			}
+			
+			bw = new BufferedWriter(new FileWriter(file)) ;
+			bw.write("{\r\n" + 
+					"	\"chatList\" : \r\n" + 
+					"				[\r\n" +
+					"{\"protocol\":\"\", \"sender_id\" : \"\", \"receiver_id\" : \"\", \"message\" : \"\" , \"sending_date\" :\"" + currentTime + 
+					"\",\"flag\":\"Y\"" + "}"
+			) ;
+			
+			if(bw != null) {
+				bw.close() ; 
+			}
+		}
+		
+		return chatRoom ;
 	}
 }
 

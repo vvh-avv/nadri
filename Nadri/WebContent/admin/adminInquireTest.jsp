@@ -21,8 +21,32 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
-
+	
+	
+	
 	$(function() {
+		
+		if(${!empty rewardName}){
+			if(${rewardCount==5}){		
+				$.ajax({
+					type : "POST",
+					url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
+					//dataType: 'json', //not sure but works for me without this
+					data : formData,
+					contentType: false,//this is requireded please see answers above
+					processData : false, //this is requireded please see answers above
+					//cache: false, //not sure but works for me without this
+					success : function(data, status) {
+						if (status == "success") {
+							$('body').removeClass('waiting');
+							$('form')[0].reset();
+							$('#rewardModal').modal('show');
+							console.log(data);
+						}
+					}
+				});
+			}
+		};
 		
 		var inquireType = $('.inquireCode option:selected').val();
 
@@ -198,6 +222,8 @@
 			$('.reportUser').css('visibility', 'hidden');
 			$('.reportLink').css('visibility', 'hidden');
 		})
+		
+		
 
 	})
 </script>
@@ -382,5 +408,27 @@ select {
 
 		</div>
 	</div>
+	
+<!-- 보상 Modal content -->
+	<div class="modal fade" id="rewardModal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">
+						리워드 획득 ㅊㅊㅊㅊ<br>
+					</h4>
+				</div>
+				<div class="modal-body">
+					리워드 모달입니다~
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">보내기</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫 기</button>
+				</div>
+			</div>
+
+		</div>
+	</div>	
 </body>
 </html>

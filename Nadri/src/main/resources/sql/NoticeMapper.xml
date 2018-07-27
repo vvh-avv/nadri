@@ -11,18 +11,31 @@
 <result property="flag" 	column="notice_flag"  jdbcType="NUMERIC"/>
 <result property="masterNo" 	column="master_no"  jdbcType="NUMERIC"/>
 <result property="noticeCode" 	column="notice_code"  jdbcType="NUMERIC"/>
+<result property="userProfileImg" 	column="profile_img"  jdbcType="VARCHAR"/>
 </resultMap>
 
 <insert id="addNotice" parameterType="notice">
 INSERT
-INTO Notice ( sender_id , receiver_id , master_no , notice_flag , otherPk )
-VALUES(	 #{senderId} , #{receiverId} , #{masterNo} , #{flag} , #{ )
+INTO Notice ( sender_id , receiver_id , master_no , otherPk , notice_code )
+VALUES(	 #{senderId} , #{receiverId} , #{masterNo} , #{otherPk} ,  #{noticeCode} )
 </insert>
 
 <select id="getNoticeList" parameterType="java.util.HashMap" resultMap="NoticeSelectMap">
- SELECT sender_id , receiver_id , master_no , notice_flag , otherPk , notice_code
- FROM notice WHERE receiver_id like '%' || #{userId} || '%'
+ SELECT @ROWNUM := @ROWNUM+1 , notice.* 
+ FROM ( SELECT notice_no , sender_id , receiver_id , master_no , notice_flag , otherPk , notice_code , profile_img FROM notice , user
+  WHERE receiver_id =  #{userId}  AND sender_id = user_id ORDER BY notice_no ASC ) notice  
+ </select>
+
+<select id="updateNotice" parameterType="int" resultMap="NoticeSelectMap">
+  UPDATE notice
+<set>
+ notice_flag = 1 
+</set>
+<where>
+ notice_no = #{value}
+</where>
 </select>
+
 
 </mapper>
 
