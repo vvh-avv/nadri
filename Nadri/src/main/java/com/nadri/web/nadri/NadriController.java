@@ -67,14 +67,20 @@ public class NadriController {
 		
 		Search search = new Search();
 		
-		search.setSearchCondition("주간");
+		search.setSearchCondition("월간");
 		
 		List<Board> board_list = boardService.getRecomBoard(search);
 		List<Board> board_list2 = new ArrayList<Board>();
 		
+		System.out.println("게시물 갯수 : "+board_list.size());
+		
 		for(Board board:board_list) {
 			System.out.println(board);
 			System.out.println("boardList 의 이미지 = "+board.getBoardImg());
+			System.out.println("boardList의 hashtag = "+board.getHashTag());
+			if(board.getHashTag().equals("no_tag")) {
+				board.setHashTag("no_tag");
+			}
 			if(board.getBoardImg().equals("no_img")) {
 				board.setBoardImg("no_image.jpg");
 			}else {

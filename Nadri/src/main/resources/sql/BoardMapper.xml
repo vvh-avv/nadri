@@ -142,8 +142,8 @@
 	
 	<!-- 메인화면 추천 게시물 (비회원) -->
 	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
-        SELECT board.open_range,board.board_no,board.user_id,board.hashtag,ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt
-        FROM board join ( SELECT board_no, COUNT(*) likeCnt
+        SELECT board.open_range,board.board_no,board.user_id, ifnull(board.hashtag,'no_tag') hashtag, ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt
+        FROM board left join ( SELECT board_no, COUNT(*) likeCnt
 							FROM likes WHERE likes_time
 											<if test="searchCondition.equals('최신')">
 												 > date_sub(NOW(), interval 1 day)

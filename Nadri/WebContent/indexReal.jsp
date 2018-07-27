@@ -235,13 +235,12 @@
 										</div>
 									</div>
 									<div class="hashtags">
-										<c:if test="${empty board.hashTag}">
+										<c:if test="${board.hashTag=='no_tag'}">
 
 										</c:if>
-										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
-												delims="#">
-												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
+										<c:if test="${!board.hashTag=='no_tag'}">
+											<c:forTokens var="hashtag" items="${board.hashTag}" delims="#">
+												<div class="hashs not-empty-hash tag${i}">#${hashTag}</div>
 											</c:forTokens>
 										</c:if>
 									</div>
@@ -275,7 +274,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
@@ -332,7 +331,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
@@ -368,7 +367,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
