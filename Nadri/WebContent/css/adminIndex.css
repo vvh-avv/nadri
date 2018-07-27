@@ -91,12 +91,13 @@ body{
 
 .profile-photo{
 	right:0;
-	background:#d6d6d6;
+	background-size: contain;
 	border-radius:50%;
 	width:45px;
 	height:45px;
 	border:5px solid white;
 	padding:5px;
+	overflow:hidden;
 }
 
 .boxes-first{

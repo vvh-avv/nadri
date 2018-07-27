@@ -150,7 +150,17 @@ $(function(){
 	$('.side-section > span').on('click',function(){
 		var id = $(this).attr('id');
 		if(id == 'login-open'){
-			self.location = '/user/loginView';
+			self.location = '/user/login';
+		}else if(id =='chat-open'){
+			self.location ='/board/listBoard';
+		}else if(id == 'join-open'){
+			self.location = '/user/listUser';
+		}else if(id == 'admin-page'){
+			self.location = '/admin/adminIndex';
+		}else if(id == 'log-out'){
+			self.location = '/user/logout';
+		}else if(id == 'pencil'){
+			self.location = '/schedule/addSchedule';
 		}
 	})
 	
@@ -160,7 +170,17 @@ $(function(){
 	});
 
 	$('.schedule-button').on('click',function(){
-		self.location = '/schedule/addSchedule';
+		var check = $('#session-checker').val();
+		if( check == null ){
+			swal({
+				  title: "회원만 이용하실 수 있어요!",
+				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
+				  icon: "error",
+				  button: " 닫 기 ",
+				});	
+		}else{
+			self.location = '/schedule/addSchedule';
+		}
 	});
 	
 	
