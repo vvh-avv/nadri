@@ -33,24 +33,36 @@ public class FriendDaoImpl implements FriendDao{
 	
 	//method
 	//模备 眠啊
-	@Override
-	public void acceptFriend(Map<String, String> map) throws Exception {
+	/*@Override
+	public int acceptFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("--------------------------DaoImpl - acceptFriend---------------------------");
 		System.out.println("DaoImpl - acceptFriend start"+map);
 		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", map));
-		sqlSession.insert("FriendMapper.acceptFriend", map);
+		return sqlSession.insert("FriendMapper.acceptFriend", map);
+	}*/
+	
+	@Override
+	public int acceptFriend(Friend friend) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("--------------------------DaoImpl - acceptFriend---------------------------");
+		System.out.println("DaoImpl - acceptFriend start"+friend);
+		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", friend));
+		return sqlSession.insert("FriendMapper.acceptFriend", friend);
 	}
 
 	//模备 昏力
 	@Override
-	public int deleteFriend(String friendId) throws Exception {
+	public int deleteFriend(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-
+		System.out.println("--------------------------DaoImpl - deleteFriend---------------------------");
 		System.out.println("deleteFriend start");	
-		System.out.println("deleteFriend start: "+ friendId);
-		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", friendId));
+		System.out.println("deleteFriend start: "+ map);
 
-		return sqlSession.delete("FriendMapper.deleteFriend", friendId);
+		System.out.println("deleteFriend processing: "+sqlSession.delete("FriendMapper.deleteFriend", map));
+	
+		
+		return sqlSession.delete("FriendMapper.deleteFriend", map);
 	}
 
 	//模备 夸没 秒家

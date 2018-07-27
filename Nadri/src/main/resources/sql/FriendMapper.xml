@@ -33,13 +33,11 @@
 
 	<!-- 친구 수락 -->
 	<update id="acceptFriend" parameterType = "java.util.Map">
-		<!-- UPDATE friend 
+		 UPDATE friend 
 		<set>
 			friend_code='1', friend_request='N'
 		</set>
-		WHERE user_id=#{user_id} -->
-		INSERT INTO friend (user_id, friend_id, user_name, friend_code, friend_request)
-		VALUES(#{userId}, #{friendId}, #{userName}, '1', 'N')
+		WHERE user_id=#{userId} 
 	</update>
 	
 	
@@ -47,7 +45,7 @@
 	<delete id = "deleteFriend" parameterType = "friend">
 		DELETE 
 		FROM friend
-		WHERE (user_id = #{userId} AND friend_id = #{friendId}) OR (user_id = #{friendId} AND friend_id = #{friendId})
+		WHERE (user_id = #{userId} AND friend_id = #{friendId}) OR (user_id = #{friendId} AND friend_id = #{userId})
 	</delete>
 	
 	
@@ -80,7 +78,7 @@
 	
 	
 	<!-- 하지수 테스트 -->
-	<select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
+	<!-- <select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
       SELECT *
        FROM friend
        WHERE user_id=#{value} AND friend_code='1'
@@ -88,7 +86,16 @@
       SELECT *
        FROM friend
        WHERE friend_id=#{value} AND friend_code='1'
-   	</select>
+   	</select> -->
+   	 	<select id="listFriendFromBoard" parameterType="String" resultMap="friendSelectMap">
+      SELECT friend_id
+       FROM friend
+       WHERE user_id=#{value} AND friend_code='1'
+        UNION ALL
+      SELECT user_id
+       FROM friend
+       WHERE friend_id=#{value} AND friend_code='1'
+   </select>
 		
 
 	
@@ -114,6 +121,9 @@
                WHERE friend_id=#{userId} AND user_id=#{friendId} ) checkFriend
         WHERE checkFriend.isFriend not in ('0');
    	</select>
+   	
+   	
+  
   
 
 </mapper>

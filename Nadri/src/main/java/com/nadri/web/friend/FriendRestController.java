@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,26 +80,47 @@ public class FriendRestController {
    
   
    //模备 昏力
- 	@RequestMapping(value="json/deleteFriend/{friendId}")
- 	public int deleteFriend(@PathVariable String friendId, HttpSession session)throws Exception{
+ 	@RequestMapping(value="json/deleteFriend")
+ 	public int deleteFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
  		
  		System.out.println("/friend/deleteFriend: GET/POST");
- 		Friend friend = (Friend) session.getAttribute("friend");
- 		System.out.println("friendcontroller - deleteFriend: "+friendId);
- 		return friendService.deleteFriend(friend.getFriendId());
+ 		System.out.println("friendId : "+friend.getFriendId());
+ 		System.out.println("userId : "+friend.getUserId());
+ 	 		
+ 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());
+// 		System.out.println("/friend/deleteFriend: GET/POST");
+// 		User user = (User) session.getAttribute("user");
+// 		Friend friend = (Friend) session.getAttribute("friend");
+// 		System.out.println("friendcontroller - deleteFriend: "+friend.getFriendId());
+// 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());
  		
+ 	
  	}
  	
- 	 //模备 铰牢
- 	@RequestMapping(value="json/acceptFriend/{friendId}")
- 	public void acceptFriend(@PathVariable String friendId, HttpSession session)throws Exception{
+ 	/* //模备 铰牢
+ 	@RequestMapping(value="json/acceptFriend")
+ 	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
  		
  		System.out.println("/friend/acceptFriend: GET/POST");
- 		User user = (User) session.getAttribute("user");
- 		
- 		friendService.acceptFriend(user.getUserId(), friendId);
- 		System.out.println("friendcontroller - acceptFriend: "+friendId);
- 	}
+ 		System.out.println("friendId : "+friend.getFriendId());
+ 		System.out.println("userId : "+friend.getUserId());
+ 		 		
+ 		return friendService.acceptFriend(friend.getUserId(), friend.getFriendId());
+
+ 	}*/
+ 	
+ 	//模备 铰牢
+ 	 	@RequestMapping(value="json/acceptFriend")
+ 	 	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
+ 	 		
+ 	 		System.out.println("/friend/acceptFriend: GET/POST");
+ 	 		System.out.println("friendId : "+friend.getFriendId());
+ 	 		System.out.println("userId : "+friend.getUserId());
+ 	 		System.out.println("restController - acceptFriend: "+friendService.acceptFriend(friend));
+ 	 		 		
+ 	 		return friendService.acceptFriend(friend);
+
+ 	 	}
  	
  /*	//模备 炼雀
  	@RequestMapping( value="json/getFriend/{friendId}", method=RequestMethod.GET )

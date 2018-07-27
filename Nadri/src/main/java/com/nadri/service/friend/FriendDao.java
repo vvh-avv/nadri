@@ -10,12 +10,11 @@ import com.nadri.service.domain.User;
 public interface FriendDao {
 	
 	//模备 眠啊
-	/*public void acceptFriend(Friend friend) throws Exception;*/
-	public void acceptFriend(Map<String, String> map) throws Exception;
+	public int acceptFriend(Friend friend) throws Exception;
+	/*public int acceptFriend(Map<String, String> map) throws Exception;*/
 	
 	//模备 昏力
-	public int deleteFriend(String friendId) throws Exception;
-	/*public int deleteFriend(String userId, String friendId, int friendCode)throws Exception;*/
+	public  int deleteFriend(Map<String, String> map)throws Exception;
 	
 	//模备 夸没 秒家
 	public int cancelFriend(Map<String, String> map)throws Exception;
@@ -46,7 +45,9 @@ public interface FriendDao {
 
 	List<Friend> selectFriendList(User user) throws Exception;
 
-	
+
+
+
 
 	
 
