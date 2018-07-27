@@ -363,16 +363,6 @@ if (userId != null) {
          <div class="col-md-12" style="text-align:center; font-size: 1vw;">${user.userId}</div>
    </div>
    
-   <ul style="list-style-type: none;">
-      <li class="friendAlert"> 친 구 알 림 <span style="color:red; font-weight:700;">1</span> </li>
-      <li class="friendSmall"> <img src="/images/profile/${user.profileImg}" class="profileImg2"> 님이 친구신청을 하셨습니다. </li>
-      <li class="friendSmall"> 알림2 </li>
-      <li class="friendSmall"> 알림3 </li>
-      <li> 나 들 이 백 과 </li>
-      <li> 게 시 판 </li>
-      <li> 일 정 작 성 </li>
-   </ul>
-   
 </div>
 <div style="display:flex; flex-direction: col; justify-content: flex-start;">
    <ul class="toggleMenuMob">

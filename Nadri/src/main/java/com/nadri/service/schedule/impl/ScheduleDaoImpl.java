@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleDao;
@@ -58,10 +59,15 @@ public class ScheduleDaoImpl implements ScheduleDao{
 	}
 	
 	// 6. 마이페이지 내 일정을 보기 위한 메서드
-	   @Override
-	   public List<Schedule> getMyScheduleList(String userId) throws Exception {
-	      return sqlSession.selectList("ScheduleMapper.getMyScheduleList", userId);
-	   }
+   @Override
+   public Map<String,Object> getMyScheduleList(Search search) throws Exception{
+	   Map<String,Object> map = new HashMap<String,Object>();
+	   List<Schedule> list = sqlSession.selectList("ScheduleMapper.getMyScheduleList", search);
+	   int count = sqlSession.selectOne("ScheduleMapper.getTotalCount", search);
+	   map.put("list", list);
+	   map.put("totalCount", count);
+	   return map;
+   }
 
    // 7. 게시판에서 일정복사 눌렀을 때 실행 할 메서드
    @Override
@@ -87,6 +93,11 @@ public class ScheduleDaoImpl implements ScheduleDao{
       System.out.println("-----글삭제");
       sqlSession.delete("BoardMapper.deleteBoardSchedule", scheduleNo);
       System.out.println("-----끝");
+   }
+   
+   // 10. 일정의 review를 업데이트 합니다.
+   public void updateScheduleReview(Schedule schedule) throws Exception {
+	   sqlSession.update("ScheduleMapper.updateScheduleReview", schedule);
    }
 	
 }

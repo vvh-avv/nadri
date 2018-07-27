@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="/css/common.css"> 
 <!-- 폰트 넣는 css  -->
 <link rel="stylesheet" href="/css/commonfont.css">
+<!-- T-map 지도를 쓰기위한 선언 -->
+<script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
+<script src="/javascript/juangeolocation.js?ver=1"></script>
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
@@ -28,21 +31,13 @@
 <link rel="stylesheet" href="/css/toolbar.css">
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<!-- 구글맵을 사용하기 위한 CDN -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7-c6GOHSYIeB4RuWDwIbWPdu2oeRTnpI&libraries=geometry,places,drawing"></script>
-<!-- 구글맵 매서드가 담긴 주머니 -->
-<script src="/javascript/googlenavigation.js?ver=1"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/css/materialize.css">
 
 <html>
 <head>
 <title>Insert title here</title>
 <style>
-#map { 
-        height: 40%;
-        width:100%; 
-      } 
-
 	.container {
     padding-right: 30px;
     padding-left: 30px;
@@ -100,10 +95,10 @@
 	     z-index: 2; 
 	     text-align: center; 
 	     } 
-
+	     
 /*고정 바를 만들어주는 css*/	     
 .sidenav {
-    width: 18%;
+    width: 17%;
     position: fixed;
     z-index: 1;
     top: 100px;
@@ -161,7 +156,7 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 33.33%;
+  width: 50%;
 }
 
 .tablink:hover {
@@ -189,6 +184,21 @@ body, html {
     td{
     font-size : 12px;
     } 
+    
+    .dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.dropdown-menu{
+    min-width: 100%;
+}
 </style>
 
 <script>
@@ -223,40 +233,39 @@ var options = {
         clearable: false, //Make the picker's input clearable (has clickable "x")
     };
        
-	$(function() {
-			
-		$(window).scroll(function(){
-	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-	        
-	        if(scrollLocation > 180){ //화면을 내리면 장바구니 뜨게하고
-	        	$("body > div.sidenav").fadeIn();
-	        	$("body > div.sidenav").css("display", "block");
-	        }else{ //화면을 내리면 장바구니 나가게합니다.
-	            $("body > div.sidenav").css("display", "none");
-	            $("body > div.sidenav").fadeOut();
-	        }
-	    })
-		$("body > div.sidenav").css("display", "none");
-				
-		$('#myModal').modal();
-		
-		 $("#modalButton").on("click", function(){
-			 $('#myModal').modal();
-		 });
-		
-		// 0.2초의 시간을 줘야지 자바스크립트가 먼저 실행되지 않습니다!!
-		//$(".waves-effect").click(function(){
-		//	    setTimeout(function(){
-		//	    	distance();
-		//	    }, 200);
-		//	}); //end of click
+$(function() {
+	
+	$(window).scroll(function(){
+        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+        
+        if(scrollLocation > 180){ //화면을 내리면 장바구니 뜨게하고
+        	$("body > div.sidenav").fadeIn();
+        	$("body > div.sidenav").css("display", "block");
+        }else{ //화면을 내리면 장바구니 나가게합니다.
+            $("body > div.sidenav").css("display", "none");
+            $("body > div.sidenav").fadeOut();
+        }
+    })
+	$("body > div.sidenav").css("display", "none");
+	
+	initTmap();
+	
+	$('#myModal').modal();
+	
+	 $("#modalButton").on("click", function(){
+		 $('#myModal').modal();
+	 });
+	 	 
+	 $(document).on('click','#cartbutton', function(){ 
+		$("#cartModal").modal();
+	 });
 			
 		// append로 생성한 경우에는 이렇게 정확하게 이름을 지정해줘야지 동작한다!!
-		//$(document).on('click','#navigation', function(){
-		//    setTimeout(function(){
-		 //   	distance();
-		  //  }, 200);
-		//}); //end of click
+		$(document).on('click','#navigation', function(){
+		    setTimeout(function(){
+		    	distance();
+		    }, 200);
+		}); //end of click
 		
 		  $( "#datepicker" ).datepicker({
 		    dateFormat: 'yy-mm-dd',
@@ -422,7 +431,7 @@ function openPage(pageName, elmnt, color) {
     elmnt.style.backgroundColor = color;
 }
 
-//일정계획으로 옮겨주는 메서드입니다.
+// 일정계획으로 옮겨주는 메서드입니다.
 function addToSchedule(i, j){
 	
 		// 주소값
@@ -453,9 +462,8 @@ function addToSchedule(i, j){
 
 function addWayPoint(){
 	var lasttd = $("#wayPoint > tr").length-1;
-	alert(lasttd);
 	if(lasttd < 6 ){
-		var waypoint = '';
+	var waypoint = '';
 		waypoint += '<tr>';
 		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
 		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
@@ -483,17 +491,18 @@ function deleteWayPoint(){
 		swal("최소 2개의 장소는 필요합니다!");
 	}
 }
-    </script> 
-    
-    
+
+
+</script>
 </head>
 <body>
+
+<!-- 이장소는 장소바구니입니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <div class="sidenav">
     <button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">장소바구니</button>
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
-	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
-	<div id="Home" class="tabcontent" >
+	<div id="Home" class="tabcontent">
 	<br/>
 		<c:set var="i" value="0" />
 				<c:forEach var="cart" items="${cart}">
@@ -537,12 +546,7 @@ function deleteWayPoint(){
 			 
 </div>
 	</div>
-	
-	<div id="News" class="tabcontent">
-	  <h3>News</h3>
-	  <p>Some news this fine day!</p> 
-	</div>
-	
+		
 	<div id="Contact" class="tabcontent">
 	  <h3>Contact</h3>
 	  <p>Get in touch, or swing by for a cup of coffee.</p>
@@ -562,6 +566,11 @@ function deleteWayPoint(){
       </div> 
       <!-- input파일 숨겨서 처리하기 -->
   <input  type="file" id="file" name="file" onchange="readURL(this)" style="display:none;" > 
+  
+  
+  
+  
+  
   
 			<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
             <div class="modal" id="myModal" role="dialog"> 
@@ -592,10 +601,12 @@ function deleteWayPoint(){
                 </div> 
             </div>
             
+
+            
      <div class="container">
      	<hr/>
      		
-     		<h1 align="center">' 너, 나들이' 스케쥴러 </h1>
+     		<h1 align="center">'너, 나들이' 스케쥴러 </h1>
      			
      	<hr/>	
 		
@@ -632,7 +643,7 @@ function deleteWayPoint(){
 			
 			
 			<div class="panel panel-info">
-					<label>일정계획표</label>
+					<label>몇개의 장소를 들르시나요? </label>
 			</div>	
 			
 			<input type="hidden" name="userId" value="${sessionScope.user.userId}">
@@ -645,11 +656,11 @@ function deleteWayPoint(){
 			<table class="table">
 				<thead>
 					<tr>
-						<th>제목</th>
-						<th>주소</th>
-						<th>상세설명</th>
-						<th>이동시간(분)</th>
-						<th>길찾기</th>
+						<th class="text-center">제목</th>
+						<th class="text-center">주소</th>
+						<th class="text-center">상세설명</th>
+						<th class="text-center">이동시간(분)</th>
+						<th class="text-center">길찾기</th>
 					</tr>
 				</thead>
 				<tbody id="wayPoint">	
@@ -686,9 +697,13 @@ function deleteWayPoint(){
 				
 				<hr />
 			</table>
-			
+
 			<br/>
 			<button type="button" class="btn btn-warning" id="hi" style="float: right;">등록!!!</button>
+			
+			</div>
+			<br/>
+		</div><!-- end of container -->
 	</form>
 	
 </body>

@@ -32,6 +32,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7-c6GOHSYIeB4RuWDwIbWPdu2oeRTnpI&libraries=geometry,places,drawing"></script>
 <!-- 구글맵 매서드가 담긴 주머니 -->
 <script src="/javascript/googlenavigation.js?ver=1"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <html>
 <head>
@@ -421,42 +422,50 @@ function openPage(pageName, elmnt, color) {
     elmnt.style.backgroundColor = color;
 }
 
-// 일정계획으로 옮겨주는 메서드입니다.
-function addToSchedule(i){
-		alert("1에 들어왔다." + i);
+//일정계획으로 옮겨주는 메서드입니다.
+function addToSchedule(i, j){
+	
 		// 주소값
-		wayPointAddress = $("#cartAddress"+(i+1)+"").text();
-		alert(wayPointAddress);
-		$("#wayPointAddress"+i+"").val(wayPointAddress);
+		wayPointAddress = $("#cartAddress"+i+"").text();
+		$("#wayPointAddress"+j+"").val(wayPointAddress);
 		
 		// 이미지값
-		wayPointImg=$("#cartImg"+(i+1)+"").attr('src');
-		$("#wayPointImg"+i+"").val(wayPointImg);
+		wayPointImg=$("#cartImg"+i+"").attr('src');
+		$("#wayPointImg"+j+"").val(wayPointImg);
 		
 		//제목값
-		wayPointTitle = $("#cartTitle"+(i+1)+"").text();
-		$("#wayPointTitle"+i+"").val(wayPointTitle);
+		wayPointTitle = $("#cartTitle"+i+"").text();
+		$("#wayPointTitle"+j+"").val(wayPointTitle);
 
 		// 상세내용값
-		wayPointDetail=$("#cartDetail"+(i+1)+"").text();
-		$("#wayPointDetail"+i+"").val(wayPointDetail);
+		wayPointDetail=$("#cartDetail"+i+"").text();
+		$("#wayPointDetail"+j+"").val(wayPointDetail);
+		
+		// X값
+		wayPointDetail=$("#cartX"+i+"").val();
+		$("#wayPointX"+j+"").val(wayPointDetail);
+		
+		// Y값
+		wayPointDetail=$("#cartY"+i+"").val();
+		$("#wayPointY"+j+"").val(wayPointDetail);
+		
 }
 
 function addWayPoint(){
 	var lasttd = $("#wayPoint > tr").length-1;
 	alert(lasttd);
 	if(lasttd < 6 ){
-	var waypoint = '';
+		var waypoint = '';
 		waypoint += '<tr>';
-		waypoint += '	<td><input type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
-		waypoint += '	<td><input type="text" name="wayPoints['+w+'].wayPointImg" id="wayPointImg'+w+'"/></td>' ;
-		waypoint += '	<td><input type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
-		waypoint += '	<td><input type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
-		waypoint += '		<td><input type="number" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
-		waypoint += "	<td><input class='waves-effect waves-light btn col s5' type='button' id='navigation' style='background-color: rgba(250, 170, 50, 0.5);' value='길찾기!' onclick=search('#wayPointAddress"+w+"')></td> " ; 
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="number" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
+		waypoint += "	<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);'  id='navigation' value='길찾기' onclick=search('#wayPointAddress"+w+"')></td> " ; 
+		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointImg" id="wayPointImg'+w+'"/>' ;
 		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointNav" id="wayPointNav'+w+'" />' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointX" >' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointY" >   ' ;
+		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointX"  id="wayPointX'+w+'" >' ;
+		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointY"  id="wayPointY'+w+'" >   ' ;
 		waypoint += '	</tr>';
 	$('#wayPoint').append(waypoint);
 	w++;
@@ -484,29 +493,28 @@ function deleteWayPoint(){
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
 	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
-	<div id="Home" class="tabcontent">
+	<div id="Home" class="tabcontent" >
 	<br/>
 		<c:set var="i" value="0" />
 				<c:forEach var="cart" items="${cart}">
 					<c:set var="i" value="${i+1}" />
-					<table>
+					<table class="${cart.cartNo}">
   					<tr class="ct_list_pop">
 						<tr>
-							<td rowspan="3"><span class="badge">${ i }</span></td>
+							<td rowspan="3"><i class="material-icons">place</i></td>
 						    <td rowspan="3" ><img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}"></td>
 						    <th id="cartTitle${i}">${cart.cartTitle}</th>
-                            <td rowspan="3"><%-- <button class="btn btn-info" onclick="addToSchedule(${i})" >추가</button> --%>
-                            <div class="dropdown">
+                            <td rowspan="3"><div class="dropdown">
 							    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"> 경유지선택
 							    <span class="caret"></span></button>
 							    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-							      <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(0)">첫번째</a></li>
-							      <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(1)">두번째</a></li>
-							      <li style="width:50px;"><a tabindex="-1"onclick="addToSchedule(2)">세번째</a></li>
-							      <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(3)">네번째</a></li>
-							      <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(4)">다섯번째</a></li>
-							      <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(5)">여섯번째</a></li>
-							       <li style="width:50px;"><a tabindex="-1" onclick="addToSchedule(6)">일곱번째</a></li>
+							      <li ><a tabindex="-1" onclick="addToSchedule('${i}',0)">첫번째</a></li>
+							      <li ><a tabindex="-1" onclick="addToSchedule('${i}',1)">두번째</a></li>
+							      <li ><a tabindex="-1"onclick="addToSchedule('${i}',2)">세번째</a></li>
+							      <li><a tabindex="-1" onclick="addToSchedule('${i}',3)">네번째</a></li>
+							      <li ><a tabindex="-1" onclick="addToSchedule('${i}',4)">다섯번째</a></li>
+							      <li ><a tabindex="-1" onclick="addToSchedule('${i}',5)">여섯번째</a></li>
+							       <li ><a tabindex="-1" onclick="addToSchedule('${i}',6)">일곱번째</a></li>
 							    </ul>
 							 </div>
                             </td>
@@ -518,6 +526,8 @@ function deleteWayPoint(){
 							<tr>
 							    <td width="200px" id="cartDetail${i}">${cart.cartDetail}</td>
 							</tr>
+								<input type="hidden" id="cartX${i}" value="${cart.cartX}">
+							    <input type="hidden" id="cartY${i}" value="${cart.cartY}">
 						</span>
 					</table>
 						<br/>
@@ -554,12 +564,12 @@ function deleteWayPoint(){
   <input  type="file" id="file" name="file" onchange="readURL(this)" style="display:none;" > 
   
 			<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
-            <div class="modal fade" id="myModal" role="dialog"> 
+            <div class="modal" id="myModal" role="dialog"> 
                 <div class="modal-dialog modal-sm"> 
                     <div class="modal-content"> 
                         <div class="modal-header"> 
                             <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                            <h4 class="modal-title">어느 피크닉 장소를 가세요?</h4> 
+                            <h4 class="modal-title">나들이 가세요?</h4> 
                         </div>
 					<div class="modal-body">
 						<div class="form-group">
@@ -581,6 +591,7 @@ function deleteWayPoint(){
                     </div> 
                 </div> 
             </div>
+            
      <div class="container">
      	<hr/>
      		
@@ -635,109 +646,47 @@ function deleteWayPoint(){
 				<thead>
 					<tr>
 						<th>제목</th>
-						<th>사진이름(썸네일값)</th>
 						<th>주소</th>
 						<th>상세설명</th>
-						<!-- <th>머무는시간(분)</th> -->
 						<th>이동시간(분)</th>
 						<th>길찾기</th>
-						<th>네비</th>
 					</tr>
 				</thead>
 				<tbody id="wayPoint">	
 					<tr id="wayPoint0">
-						<td><input type="text" name="wayPoints[0].wayPointTitle" id="wayPointTitle0"/></td>
-						<td><input type="text" name="wayPoints[0].wayPointImg" id="wayPointImg0"/></td>
-						<td><input type="text" name="wayPoints[0].wayPointAddress" id="wayPointAddress0"></td>
-						<td><input type="text" name="wayPoints[0].wayPointDetail"   id="wayPointDetail0" value="시작지점!"/></td>
-						<!-- <td><input type="number" name="wayPoints[0].stayTime" id="wayPointStayTime0" /></td> -->
-						<td><input type="number" name="wayPoints[0].moveTime" id="wayPointMoveTime0" readonly /></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="출발지등록!" onclick="search('#wayPointAddress0')"></td>  
-						<td><input type="text" name="wayPoints[0].wayPointNav" id="wayPointNav0" />
-						<input type="hidden" name="wayPoints[0].wayPointX" id="wayPointX">
-						<input type="hidden" name="wayPoints[0].wayPointY" >   
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointTitle" id="wayPointTitle0"/></td>
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointAddress" id="wayPointAddress0"></td>
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointDetail"   id="wayPointDetail0" value="시작지점!"/></td>
+						<div class="col-xs-4">
+							<td align="center"><input  class="form-control" type="number" name="wayPoints[0].moveTime" id="wayPointMoveTime0" readonly/></td>
+						</div>
+						<td align="center"><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" id="navigation'" value="출발지" onclick="search('#wayPointAddress0')"></td>  
+						<input type="hidden" name="wayPoints[0].wayPointImg" id="wayPointImg0"/>
+						<input type="hidden" name="wayPoints[0].wayPointNav" id="wayPointNav0" />
+						<input type="hidden" name="wayPoints[0].wayPointX" id="wayPointX0"/>
+						<input type="hidden" name="wayPoints[0].wayPointY" id="wayPointY0"/>   
 					</tr>
 				 	<tr>
-						<td><input type="text" name="wayPoints[1].wayPointTitle" id="wayPointTitle1" /></td>
-						<td><input type="text" name="wayPoints[1].wayPointImg"  id="wayPointImg1"/></td>
-						<td><input type="text" name="wayPoints[1].wayPointAddress" id="wayPointAddress1" ></td>
-						<td><input type="text" name="wayPoints[1].wayPointDetail" id="wayPointDetail1" /></td>
-						<!-- <td><input type="number"  name="wayPoints[1].stayTime" id="wayPointStayTime1"  ></td> -->
-					 	<td><input type="number"  name="wayPoints[1].moveTime"  id="wayPointMoveTime1" readonly/></td>
-					 	<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);"  id="navigation" value="길찾기" onclick="search('#wayPointAddress1')"></td>
-					 	<td><input type="text" name="wayPoints[1].wayPointNav" id="wayPointNav1" />
-					 	<input type="hidden" name="wayPoints[1].wayPointX" >
-						<input type="hidden" name="wayPoints[1].wayPointY">
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointTitle" id="wayPointTitle1" /></td>
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointAddress" id="wayPointAddress1" ></td>
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointDetail" id="wayPointDetail1" /></td>
+						<div class="col-xs-4">
+					 		<td align="center"><input class="form-control" type="number"  name="wayPoints[1].moveTime"  id="wayPointMoveTime1" readonly/></td>
+					 	</div>
+					 	<td align="center"><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);"  id="navigation" value="길찾기" onclick="search('#wayPointAddress1')"></td>
+						<input type="hidden" name="wayPoints[1].wayPointImg"  id="wayPointImg1"/>				 	
+					 	<input type="hidden" name="wayPoints[1].wayPointNav" id="wayPointNav1" />
+					 	<input type="hidden" name="wayPoints[1].wayPointX" id="wayPointX1"/>
+						<input type="hidden" name="wayPoints[1].wayPointY" id="wayPointY1"/>
 					</tr>
-					<!-- <tr>		
-						<td><input type="text" name="wayPoints[2].wayPointTitle" id="wayPointTitle2"/></td>
-						<td><input type="text" name="wayPoints[2].wayPointImg"  id="wayPointImg2"/></td>
-						<td><input type="text" name="wayPoints[2].wayPointAddress" id="wayPointAddress2" ></td>
-						<td><input type="text" name="wayPoints[2].wayPointDetail"  id="wayPointDetail2"  /></td>
-						<td><input type="number"  name="wayPoints[2].stayTime" id="wayPointStayTime2" /></td>
-						<td><input type="number" name="wayPoints[2].moveTime" id="wayPointMoveTime2" readonly/></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="길찾기" onclick="search('#wayPointAddress2');"></td>
-						<td><input type="text" name="wayPoints[2].wayPointNav" id="wayPointNav2" />
-						<input type="hidden" name="wayPoints[2].wayPointX" >
-						<input type="hidden" name="wayPoints[2].wayPointY" >
-					</tr>
-					 <tr  id="wayPoint3">		 
-						<td><input type="text" name="wayPoints[3].wayPointTitle" id="wayPointTitle3"/></td>
-						<td><input type="text" name="wayPoints[3].wayPointImg" id="wayPointImg3"/></td>
-						<td><input type="text" name="wayPoints[3].wayPointAddress" id="wayPointAddress3" ></td>
-						<td><input type="text" name="wayPoints[3].wayPointDetail"  id="wayPointDetail3" /></td>
-						<td><input type="number" name="wayPoints[3].stayTime" id="wayPointStayTime3" /></td>
-						<td><input type="number" name="wayPoints[3].moveTime" id="wayPointMoveTime3" readonly/></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="길찾기" onclick="search('#wayPointAddress3');"></td>
-						<td><input type="text" name="wayPoints[3].wayPointNav" id="wayPointNav3" />
-						<input type="hidden" name="wayPoints[3].wayPointX" >
-						<input type="hidden" name="wayPoints[3].wayPointY" >
-					</tr>
-					<tr>		
-						<td><input type="text" name="wayPoints[4].wayPointTitle"id="wayPointTitle4"/></td>
-						<td><input type="text" name="wayPoints[4].wayPointImg" id="wayPointImg4"/></td>
-						<td><input type="text" name="wayPoints[4].wayPointAddress" id="wayPointAddress4" ></td>
-						<td><input type="text" name="wayPoints[4].wayPointDetail"  id="wayPointDetail4"/></td>
-						<td><input type="number" name="wayPoints[4].stayTime" id="wayPointStayTime4" /></td>
-						<td><input type="text" name="wayPoints[4].moveTime" id="wayPointMoveTime4" readonly/></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="길찾기" onclick="search('#wayPointAddress4');"></td>
-						<td><input type="text" name="wayPoints[4].wayPointNav" id="wayPointNav4" />
-						<input type="hidden" name="wayPoints[4].wayPointX" >
-						<input type="hidden" name="wayPoints[4].wayPointY" >
-					</tr>
-					<tr>	
-						<td><input type="text" name="wayPoints[5].wayPointTitle"  id="wayPointTitle5" /></td>
-						<td><input type="text" name="wayPoints[5].wayPointImg"  id="wayPointImg5"/></td>
-						<td><input type="text" name="wayPoints[5].wayPointAddress" id="wayPointAddress5" ></td>
-						<td><input type="text" name="wayPoints[5].wayPointDetail"  id="wayPointDetail5"/></td>
-						<td><input type="number" name="wayPoints[5].stayTime" id="wayPointStayTime5" /></td>
-						<td><input type="number" name="wayPoints[5].moveTime" id="wayPointMoveTime5" readonly/></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="길찾기" onclick="search('#wayPointAddress5');"></td>
-						<td><input type="text" name="wayPoints[5].wayPointNav" id="wayPointNav5" />
-						<input type="hidden" name="wayPoints[5].wayPointX" >
-						<input type="hidden" name="wayPoints[5].wayPointY" >
-					</tr>
-					<tr>		
-						<td><input type="text" name="wayPoints[6].wayPointTitle"  id="wayPointTitle6"/></td>
-						<td><input type="text" name="wayPoints[6].wayPointImg"  id="wayPointImg6"/></td>
-						<td><input type="text" name="wayPoints[6].wayPointAddress" id="wayPointAddress6" ></td>
-						<td><input type="text" name="wayPoints[6].wayPointDetail"  id="wayPointDetail6"  value="도착지점!"></td>
-						<td><input type="number" name="wayPoints[6].stayTime" id="wayPointStayTime6" /></td>
-						<td><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="길찾기" onclick="search('#wayPointAddress6');"></td>
-						<td><input type="text" name="wayPoints[6].wayPointNav" id="wayPointNav6" />
-						<input type="hidden" name="wayPoints[6].wayPointX" >
-						<input type="hidden" name="wayPoints[6].wayPointY">
-					</tr> -->
 				</tbody>
-				<hr/>
 					<span class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="경유지추가" onclick="addWayPoint()">+ 경유지 추가하기</span> 
 					<span class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="경유지추가" onclick="deleteWayPoint()">- 경유지 줄이기</span>
-						<label>몇개의 장소를 들르시나요? </label>
-					</div>
+				</div>
 				
 				<hr />
 			</table>
-
+			
 			<br/>
 			<button type="button" class="btn btn-warning" id="hi" style="float: right;">등록!!!</button>
 	</form>

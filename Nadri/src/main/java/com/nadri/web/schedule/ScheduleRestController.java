@@ -24,12 +24,17 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
+import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleService;
@@ -222,6 +227,17 @@ public class ScheduleRestController {
 	        } catch (Exception e) {
 	            System.out.println(e);
 	        }
+	   }  
+	   
+	   // updateScheduleReview 리뷰를 업데이트 합니다!!
+	   @RequestMapping(value="updateReview" , method=RequestMethod.POST)
+	   public void updateReview(@RequestBody Schedule schedule) throws Exception{
+		   
+		   System.out.println(schedule);
+		   
+		   System.out.println("updateScheduleReview");
+		   
+		   scheduleService.updateScheduleReview(schedule);
 	   }
 	
 }

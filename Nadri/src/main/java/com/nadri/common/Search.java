@@ -13,6 +13,7 @@ public class Search {
 
 	private int searchSpot;
 	private int memberFlag; //회원과 비회원일 때 게시물 목록 불러오는 조건이 달라서 추가함 HJS
+	private String userId; // 마이페이지 스케쥴 가져올때 나 자신의 스케쥴만 가져오기위해서 추가함 HJA
 	
 	///Constructor method
 	public Search() {
@@ -91,11 +92,19 @@ public class Search {
 		this.memberFlag = memberFlag;
 	}
 	
-	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
 		return "Search [curruntPage=" + curruntPage + ", searchCondition=" + searchCondition + ", searchKeyword="
 				+ searchKeyword + ", pageSize=" + pageSize + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum
-				+ ", searchSpot=" + searchSpot + ", memberFlag=" + memberFlag + "]";
+				+ ", searchSpot=" + searchSpot + ", memberFlag=" + memberFlag + ", userId=" + userId + "]";
 	}
+	
 }
