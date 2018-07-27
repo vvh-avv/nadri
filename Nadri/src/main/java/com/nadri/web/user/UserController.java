@@ -310,7 +310,7 @@ public class UserController {
 		
 		session.setAttribute("user", dbUser);
 		
-		return "redirect:/index.jsp";
+		return "forward:/user/login";
 	}
 
 	
