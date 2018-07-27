@@ -2,8 +2,12 @@
 
  @media only screen and (max-width : 600px){
  
-	.spots > label{
+	.label-box > label{
 		display:none;
+	}
+	
+	.spots-list{
+		margin:0px;
 	}
 	
 	.spots-list > div{
@@ -70,6 +74,23 @@
 	
 	.empty-boards > div{
 		font-size : 7vw;
+	}
+	
+	.middel-box{
+		height:100px;
+		width:95%;
+		left:2.5%;
+	}
+	
+	.bluff{
+		font-size:4vw;
+		text-align:center;
+		text-shadow:2px 2px 0px #ffffff;
+	}
+	
+	.bluff > div{
+		text-align: center;
+		margin-left:0px;
 	}
  
  
