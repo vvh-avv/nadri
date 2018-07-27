@@ -39,6 +39,7 @@
 	href="/css/indexRealSmall.css" />
 <script src="/javascript/indexReal.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	
@@ -98,8 +99,12 @@
 		<div class="tint-layer"></div>
 		<div class="video-button" id="video-button" onclick="myFunction()">
 			Stop</div>
+		<div class="change-button" id="change-button">
+			NORMAL
+		</div>
 		<video autoplay muted loop id="myVideo">
 			<source src="/video/${videoName}.mp4" type="video/mp4">
+<!-- 			<source src="/video/video10.mp4" type="video/mp4"> -->
 		</video>
 	</div>
 
@@ -122,9 +127,18 @@
 					<div class="side-section">
 						<span class="glyphicon glyphicon-chevron-left top-icons" id="expand-out"></span> 
 						<span class="glyphicon glyphicon-search top-icons" id="search-open"></span> 
-						<span class="glyphicon glyphicon-comment top-icons" id="chat-open"></span> 
-						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span> 
-						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
+						<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span> 
+						<c:if test="${!empty user}">
+							<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span> 
+							<span class="glyphicon glyphicon-user top-icons" id="join-open"></span> 
+							<c:if test="${user.role == 1}">
+								<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
+							</c:if>
+							<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
+						</c:if>
+						<c:if test="${empty user}">
+							<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>				
+						</c:if>
 					</div>
 				</div>
 			</div>

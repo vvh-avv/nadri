@@ -23,11 +23,11 @@
 	<select id="listFriend" parameterType="string" resultMap="friendSelectMap">
 		SELECT friend_no, friend_id, friend_code
        FROM friend
-       WHERE user_id=#{value} AND friend_code='1' OR friend_request='Y'
+       WHERE user_id=#{value} 
         UNION ALL
       SELECT friend_no, user_id, friend_code
        FROM friend
-       WHERE friend_id=#{value} AND friend_code='1' 
+       WHERE friend_id=#{value} 
 	</select>
 	
 
@@ -37,7 +37,7 @@
 		<set>
 			friend_code='1', friend_request='N'
 		</set>
-		WHERE user_id=#{userId} 
+		WHERE friend_id=#{friendId}
 	</update>
 	
 	
