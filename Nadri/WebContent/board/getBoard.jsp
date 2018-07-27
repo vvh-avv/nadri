@@ -394,7 +394,7 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
-	   alert("아이디 : " + $(this).attr("id")) ;
+	   //alert("아이디 : " + $(this).attr("id")) ;
 	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
@@ -440,12 +440,12 @@ $(function(){
             method : "GET" ,
             success : function( data ) {
                
-            	alert( "noticeSendingWs함수 호출" ) ;
-            	alert( data.noticeCode ) ;
+            	//alert( "noticeSendingWs함수 호출" ) ;
+            	//alert( data.noticeCode ) ;
             	noticeSendingWs( data.receiverId + data.noticeCode ) ;
              } ,
              error : function( error ) {
-            	 alert( "에러 : " + error ) ;
+            	 //alert( "에러 : " + error ) ;
              }
          })
          
@@ -995,7 +995,7 @@ $(function(){
             <!-- 아이콘(좋아요+댓글+공유) -->
             <div id="iconList">
                <span id="likeIcon">
-                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}">></c:if>
+                  <c:if test="${likeFlag==0 || empty sessionScope.user}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
                   <c:if test="${likeFlag!=0 && !empty sessionScope.user}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

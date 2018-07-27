@@ -88,7 +88,19 @@
 </style>
 
 <script>
-$(function(){
+
+function fncGetList(currentPage) {
+	$("#currentPage").val(currentPage)
+	$("#detailForm").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
+}
+
+
+$(function(){	
+	
+	$("button.btn.btn-default:contains('검색')").on("click", function() {
+		fncGetList(1);
+	});
+	
 	//일정에 마우스 올렸을 때 이미 포스팅 한 일정이면 포스팅 못하도록 버튼 막는 스크립트
 	$("article").on("mouseover", function(){
 		var scheduleNo = $(this).attr("class");
@@ -227,7 +239,37 @@ $(function(){
 		})
 	})
 	
-})
+	// 버튼이면서 updateScheduleReview로 시작하는거 클릭했을때!!
+	$("button[id^='updateReview']").on("click", function(e){
+		e.stopPropagation();
+	
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		$("#modalscheduleNo").val(scheduleNo);
+		$("#review").modal();
+	});
+	
+	// modal전송 버튼을 눌렀을때
+	$("#modalinsert").on("click", function(){
+ 		$.ajax({
+			method : "POST",
+			url : "/restschedule/updateReview",
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+				scheduleNo : $("#modalscheduleNo").val(),
+				scheduleReview : $("#modalscheduleReview").val()
+			}),
+			success : function(){
+			}
+		});
+		swal("리뷰가 등록되었어요!");
+		// 모달을 닫습니다.
+		$("#review").modal('hide');
+	});
+	
+});
 </script>
 </head>
 <body>
@@ -251,6 +293,37 @@ $(function(){
 	</div>
 	
 	<div class="container">
+	
+				<div class="col-md-6 text-left">
+					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수</p>
+				</div>
+
+				<div class="col-md-6 text-right">
+					<form class="form-inline" name="detailForm" id="detailForm">
+
+						<div class="form-group">
+							<select class="form-control" name="searchCondition">
+								<option value="0"
+									${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>제목</option>
+								<option value="1"
+									${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>해쉬태그</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label class="sr-only" for="searchKeyword">검색어</label> <input
+								type="text" class="form-control" id="searchKeyword"
+								name="searchKeyword" placeholder="검색어"
+								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+						</div>
+
+						<button type="button" class="btn btn-default">검색</button>
+
+						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+						<input type="hidden" id="currentPage" name="currentPage" value="" />
+
+					</form>
+				</div>
 		
 		<!-- 작성한 글 리스트 뜨는 부분 -->
 		<div class="col-md-10">
@@ -260,11 +333,11 @@ $(function(){
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
 						<c:if test="${schedule.scheduleImg==null}">
-							<img src="http://placehold.it/250X250" class="img-thumbnail">
+							<img src="/images/schedule/scheduledefault.jpg" class="img-thumbnail">
 						</c:if>
 						<c:if test="${schedule.scheduleImg!=null}">
-							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/schedule/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
-							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/schedule/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
+							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
+							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
 						</c:if>
 					</div>
 					<!-- 마우스 오버시 보여지는 부분 -->
@@ -273,6 +346,7 @@ $(function(){
 						<span id="scheduleDetail">${schedule.scheduleDetail}<br></span>
 						<span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
 						<button type="button" class="btn btn-default btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
+						<button type="button" class="btn btn-default btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
 						<button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button><br>
 						<button type="button" class="btn btn-warning btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
 						<button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button>
@@ -281,13 +355,48 @@ $(function(){
 						<img id="deleteSchedule${schedule.scheduleNo}" src="/images/board/delete2.png">
 					</div>
 				</article>
+				
 			</c:forEach>
-			
 			<c:if test="${empty list}">
 				<span id="defaultText" style="margin-left:40%;">생성하신 일정이 없습니다. ㅠㅠ</span>
 			</c:if>
 		</div>
+		
+		<!-- PageNavigation Start... -->
+		<jsp:include page="../common/pageNavigator.jsp" />
+		<!-- PageNavigation End... -->
 	</div> <!-- e.o.container -->
-	
 </body>
+
+
+
+
+
+<!-- 리뷰를 등록하는 모달창! --> 
+	<form id="reviewform">
+            <div class="modal" id="review" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이 어떠셨어요??</h4> 
+                        </div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="scheduleTitle">후기작성</label> 
+							<input type="text" class="form-control" id="modalscheduleReview" name="scheduleReview" placeholder="나들이 후기를 작성해주세요!">
+							<input type="hidden" id="modalscheduleNo" name="scheduleNo">
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="btn btn-danger modalModBtn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+       </form>
+       
+       
+       
+       
+            
 </html>

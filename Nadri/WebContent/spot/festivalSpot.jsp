@@ -116,7 +116,38 @@ td {
 </style>
 
 <head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
+jQuery(document).ready(function( $ ) {
+    $('.counter').counterUp({
+        delay: 10,
+        time: 1500
+    });
+});
+
+$(function(){
+	$("#park").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=0";
+	})
+
+	$("#festival").on("click", function(){
+		location.href = "/spot/getFestivalList";
+	})
+
+	$("#restaurant").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=1";
+	})
+
+	$("#river").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=4";
+	})
+
+	$("#search").on("click", function(){
+		location.href = "/spot/getSearchSpot";
+	})
+
+	});
+
 
 //맨위로 올라가게 만들어 주는 script
 $(function() {
@@ -285,14 +316,16 @@ $(function() {
 		<%@ include file="/layout/toolbar.jsp"%>
 		
 		<nav>
-		    <div class="nav-wrapper">
-		      <ul id="nav-mobile" class="right hide-on-med-and-down">
-		        <li><span id="park">공원</span></li>
-		        <li><span id="festival">축제/전시</span></li>
-		        <li><span id="restaurant">맛집</span></li>
-		        <li><span id="search">검색</span></li>
-		      </ul>
-		    </div>
+	    <div class="nav-wrapper">
+	      <ul id="nav-mobile" class="right hide-on-med-and-down">
+	      <li><span class="counter" style="display: inline-block;font-weight: 450; color: black; font-size: 70px"><fmt:formatNumber value="${total}" pattern="##,###"/></span>개의 장소를 검색해 보세요!</li>
+	        <li><span id="park">공원</span></li>
+	        <li><span id="restaurant">맛집</span></li>
+	        <li><span id="festival">축제/전시</span></li>
+			<li><span id="river">한강</span></li>
+	        <li><span id="search">검색</span></li>
+	      </ul>
+	    </div>
 	  </nav>
 
 <div id="map">
@@ -340,4 +373,6 @@ $(function() {
 	</div>
 </body>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+<script src="/javascript/jquery.counterup.min.js"></script>
 </html>

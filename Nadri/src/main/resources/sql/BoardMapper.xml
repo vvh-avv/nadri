@@ -142,9 +142,9 @@
 	
 	<!-- 메인화면 추천 게시물 (비회원) -->
 	<select id="getRecomBoard" parameterType="search" resultMap="boardMap">
-        SELECT board.user_id,board.hashtag,ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt
-        FROM board join ( SELECT board_no, COUNT(*) likeCnt
-							FROM likes WHERE likes_time
+        SELECT board.open_range,board.board_no,board.user_id, ifnull(board.hashtag,'no_tag') hashtag, ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, likes.likeCnt, comment.commCnt
+        FROM board LEFT JOIN ( SELECT board_no, COUNT(*) likeCnt
+											FROM likes WHERE likes_time
 											<if test="searchCondition.equals('최신')">
 												 > date_sub(NOW(), interval 1 day)
 											</if>
@@ -157,17 +157,17 @@
 											<if test="searchCondition.equals('월간')">
 												BETWEEN date_add(NOW(), interval -1 month) AND NOW()
 											</if>
-											group by board_no ) likes
-        ON board.board_no = likes.board_no
+											group by board_no ) likes ON board.board_no = likes.board_no
+        				LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment ON board.board_no = comment.board_no
         WHERE board.open_range = '0'
         GROUP BY board.board_no
         ORDER BY likes.likeCnt desc;
 	</select>
 	<!-- 메인화면 추천 게시물 (회원/친구좋아요) -->
 	<select id="getRecomUserLike" parameterType="map" resultMap="boardMap">
-		SELECT board.*
+		SELECT board.*, comment.commCnt, inTable.likecnt
         FROM board
-			JOIN (SELECT board_no, likes_time FROM likes WHERE likes_time
+			LEFT JOIN (SELECT board_no, likes_time, count(*) likeCnt FROM likes WHERE likes_time
 																				<if test="search.searchCondition.equals('최신')">
 																					 > date_sub(NOW(), interval 1 day)
 																				</if>
@@ -183,20 +183,23 @@
 																					AND
 																				<foreach collection="#{list}" item="friendId" open="(" close=")" separator="or">
 						            												user_id = #{friendId.value}
-						        												</foreach> ) inTable
-		ON board.board_no = inTable.board_no
+						        												</foreach>
+						        												GROUP BY board_no ) inTable ON board.board_no = inTable.board_no
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment ON board.board_no = comment.board_no
 		WHERE board.open_range NOT IN (2)
 		GROUP BY board.board_no
         ORDER BY inTable.likes_time desc;
 	</select>
 	<!-- 메인화면 추천 게시물 (회원/작성글) -->
 	<select id="getRecomUserBoard" parameterType="map" resultMap="boardMap">
-		SELECT *
+		SELECT board.*, comment.commCnt, likes.likeCnt
         FROM board
+			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
+            LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no
         WHERE <foreach collection="#{list}" item="friendId" open="(" close=")" separator="or">
-				  	 user_id = #{friendId.value}
+				  	 board.user_id = #{friendId.value}
 				  </foreach>
-					AND open_range NOT IN (2) AND board_time
+					AND board.open_range NOT IN (2) AND board.board_time
 																			<if test="search.searchCondition.equals('최신')">
 																				 > date_sub(NOW(), interval 1 day)
 																			</if>
@@ -209,7 +212,7 @@
 																			<if test="search.searchCondition.equals('월간')">
 																				BETWEEN date_add(NOW(), interval -1 month) AND NOW()
 																			</if>
-        ORDER BY board_time desc;
+        ORDER BY board.board_time desc;
 	</select>
 	
 	

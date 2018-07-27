@@ -20,9 +20,6 @@
 <link rel="stylesheet" href="/css/common.css"> 
 <!-- 폰트 넣는 css  -->
 <link rel="stylesheet" href="/css/commonfont.css">
-<!-- T-map 지도를 쓰기위한 선언 -->
-<script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
-<script src="/javascript/juangeolocation.js?ver=1"></script>
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
@@ -31,12 +28,21 @@
 <link rel="stylesheet" href="/css/toolbar.css">
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- 구글맵을 사용하기 위한 CDN -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7-c6GOHSYIeB4RuWDwIbWPdu2oeRTnpI&libraries=geometry,places,drawing"></script>
+<!-- 구글맵 매서드가 담긴 주머니 -->
+<script src="/javascript/googlenavigation.js?ver=1"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <html>
 <head>
 <title>Insert title here</title>
 <style>
+#map { 
+        height: 40%;
+        width:100%; 
+      } 
+
 	.container {
     padding-right: 30px;
     padding-left: 30px;
@@ -94,10 +100,10 @@
 	     z-index: 2; 
 	     text-align: center; 
 	     } 
-	     
+
 /*고정 바를 만들어주는 css*/	     
 .sidenav {
-    width: 17%;
+    width: 18%;
     position: fixed;
     z-index: 1;
     top: 100px;
@@ -155,7 +161,7 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 50%;
+  width: 33.33%;
 }
 
 .tablink:hover {
@@ -183,21 +189,6 @@ body, html {
     td{
     font-size : 12px;
     } 
-    
-    .dropdown-menu>li>a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-    font-size: 12px;
-}
-
-.dropdown-menu{
-    min-width: 100%;
-}
 </style>
 
 <script>
@@ -232,39 +223,40 @@ var options = {
         clearable: false, //Make the picker's input clearable (has clickable "x")
     };
        
-$(function() {
-	
-	$(window).scroll(function(){
-        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-        
-        if(scrollLocation > 180){ //화면을 내리면 장바구니 뜨게하고
-        	$("body > div.sidenav").fadeIn();
-        	$("body > div.sidenav").css("display", "block");
-        }else{ //화면을 내리면 장바구니 나가게합니다.
-            $("body > div.sidenav").css("display", "none");
-            $("body > div.sidenav").fadeOut();
-        }
-    })
-	$("body > div.sidenav").css("display", "none");
-	
-	initTmap();
-	
-	$('#myModal').modal();
-	
-	 $("#modalButton").on("click", function(){
-		 $('#myModal').modal();
-	 });
-	 	 
-	 $(document).on('click','#cartbutton', function(){ 
-		$("#cartModal").modal();
-	 });
+	$(function() {
+			
+		$(window).scroll(function(){
+	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+	        
+	        if(scrollLocation > 180){ //화면을 내리면 장바구니 뜨게하고
+	        	$("body > div.sidenav").fadeIn();
+	        	$("body > div.sidenav").css("display", "block");
+	        }else{ //화면을 내리면 장바구니 나가게합니다.
+	            $("body > div.sidenav").css("display", "none");
+	            $("body > div.sidenav").fadeOut();
+	        }
+	    })
+		$("body > div.sidenav").css("display", "none");
+				
+		$('#myModal').modal();
+		
+		 $("#modalButton").on("click", function(){
+			 $('#myModal').modal();
+		 });
+		
+		// 0.2초의 시간을 줘야지 자바스크립트가 먼저 실행되지 않습니다!!
+		//$(".waves-effect").click(function(){
+		//	    setTimeout(function(){
+		//	    	distance();
+		//	    }, 200);
+		//	}); //end of click
 			
 		// append로 생성한 경우에는 이렇게 정확하게 이름을 지정해줘야지 동작한다!!
-		$(document).on('click','#navigation', function(){
-		    setTimeout(function(){
-		    	distance();
-		    }, 200);
-		}); //end of click
+		//$(document).on('click','#navigation', function(){
+		//    setTimeout(function(){
+		 //   	distance();
+		  //  }, 200);
+		//}); //end of click
 		
 		  $( "#datepicker" ).datepicker({
 		    dateFormat: 'yy-mm-dd',
@@ -430,7 +422,7 @@ function openPage(pageName, elmnt, color) {
     elmnt.style.backgroundColor = color;
 }
 
-// 일정계획으로 옮겨주는 메서드입니다.
+//일정계획으로 옮겨주는 메서드입니다.
 function addToSchedule(i, j){
 	
 		// 주소값
@@ -438,8 +430,17 @@ function addToSchedule(i, j){
 		$("#wayPointAddress"+j+"").val(wayPointAddress);
 		
 		// 이미지값
-		wayPointImg=$("#cartImg"+i+"").attr('src');
-		$("#wayPointImg"+j+"").val(wayPointImg);
+		var cartNo = $("#cartImg"+i+"").closest('table').attr('class').replace(/^[0-9]/g,"");
+		$.ajax({
+			url : "/restcart/getCart/"+cartNo,
+			method : "POST",
+			success : function(data){
+				console.log("새로 가져온 파일이름 : "+data.cartImg);
+				$("#wayPointImg"+j+"").val(data.cartImg);				
+			}
+		})
+		//wayPointImg=$("#cartImg"+i+"").attr('src');
+		//$("#wayPointImg"+j+"").val(wayPointImg);
 		
 		//제목값
 		wayPointTitle = $("#cartTitle"+i+"").text();
@@ -461,14 +462,15 @@ function addToSchedule(i, j){
 
 function addWayPoint(){
 	var lasttd = $("#wayPoint > tr").length-1;
+	alert(lasttd);
 	if(lasttd < 6 ){
-	var waypoint = '';
+		var waypoint = '';
 		waypoint += '<tr>';
-		waypoint += '	<td align="center"><input type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
-		waypoint += '	<td align="center"><input type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
-		waypoint += '	<td align="center"><input type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
-		waypoint += '	<td align="center"><input type="number" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
-		waypoint += "	<td align='center'><input class='waves-effect waves-light btn col s5' type='button' id='navigation' style='background-color: rgba(250, 170, 50, 0.5);' value='길찾기!' onclick=search('#wayPointAddress"+w+"')></td> " ; 
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
+		waypoint += '	<td align="center"><input class="form-control" type="number" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
+		waypoint += "	<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);'  id='navigation' value='길찾기' onclick=search('#wayPointAddress"+w+"')></td> " ; 
 		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointImg" id="wayPointImg'+w+'"/>' ;
 		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointNav" id="wayPointNav'+w+'" />' ;
 		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointX"  id="wayPointX'+w+'" >' ;
@@ -490,27 +492,145 @@ function deleteWayPoint(){
 		swal("최소 2개의 장소는 필요합니다!");
 	}
 }
+//바구니 수정, 삭제 감지 스크립트
+$(function(){
+	
+   $("button[id^='updateCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      var cartTitle = $("."+cartNo).find("th[id^='cartTitle']").text();
+      var cartDetail = $("."+cartNo).find("td[id^='cartDetail']").text();
 
+      swal({
+           title: cartTitle+' 장소 설명 수정',
+           text: '변경을 원하시는 설명문구를 입력해주시길 바랍니다.',
+           content: {
+             element: 'input',
+             attributes: {
+               defaultValue: cartDetail,
+             }
+           }
+         })
+         .then(function (inputData){
+            $.ajax({
+               url : "/restcart/updateCart/"+cartNo+"/"+escape(encodeURIComponent(inputData)),
+               method : "POST",
+               contentType: "application/x-www-form-urlencoded; charset=EUC-KR",
+               success : function(){
+                  swal({
+                       title: "수정 완료!",
+                       text: inputData+"로 정상 수정되었습니다!",
+                       icon: "success"
+                     });
+               }
+            }) //e.o.ajax
+            
+            $("."+cartNo).find("td[id^='cartDetail']").text(inputData);
+         })
+   })
+   
+   $("button[id^='deleteCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      
+      swal({
+            title: "장소를 정말 삭제하시겠습니까?",
+            text: "삭제하시면 복구가 불가합니다.",
+            icon: "warning",
+            buttons: ["취소", "삭제"],
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+               $.ajax({
+                  url : "/restcart/deleteCart/"+cartNo,
+                  method : "POST",
+                  success : function(){
+                     swal("삭제되었습니다.");
+                     $("."+cartNo).remove();
+                  }
+               }) //e.o.ajax
+            } else {
+              swal("취소하였습니다.");
+            }
+         });
+   })
+   
+   var updateCartImgNo = "";
+   $("img[id^='cartImg']").on("click", function(){
+      updateCartImgNo = $(this).closest("table").attr("class");
+      $("#fileImg").click();
+   })
+   
+   $("#fileImg").on("change", function(){
+      imgPreview(this);
+   })
+   
+   function imgPreview(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+   
+           reader.onload = function (e) {
+              $("."+updateCartImgNo).find("img").attr('src', e.target.result);
+              
+              $.ajax({
+                url : "/restcart/updateCartImg/"+updateCartImgNo,
+                method : "POST",
+                dataType : "json",
+                headers : {
+                   "Accept" : "application/json",
+                   "Content-Type" : "application/json"
+                },
+                data : JSON.stringify({
+                   cartImg : e.target.result
+                }),
+                success : function(data){
+                	//alert(data);
+                	//$("."+updateCartImgNo).find("img").attr('src',data);
+	             	//$("#cartImg"+i+"").attr('src');
+                }
+             }) //e.o.ajax
+              
+           }
+           reader.readAsDataURL(input.files[0]);
+        }
+       
+       
 
-</script>
+   	//$("."+updateCartImgNo).find("img").attr('src',data);
+   	/*
+		$.ajax({
+			url : "/restcart/getCart/"+updateCartImgNo,
+			method : "POST",
+			success : function(data){
+				console.log("새로 가져온 파일이름 : "+data.cartImg);
+				//$("#wayPointImg"+j+"").val(data.cartImg);
+				$("."+updateCartImgNo).find("img").attr('src','/images/cart/'+data.cartImg);
+			}
+		})
+    }*/
+})
+</script> 
+    
 </head>
 <body>
-
-<!-- 이장소는 장소바구니입니다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <div class="sidenav">
     <button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">장소바구니</button>
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
+	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
+	<input class="form-control" type="file" id="fileImg" name="fileImg" style="display:none">
+
 	<div id="Home" class="tabcontent">
 	<br/>
 		<c:set var="i" value="0" />
 				<c:forEach var="cart" items="${cart}">
 					<c:set var="i" value="${i+1}" />
-					<table class="${cart.cartNo}">
+					<table class="${cart.cartNo}" style="margin-buttom:15px">
   					<tr class="ct_list_pop">
 						<tr>
 							<td rowspan="3"><i class="material-icons">place</i></td>
-						    <td rowspan="3" ><img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}"></td>
+						    <td rowspan="3" >
+						    	<img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}">
+						    </td>
 						    <th id="cartTitle${i}">${cart.cartTitle}</th>
                             <td rowspan="3"><div class="dropdown">
 							    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"> 경유지선택
@@ -525,6 +645,10 @@ function deleteWayPoint(){
 							       <li ><a tabindex="-1" onclick="addToSchedule('${i}',6)">일곱번째</a></li>
 							    </ul>
 							 </div>
+							 
+							 <!-- 하지수테스트 -->
+							 <button class="btn btn-xs" type="button" id="updateCart">수정</button>
+							 <button class="btn btn-xs" type="button" id="deleteCart">삭제</button>
                             </td>
 						</tr>
 						<span id="cartContents">
@@ -538,14 +662,13 @@ function deleteWayPoint(){
 							    <input type="hidden" id="cartY${i}" value="${cart.cartY}">
 						</span>
 					</table>
-						<br/>
 				</c:forEach>
 				<button class="btn success">장바구니..</button>
 				<div class="custom-select" style="width:200px;">
 			 
 </div>
 	</div>
-		
+
 	<div id="Contact" class="tabcontent">
 	  <h3>Contact</h3>
 	  <p>Get in touch, or swing by for a cup of coffee.</p>
@@ -566,18 +689,13 @@ function deleteWayPoint(){
       <!-- input파일 숨겨서 처리하기 -->
   <input  type="file" id="file" name="file" onchange="readURL(this)" style="display:none;" > 
   
-  
-  
-  
-  
-  
 			<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
             <div class="modal" id="myModal" role="dialog"> 
                 <div class="modal-dialog modal-sm"> 
                     <div class="modal-content"> 
                         <div class="modal-header"> 
                             <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                            <h4 class="modal-title">어느 피크닉 장소를 가세요?</h4> 
+                            <h4 class="modal-title">나들이 가세요?</h4> 
                         </div>
 					<div class="modal-body">
 						<div class="form-group">
@@ -600,12 +718,10 @@ function deleteWayPoint(){
                 </div> 
             </div>
             
-
-            
      <div class="container">
      	<hr/>
      		
-     		<h1 align="center">'너, 나들이' 스케쥴러 </h1>
+     		<h1 align="center">' 너, 나들이' 스케쥴러 </h1>
      			
      	<hr/>	
 		
@@ -655,30 +771,34 @@ function deleteWayPoint(){
 			<table class="table">
 				<thead>
 					<tr>
-						<th class="text-center">제목</th>
-						<th class="text-center">주소</th>
-						<th class="text-center">상세설명</th>
-						<th class="text-center">이동시간(분)</th>
-						<th class="text-center">길찾기</th>
+						<th>제목</th>
+						<th>주소</th>
+						<th>상세설명</th>
+						<th>이동시간(분)</th>
+						<th>길찾기</th>
 					</tr>
 				</thead>
 				<tbody id="wayPoint">	
 					<tr id="wayPoint0">
-						<td align="center"><input type="text" name="wayPoints[0].wayPointTitle" id="wayPointTitle0"/></td>
-						<td align="center"><input type="text" name="wayPoints[0].wayPointAddress" id="wayPointAddress0"></td>
-						<td align="center"><input type="text" name="wayPoints[0].wayPointDetail"   id="wayPointDetail0" value="시작지점!"/></td>
-						<td align="center"><input type="number" name="wayPoints[0].moveTime" id="wayPointMoveTime0" readonly/></td>
-						<td align="center"><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" id="navigation'" value="출발지등록!" onclick="search('#wayPointAddress0')"></td>  
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointTitle" id="wayPointTitle0"/></td>
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointAddress" id="wayPointAddress0"></td>
+						<td align="center"><input  class="form-control" type="text" name="wayPoints[0].wayPointDetail"   id="wayPointDetail0" value="시작지점!"/></td>
+						<div class="col-xs-4">
+							<td align="center"><input  class="form-control" type="number" name="wayPoints[0].moveTime" id="wayPointMoveTime0" readonly/></td>
+						</div>
+						<td align="center"><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" id="navigation'" value="출발지" onclick="search('#wayPointAddress0')"></td>  
 						<input type="hidden" name="wayPoints[0].wayPointImg" id="wayPointImg0"/>
 						<input type="hidden" name="wayPoints[0].wayPointNav" id="wayPointNav0" />
 						<input type="hidden" name="wayPoints[0].wayPointX" id="wayPointX0"/>
 						<input type="hidden" name="wayPoints[0].wayPointY" id="wayPointY0"/>   
 					</tr>
 				 	<tr>
-						<td align="center"><input type="text" name="wayPoints[1].wayPointTitle" id="wayPointTitle1" /></td>
-						<td align="center"><input type="text" name="wayPoints[1].wayPointAddress" id="wayPointAddress1" ></td>
-						<td align="center"><input type="text" name="wayPoints[1].wayPointDetail" id="wayPointDetail1" /></td>
-					 	<td align="center"><input type="number"  name="wayPoints[1].moveTime"  id="wayPointMoveTime1" readonly/></td>
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointTitle" id="wayPointTitle1" /></td>
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointAddress" id="wayPointAddress1" ></td>
+						<td align="center"><input class="form-control" type="text" name="wayPoints[1].wayPointDetail" id="wayPointDetail1" /></td>
+						<div class="col-xs-4">
+					 		<td align="center"><input class="form-control" type="number"  name="wayPoints[1].moveTime"  id="wayPointMoveTime1" readonly/></td>
+					 	</div>
 					 	<td align="center"><input class="waves-effect waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);"  id="navigation" value="길찾기" onclick="search('#wayPointAddress1')"></td>
 						<input type="hidden" name="wayPoints[1].wayPointImg"  id="wayPointImg1"/>				 	
 					 	<input type="hidden" name="wayPoints[1].wayPointNav" id="wayPointNav1" />
@@ -686,21 +806,15 @@ function deleteWayPoint(){
 						<input type="hidden" name="wayPoints[1].wayPointY" id="wayPointY1"/>
 					</tr>
 				</tbody>
-				<hr/>
 					<span class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="경유지추가" onclick="addWayPoint()">+ 경유지 추가하기</span> 
 					<span class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5);" value="경유지추가" onclick="deleteWayPoint()">- 경유지 줄이기</span>
-						<label>몇개의 장소를 들르시나요? </label>
-					</div>
+				</div>
 				
 				<hr />
 			</table>
-
+			
 			<br/>
 			<button type="button" class="btn btn-warning" id="hi" style="float: right;">등록!!!</button>
-			
-			</div>
-			<br/>
-		</div><!-- end of container -->
 	</form>
 	
 </body>

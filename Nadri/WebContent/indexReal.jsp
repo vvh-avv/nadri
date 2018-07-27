@@ -25,6 +25,9 @@
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
+<!-- counter -->
+<link rel="stylesheet" href="/css/odoTheme/odometer-theme-default.css" />
+<script src="/javascript/odometer.min.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="/css/fonts/kirang/fonts.css" />
@@ -36,8 +39,14 @@
 	href="/css/indexRealSmall.css" />
 <script src="/javascript/indexReal.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
+	
+	var odo = "${nadriCounter}";
+	
+	console.log(odo);
+
 	function alarmTest() {
 
 		setTimeout(function() {
@@ -90,8 +99,12 @@
 		<div class="tint-layer"></div>
 		<div class="video-button" id="video-button" onclick="myFunction()">
 			Stop</div>
+		<div class="change-button" id="change-button">
+			NORMAL
+		</div>
 		<video autoplay muted loop id="myVideo">
 			<source src="/video/${videoName}.mp4" type="video/mp4">
+<!-- 			<source src="/video/video10.mp4" type="video/mp4"> -->
 		</video>
 	</div>
 
@@ -104,12 +117,28 @@
 						<span class="glyphicon glyphicon-ice-lolly"
 							style="color: #9E9E9E;" id="jolly-icon"></span>
 					</div>
+					
+					<div class="middle-section">
+						<div class="">
+							
+						</div>
+					</div>
+					
 					<div class="side-section">
-						<span class="glyphicon glyphicon-chevron-left"></span> <span
-							class="glyphicon glyphicon-search"></span> <span
-							class="glyphicon glyphicon-comment"></span> <span
-							class="glyphicon glyphicon-user"></span> <span
-							class="glyphicon glyphicon-user"></span>
+						<span class="glyphicon glyphicon-chevron-left top-icons" id="expand-out"></span> 
+						<span class="glyphicon glyphicon-search top-icons" id="search-open"></span> 
+						<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span> 
+						<c:if test="${!empty user}">
+							<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span> 
+							<span class="glyphicon glyphicon-user top-icons" id="join-open"></span> 
+							<c:if test="${user.role == 1}">
+								<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
+							</c:if>
+							<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
+						</c:if>
+						<c:if test="${empty user}">
+							<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>				
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -137,7 +166,9 @@
 							<!-- 						<img src="/images/common/waves.png">    -->
 							<img src="/images/common/rivers.png" name="rivers">
 						</div>
-						<label class="rivers">한강</label>
+						<div class="label-box">
+							<label class="rivers">한강</label>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-3 col-xs-3">
@@ -146,7 +177,9 @@
 							<!-- 						<img src="/images/common/bike.png"> -->
 							<img src="/images/common/parks.png" name="parks">
 						</div>
-						<label class="parks">공원</label>
+						<div class="label-box">
+							<label class="parks">공원</label>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-3 col-xs-3">
@@ -154,7 +187,9 @@
 						<div class="spot-icon">
 							<img src="/images/common/festivals.png" name="festivals">
 						</div>
-						<label class="festivals">축제</label>
+						<div class="label-box">
+							<label class="festivals">축제</label>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-3 col-xs-3">
@@ -162,22 +197,34 @@
 						<div class="spot-icon">
 							<img src="/images/common/foodies.png" name="foodies">
 						</div>
-						<label class="foodies">맛집</label>
+						<div class="label-box">
+							<label class="foodies">맛집</label>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="middle-box"></div>
+	<div class="middle-box">
+		<div class="bluff">
+			지금 너나들이에서 <div class="2nd-line" style="display:flex;"><span class="odometer"></span> 개의 나들이 정보를 만나보세요</div>
+		</div>
+	</div>
+	<div class="rounded-back"></div>
+	<div class="squar-back"></div>
 	<div class="container contents-wrapper">
 		<!-- 게시물 목록 -->
 		<div class="second-line">
+			<div class="popular-title">
+				<div class="p-main-title"> <span></span> BOARDS <span></span> </div>
+				<div class="p-sub-title">한주간의 인기 게시물</div>
+			</div>
 			<div class="popular-boards">
 
 				<c:if test="${boardList.size()==0}">
 					<div class="boards-list">
 						<div class="empty-boards">
-							<div>추천 게시물이 없습니다.</div>
+							<div>인기 게시물이 없습니다.</div>
 						</div>
 					</div>
 				</c:if>
@@ -190,7 +237,7 @@
 							<div class="list-element ele${i}" id="ele${i}"
 								style="background:url(/images/board/posts/${board.boardImg}) center; background-size:cover;">
 								<div class="info-box info${i}" id="info${i}">
-									<div class="post-title">${board.boardTitle}</div>
+									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
 											<span class="glyphicon glyphicon-heart"></span> <span
@@ -202,13 +249,12 @@
 										</div>
 									</div>
 									<div class="hashtags">
-										<c:if test="${empty board.hashTag}">
+										<c:if test="${board.hashTag=='no_tag'}">
 
 										</c:if>
-										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
-												delims="#">
-												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
+										<c:if test="${!board.hashTag=='no_tag'}">
+											<c:forTokens var="hashtag" items="${board.hashTag}" delims="#">
+												<div class="hashs not-empty-hash tag${i}">#${hashTag}</div>
 											</c:forTokens>
 										</c:if>
 									</div>
@@ -242,7 +288,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
@@ -262,8 +308,11 @@
 	<!-- 목록 -->
 	<div class="container contents-wrapper">
 		<div class="second-line">
-			<div class="popular-boards">
-
+			<div class="popular-spot">
+				<div class="spot-title">
+					<div class="s-main-title"> <span></span> SPOTS <span></span> </div>
+					<div class="s-sub-title">한주간의 인기 장소</div>
+				</div>
 				<c:if test="${boardList.size()==0}">
 					<div class="boards-list">
 						<div class="empty-boards">
@@ -296,7 +345,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
@@ -332,7 +381,7 @@
 
 										</c:if>
 										<c:if test="${!empty board.hashTag}">
-											<c:forTokens var="hashtag" items="${boardList.hashTag}"
+											<c:forTokens var="hashtag" items="${board.hashTag}"
 												delims="#">
 												<div class="hashs not-empty-hash tag${i}">#${hashtag}</div>
 											</c:forTokens>
@@ -346,9 +395,22 @@
 			</div>
 		</div>
 		<!-- 목록끝 -->
-
+		
 	</div>
-
+	<div class="bottom-section">
+	<div class="section-backgrounds"></div>
+		<div class="container bottom-contents">
+			<div class="share-campaign">
+			<div class="first-share">자유롭게 일정을 생성하고,</div>
+			<div class="second-share">생성한 일정을 친구들과 공유해보세요!</div>
+			<div class="schedule-button">일정작성하러가기</div>
+		</div>
+		</div>
+	</div>
+	
+	<div class="end-of-page">
+		<div></div>
+	</div>
 
 	<script>
 		var video = document.getElementById("myVideo");

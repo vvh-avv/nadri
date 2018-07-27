@@ -1,11 +1,13 @@
 package com.nadri.service.schedule.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleDao;
@@ -63,8 +65,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	
 	// 6. 마이페이지 내 일정을 보기 위한 메서드
    @Override
-   public List<Schedule> getMyScheduleList(String userId) throws Exception {
-      return scheduleDao.getMyScheduleList(userId);
+   public Map<String,Object> getMyScheduleList(Search search) throws Exception {
+      return scheduleDao.getMyScheduleList(search);
    }
 
    // 7. 게시판에서 일정복사 눌렀을 때 실행 할 메서드
@@ -83,6 +85,11 @@ public class ScheduleServiceImpl implements ScheduleService{
    @Override
    public void deleteSchedule(int scheduleNo) throws Exception {
       scheduleDao.deleteSchedule(scheduleNo);
+   }
+   
+   // 10. 일정의 review를 업데이트 합니다.
+   public void updateScheduleReview(Schedule schedule) throws Exception {
+	   scheduleDao.updateScheduleReview(schedule);
    }
 
 }

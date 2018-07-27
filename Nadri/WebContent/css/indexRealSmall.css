@@ -2,8 +2,12 @@
 
  @media only screen and (max-width : 600px){
  
-	.spots > label{
+	.label-box > label{
 		display:none;
+	}
+	
+	.spots-list{
+		margin:0px;
 	}
 	
 	.spots-list > div{
@@ -52,6 +56,10 @@
 		margin-bottom:25px;
 	}
 	
+	.popular-title{
+		margin-top:150px;
+	}
+	
 	.popular-boards{
 		height: 250px;
 	}
@@ -70,6 +78,39 @@
 	
 	.empty-boards > div{
 		font-size : 7vw;
+	}
+	
+	.middle-box{
+		height:100px;
+		width:95%;
+		left:2.5%;
+	}
+	
+	.bluff{
+		font-size:4vw;
+		text-align:center;
+		text-shadow:2px 2px 0px #ffffff;
+	}
+	
+	.bluff > div{
+		text-align: center;
+		margin-left:0px;
+	}
+	
+	.side-section{
+		width : 100%;
+	}
+	
+	.squar-back{
+		height:1200px;
+	}
+	
+	.share-campaign{
+		font-size:4vw;
+	}
+	
+	.schedule-button{
+		font-size:3vw;
 	}
  
  

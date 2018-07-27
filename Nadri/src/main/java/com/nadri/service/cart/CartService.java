@@ -13,4 +13,10 @@ public interface CartService {
 	// 2. spot Cart를 가져오는 메서드
 	public List<Cart> getSpotCartList(String userId) throws Exception;
 
+	public void deleteCart(int cartNo) throws Exception;
+
+	public void updateCart(Cart cart) throws Exception;
+
+	public Cart getCart(int cartNo) throws Exception;
+
 }

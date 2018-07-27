@@ -24,12 +24,17 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
+import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleService;
@@ -145,11 +150,11 @@ public class ScheduleRestController {
 	      
 	      System.out.println("@2 새로운 이미지 이름 : " + fileName);
 	      //Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
-	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName);
+	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName+".jpg");
 	      
 	      System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
 	      //Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
-	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg());
+	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg()+".jpg");
 	      System.out.println("@4 원본 이미지 경로 : " + originFilePath);
 	      Files.copy(originFilePath, newFilePath);
 	      System.out.println("@5 이미지 복사 성공");
@@ -222,6 +227,17 @@ public class ScheduleRestController {
 	        } catch (Exception e) {
 	            System.out.println(e);
 	        }
+	   }  
+	   
+	   // updateScheduleReview 리뷰를 업데이트 합니다!!
+	   @RequestMapping(value="updateReview" , method=RequestMethod.POST)
+	   public void updateReview(@RequestBody Schedule schedule) throws Exception{
+		   
+		   System.out.println(schedule);
+		   
+		   System.out.println("updateScheduleReview");
+		   
+		   scheduleService.updateScheduleReview(schedule);
 	   }
 	
 }

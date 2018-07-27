@@ -38,11 +38,13 @@ $(function(){
 		if(t_chk){	
 			$('.head-section').css('height','70px');
 			$(this).css('top','70px');
+			$('.top-icons').css('font-size','20px');
 			t_chk = false;
 		}else{
 			$('.head-section').css('height','10px');
 			$(this).css('top','10px');
 			$(this).css('cursor','pointer');
+			$('.top-icons').css('font-size','0px');
 			t_chk = true;
 		}
 		
@@ -117,14 +119,71 @@ $(function(){
 			$('.title-section').css('opacity','0');
 			$('.title-section').css('pointer-events','none');
 			$('.title-section').css('top','70px');
-		} else {
+			$('.top-icons').css('font-size','20px');
+			$('.top-icons').css('transition','font-size 1s');
+		}else if($(document).scrollTop() > 100){
+			$('.odometer').html(odo);
+		}else {
 			$('.head-section').css('height','10');
 			$('.head-section').css('border-bottom','10px solid #404548');
 			$('.title-section').css('opacity','1');
 			$('.title-section').css('pointer-events','all');
 			$('.title-section').css('top','10px');
+			$('.top-icons').css('font-size','0px');
+			$('.top-icons').css('transition','font-size 0.1s');
 		}
 	})
+	
+	$('.spots').on('click',function(){
+		var id = $(this).attr('id');
+		if(id == 'rivers'){
+			self.location = '/spot/getSpotList?spotCode=4';
+		}else if(id == 'parks'){
+			self.location = '/spot/getSpotList?spotCode=0';
+		}else if(id == 'festivals'){
+			self.location = '/spot/getFestivalList';
+		}else{
+			self.location = '/spot/getSpotList?spotCode=1';
+		}
+	})
+	
+	$('.side-section > span').on('click',function(){
+		var id = $(this).attr('id');
+		if(id == 'login-open'){
+			self.location = '/user/login';
+		}else if(id =='chat-open'){
+			self.location ='/board/listBoard';
+		}else if(id == 'join-open'){
+			self.location = '/user/listUser';
+		}else if(id == 'admin-page'){
+			self.location = '/admin/adminIndex';
+		}else if(id == 'log-out'){
+			self.location = '/user/logout';
+		}else if(id == 'pencil'){
+			self.location = '/schedule/addSchedule';
+		}
+	})
+	
+	$('.post-title').on('click',function(){
+		var id = $(this).attr('id');
+		self.location = '/board/getBoard?boardNo='+id;
+	});
+
+	$('.schedule-button').on('click',function(){
+		var check = $('#session-checker').val();
+		if( check == null ){
+			swal({
+				  title: "회원만 이용하실 수 있어요!",
+				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
+				  icon: "error",
+				  button: " 닫 기 ",
+				});	
+		}else{
+			self.location = '/schedule/addSchedule';
+		}
+	});
+	
+	
 
 	
 })

@@ -445,7 +445,7 @@ $(function(){
 			            			+"<div id='commListAll'>";
 			            		if(this.comment!=null){
 			            			for( i=0; i<this.comment.length; i++ ){
-			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.id+","+this.comment[i].user.userName+","+this.comment[i].user.introduce+"'> "
+			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.userName+","+this.comment[i].user.userId+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
 			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
 			            				+ "<span id='commListInquire' id='inquireUser' name='"+this.comment[i].commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>"	
@@ -605,6 +605,21 @@ $(function(){
             	
                $("#likePrint"+num).text("좋아요 "+map.likeCnt+"개");
             }
+         })
+         
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + num + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
          })
          
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
@@ -1165,7 +1180,7 @@ $(function(){
 		<div class="cSection"> <!--아이콘+좋아요+댓글 -->
             <div id="iconList"><!-- 아이콘(좋아요+댓글+공유) -->
                <span id="likeIcon">
-                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
                   <c:if test="${board.likeFlag!=0}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

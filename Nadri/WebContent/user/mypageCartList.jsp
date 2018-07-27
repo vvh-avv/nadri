@@ -115,7 +115,7 @@ function initMap() {
 						</div>
 						<!-- 방문도장 이미지 -->
 						<c:if test="${cart.stampCode==1}">
-							<div class="linksIcon"> <img id="stamp${schedule.scheduleNo}" src="/images/cart/stamp.png"> </div>
+							<div class="linksIcon"> <img id="stamp${schedule.scheduleNo}" src="/images/cart/common/stamp.png"> </div>
 						</c:if>
 						<!-- 마우스 오버시 보여지는 부분 -->
 						<div class="links" style="text-align:center;">

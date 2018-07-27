@@ -125,12 +125,28 @@
 
 
  <!-- 6. 마이페이지 내 일정보기 -->
-   <select id="getMyScheduleList" parameterType="String" resultMap="scheduleSelectMap">
-      SELECT *
-      FROM
-      schedule
-      WHERE user_id = #{value}
-   </select>
+   <select id="getMyScheduleList" parameterType="search" resultMap="scheduleSelectMap">
+		SELECT  *
+			FROM schedule
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !=''">
+		 				schedule_title LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !=''">
+		 				hashTag LIKE '%${searchKeyword}%'
+					</if>
+						AND user_id = #{userId}	
+				</where>
+			</if>
+			<if test="searchCondition == null">
+				<where>
+					user_id = #{userId}	
+				</where>
+			</if>
+			ORDER BY schedule_modifytime
+		limit #{startRowNum}, 6
+	</select>
    
    <!-- 7. 일정이 있는지 확인하기 -->
    <select id="checkSchedule" parameterType="map" resultType="int">
@@ -174,4 +190,34 @@
       FROM schedule
       WHERE schedule_no = #{value}
    </delete>
+   
+   <!--  10. 일정의 review를 업데이트 합니다. -->
+   <update id="updateScheduleReview" parameterType="schedule" >
+		UPDATE schedule 
+		SET  schedule_review = #{scheduleReview}
+		WHERE schedule_no = #{scheduleNo}
+	</update>
+	
+	<!-- 11. 일정 페이지 네비게이션을 위한 전체 수 -->
+   <select  id="getTotalCount"  parameterType="search" resultType="int">
+      SELECT COUNT(*)
+      FROM (  SELECT  *
+			FROM schedule
+			<if test="searchCondition != null">
+				<where>
+					<if test="searchCondition == 0 and searchKeyword !=''">
+		 				schedule_title LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 1 and searchKeyword !=''">
+		 				hashTag LIKE '%${searchKeyword}%'
+					</if>
+						AND user_id = #{userId}	
+				</where>
+			</if>
+			<if test="searchCondition == null">
+				<where>
+					user_id = #{userId}	
+				</where>
+			</if> ) countTable			
+	 </select>
 </mapper>
