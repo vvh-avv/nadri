@@ -607,6 +607,21 @@ $(function(){
             }
          })
          
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + num + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
+         })
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
@@ -790,7 +805,7 @@ $(function(){
 		     content: {
 		       title: $(this).closest('article').find('div[id^=boardTitle]').text(),
 		       description: $(this).closest('article').find('div[id^=hashTagLine]').attr("class")+"\n"+$(this).closest('article').find('div[id^=boardContent]').text(),
-		       imageUrl: 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+		       imageUrl: 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 		       link: {
 		         mobileWebUrl: 'http://localhost:8080/board/getBoard?boardNo='+$(this).closest('article').attr("class"),
 		         webUrl: 'http://localhost:8080/board/getBoard?boardNo='+$(this).closest('article').attr("class")
@@ -827,7 +842,7 @@ $(function(){
 		            'og:url': 'http://localhost:8080/board/getBoard?boardNo='+$(this).closest('article').attr("class"),
 		            'og:title': $(this).closest('article').find('div[id^=boardTitle]').text(),
 		            'og:description': $(this).closest('article').find('div[id^=boardContent]').text(),
-		            'og:image': 'http://www.bagooninara.co.kr/data/file/09/096407ec484ac26ac4a55f9e4c903111.jpg',
+		            'og:image': 'https://66.media.tumblr.com/9d5b1291f9f83302d8699cab8bfbd472/tumblr_pcguypaDJw1v6rnvho1_540.png',
 		        }
 		    })
 	  });
@@ -1165,7 +1180,7 @@ $(function(){
 		<div class="cSection"> <!--아이콘+좋아요+댓글 -->
             <div id="iconList"><!-- 아이콘(좋아요+댓글+공유) -->
                <span id="likeIcon">
-                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
                   <c:if test="${board.likeFlag!=0}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;

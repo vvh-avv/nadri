@@ -483,8 +483,105 @@ function deleteWayPoint(){
 		swal("최소 2개의 장소는 필요합니다!");
 	}
 }
+//바구니 수정, 삭제 감지 스크립트
+$(function(){
+   $("button[id^='updateCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      var cartTitle = $("."+cartNo).find("th[id^='cartTitle']").text();
+      var cartDetail = $("."+cartNo).find("td[id^='cartDetail']").text();
+
+      swal({
+           title: cartTitle+' 장소 설명 수정',
+           text: '변경을 원하시는 설명문구를 입력해주시길 바랍니다.',
+           content: {
+             element: 'input',
+             attributes: {
+               defaultValue: cartDetail,
+             }
+           }
+         })
+         .then(function (inputData){
+            $.ajax({
+               url : "/restcart/updateCart/"+cartNo+"/"+escape(encodeURIComponent(inputData)),
+               method : "POST",
+               contentType: "application/x-www-form-urlencoded; charset=EUC-KR",
+               success : function(){
+                  swal({
+                       title: "수정 완료!",
+                       text: inputData+"로 정상 수정되었습니다!",
+                       icon: "success"
+                     });
+               }
+            }) //e.o.ajax
+            
+            $("."+cartNo).find("td[id^='cartDetail']").text(inputData);
+         })
+         
+   })
+   
+   $("button[id^='deleteCart']").on("click", function(){
+      var cartNo = $(this).closest("table").attr("class");
+      
+      swal({
+            title: "장소를 정말 삭제하시겠습니까?",
+            text: "삭제하시면 복구가 불가합니다.",
+            icon: "warning",
+            buttons: ["취소", "삭제"],
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+               $.ajax({
+                  url : "/restcart/deleteCart/"+cartNo,
+                  method : "POST",
+                  success : function(){
+                     swal("삭제되었습니다.");
+                     $("."+cartNo).remove();
+                  }
+               }) //e.o.ajax
+            } else {
+              swal("취소하였습니다.");
+            }
+         });
+   })
+   
+   var updateCartImgNo = "";
+   $("img[id^='cartImg']").on("click", function(){
+      updateCartImgNo = $(this).closest("table").attr("class");
+      $("#file").click();
+   })
+   
+   $("#file").on("change", function(){
+      imgPreview(this);
+   })
+   
+   function imgPreview(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+   
+           reader.onload = function (e) {
+              $("."+updateCartImgNo).find("img").attr('src', e.target.result);
+              
+              $.ajax({
+                url : "/restcart/updateCartImg/"+updateCartImgNo,
+                method : "POST",
+                  dataType : "json",
+                  headers : {
+                     "Accept" : "application/json",
+                     "Content-Type" : "application/json"
+                  },
+                  data : JSON.stringify({
+                     cartImg : e.target.result
+                  }),
+                  success : function(){
+                  }
+             }) //e.o.ajax
+              
+           }
+           reader.readAsDataURL(input.files[0]);
+        }
+    }
     </script> 
-    
     
 </head>
 <body>
@@ -493,16 +590,20 @@ function deleteWayPoint(){
 	<button class="tablink" onclick="openPage('News', this, 'green')" >추천장소</button>
 	<button class="tablink" onclick="openPage('Contact', this, 'blue')">일정바구니</button>
 	
-	<div id="Home" class="tabcontent" >
+
+	<div id="Home" class="tabcontent">
 	<br/>
 		<c:set var="i" value="0" />
 				<c:forEach var="cart" items="${cart}">
 					<c:set var="i" value="${i+1}" />
-					<table class="${cart.cartNo}">
+					<table class="${cart.cartNo}" style="margin-buttom:15px">
   					<tr class="ct_list_pop">
 						<tr>
 							<td rowspan="3"><i class="material-icons">place</i></td>
-						    <td rowspan="3" ><img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}"></td>
+						    <td rowspan="3" >
+						    	<img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}">
+								<input class="form-control" type="file" id="file" name="file" style="display:none">
+						    </td>
 						    <th id="cartTitle${i}">${cart.cartTitle}</th>
                             <td rowspan="3"><div class="dropdown">
 							    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"> 경유지선택
@@ -517,6 +618,10 @@ function deleteWayPoint(){
 							       <li ><a tabindex="-1" onclick="addToSchedule('${i}',6)">일곱번째</a></li>
 							    </ul>
 							 </div>
+							 
+							 <!-- 하지수테스트 -->
+							 <button class="btn btn-xs" type="button" id="updateCart">수정</button>
+							 <button class="btn btn-xs" type="button" id="deleteCart">삭제</button>
                             </td>
 						</tr>
 						<span id="cartContents">
@@ -530,19 +635,13 @@ function deleteWayPoint(){
 							    <input type="hidden" id="cartY${i}" value="${cart.cartY}">
 						</span>
 					</table>
-						<br/>
 				</c:forEach>
 				<button class="btn success">장바구니..</button>
 				<div class="custom-select" style="width:200px;">
 			 
 </div>
 	</div>
-	
-	<div id="News" class="tabcontent">
-	  <h3>News</h3>
-	  <p>Some news this fine day!</p> 
-	</div>
-	
+
 	<div id="Contact" class="tabcontent">
 	  <h3>Contact</h3>
 	  <p>Get in touch, or swing by for a cup of coffee.</p>

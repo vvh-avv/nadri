@@ -217,33 +217,35 @@ public class BoardController {
 		}
 		System.out.println("@"+board.getOpenRange());
 		System.out.println("@"+board.getUser().getUserId());
-		if( board.getOpenRange()=="2" && board.getUser().getUserId()==((User)session.getAttribute("user")).getUserId() ) { //비공개 게시물에 본인이 아닐 경우
-			User user = userService.getUser(board.getUser().getUserId());
-			board.setUser(user);
-
-			if(session.getAttribute("user")!=null) {
-				int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
-				model.addAttribute("likeFlag", likeFlag);
+		if( board.getOpenRange()=="2" ) { //비공개 게시물인데
+			if( board.getUser().getUserId()!=((User)session.getAttribute("user")).getUserId() ) { //본인이 아닌 경우
+				return "forward:/lockError.jsp";
 			}
-			
-			//댓글이 있을 때만 수행
-			if( board.getCommCnt()>0 ) {
-				List<Comment> comment = commentService.getCommentList(boardNo);
-				for( int i=0; i<comment.size(); i++) {
-					comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
-				}
-				board.setComment(comment);
-				
-				String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
-				board.setCommLastTime(commLastTime);
-			}
-			
-			model.addAttribute("board", board);
-			
-			return "forward:/board/getBoard.jsp";
-		}else {
-			return "forward:/lockError.jsp";
 		}
+		
+		User user = userService.getUser(board.getUser().getUserId());
+		board.setUser(user);
+
+		if(session.getAttribute("user")!=null) {
+			int likeFlag = boardService.getLikeFlag(boardNo, ((User)session.getAttribute("user")).getUserId() );
+			model.addAttribute("likeFlag", likeFlag);
+		}
+			
+		//댓글이 있을 때만 수행
+		if( board.getCommCnt()>0 ) {
+			List<Comment> comment = commentService.getCommentList(boardNo);
+			for( int i=0; i<comment.size(); i++) {
+				comment.get(i).setUser( userService.getUser( (comment.get(i).getUser().getUserId()) ) );
+			}
+			board.setComment(comment);
+			
+			String commLastTime = (comment.get(comment.size()-1).getcommentTime()).toString().replace("-","").replace(":","").replace(" ","").substring(0,14);
+			board.setCommLastTime(commLastTime);
+		}
+			
+		model.addAttribute("board", board);
+			
+		return "forward:/board/getBoard.jsp";
 	}
 	
 	@RequestMapping(value="listBoard")
