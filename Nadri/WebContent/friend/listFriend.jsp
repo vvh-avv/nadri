@@ -39,39 +39,51 @@
 	<!--  javascript -->
 	<script type="text/javascript">
 	//친구 삭제
-	var friendId = ${friend.friendId};
 	$(function() {
-		 $( ".text-center" ).on("click" , function() {
+		 $( "button[id^='deleteFriend']" ).on("click" , function() {
+	
+			 	var friendNo = $(this).attr("id").replace(/[^0-9]/g,"");			//td로 나뉘어 있는 것들을 tr로 행 기준으로 삼아서 숫자를 제외한 나머지는 nullstring으로 대체
+			 	var friendId = $("#"+friendNo).attr('class');							
+			 	
+			 	console.log(friendId);
+			 	
 		 	$.ajax({
-		 		url:'/friend/json/deleteFriend/',
+		 		url:"/friend/json/deleteFriend?userId="+userId+"&friendId="+friendId,
+		 		method : "GET",
+		 		data:"json",
 		 		success:function(data){
-		 				swal("친구가 삭제되었습니다","success");
+		 					swal("친구가 삭제되었습니다","success");	
+							
+		 				 $("#"+friendNo).remove(); 
 		 		}
 		 	})
 		 })
-	})
+	}) 
+	
 
-	 
-	//친구 추가
-	 $(function() {	 	
-		$(".text-center").on("click", function(){
+	 //친구 추가
+	 $(function() {
+		 $( "button[id^='acceptFriend']" ).on("click" , function() {
+
+			 var friendNo = $(this).attr("id").replace(/[^0-9]/g,"");
+			 var friendId = $("#"+friendNo).attr('class');
+			 
+			 console.log(userId);
+			 console.log(friendId);
+			 
 			$.ajax({
-				url:"/friend/json/acceptFriend/"+friendId,
+				url:"/friend/json/acceptFriend?userId="+userId+"&friendId="+friendId,
+				method : "GET",
+		 		data:"json",
 				success:function(data){
-					if(data =1){//이미 친구
-						swal("이미 친구인 유저입니다","error");
-					}else{
-						$.ajax({
-							uri:"/friend/json/acceptFriend/"+friendId,
-							success:function(){
-								swal("친구가 되었습니다","success");
-							}
-						})
-					}
+				
+						swal("친구가 되었습니다","success");
+						
+						$("#"+friendNo).remove(); 
 				}
 			})	
 		})	 
-	 })
+	 }) 
 		
 	
 	 
@@ -94,7 +106,7 @@
 	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
 	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
 	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-	  <a href="#">장소 바구니</a><br/><br/>
+	  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
 	  
 	  	<br/><br/><br/><br/><br/><br/><br/><br/>
   		<a href="/user/logout">로그아웃</a><br/><br/>
@@ -109,6 +121,7 @@
 	 
 	 <form id="form" class="form-horizontal">
    	<!-- TABLE -->
+  <div class="table-responsive">
    	<table class="table table-hover table-striped">
 	<thead>
 		<tr>
@@ -122,27 +135,30 @@
 	<tbody>
 	
 		<c:forEach var="friend" items="${fList }">
-			<tr>
+	
+			<tr id="${friend.friendNo}" class="${friend.friendId }">
 				<td align="center">${friend.friendNo }</td>
 				<td align="center">${friend.friendId }</td>
 				
-				<td class="text-center" >
-				<c:if test="${ friend.friendCode == '0' }">
-					<button type="button" class="btn btn-primary" id="acceptFriend">친구추가</button>
-				</c:if>
-				</td>
-
-				<td class="text-center" >
-				<c:if test="${friend.friendCode == '1' }">
-					<button type="button" class="btn btn-danger" id="deleteFriend">삭제</button>
-				</c:if> 
-				</td>
+					<td class="text-center" >
+					<c:if test="${ friend.friendCode == '0' }">
+						<button type="button" class="btn btn-primary" id="acceptFriend${friend.friendNo}">친구추가</button>
+					</c:if>
+					</td>
+				
+					<td class="text-center" >
+					<c:if test="${friend.friendCode == '1' }">
+						<button type="button" class="btn btn-danger" id="deleteFriend${friend.friendNo}">삭제</button>
+					</c:if> 
+					</td>
+				
 				
 			</tr>
 		</c:forEach>
 	</tbody>
 	
 	</table>
+	</div>
 	</form>
 	
 	</div>

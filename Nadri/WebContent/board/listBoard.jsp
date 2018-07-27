@@ -607,6 +607,21 @@ $(function(){
             }
          })
          
+         //알림 전송
+         $.ajax({
+            url : "/notice/json/addNotice?receiverId="+ $(this).attr("id") + '&otherPk=' + num + '&noticeCode=1' ,
+            method : "GET" ,
+            success : function( data ) {
+               
+            	alert( "noticeSendingWs함수 호출" ) ;
+            	alert( data.noticeCode ) ;
+            	noticeSendingWs( data.receiverId + data.noticeCode ) ;
+             } ,
+             error : function( error ) {
+            	 alert( "에러 : " + error ) ;
+             }
+         })
+         
          $(this).attr("src","/images/board/like_full.png"); //이미지 변경
       }else{ //좋아요-1
          $.ajax({
@@ -1165,7 +1180,7 @@ $(function(){
 		<div class="cSection"> <!--아이콘+좋아요+댓글 -->
             <div id="iconList"><!-- 아이콘(좋아요+댓글+공유) -->
                <span id="likeIcon">
-                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png"></c:if>
+                  <c:if test="${board.likeFlag==0}"><img class="icon" src="/images/board/like_empty.png" id="${board.user.userId}"></c:if>
                   <c:if test="${board.likeFlag!=0}"><img class="icon" src="/images/board/like_full.png"></c:if>
                </span>&nbsp;&nbsp;
                <span id="commIcon"><img class="icon" src="/images/board/comment.png"></span>&nbsp;&nbsp;
