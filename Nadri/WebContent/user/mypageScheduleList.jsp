@@ -91,7 +91,7 @@
 
 function fncGetList(currentPage) {
 	$("#currentPage").val(currentPage)
-	$("form").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
+	$("#detailForm").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
 }
 
 
@@ -295,12 +295,11 @@ $(function(){
 	<div class="container">
 	
 				<div class="col-md-6 text-left">
-					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수, 현재
-						${resultPage.currentPage} 페이지</p>
+					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수</p>
 				</div>
 
 				<div class="col-md-6 text-right">
-					<form class="form-inline" name="detailForm">
+					<form class="form-inline" name="detailForm" id="detailForm">
 
 						<div class="form-group">
 							<select class="form-control" name="searchCondition">

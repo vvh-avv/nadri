@@ -87,7 +87,7 @@ public class BoardController {
 			}
 			
 			System.out.println("기존 파일명 : "+fileOriginName);
-			SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS_"+i);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+i);
 			Calendar now = Calendar.getInstance();
 			
 			String extension = fileOriginName.split("\\.")[1]; //확장자명
@@ -174,7 +174,7 @@ public class BoardController {
 			}
 			
 			System.out.println("기존 파일명 : "+fileOriginName);
-			SimpleDateFormat formatter = new SimpleDateFormat("YYMMDD_HHMMSS_"+(i+1));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+(i+1));
 			Calendar now = Calendar.getInstance();
 			
 			String extension = fileOriginName.split("\\.")[1]; //확장자명
