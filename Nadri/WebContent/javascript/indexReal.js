@@ -11,7 +11,10 @@ $(function(){
 			console.log(data.boardList[i]);
 		}
 	})*/
-
+	
+	var top = $('.bottom-section').offset();
+	console.log(top);
+	
 	$('.spots').on('mouseenter',function(){
 		var name = $(this).attr('id');
 		$('.'+name).closest('label').css('color','#00000099');
@@ -113,6 +116,7 @@ $(function(){
 	})
 	
 	$(window).on('scroll',function(){
+		
 		if ($(document).scrollTop() < 70) {
 			$('.head-section').css('height','70px');
 			$('.head-section').css('border-bottom','0px solid #404548');
@@ -166,11 +170,13 @@ $(function(){
 	
 	$('.post-title').on('click',function(){
 		var id = $(this).attr('id');
+		console.log(id);
 		self.location = '/board/getBoard?boardNo='+id;
 	});
 
 	$('.schedule-button').on('click',function(){
 		var check = $('#session-checker').val();
+		console.log(check);
 		if( check == null ){
 			swal({
 				  title: "회원만 이용하실 수 있어요!",
