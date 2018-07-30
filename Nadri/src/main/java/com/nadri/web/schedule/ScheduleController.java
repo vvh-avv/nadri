@@ -79,7 +79,7 @@ public class ScheduleController {
 		// 파일명 얻기
 		String fileName = multipartFile.getOriginalFilename();
 		System.out.println("=======================");
-		System.out.println("======================="+fileName);
+		System.out.println("======================="+waypoint.getWayPointImg());
 		
 		// 파일 객체 생성
 		File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);

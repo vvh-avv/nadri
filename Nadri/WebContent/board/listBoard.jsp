@@ -870,30 +870,13 @@ $(function(){
   		modalFriendId = recipient[2];
 
   		//클릭한 사람이 친구인지 아닌지 확인
-
-  		if( ${!empty sessionScope.user} ) { //회원만 확인 가능
-  	  		$.ajax({
-  	  			url : "/friend/json/chkFriend/"+recipient[2],
-  	  			success : function(data) {
-  	  				if(data==1){ //친구임
-  	  					$("#addFriend").remove() ;
-  	  					$("#chatFriend").remove() ;
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='chatFriend'>대화하기</button>") ;
-  	  				}else{ //친구가 아님
-  	  					$("#addFriend").remove() ;
-  	  					$("#chatFriend").remove() ;
-  	  					$(".modalUserButton").prepend("<button type='button' class='btn btn-primary' id='addFriend'>친구추가</button>") ;
-  	  				}
-  	  			}
-  	  		})
-
   		if( ${!empty sessionScope.user} ){ //회원만 확인 가능
   			if( '${sessionScope.user.userId}' == modalFriendId ){  //본인일 경우
 				$("#addFriend").remove();
 				$("#chatFriend").remove();
-  			}else{
+  			}else{ //본인이 아니면 실제 로직 수행
   	  			$.ajax({
-  	  	  			url : "/friend/json/chkFriend/"+recipient[2],
+  	  	  			url : "/friend/json/chkFriend/"+recipient[2]+"/1",
   	  	  			success : function(data){
   	  	  				if(data==1){ //친구임
   	  	  					$("#addFriend").remove();
@@ -908,7 +891,7 @@ $(function(){
   	  	  		}) //e.o.ajax  				
   			}
   		}
-	}
+	})
    //*유저프로필 모달창 내 친구추가
    $(document).on("click", "button[id^='addFriend']", function(){
 	   $.ajax({
@@ -1089,7 +1072,6 @@ $(function(){
          $('.reportUser').css('visibility', 'hidden');
          $('.reportLink').css('visibility', 'visible');
       })
-   })
  })   
 </script>
 </head>

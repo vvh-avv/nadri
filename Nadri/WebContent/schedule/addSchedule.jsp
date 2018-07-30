@@ -430,17 +430,19 @@ function addToSchedule(i, j){
 		$("#wayPointAddress"+j+"").val(wayPointAddress);
 		
 		// 이미지값
-		var cartNo = $("#cartImg"+i+"").closest('table').attr('class').replace(/^[0-9]/g,"");
+		console.log( $("#cartImg"+i+"").attr("class")+"번 카트 이미지 가져오는 중..." );
 		$.ajax({
-			url : "/restcart/getCart/"+cartNo,
+			url : "/restcart/getCart/"+$("#cartImg"+i+"").attr("class"),
 			method : "POST",
 			success : function(data){
-				console.log("새로 가져온 파일이름 : "+data.cartImg);
-				$("#wayPointImg"+j+"").val(data.cartImg);				
+				$("#cartImg"+i+"").attr('src',data.cartImg);
+				
+				wayPointImg=$("#cartImg"+i+"").attr('src');
+				console.log("**"+wayPointImg);
+				$("#wayPointImg"+j+"").val(wayPointImg);
 			}
 		})
-		//wayPointImg=$("#cartImg"+i+"").attr('src');
-		//$("#wayPointImg"+j+"").val(wayPointImg);
+		
 		
 		//제목값
 		wayPointTitle = $("#cartTitle"+i+"").text();
@@ -555,7 +557,7 @@ $(function(){
    })
    
    var updateCartImgNo = "";
-   $("img[id^='cartImg']").on("click", function(){
+   $("img[id^='fakeCartImg']").on("click", function(){
       updateCartImgNo = $(this).closest("table").attr("class");
       $("#fileImg").click();
    })
@@ -583,7 +585,7 @@ $(function(){
                    cartImg : e.target.result
                 }),
                 success : function(data){
-                	//alert(data);
+                	alert(data);
                 	//$("."+updateCartImgNo).find("img").attr('src',data);
 	             	//$("#cartImg"+i+"").attr('src');
                 }
@@ -592,21 +594,8 @@ $(function(){
            }
            reader.readAsDataURL(input.files[0]);
         }
-       
-       
 
-   	//$("."+updateCartImgNo).find("img").attr('src',data);
-   	/*
-		$.ajax({
-			url : "/restcart/getCart/"+updateCartImgNo,
-			method : "POST",
-			success : function(data){
-				console.log("새로 가져온 파일이름 : "+data.cartImg);
-				//$("#wayPointImg"+j+"").val(data.cartImg);
-				$("."+updateCartImgNo).find("img").attr('src','/images/cart/'+data.cartImg);
-			}
-		})
-    }*/
+    }
 })
 </script> 
     
@@ -629,7 +618,15 @@ $(function(){
 						<tr>
 							<td rowspan="3"><i class="material-icons">place</i></td>
 						    <td rowspan="3" >
-						    	<img src="${cart.cartImg}" class="img-rounded" width="50" height="50"  id="cartImg${i}">
+						    	<!-- 이미지 미리보기를 위한 img 태그 -->
+						    	<c:if test="${cart.cartImg.contains('http://')}">
+						    		<img src="${cart.cartImg}" class="${cart.cartNo}" width="50" height="50"  id="fakeCartImg${i}">
+						    	</c:if>
+						    	<c:if test="${!cart.cartImg.contains('http://')}">
+						    		<img src="/images/cart/${cart.cartImg}" class="${cart.cartNo}" width="50" height="50"  id="fakeCartImg${i}">
+						    	</c:if>
+						    	<!-- 실제 데이터가 넘어가는 img 태그 -->
+						    	<img style="display:none;" src="/images/cart/${cart.cartImg}" width="50" height="50"  id="cartImg${i}" class="${cart.cartNo}">
 						    </td>
 						    <th id="cartTitle${i}">${cart.cartTitle}</th>
                             <td rowspan="3"><div class="dropdown">
