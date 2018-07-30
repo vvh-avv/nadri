@@ -98,7 +98,7 @@
 	
 	
 	<!-- side bar -->
-	<div class="col-xs-2 col-md-2" style="margin-left:3%">
+	<div class="col-xs-12 col-md-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -112,7 +112,7 @@
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	</div>
 	
-	<div class="col-xs-7 col-md-7" style="margin-left:3%">
+	<div class="col-xs-12 col-md-7" style="margin-left:3%">
 	<div class="container">	
 	<!-- center area -->
 		<div class="page-header text-info">
@@ -151,7 +151,6 @@
 						<button type="button" class="btn btn-danger" id="deleteFriend${friend.friendNo}">삭제</button>
 					</c:if> 
 					</td>
-				
 				
 			</tr>
 		</c:forEach>

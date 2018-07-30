@@ -78,6 +78,7 @@ $(function(){
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
 	
+<div class="row">
 	<!-- 서브메뉴 노출 -->
 	<div class="col-sm-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
@@ -93,7 +94,9 @@ $(function(){
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	
 	</div>
-	
+</div>
+
+<div class="row">	
 	<div class="container">
 		
 		
@@ -127,5 +130,7 @@ $(function(){
 			</c:if>
 		</div>
 	</div> <!-- e.o.container -->
+</div>
+
 </body>
 </html>

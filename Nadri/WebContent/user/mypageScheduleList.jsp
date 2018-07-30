@@ -277,6 +277,7 @@ $(function(){
 	<%@ include file="/layout/toolbar.jsp"%>
 	
 	<!-- 서브메뉴 노출 -->
+<div class="row">
 	<div class="col-sm-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
@@ -289,9 +290,10 @@ $(function(){
 	  
 	  	<br/><br/><br/><br/><br/><br/><br/><br/>
   		<a href="/user/logout">로그아웃</a><br/><br/>
-	
 	</div>
+</div>
 	
+<div class="row">
 	<div class="container">
 	
 				<div class="col-md-6 text-left">
@@ -393,10 +395,7 @@ $(function(){
                     </div> 
                 </div> 
             </div>
-       </form>
-       
-       
-       
-       
-            
+ </div>
+ 
+       </form>           
 </html>

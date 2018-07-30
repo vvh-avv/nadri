@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.service.domain.Friend;
@@ -49,12 +46,14 @@ public class FriendRestController {
 
 	
 	//하지수테스트
-   @RequestMapping(value="json/listFriendFromBoard/{userId}") //, method=RequestMethod.POST)
+	//보드에서 친구 목록
+	@RequestMapping(value="json/listFriendFromBoard/{userId}") //, method=RequestMethod.POST)
    public String listFriendFromBoard(@PathVariable String userId) throws Exception{
       System.out.println("/friend/json/listFriendFromBoard : GET / POST");
             
       return friendService.listFriendFromBoard(userId);
    }
+   
    
    //친구 추가
    @RequestMapping(value="json/addFriend/{friendId}")
@@ -67,6 +66,7 @@ public class FriendRestController {
 	   System.out.println("friendRestController - addFriend: "+friendId);
    }
    
+   
   //친구 여부 확인
    @RequestMapping(value="json/chkFriend/{friendId}/{friendCode}")
    public int chkFriend(@PathVariable String friendId, @PathVariable int friendCode, HttpSession session) throws Exception{
@@ -76,7 +76,6 @@ public class FriendRestController {
       
       return friendService.checkFriend(user.getUserId(), friendId, friendCode);
    }
-	
    
   
    //친구 삭제
@@ -92,9 +91,7 @@ public class FriendRestController {
 // 		User user = (User) session.getAttribute("user");
 // 		Friend friend = (Friend) session.getAttribute("friend");
 // 		System.out.println("friendcontroller - deleteFriend: "+friend.getFriendId());
-// 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());
- 		
- 	
+// 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());	
  	}
  	
  	/* //친구 승인
@@ -122,16 +119,7 @@ public class FriendRestController {
 
  	 	}
  	
- /*	//친구 조회
- 	@RequestMapping( value="json/getFriend/{friendId}", method=RequestMethod.GET )
-	public Friend getFriend( @PathVariable String friendId ) throws Exception{
-		
-		System.out.println("----------------------------------------------------");
-		System.out.println("/user/json/getFriend : GET - "+ friendId);
-		System.out.println("----------------------------------------------------");
-		//Business Logic
-		return friendService.getFriend(friendId);
-	}*/
+
    
    
 }

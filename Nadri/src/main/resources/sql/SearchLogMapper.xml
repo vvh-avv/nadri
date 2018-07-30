@@ -4,7 +4,13 @@
 
 
 <mapper namespace="SearchLogMapper">
-
+	<resultMap type="search" id="searchSelectMap">
+		<result property="searchNo" column="search_no" jdbcType="INTEGER"/>
+		<result property="searchKeyword" column="search_keyword" jdbcType="VARCHAR"/>
+		<result property="searchTime" column="search_time" jdbcType="DATE"/>
+	</resultMap>
+	
+	
 	<select id="boardSearchResult" parameterType="string" resultType="hashmap">
 		SELECT
 	    A.board_no board_no, A.board_title board_title, 
@@ -45,5 +51,29 @@
 		FROM schedule
 		WHERE schedule_title LIKE '%${value}%'
 	</select>
-
+	
+	
+	<!-- 인기 검색어 -->
+	<!-- <select id="searchRank">
+		SELECT search_keyword AS keyword, COUNT(search_keyword) AS count 
+		FROM search
+		WHERE search_time>=CURDATE()-7 
+		GROUP BY search_keyword
+		ORDER BY count DESC LIMIT 10;
+	</select> -->
+	
+	<select id="searchRank">
+		SELECT search_keyword AS keyword, COUNT(search_keyword) AS count 
+		FROM search
+		WHERE search_time>=CURDATE()-1
+		GROUP BY search_keyword
+		ORDER BY count DESC LIMIT 10;
+	</select>
+	
+	<!-- 검색어 입력 -->
+	<insert id = "insertKeyword">
+		INSERT INTO search
+		VALUES
+	</insert>
+	
 </mapper>

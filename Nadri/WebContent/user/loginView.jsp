@@ -295,25 +295,25 @@
    	<div class="container">
 
    		<div class="row">
-   			<div class="col-md-6">
+   			<div class="col-xs-6 col-md-6">
 				<img src="/images/test/logo.jpg" class="img-rounded" width="100%" />
 			</div>
-			<div class="col-md-6">
+			<div class="col-xs-6 col-md-6">
 				<br><br>
 				<div class="jumbotron">
 				
 					
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="userId" class="col-sm-4 control-label">아 이 디</label>
-							<div class="col-sm-6">
+							<label for="userId" class="col-xs-4 control-label col-md-4 control-label">아 이 디</label>
+							<div class="col-xs-6 col-md-6">
 								<input type="text" class="form-control" name="userId" id="userId"  placeholder="아이디" >
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="password" class="col-sm-4 control-label">비 밀 번 호</label>
-							<div class="col-sm-6">
+							<label for="password" class="col-xs-4 control-label col-md-4 control-label">비 밀 번 호</label>
+							<div class="col-xs-6 col-md-6">
 								<input type="password" class="form-control" name="password" id="password" placeholder="비밀번호" >
 							</div>
 						</div>
@@ -322,7 +322,7 @@
 						<div id="message" align="center"></div><br>
 					
 					<div class="form-group">
-					    <div class="col-sm-offset-2 col-sm-8 text-center">
+					    <div class="col-xs-offset-2 col-xs-8 text-center col-md-offset-2 col-md-8 text-center">
 					      <button type="button" id="logInButton" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
 					      <a class="btn btn-primary btn" href="#" id="addUser" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a><br/>
 					      <button type="button" id="findUser" class="btn btn-default"  >아이디 찾기</button>

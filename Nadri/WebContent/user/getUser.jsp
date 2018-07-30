@@ -62,8 +62,8 @@
 	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
 	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
-   	
-	<div class="col-sm-2" style="margin-left:3%">
+  <div class="row">
+	<div class="col-xs-2 col-md-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -77,14 +77,16 @@
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	
 	</div>
-	
+</div>
+
+<div class="row">
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="col-sm-9">
+	<div class="col-xs-9 col-md-9">
 	<div class="container">
 	
 		<div class="page-header">
 	       <h3 class=" text-info">회원정보조회</h3>
-	       <h5 class="text-muted">내 정보를 <strong class="text-danger">최신정보로 관리</strong>해 주세요.</h5>
+	       <h5 class="text-muted">개인 정보를 <strong class="text-danger">최신상태로 관리</strong>해 주세요</h5>
 	    </div>
 	
 		<div class="row">
@@ -154,7 +156,7 @@
 		<hr/>
 						
 		<div class="row">
-	  		<div class="col-md-12 text-center ">
+	  		<div class="col-xs-12 col-md-12 text-center ">
 	  			<button type="button" class="btn btn-primary">회원정보수정</button>
 	  		</div>
 		</div>
@@ -163,8 +165,7 @@
 		
  	</div>
  	</div>
- 	<!--  화면구성 div Start /////////////////////////////////////-->
+</div>
 
 </body>
-
 </html>
