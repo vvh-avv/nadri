@@ -62,7 +62,7 @@
 	})
 </script>
 <body onload="realtimeClock()">
-	<input type="text" name="session" id="session-checker" value="${user.userId}"/>
+	
 	<nav class="admin-navbar">
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">

@@ -67,10 +67,15 @@ public class NadriController {
 		
 		Search search = new Search();
 		
-		search.setSearchCondition("월간");
+		search.setSearchCondition("주간");
 		
-		List<Board> board_list = boardService.getRecomBoard(search);
-		List<Board> board_list2 = new ArrayList<Board>();
+		List<Board> board_list = new ArrayList<Board>();			
+		
+		if(user == null) {
+			board_list = boardService.getRecomBoard(search);
+		}else {
+			board_list = boardService.getRecomUserLike(search, user.getUserId());
+		}
 		
 		System.out.println("게시물 갯수 : "+board_list.size());
 		

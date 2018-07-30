@@ -15,6 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- 카카오 로그인 -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
@@ -39,7 +40,6 @@
 	href="/css/indexRealSmall.css" />
 <script src="/javascript/indexReal.js"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	
@@ -92,7 +92,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <body>
-
+<input type="text" name="session" id="session-checker" value="${user.userId}"/>
 	<!-- 삽입된 비디오 부분 건드리지마세요! -->
 
 	<div class="background-video">
@@ -272,7 +272,7 @@
 							<div class="list-element ele${i}" id="ele${i}"
 								style="background:url(/images/board/posts/${board.boardImg}) center; background-size:cover;">
 								<div class="info-box info${i}" id="info${i}">
-									<div class="post-title">${board.boardTitle}</div>
+									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
 											<span class="glyphicon glyphicon-heart"></span> <span
@@ -329,7 +329,7 @@
 							<div class="list-element ele${i}" id="ele${i}"
 								style="background:url(/images/board/posts/${board.boardImg}) center; background-size:cover;">
 								<div class="info-box info${i}" id="info${i}">
-									<div class="post-title">${board.boardTitle}</div>
+									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
 											<span class="glyphicon glyphicon-heart"></span> <span
@@ -365,7 +365,7 @@
 							<div class="list-element ele${i}" id="ele${i}"
 								style="background:url(/images/board/posts/${board.boardImg}) center; background-size:cover;">
 								<div class="info-box info${i}" id="info${i}">
-									<div class="post-title">${board.boardTitle}</div>
+									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
 											<span class="glyphicon glyphicon-heart"></span> <span
@@ -401,10 +401,10 @@
 	<div class="section-backgrounds"></div>
 		<div class="container bottom-contents">
 			<div class="share-campaign">
-			<div class="first-share">자유롭게 일정을 생성하고,</div>
-			<div class="second-share">생성한 일정을 친구들과 공유해보세요!</div>
-			<div class="schedule-button">일정작성하러가기</div>
-		</div>
+				<div class="first-share">자유롭게 일정을 생성하고,</div>
+				<div class="second-share">생성한 일정을 친구들과 공유해보세요!</div>
+				<div class="schedule-button">일정작성하러가기</div>
+			</div>
 		</div>
 	</div>
 	

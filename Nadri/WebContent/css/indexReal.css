@@ -15,6 +15,11 @@
     100% {opacity : 1; left:25.3%; top:25.5vh;}
 }
 
+@keyframes appears-bottom {
+    0%   {opacity : 0; left:0; top:0;}
+    100% {opacity : 1; left:0; top:0;}
+}
+
 body {
     margin: 0;
     overflow-y : scroll;
@@ -67,7 +72,7 @@ body {
     min-width: 100%; 
     min-height: 100vh;
     z-index:-1;
-    transform: translate(8%,-15%);
+    transform: translate(0%,-15%);
 }
 
 .contents{
@@ -555,6 +560,9 @@ body {
 .share-campaign{
 	font-size : 3vw;
 	text-align : center;
+/* 	animation : appear-bottom 2s; */
+/* 	opacity : 0; */
+	transition : all 1s;
 }
 
 .first-share{
