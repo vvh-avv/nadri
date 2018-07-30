@@ -48,6 +48,7 @@
 		height: 250px;
 		opacity: 1;
 		transition: .5s ease;
+		margin: 5px;
 	}
 	.links{
 	  opacity: 0;
