@@ -43,7 +43,7 @@ public class CartRestController{
 	
 	// addCartSpot을 실행하기 위한 POST 메서드 입니다.
 	@RequestMapping(value="addCartSpot", method=RequestMethod.POST)
-	public void addCartSpot( @RequestBody Cart cart ) throws Exception{		
+	public synchronized void addCartSpot( @RequestBody Cart cart ) throws Exception{		
 		System.out.println("/restcart/addCartSpot : POST");
 
 		System.out.println("cart : " + cart);
@@ -53,7 +53,7 @@ public class CartRestController{
 	}
 	
 	@RequestMapping(value="updateCart/{cartNo}/{cartDetail}", method=RequestMethod.POST)
-	public void updateCart( @PathVariable int cartNo, @PathVariable String cartDetail ) throws Exception{
+	public synchronized void updateCart( @PathVariable int cartNo, @PathVariable String cartDetail ) throws Exception{
 		System.out.println("/restcart/updateCart : POST");
 		
 		//한글깨져 넘어와서 추가
@@ -66,7 +66,7 @@ public class CartRestController{
 	}
 	
 	@RequestMapping(value="updateCartImg/{cartNo}", method=RequestMethod.POST)
-	public String updateCartImg( @PathVariable int cartNo, @RequestBody Cart newCart) throws Exception{
+	public synchronized String updateCartImg( @PathVariable int cartNo, @RequestBody Cart newCart) throws Exception{
 		System.out.println("/restcart/updateCartImg : POST");
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");
@@ -95,14 +95,14 @@ public class CartRestController{
 	}
 	
 	@RequestMapping(value="deleteCart/{cartNo}", method=RequestMethod.POST)
-	public void deleteCart( @PathVariable int cartNo ) throws Exception{
+	public synchronized void deleteCart( @PathVariable int cartNo ) throws Exception{
 		System.out.println("/restcart/deleteCart : POST");
 		
 		cartService.deleteCart(cartNo);
 	}
 	
 	@RequestMapping(value="getCart/{cartNo}", method=RequestMethod.POST)
-	public Cart getCart(@PathVariable int cartNo) throws Exception{
+	public synchronized Cart getCart(@PathVariable int cartNo) throws Exception{
 		System.out.println("/restcart/getCart : POST");
 		
 		return cartService.getCart(cartNo);

@@ -788,12 +788,10 @@
 									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
-											<span class="glyphicon glyphicon-heart"></span> <span
-												class="likes-count">${board.likeCnt}</span>
+											<span class="glyphicon glyphicon-heart"></span> <span class="likes-count">${board.likeCnt}</span>
 										</div>
 										<div class="post-reply">
-											<span class="glyphicon glyphicon-comment"></span> <span
-												class="reply-count">${board.commCnt}</span>
+											<span class="glyphicon glyphicon-comment"></span> <span class="reply-count">${board.commCnt}</span>
 										</div>
 									</div>
 									<div class="hashtags">
@@ -824,12 +822,10 @@
 									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
-											<span class="glyphicon glyphicon-heart"></span> <span
-												class="likes-count">${board.likeCnt}</span>
+											<span class="glyphicon glyphicon-heart"></span> <span class="likes-count">${board.likeCnt}</span>
 										</div>
 										<div class="post-reply">
-											<span class="glyphicon glyphicon-comment"></span> <span
-												class="reply-count">${board.commCnt}</span>
+											<span class="glyphicon glyphicon-comment"></span> <span class="reply-count">${board.commCnt}</span>
 										</div>
 									</div>
 									<div class="hashtags">

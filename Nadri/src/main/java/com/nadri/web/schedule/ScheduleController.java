@@ -1,10 +1,22 @@
 package com.nadri.web.schedule;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +63,8 @@ public class ScheduleController {
 	
 	// addSchedule에 접근하기 위한 GET 메서드 입니다.
 	@RequestMapping( value="addSchedule", method=RequestMethod.GET)
-	public String addSchedule(Model model, HttpSession session, @ModelAttribute("user") User user, @ModelAttribute("search") Search search ) throws Exception{
+	public String addSchedule(Model model, HttpSession session, @ModelAttribute("user") User user,
+										@ModelAttribute("search") Search search, @Param("date") Date date) throws Exception{
 		
 		System.out.println( "/addSchedule : GET");
 		
@@ -66,6 +79,7 @@ public class ScheduleController {
 		
 		// model에 담습니다!
 		model.addAttribute("cart", cartService.getSpotCartList(userId));
+		model.addAttribute("date", date);
 		
 		return "forward:/schedule/addSchedule.jsp";
 	}
@@ -78,8 +92,6 @@ public class ScheduleController {
 		
 		// 파일명 얻기
 		String fileName = multipartFile.getOriginalFilename();
-		System.out.println("=======================");
-		System.out.println("======================="+fileName);
 		
 		// 파일 객체 생성
 		File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
@@ -138,8 +150,8 @@ public class ScheduleController {
 	     
 		search.setUserId(user.getUserId());
 
-	      // Business logic 수행
-	      Map<String, Object> map = scheduleService.getMyScheduleList(search);
+	    // Business logic 수행
+	    Map<String, Object> map = scheduleService.getMyScheduleList(search);
 	      
 		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 6);
 		System.out.println(resultPage);
@@ -148,6 +160,89 @@ public class ScheduleController {
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
+		
+		
+		List<Schedule> list = (List<Schedule>)map.get("list");
+		
+		JSONArray jsonArray = new JSONArray();
+		for(Schedule schedule : list) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", Integer.toString(schedule.getScheduleNo()));
+			jsonObject.put("title", schedule.getScheduleTitle());
+			jsonObject.put("start", new SimpleDateFormat("yyyy-MM-dd").format(schedule.getScheduleDate())+"T"+schedule.getStartHour());
+			jsonObject.put("className", "generalDay");
+			jsonArray.add(jsonObject);
+		}
+		
+		//월마다 반복
+		for(int i=1; i<=12; i++) {
+			String apiURL = "";
+			if(i<10) {
+				apiURL = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?ServiceKey=moTkip2aUv1fT8FhacDtyaJcKXWF000hyP1Iotjf%2FNyc3p%2FUTMNo8UFbsJgx0Uf4yunT7BDDSpf3d5pamt%2Fqvg%3D%3D&solYear=2018&solMonth=0"+i+"&_type=json";
+			}else {
+				apiURL = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?ServiceKey=moTkip2aUv1fT8FhacDtyaJcKXWF000hyP1Iotjf%2FNyc3p%2FUTMNo8UFbsJgx0Uf4yunT7BDDSpf3d5pamt%2Fqvg%3D%3D&solYear=2018&solMonth="+i+"&_type=json";
+			}
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("GET");
+	        int responseCode = con.getResponseCode();
+	        BufferedReader br;
+	        if(responseCode==200) { //정상호출
+	        	br = new BufferedReader(new InputStreamReader(con.getInputStream() , "UTF-8"));
+	        } else { //에러발생
+	        	br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+	        }
+	        String inputLine;
+	        StringBuffer response = new StringBuffer();
+	        while ((inputLine = br.readLine()) != null)  {
+	        	response.append(inputLine);
+	        }
+	        JSONParser parser = new JSONParser();
+	        JSONObject holiday = (JSONObject)parser.parse(response.toString()); //가져온 json 값
+	        //String holidayString = (((JSONObject)((JSONObject)holiday.get("response")).get("body")).get("items")).toString(); //원하는 값만 파싱하여 String으로 전환
+	        //JSONObject jsonObj = (JSONObject)parser.parse(holidayString); //
+	        //JSONArray holidayArray = (JSONArray)jsonObj.get("item");
+	        Long chkHolidayCnt = (Long)((JSONObject)((JSONObject)holiday.get("response")).get("body")).get("totalCount");
+	        if(chkHolidayCnt==0) {
+	        	System.out.println("==쉬는날없엉~");
+	        	continue;
+	        }
+	        
+	        JSONObject chkHoliday = (JSONObject)((JSONObject)((JSONObject)holiday.get("response")).get("body")).get("items");
+	        System.out.println("**"+chkHoliday);
+	        
+	        if( chkHolidayCnt==1 ) {
+		        JSONObject aloneHoliday = (JSONObject) chkHoliday.get("item");
+	        	JSONObject jsonObject3 = new JSONObject();
+	    		jsonObject3.put("id", "0");
+	    		jsonObject3.put("title", aloneHoliday.get("dateName"));
+	    		String tempDate = aloneHoliday.get("locdate").toString();
+	    		tempDate = tempDate.substring(0, 4)+"-"+tempDate.substring(4, 6)+"-"+tempDate.substring(6);
+	    		jsonObject3.put("start", tempDate);
+	    		jsonObject3.put("className", "specialDay");
+	    		jsonObject3.put("allDay", true);
+				jsonArray.add(jsonObject3);
+	        }else {
+	        	JSONArray holidayArray = (JSONArray)(chkHoliday.get("item")); //원하는 값만 파싱해서 array로 만듦
+
+		        for(int j=0 ; j<holidayArray.size() ; j++){
+		            JSONObject tempObj = (JSONObject) holidayArray.get(j);
+		    		JSONObject jsonObject3 = new JSONObject();
+		    		jsonObject3.put("id", "0");
+		    		jsonObject3.put("title", tempObj.get("dateName"));
+		    		String tempDate = tempObj.get("locdate").toString();
+		    		tempDate = tempDate.substring(0, 4)+"-"+tempDate.substring(4, 6)+"-"+tempDate.substring(6);
+		    		jsonObject3.put("start", tempDate);
+		    		jsonObject3.put("className", "specialDay");
+		    		jsonObject3.put("allDay", true);
+					jsonArray.add(jsonObject3);
+		        }
+	        }
+		} //월 반복 끝
+		
+        System.out.println("===============");
+        System.out.println(jsonArray.toString());
+		model.addAttribute("events_array", jsonArray.toString());
 				
       return "forward:/user/mypageScheduleList.jsp";
    }

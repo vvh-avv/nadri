@@ -107,5 +107,28 @@
 		INSERT INTO search (user_id,search_keyword,search_condition,search_time)
 		VALUE(#{userId},#{searchKeyword},'0',NOW())
 	</insert>
-
+	
+	<!-- 인기 검색어 -->
+	<!-- <select id="searchRank">
+		SELECT search_keyword AS keyword, COUNT(search_keyword) AS count 
+		FROM search
+		WHERE search_time>=CURDATE()-7 
+		GROUP BY search_keyword
+		ORDER BY count DESC LIMIT 10;
+	</select> -->
+	
+	<select id="searchRank">
+		SELECT search_keyword AS keyword, COUNT(search_keyword) AS count 
+		FROM search
+		WHERE search_time>=CURDATE()-1
+		GROUP BY search_keyword
+		ORDER BY count DESC LIMIT 10;
+	</select>
+	
+	<!-- 검색어 입력 -->
+	<insert id = "insertKeyword">
+		INSERT INTO search
+		VALUES
+	</insert>
+	
 </mapper>

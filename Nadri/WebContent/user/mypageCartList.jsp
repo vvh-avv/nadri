@@ -48,6 +48,7 @@
 		height: 250px;
 		opacity: 1;
 		transition: .5s ease;
+		margin: 5px;
 	}
 	.links{
 	  opacity: 0;
@@ -90,48 +91,58 @@ function initMap() {
 	<%@ include file="/layout/toolbar.jsp"%>
 	
 	<div class="container">
-		<!-- 서브메뉴 노출 -->
-		<div class="col-md-2">서브메뉴</div>
-		
-		<div class="col-md-10">
-			<!-- 맵 뜨는 부분 -->
-			<div class="row">
-				<div id="map"></div>
-			</div><br>
-		
-			<!-- 바구니에 담은 장소리스트 보여주는 부분 -->
-			<div class="row contents">
-				<c:set var="i" value="0"/>
-				<c:forEach var="cart" items="${list}">
-					<article class="${cart.cartNo}">
-						<!-- 썸네일 형식의 장소 이미지 -->
-						<div class="thumbImg" style="width:auto; height:250px;">
-							<c:if test="${cart.cartImg==null}">
-								<img src="http://placehold.it/250X250" class="img-thumbnail">
-							</c:if>
-							<c:if test="${cart.cartImg!=null}">
-								<img src="${cart.cartImg}" class="img-thumbnail">
-							</c:if>
-						</div>
-						<!-- 방문도장 이미지 -->
-						<c:if test="${cart.stampCode==1}">
-							<div class="linksIcon"> <img id="stamp${schedule.scheduleNo}" src="/images/cart/common/stamp.png"> </div>
-						</c:if>
-						<!-- 마우스 오버시 보여지는 부분 -->
-						<div class="links" style="text-align:center;">
-							<span id="cartTitle"><b>${cart.cartTitle}</b><br></span>
-							<span id="cartAddress">${cart.cartAddress}<br><br></span>
-							<span id="cartDetail">${cart.cartDetail}</span>
-						</div>
-					</article>
-				</c:forEach>
-				
-				<c:if test="${empty list}">
-					<span id="defaultText" style="margin-left:40%;">바구니가 비었습니다. ㅠㅠ</span>
-				</c:if>
-			</div>
+	   	<div class="col-xs-12 col-md-2">
+		  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
+		  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
+		  <a href="/user/getUser">내 정보 보기</a><br/><br/>
+		  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+		  <a href="/friend/listFriend">친구 목록</a><br/><br/>
+		  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
+		  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
+		  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
+			<br/><br/><br/><br/><br/><br/><br/><br/>
+	  		<a href="/user/logout">로그아웃</a><br/><br/>
 		</div>
+	
+		<div class="col-xs-12 col-md-10">
+		<!-- 맵 뜨는 부분 -->
+		<div class="row">
+			<div id="map"></div>
+		</div><br>
+		<!-- 바구니에 담은 장소리스트 보여주는 부분 -->
+		<div class="row contents">
+			<c:set var="i" value="0"/>
+			<c:forEach var="cart" items="${list}">
+				<article class="${cart.cartNo}">
+					<!-- 썸네일 형식의 장소 이미지 -->
+					<div class="thumbImg" style="width:auto; height:250px;">
+						<c:if test="${cart.cartImg==null}">
+							<img src="/images/board/posts/no_image.jpg" class="img-thumbnail">
+						</c:if>
+						<c:if test="${cart.cartImg!=null}">
+							<img src="${cart.cartImg}" class="img-thumbnail">
+						</c:if>
+					</div>
+					<!-- 방문도장 이미지 -->
+					<c:if test="${cart.stampCode==1}">
+						<div class="linksIcon"> <img id="stamp${schedule.scheduleNo}" src="/images/cart/common/stamp.png"> </div>
+					</c:if>
+					<!-- 마우스 오버시 보여지는 부분 -->
+					<div class="links" style="text-align:center;">
+						<span id="cartTitle"><b>${cart.cartTitle}</b><br></span>
+						<span id="cartAddress">${cart.cartAddress}<br><br></span>
+						<span id="cartDetail">${cart.cartDetail}</span>
+					</div>
+				</article>
+			</c:forEach>
+			
+			<c:if test="${empty list}">
+				<span id="defaultText" style="margin-left:40%;">바구니가 비었습니다. ㅠㅠ</span>
+			</c:if>
+		</div>
+	</div>
 		
-	</div> <!-- e.o.container -->
+</div> <!-- e.o.container -->
+
 </body>
 </html>

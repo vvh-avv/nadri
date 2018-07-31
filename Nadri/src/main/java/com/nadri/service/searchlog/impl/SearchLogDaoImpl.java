@@ -72,4 +72,5 @@ public class SearchLogDaoImpl implements SearchLogDao {
 		return list_all;
 	}
 
+
 }

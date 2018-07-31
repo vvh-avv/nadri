@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -145,25 +146,27 @@ public class ScheduleRestController {
 	      }
 	      
 	      //스케줄이미지 복사
-	      System.out.println("@1 이미지 복사 시작");
-	      String fileName = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
-	      
-	      System.out.println("@2 새로운 이미지 이름 : " + fileName);
-	      //Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
-	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName+".jpg");
-	      
-	      System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
-	      //Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
-	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg()+".jpg");
-	      System.out.println("@4 원본 이미지 경로 : " + originFilePath);
-	      Files.copy(originFilePath, newFilePath);
-	      System.out.println("@5 이미지 복사 성공");
+	      if( schedule.getScheduleImg()!=null ) {
+		      System.out.println("@1 이미지 복사 시작");
+		      String fileName = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
+		      
+		      System.out.println("@2 새로운 이미지 이름 : " + fileName);
+		      //Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
+		      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName+".jpg");
+		      
+		      System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
+		      //Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
+		      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg()+".jpg");
+		      System.out.println("@4 원본 이미지 경로 : " + originFilePath);
+		      Files.copy(originFilePath, newFilePath);
+		      System.out.println("@5 이미지 복사 성공");
 
-	      schedule.setScheduleImg( fileName );
-	      
-	      /*File newFile = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
-	      MultipartFile multipartFile = (MultipartFile) newFile;
-	      multipartFile.transferTo(newFile);*/
+		      schedule.setScheduleImg( fileName );
+		      
+		      /*File newFile = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+		      MultipartFile multipartFile = (MultipartFile) newFile;
+		      multipartFile.transferTo(newFile);*/
+	      }
 
 	      scheduleService.copySchedule(schedule);
 	      
@@ -239,5 +242,36 @@ public class ScheduleRestController {
 		   
 		   scheduleService.updateScheduleReview(schedule);
 	   }
-	
+	/*
+	   @RequestMapping(value="getScheduleList", method=RequestMethod.POST)
+	   public String getScheduleList( HttpSession session ) throws Exception{
+		   System.out.println("/restschedule/getScheduleList : POST");
+		   
+		   User user = (User)session.getAttribute("user");
+		   Search search = new Search();
+		   search.setUserId(user.getUserId());
+		   
+		   Map<String,Object> map = scheduleService.getMyScheduleList(search);
+		   List<Schedule> list = (List<Schedule>)map.get("list");
+		   System.out.println("======1");
+		   System.out.println(list);
+		   System.out.println("======1");
+		   JSONObject jsonObject = new JSONObject();
+		   JSONArray jsonArray = new JSONArray();
+        	   
+		   for(Schedule schedule : list) {
+			   int sn = schedule.getScheduleNo();
+			   jsonObject.put("id", sn);
+			   jsonObject.put("title", schedule.getScheduleTitle());
+			   Date sd = schedule.getScheduleDate();
+			   jsonObject.put("start", sd);
+			   jsonObject.put("className", "generalDay");
+			   jsonArray.add(jsonObject);
+		   }
+		   System.out.println("======2");
+		   System.out.println(jsonArray.toString());
+		   System.out.println("======2");
+		   
+		   return jsonArray.toString();
+	   }*/
 }

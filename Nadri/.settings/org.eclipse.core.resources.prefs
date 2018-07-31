@@ -12,4 +12,8 @@ encoding//WebContent/javascript/index.js=euc-kr
 encoding//WebContent/javascript/indexReal.js=euc-kr
 encoding//WebContent/javascript/juangeolocation.js=EUC-KR
 encoding//WebContent/javascript/toolbar.js=euc-kr
+<<<<<<< HEAD
 encoding//WebContent/javascript/total_search_view.js=euc-kr
+=======
+encoding//WebContent/schedule/addSchedule1.jsp=UTF-8
+>>>>>>> refs/remotes/origin/master

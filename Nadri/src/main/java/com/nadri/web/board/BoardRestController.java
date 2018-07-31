@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,14 +69,14 @@ public class BoardRestController {
 	
 	//게시물
 	@RequestMapping(value="json/addBoard", method=RequestMethod.POST) //일반 게시물 작성 //안드로이드용
-	public void addBoard( @RequestBody Board board ) throws Exception{
+	public synchronized void addBoard( @RequestBody Board board ) throws Exception{
 		System.out.println("/board/json/addBoard : POST");
 		
 		boardService.addBoard(board);
 	}
 
 	@RequestMapping(value="json/addBoard/{scheduleNo}", method=RequestMethod.POST) //일정 게시물 작성
-	public int addBoard( @PathVariable int scheduleNo, HttpSession session) throws Exception{
+	public synchronized int addBoard( @PathVariable int scheduleNo, HttpSession session) throws Exception{
 		System.out.println("/board/json/addBoard/{scheduleNo} : POST");
 		
 		Schedule schedule = scheduleService.getSchedule(scheduleNo);
@@ -96,7 +98,7 @@ public class BoardRestController {
 	}
 	
 	@RequestMapping(value="json/deleteBoard/{boardNo}", method=RequestMethod.POST)
-	public void deleteBoard( @PathVariable int boardNo, HttpServletRequest request ) throws Exception{
+	public synchronized void deleteBoard( @PathVariable int boardNo, HttpServletRequest request ) throws Exception{
 		System.out.println("/board/json/deleteBoard : POST");
 		
 		Board board = boardService.getBoard(boardNo);
@@ -117,7 +119,7 @@ public class BoardRestController {
 	}
 	
 	@RequestMapping(value="json/getBoardList/{currentPage}", method=RequestMethod.POST)
-	public List<Board> getBoardList( @PathVariable int currentPage, HttpSession session ) throws Exception{
+	public synchronized List<Board> getBoardList( @PathVariable int currentPage, HttpSession session ) throws Exception{
 		System.out.println("/board/json/getBoardList : POST");
 		
 		System.out.println("@넘어온 페이지 : "+ currentPage);
@@ -156,7 +158,7 @@ public class BoardRestController {
 	}
 	
 	@RequestMapping(value="json/checkBoard/{boardCode}", method=RequestMethod.POST)
-	public int checkBoard( @PathVariable int boardCode, HttpSession session ) throws Exception{ //작성한 일정이 포스팅이 이미 됐는지 체크
+	public synchronized int checkBoard( @PathVariable int boardCode, HttpSession session ) throws Exception{ //작성한 일정이 포스팅이 이미 됐는지 체크
 		System.out.println("/board/json/checkBoard : POST");
 		
 		User user = (User)session.getAttribute("user");
@@ -166,7 +168,7 @@ public class BoardRestController {
 	
 	//좋아요
 	@RequestMapping(value="json/addLike/{boardNo}", method=RequestMethod.POST)
-	public Map<String, Object> addLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
+	public synchronized Map<String, Object> addLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
 		System.out.println("/board/json/addLike : POST");
 		
 		User user = (User)session.getAttribute("user");
@@ -181,7 +183,7 @@ public class BoardRestController {
 	}
 
 	@RequestMapping(value="json/deleteLike/{boardNo}", method=RequestMethod.POST)
-	public int deleteLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
+	public synchronized int deleteLike( @PathVariable int boardNo, HttpSession session ) throws Exception{
 		System.out.println("/board/json/deleteLike : POST");
 
 		User user = (User)session.getAttribute("user");
@@ -192,8 +194,8 @@ public class BoardRestController {
 	
 	//댓글
 	@RequestMapping(value="json/addComment/{userId}", method=RequestMethod.POST) 
-	public Map<String, Object> addComment( @RequestBody Comment comment, @PathVariable String userId ) throws Exception{
-		System.out.println("/board/json/addComment : POST");
+	public synchronized Map<String, Object> addComment( @RequestBody Comment comment, @PathVariable String userId ) throws Exception{
+		System.out.println("/board/json/addComment : GET / POST");
 		
 		//* 알림시 사용
 		String cc = comment.getCommentContent(); //넘어온 내용
@@ -204,6 +206,9 @@ public class BoardRestController {
 				returnFriend += friend[i].split(" ")[0]+",";
 			}
 		}
+		
+		System.out.println("==============");
+		System.out.println(comment);
 		
 		comment.setUser( userService.getUser(userId) );
 		commentService.addComment(comment);
@@ -221,7 +226,7 @@ public class BoardRestController {
 	}
 
 	@RequestMapping(value="json/deleteComment/{boardNo}/{commentNo}", method=RequestMethod.POST) 
-	public int deleteComment( @PathVariable int boardNo, @PathVariable int commentNo ) throws Exception{
+	public synchronized int deleteComment( @PathVariable int boardNo, @PathVariable int commentNo ) throws Exception{
 		System.out.println("/board/json/deleteComment : POST");
 		
 		commentService.deleteComment(commentNo);
@@ -231,7 +236,7 @@ public class BoardRestController {
 
 	//메인화면 추천게시물 (비회원)
 	@RequestMapping(value="recomBoard/{condition}")
-	public String recomBoard(@PathVariable String condition, Model model) throws Exception{
+	public synchronized String recomBoard(@PathVariable String condition, Model model) throws Exception{
 		System.out.println("/board/recomBoard : GET / POST");
 		
 		Search search = new Search();
@@ -253,7 +258,7 @@ public class BoardRestController {
 	}
 	//메인화면 추천게시물 (회원/친구좋아요)
 	@RequestMapping(value="recomUserLike/{condition}")
-	public String recomUserLike(@PathVariable String condition, Model model, HttpSession session) throws Exception{
+	public synchronized String recomUserLike(@PathVariable String condition, Model model, HttpSession session) throws Exception{
 		System.out.println("/board/recomUserLike : GET / POST");
 		
 		Search search = new Search();
@@ -276,7 +281,7 @@ public class BoardRestController {
 	}
 	//메인화면 추천게시물 (회원/작성글)
 	@RequestMapping(value="recomUserBoard/{condition}")
-	public String recomUserBoard(@PathVariable String condition, Model model, HttpSession session) throws Exception{
+	public synchronized String recomUserBoard(@PathVariable String condition, Model model, HttpSession session) throws Exception{
 		System.out.println("/board/recomUserBoard : GET / POST");
 		
 		Search search = new Search();

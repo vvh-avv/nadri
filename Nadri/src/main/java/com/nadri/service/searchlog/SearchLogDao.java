@@ -7,4 +7,5 @@ import com.nadri.common.Search;
 public interface SearchLogDao {
 	
 	public List<Object> getSearchResult(Search search);
+
 }

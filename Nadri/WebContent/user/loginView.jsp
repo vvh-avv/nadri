@@ -21,15 +21,11 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <!-- 구글 로그인 -->
-<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script> 
-<!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-<!-- <script src="https://apis.google.com/js/api:client.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>	 -->
-<meta name="google-signin-client_id" content="318076473976-lvibspiedbi0fmj9iiugfiqpg9v16b47.apps.googleusercontent.com"></meta> 
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+<meta name="google-signin-client_id" content="910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com"></meta>
 
 <!-- 네이버 로그인 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
-
 
 
 <style>
@@ -204,12 +200,12 @@
 	})
 	
 	
-	//구글 로그인
+	 //구글 로그인	
 	$(function(){
- 		function googleLogin(googleUser) {
+ 		function onSuccess(googleUser) {
 		    var profile = googleUser.getBasicProfile();
 		    console.log(profile);
-		}
+	}
 		
 		$(".g-signin2").on("click", function(){
 		    gapi.client.load('plus', 'v1', function () {
@@ -227,8 +223,7 @@
 		  				},
 		  				success : function(idChk){
 		  					  if(idChk==true){ 
-		  						  alert("회원가입중입니다");
-		  						  console.log("회원가입중입니다");
+		  						  console.log("회원가입 절차가 진행중입니다");
 		  						  $.ajax({
 		  							  url : "/user/json/addUser",
 		  							  method : "POST",
@@ -239,16 +234,16 @@
 		  							  data : JSON.stringify({
 		  								userId : res.id,
 		  								userName : res.displayName,
-		  								password : "google123",
+		  								password : "google",
 		  							  }),
-		  							  success : function(JSONData){		  								
-		  								 alert("회원가입이 완료되었습니다.");
+		  							  success : function(JSONData){
+		  								 alert("회원가입이 완료되었습니다");
 		  								 $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  							  }
 		  						  })
 		  					  }
 		  					  if(idChk==false){ 
-		  						  console.log("로그인중입니다");
+		  						  console.log("로그인이 진행중입니다");
 		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  					  }
 		  				  }
@@ -256,86 +251,32 @@
 		        	})
 	        })
 		})
+		
 		function onFailure(error) {
 		    console("error : "+error);
-		}		
+		}
+		
 		function signOut() {
 		    var auth2 = gapi.auth2.getAuthInstance();
 		    auth2.signOut().then(function () {
 		    	self.location="/user/logout";
 		    });
 		}
-	})
+	}) 
 
-	 $(function googleLogin() {
-	    gapi.load('auth2', function(){
-	    	// GoogleAuth 라이브러리에 대한 싱글 톤을 가져 와서 클라이언트를 설정합니다.
-	      auth2 = gapi.auth2.init({
-	        client_id: '318076473976-lvibspiedbi0fmj9iiugfiqpg9v16b47.apps.googleusercontent.com',
-	        //클라이언트 ID
-	        cookiepolicy: 'single_host_origin'
-	        // Request scopes in addition to 'profile' and 'email'
-			// scope: 'profile email',
-			//fetch_basic_profile: 'false',
+		  
+	//네이버 로그인
+		$(function(){
+	   		var naverLogin = new naver.LoginWithNaverId({
+				clientId: "HOBzhSrHnwuHLQpiDnzI",
+				callbackUrl: "http://192.168.0.30:8080/user/naverCallback.jsp",
+				isPopup: true,
+				loginButton: {color: "green", type: 3, height: 45}
+			});
+	   		//설정정보를 초기화하고 연동 준비
+			naverLogin.init();
+		})
 
-	    
-	      });
-	      attachSignin(document.getElementById("google"));
-	    });
-	  });
-	  
-	  
-	  function attachSignin(element) {
-		  
-		    console.log(element.id);
-		    auth2.attachClickHandler(element, {},
-		       function(googleUser) {
-		    		$.ajax(
-		    			{
-		    			url : "/user/json/addUser" ,
-						method : "POST" ,
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-						},
-						data:JSON.stringify({
-							userId :  googleUser.getBasicProfile().getId(),
-							userName : googleUser.getBasicProfile().getName(),
-							email : googleUser.getBasicProfile().getEmail()
-						}),
-						success : function (JSONData,status) {
-							console.log("성공")
-							if(JSONData.phone==null || JSONData.addr ==null){
-								self.location = "/user/json/addUser?userId="+JSONData.userId
-							}else{
-								self.location="/user/snsLogin?userId="+JSONData.userId;
-							}
-						},fail: function (error) {
-							alert(JSON.stringfy(error));
-						}
-		    		})
-		        }, 
-		        function(error) {
-		          alert(JSON.stringify(error, undefined, 2));
-		        });
-		  } 
-		  
-		//네이버 로그인
-			$(function(){
-		   		var naverLogin = new naver.LoginWithNaverId({
-					clientId: "HOBzhSrHnwuHLQpiDnzI",
-					callbackUrl: "http://127.0.0.1:8080/user/naverCallback.jsp",
-					isPopup: true,
-					loginButton: {color: "green", type: 3, height: 45}
-				});
-		   		//설정정보를 초기화하고 연동 준비
-				naverLogin.init();
-			})
-		  
-		  
-	
-	
 </script>
 
 </head>
@@ -345,28 +286,29 @@
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->	
-   	
-   	<div class="container">
-   		<div class="row">
-   			<div class="col-md-6">
+   
+
+   	<div class="container">		
+  		<div class="row">
+   			<div class="col-xs-12 col-md-6">
 				<img src="/images/test/logo.jpg" class="img-rounded" width="100%" />
 			</div>
-			<div class="col-md-6">
+			
+			<div class="col-xs-12 col-md-6">
 				<br><br>
 				<div class="jumbotron">
-				
-					
+		
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="userId" class="col-sm-4 control-label">아 이 디</label>
-							<div class="col-sm-6">
+							<label for="userId" class="col-xs-4 control-label col-md-4 control-label">아 이 디</label>
+							<div class="col-xs-12 col-md-6">
 								<input type="text" class="form-control" name="userId" id="userId"  placeholder="아이디" >
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="password" class="col-sm-4 control-label">비 밀 번 호</label>
-							<div class="col-sm-6">
+							<label for="password" class="col-xs-4 control-label col-md-4 control-label">비 밀 번 호</label>
+							<div class="col-xs-12 col-md-6">
 								<input type="password" class="form-control" name="password" id="password" placeholder="비밀번호" >
 							</div>
 						</div>
@@ -375,7 +317,7 @@
 						<div id="message" align="center"></div><br>
 					
 					<div class="form-group">
-					    <div class="col-sm-offset-2 col-sm-8 text-center">
+					    <div class="col-xs-offset-2 col-xs-8 text-center col-md-offset-2 col-md-8 text-center">
 					      <button type="button" id="logInButton" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
 					      <a class="btn btn-primary btn" href="#" id="addUser" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a><br/>
 					      <button type="button" id="findUser" class="btn btn-default"  >아이디 찾기</button>
@@ -384,22 +326,20 @@
 					  </div>
 					</form>
 												
+					<!--  구글 로그인 HTML -->
+					<div id="googleLogin" align="center">													
+						<div class="g-signin2" data-onsuccess="onSuccess" data-theme="dark"></div>
+					</div> 
+					
 												
 					<!-- 카카오 로그인 HTML -->
 					<div id="kakaoLogin" align="center">
 						<a id="kakao-login-btn" href="#">
-							<img src="/images/user/kakao_login_btn_small.png" /> 	
+							<img src="/images/user/kakao.png" /> 	
 						</a>
 						<a href="http://developers.kakao.com/logout"></a>
 					</div>
-												
-					<!-- 구글 로그인 HTML -->
-					 <div id="googleLogin" align="center">													
-						<div class="g-signin2" data-onsuccess="googleLogin" data-theme="dark"></div>
-					</div>
-					<!-- <img  id="google" src="/images/user/google_login.png" />
-			      	<a id="google" class="g-signin2" data-onsuccess="googleLogin"></a> -->
-												
+																
 					<!-- 네이버 로그인 HTML --> 
   					 <div id="naverIdLogin" align="center">
 						<a id="naver-login-btn" href="#" role="button"></a>
@@ -409,6 +349,7 @@
 			</div>
    		</div>
    	</div>
-
+	
+	
 </body>
 </html>
