@@ -380,3 +380,24 @@ if (userId != null) {
 <div style="display:none" id="loadStatus">
    <img src="/images/common/load.gif" style="width:40%; margin:5% 30% 20% 30%;">
 </div>
+
+	<!-- HJA ADDSCHEDULE transportation navigation -->
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+      <!-- HJA ADDSCHEDULE transportation navigation -->      

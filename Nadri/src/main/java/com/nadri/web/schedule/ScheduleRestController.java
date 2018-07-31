@@ -25,17 +25,14 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
-import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleService;
@@ -240,36 +237,32 @@ public class ScheduleRestController {
 		   
 		   scheduleService.updateScheduleReview(schedule);
 	   }
-	/*
-	   @RequestMapping(value="getScheduleList", method=RequestMethod.POST)
-	   public String getScheduleList( HttpSession session ) throws Exception{
-		   System.out.println("/restschedule/getScheduleList : POST");
+	
+	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   public @ResponseBody JSONArray getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
+		   System.out.println("/restschedule/getSchedule : POST");
 		   
-		   User user = (User)session.getAttribute("user");
-		   Search search = new Search();
-		   search.setUserId(user.getUserId());
-		   
-		   Map<String,Object> map = scheduleService.getMyScheduleList(search);
-		   List<Schedule> list = (List<Schedule>)map.get("list");
-		   System.out.println("======1");
-		   System.out.println(list);
-		   System.out.println("======1");
 		   JSONObject jsonObject = new JSONObject();
 		   JSONArray jsonArray = new JSONArray();
-        	   
-		   for(Schedule schedule : list) {
-			   int sn = schedule.getScheduleNo();
-			   jsonObject.put("id", sn);
-			   jsonObject.put("title", schedule.getScheduleTitle());
-			   Date sd = schedule.getScheduleDate();
-			   jsonObject.put("start", sd);
-			   jsonObject.put("className", "generalDay");
-			   jsonArray.add(jsonObject);
-		   }
-		   System.out.println("======2");
-		   System.out.println(jsonArray.toString());
-		   System.out.println("======2");
 		   
-		   return jsonArray.toString();
-	   }*/
+		  Schedule schedule = scheduleService.getSchedule(scheduleNo);
+		  List<WayPoint> list = scheduleService.getWayPoint(scheduleNo);
+		  
+		  for (int i = 0 ; i < list.size(); i++) {
+			  WayPoint waypoint = list.get(i);
+			  JSONObject object = new JSONObject();
+			  //json객체 .put ("변수명", 값)
+			  object.put("wayPointTitle", waypoint.getWayPointTitle());
+			  object.put("wayPointImg", waypoint.getWayPointImg());
+			  object.put("wayPointAddress", waypoint.getWayPointAddress());
+			  object.put("wayPointDetail", waypoint.getWayPointDetail());
+			  object.put("wayPointNav", waypoint.getWayPointNav());
+			  jsonArray.add(i,object);
+		  }
+		  
+		  // json 객체에 배열을 넣음
+		  jsonObject.put("sendData", jsonArray);
+		   
+		   return jsonArray;
+	   }
 }

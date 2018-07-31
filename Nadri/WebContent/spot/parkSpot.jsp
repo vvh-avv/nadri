@@ -270,7 +270,7 @@ $(function(){
 						removeable : true
 					});
 
-			// 마커를 클릭했을때 이벤트 발생 시키기
+			// 마커를 클릭했을때 이벤트 발생 시키기 여기서 this는 이벤트를 발생시킨 객체를 의미합니다.
 			google.maps.event.addListener(markers[i],'click',function() {
 				map.setZoom(14);
 				// 일단 마커를 모두 닫고
@@ -279,6 +279,7 @@ $(function(){
 					}
 				infowindows[this.index].open(map,markers[this.index]);
 				map.panTo(markers[this.index].getPosition());
+				//alert(locations[this.index].title);
 			});
 		}
 	}//end of initmap();	

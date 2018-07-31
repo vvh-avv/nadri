@@ -35,7 +35,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="/css/materialize.css">
 <!-- juanMap.js CDN --> 
-<script src="/javascript/juanMap.js"></script> 
+<script src="/javascript/juanMap.js?ver=1"></script> 
 
 <html>
 <head>
@@ -470,120 +470,6 @@ function openPage(pageName, elmnt, color) {
     elmnt.style.backgroundColor = color;
 }
 
-//일정계획으로 옮겨주는 메서드입니다.
-function addToSchedule(i, j){
-	var lasttd = $("#wayPoint > tr").length-1;
-	if( j <= lasttd ) {
-		// 주소값
-		wayPointAddress = $("#cartAddress"+i+"").text();
-		$("#wayPointAddress"+j+"").val(wayPointAddress);
-		
-      // 이미지값
-      console.log( $("#cartImg"+i+"").attr("class")+"번 카트 이미지 가져오는 중..." );
-      $.ajax({
-         url : "/restcart/getCart/"+$("#cartImg"+i+"").attr("class"),
-         method : "POST",
-         success : function(data){
-            $("#cartImg"+i+"").attr('src',data.cartImg);
-            
-            wayPointImg=$("#cartImg"+i+"").attr('src');
-            console.log("**"+wayPointImg);
-            $("#wayPointImg"+j+"").val(wayPointImg);
-         }
-      })
-      
-		//제목값
-		wayPointTitle = $("#cartTitle"+i+"").text();
-		$("#wayPointTitle"+j+"").val(wayPointTitle);
-
-		// 상세내용값
-		wayPointDetail=$("#cartDetail"+i+"").text();
-		$("#wayPointDetail"+j+"").val(wayPointDetail);
-		
-		// X값
-		wayPointDetail=$("#cartX"+i+"").val();
-		$("#wayPointX"+j+"").val(wayPointDetail);
-		
-		// Y값
-		wayPointDetail=$("#cartY"+i+"").val();
-		$("#wayPointY"+j+"").val(wayPointDetail);
-	} else {
-		swal("경유지를 먼저 추가해주세요!");
-	}
-		
-}
-
-//일정계획으로 옮겨주는 메서드입니다.
-function addToSchedule2(i, j){
-	var lasttd = $("#wayPoint > tr").length-1;
-	if( j <= lasttd ) {
-		// 주소값
-		wayPointAddress = $("#cartAddress"+i+"").text();
-		
-		if( wayPointAddress.indexOf("대한민국") != -1) {
-			wayPointAddress  = wayPointAddress.replace("대한민국","");
-		}
-		
-		$("#wayPointAddress"+j+"").val(wayPointAddress);
-		
-    	 // 이미지값
-		wayPointImg=$("#recommandImg"+i+"").attr('src');
-		$("#wayPointImg"+i+"").val(wayPointImg);
-      
-		//제목값
-		wayPointTitle = $("#recommandTitle"+i+"").text();
-		$("#wayPointTitle"+j+"").val(wayPointTitle);
-
-		// 상세내용값
-		wayPointDetail=$("#recommandDetail"+i+"").text();
-		$("#wayPointDetail"+j+"").val(wayPointDetail);
-		
-		// X값
-		wayPointDetail=$("#recommandX"+i+"").val();
-		$("#wayPointX"+j+"").val(wayPointDetail);
-		
-		// Y값
-		wayPointDetail=$("#recommandY"+i+"").val();
-		$("#wayPointY"+j+"").val(wayPointDetail);
-	} else {
-		swal("경유지를 먼저 추가해주세요!");
-	}
-		
-}
-
-function addWayPoint(){
-	var lasttd = $("#wayPoint > tr").length-1;
-	if(lasttd < 6 ){
-		swal("경유지가 추가되었어요");
-		var waypoint = '';
-		waypoint += '<tr>';
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
-		waypoint += "	<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);'  id='navigation' value='길찾기' onclick=search('#wayPointAddress"+w+"')></td> " ; 
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointImg" id="wayPointImg'+w+'"/>' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointNav" id="wayPointNav'+w+'" />' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointX"  id="wayPointX'+w+'" >' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointY"  id="wayPointY'+w+'" >   ' ;
-		waypoint += '	</tr>';
-	$('#wayPoint').append(waypoint);
-	w++;
-	} else {
-		swal("경유지는 최고 6개까지 가능합니다!");
-	}
-}
-
-function deleteWayPoint(){
-	var lasttd = $("#wayPoint > tr").length-1;
-	if(lasttd > 1){ 
-	swal("경유지가 삭제되었어요");
-	$("#wayPoint > tr:nth("+lasttd+")").remove();
-	w--;
-	} else {
-		swal("최소 2개의 장소는 필요합니다!");
-	}
-}
 //바구니 수정, 삭제 감지 스크립트
 $(function(){
 	
@@ -901,12 +787,12 @@ $(function(){
 							<c:set var="i" value="${i+1}" />
 							<tr>
 								<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointTitle" id="wayPointTitle${i}" value="${waypoint.wayPointTitle}"/></td>
-								<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointAddress" id="wayPointAddress${i}"value="${waypoint.wayPointAddress}"></td>
+								<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointAddress" id="wayPointAddress${i}"value="${waypoint.wayPointAddress}" onchange="JavaScript:deleteImg(${i})"></td>
 								<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointDetail"   id="wayPointDetail${i}"value="${waypoint.wayPointDetail}" /></td>
 								<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].moveTime" id="wayPointMoveTime${i}" readonly/></td>
 								<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);'  id='navigation' value='길찾기' onclick="search('#wayPointAddress${i}')"></td>
-								<input type="hidden" name="wayPoints[${i}].wayPointImg" id="wayPointImg'+${i}+'" value="${waypoint.wayPointImg}"/>
-								<input type="hidden" name="wayPoints[${i}].wayPointNav" id="wayPointNav'+${i}+'" value="${waypoint.wayPointNav}"/>
+								<input type="text" name="wayPoints[${i}].wayPointImg" id="wayPointImg${i}" value="${waypoint.wayPointImg}"/>
+								<input type="hidden" name="wayPoints[${i}].wayPointNav" id="wayPointNav${i}" value="${waypoint.wayPointNav}"/>
 								<input type="hidden" name="wayPoints[${i}].wayPointX"  id="wayPointX${i}" value="${waypoint.wayPointX}" >
 								<input type="hidden" name="wayPoints[${i}].wayPointY"  id="wayPointY${i}" value="${waypoint.wayPointY}">
 							</tr>
