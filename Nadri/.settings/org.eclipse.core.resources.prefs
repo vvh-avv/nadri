@@ -1,6 +1,3 @@
-=\=\=\=\=\=\=
-<<<<<<<=HEAD
->>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
 encoding//WebContent/chatFiles/user02/1.json=UTF-8
 encoding//WebContent/chatFiles/user02/2.json=UTF-8
@@ -11,6 +8,4 @@ encoding//WebContent/javascript/googlenavigation.js=EUC-KR
 encoding//WebContent/javascript/index.js=euc-kr
 encoding//WebContent/javascript/indexReal.js=euc-kr
 encoding//WebContent/javascript/juanMap.js=EUC-KR
-encoding//WebContent/javascript/juangeolocation.js=EUC-KR
-encoding//WebContent/javascript/juangeolocationPedestrian.js=EUC-KR
-encoding//WebContent/javascript/toolbar.js=euc-kr
+encoding//WebContent/javascript/juangeolocation.js=EUC-KRuangeolocationPedestrian.js=EUC-KRoolbar.js=euc-kr

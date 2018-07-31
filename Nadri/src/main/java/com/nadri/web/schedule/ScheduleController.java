@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -85,7 +86,7 @@ public class ScheduleController {
 		model.addAttribute("cart", cartService.getSpotCartList(userId));
 		model.addAttribute("recommand", spotService.getRecommandSpotList());
 	    model.addAttribute("date", date);
-		
+
 		if (transportationCode == 1) { 
 			return "forward:/schedule/addSchedulePedestrian.jsp";
 		} else if (transportationCode == 2) {
@@ -105,7 +106,7 @@ public class ScheduleController {
 		Calendar now = Calendar.getInstance();
 		String format = formatter.format(now.getTime());
 		long fileSize = multipartFile.getSize();
-		
+
 		String fileName="";
 		
 		if ( fileSize <= 0) {

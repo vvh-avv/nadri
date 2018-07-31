@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -239,5 +240,36 @@ public class ScheduleRestController {
 		   
 		   scheduleService.updateScheduleReview(schedule);
 	   }
-	
+	/*
+	   @RequestMapping(value="getScheduleList", method=RequestMethod.POST)
+	   public String getScheduleList( HttpSession session ) throws Exception{
+		   System.out.println("/restschedule/getScheduleList : POST");
+		   
+		   User user = (User)session.getAttribute("user");
+		   Search search = new Search();
+		   search.setUserId(user.getUserId());
+		   
+		   Map<String,Object> map = scheduleService.getMyScheduleList(search);
+		   List<Schedule> list = (List<Schedule>)map.get("list");
+		   System.out.println("======1");
+		   System.out.println(list);
+		   System.out.println("======1");
+		   JSONObject jsonObject = new JSONObject();
+		   JSONArray jsonArray = new JSONArray();
+        	   
+		   for(Schedule schedule : list) {
+			   int sn = schedule.getScheduleNo();
+			   jsonObject.put("id", sn);
+			   jsonObject.put("title", schedule.getScheduleTitle());
+			   Date sd = schedule.getScheduleDate();
+			   jsonObject.put("start", sd);
+			   jsonObject.put("className", "generalDay");
+			   jsonArray.add(jsonObject);
+		   }
+		   System.out.println("======2");
+		   System.out.println(jsonArray.toString());
+		   System.out.println("======2");
+		   
+		   return jsonArray.toString();
+	   }*/
 }

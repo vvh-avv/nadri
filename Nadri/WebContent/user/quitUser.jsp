@@ -49,7 +49,6 @@
 		});
 	});	
 	
-
 	
 	///////////////////////////////////////////////////////////////////////
 	function fncQuitUser() {
@@ -81,7 +80,7 @@
 <div class="container">
 	
 	<div class="row">
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-xs-offset-12 col-xs-12 col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>회원탈퇴</h3>
 					
@@ -92,39 +91,41 @@
 	
 	
 		<form class="form-horizontal">
-
+		<div class="row">
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="userId">I D</label>  
-		  <div class="col-md-4">
+		  <label class="col-xs-12 control-label col-md-4 control-label" for="userId">I D</label>  
+		  <div class="col-xs-12 col-md-4">
 		  		${user.userId}
 		 	<input type="hidden" class="form-control" id="userId" name="userId" value="${user.userId}">
 		  </div>
 		</div>
 		
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="password">비밀번호</label>  
-		  <div class="col-md-4">
+		  <label class="col-xs-12 control-label col-md-4 control-label" for="password">비밀번호</label>  
+		  <div class="col-xs-12 col-md-4">
 		  	<input type="password" id="password" name="password" class="form-control input-md">
 		  </div>
 		</div>
 		<br/>
 		
 		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
-				<label>정말인가요?<br/>정말로 탈퇴하시겠습니까? </label>
+		 	<div class="col-xs-3 control-label col-md-3 control-label"></div>
+			<div class="col-xs-12 control-label col-md-4 control-label">
+				<label>정말인가요? 정말로 탈퇴하시겠습니까? </label>
 			</div>
 		</div>
 		<br/>
 		
 	  <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
+	  		 <div class="col-xs-3 control-label col-md-3 control-label"></div>
+		    <div class="col-xs-12 control-label col-md-4 control-label">
 		      <button type="button" class="btn btn-danger"  >탈퇴</button>
 			  <a class="btn btn-default" href="#" role="button">취소</a>
 		    </div>
 		  </div>
 		</form>
+		</div>
 </div>
 
 </body>
 </html>
-

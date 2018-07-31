@@ -47,6 +47,17 @@ function formatDate2(today) {
 	return today.getFullYear()+month+day+hours+min+sec;
 }
 
+//HJS //HJS사용(mypageScheduleList.jsp에서 현재 사용중)
+function formatDate3(today) {
+	var month = (today.getMonth() + 1)+''; //''을 안넣으면 문자취급이 안되어 아래 조건문 성립불가
+	var day = today.getDate()+'';
+
+	if (month.length < 2) month = '0' + month;
+	if (day.length < 2) day = '0' + day;
+
+	return today.getFullYear()+"-"+month+"-"+day;
+}
+
 //HJS
 //이미지 미리보기 뷰
 //준비사항1 : <input multiple="multiple" class="form-control" type="file" id="file" name="file"...>		//파일업로드 할 input file태그

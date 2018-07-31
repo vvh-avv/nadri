@@ -35,6 +35,7 @@
 		display: inline-block;
 	    position: relative;
 	    cursor: pointer;
+	    margin: 5px;
 	}
 	article:hover .thumbImg img {
 		opacity: 0.3;
@@ -78,8 +79,9 @@ $(function(){
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
 	
+
 	<!-- 서브메뉴 노출 -->
-	<div class="col-sm-2" style="margin-left:3%">
+	<div class="col-xs-12 col-md-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -93,20 +95,22 @@ $(function(){
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	
 	</div>
-	
+
+
+<div class="row">	
 	<div class="container">
 		
 		
 		
 		<!-- 작성한 글 리스트 뜨는 부분 -->
-		<div class="col-md-10">
+		<div class="col-xs-12 col-md-10">
 			<c:set var="i" value="0"/>
 			<c:forEach var="board" items="${list}">
 				<article class="${board.boardNo}">
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
 						<c:if test="${board.boardImg==null}">
-							<img src="http://placehold.it/250X250" class="img-thumbnail">
+							<img src="/images/board/posts/no_image.jpg" class="img-thumbnail">
 						</c:if>
 						<c:if test="${board.boardImg!=null}">
 							<c:if test="${(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg.split(',')[0]}" class="img-thumbnail"> </c:if>
@@ -127,5 +131,7 @@ $(function(){
 			</c:if>
 		</div>
 	</div> <!-- e.o.container -->
+</div>
+
 </body>
 </html>
