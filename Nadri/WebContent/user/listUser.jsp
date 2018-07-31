@@ -9,7 +9,6 @@
 	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	
 	<!--  Bootstrap, jQuery CDN  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
@@ -103,33 +102,35 @@
 	<%@ include file="/layout/toolbar.jsp"%>
 
  	<!-- ToolBar End /////////////////////////////////////-->
- 	
- <div class="col-sm-2" style="margin-left:3%">
-	<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
-	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-	</c:if>
-	<c:if test="${ empty user.profileImg} ">
-		<img src = "/images/profile/default.png" width="133" height="133" class="img-circle">
-	</c:if>
-	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
-	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
-	  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
-	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
-	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
-	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-	  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
-	  
-	  <br/><br/><br/><br/><br/><br/><br/><br/>
-	  <a href="/user/logout">로그아웃</a><br/><br/>
-
+ <div class="row">
+	 <div class="col-xs-12 col-md-2" style="margin-left:3%">
+	 	
+			<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
+			  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
+			</c:if>
+			<c:if test="${ empty user.profileImg} ">
+				<img src = "/images/profile/default.png" width="133" height="133" class="img-circle">
+			</c:if>
+			  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
+			  <a href="/user/getUser">내 정보 보기</a><br/><br/>
+			  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+			  <a href="/friend/listFriend">친구 목록</a><br/><br/>
+			  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
+			  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
+			  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
+			  
+			  <br/><br/><br/><br/><br/><br/><br/><br/>
+			  <a href="/user/logout">로그아웃</a><br/><br/>
+		
+	</div>
 </div>
 
+<div class="row">
 	<div style="margin-left:23%">	
-
-		<div class="col-sm-10"></div>
+		<div class="col-xs-12 col-md-10"></div>
 		<div class="container"></div>
 	</div>
-
+</div>
  
 </body>
 </html>

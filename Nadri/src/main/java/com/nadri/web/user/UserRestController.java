@@ -101,6 +101,7 @@ public class UserRestController {
 		System.out.println("/////////////////////////");
 		return userService.getUser(user.getUserId());
 	}
+	
 
 	
 	@RequestMapping(value="json/updateUser", method=RequestMethod.POST)

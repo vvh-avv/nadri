@@ -83,7 +83,7 @@ $(function(){
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info">비밀번호 찾기</h3>
 				</div>
@@ -93,29 +93,29 @@ $(function(){
 		  	
 	  	<form class="form-horizontal" id="findPassword" name="findPassword" >
 		   <div class="form-group">
-		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">이름</label>
-			    <div class="col-sm-4">
+		    <label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
+			    <div class="col-xs-4 col-md-4">
 			      <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력해주세요">
 			    </div>
 		  </div>
 		  
 		  <div class="form-group">
-		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아이디</label>
-			    <div class="col-sm-4">
+		    <label for="userId" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">아이디</label>
+			    <div class="col-xs-4 col-md-4">
 			    	<input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요"> 
 				</div>
 		  </div>
 		  		  	  	   
 		  <div class="form-group">
-		    <label for="email" class="col-sm-offset-1 col-sm-3 control-label">이메일</label>
-			    <div class="col-sm-4">
+		    <label for="email" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이메일</label>
+			    <div class="col-xs-4 col-md-4">
 			      <input type="text" class="form-control" id="email" name="email" placeholder="가입시 입력한 이메일을 입력해주세요	">
 			    </div>
 		  </div>	  
 		  <br/>
 		  
 		  <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		    <div class="col-xs-offset-4  col-xs-4 text-center col-md-offset-4  col-md-4 text-center">
 		      <button type="button" class="btn btn-primary"  id=findPW>비밀번호 찾기</button>
 		  	</div>
 		  </div>

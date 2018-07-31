@@ -30,7 +30,7 @@
        WHERE friend_id=#{value} 
 	</select>
 	
-
+	
 	<!-- 친구 수락 -->
 	<update id="acceptFriend" parameterType = "java.util.Map">
 		 UPDATE friend 

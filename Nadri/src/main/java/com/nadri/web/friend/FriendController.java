@@ -64,9 +64,8 @@ public class FriendController {
 		
 		System.out.println("-------------------------------------listFriend controller-------------------------------------");
 		System.out.println("controller fList: "+fList);
-		System.out.println("--------------------------------------------------------------------------");
 		model.addAttribute("fList", fList);
-		System.out.println("after fList: "+fList);
+		System.out.println("friend controller - after fList: "+fList);
 		
 		return "forward:/friend/listFriend.jsp";
 	}
@@ -85,7 +84,7 @@ public class FriendController {
 	}*/
 	
 	
-	//模备 沥焊 炼雀
+/*	//模备 沥焊 炼雀
 	@RequestMapping(value="getFriend", method=RequestMethod.GET)
 	public String getFriend(@RequestParam("friendId") String friendId, Model model)throws Exception{
 		System.out.println("/friend/getFriend: GET");
@@ -95,7 +94,7 @@ public class FriendController {
 		model.addAttribute("friend", friend);
 		
 		return "forward:/friend/getFreind.jsp";
-	}
+	}*/
 	
 	
 	
@@ -114,7 +113,7 @@ public class FriendController {
 	}
 	
 	
-	//模备 夸没 秒家
+	/*//模备 夸没 秒家
 	@RequestMapping(value="cancelFriend")
 	public String cancelFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
 		if (parameterMap != null) {
@@ -133,6 +132,6 @@ public class FriendController {
 	public String refuseFriend(String userId, String friendId, HttpSession session) throws Exception{
 		friendService.refuseFriend(userId, friendId);
 		return "redirect:/friend/listFriend?userId="+userId;
-	}
+	}*/
 	
 }
