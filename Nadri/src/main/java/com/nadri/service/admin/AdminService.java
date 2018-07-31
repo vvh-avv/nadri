@@ -39,4 +39,8 @@ public interface AdminService {
 	
 	public String getWeather();
 	
+	public int getTotalCount();
+	
+	public List<String> getSearchLog(String userId);
+	
 }

@@ -180,5 +180,20 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectOne("AdminMapper.getWeather");
 	}
 
+	@Override
+	public int getTotalCount() {
+		// TODO Auto-generated method stub
+		int a = sqlSession.selectOne("SearchLogMapper.spotCount");
+		int b = sqlSession.selectOne("SearchLogMapper.boardCount");
+		int c = sqlSession.selectOne("SearchLogMapper.scheduleCount");
+		return a+b+c;
+	}
+
+	@Override
+	public List<String> getSearchLog(String userId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("SearchLogMapper.getSearchLog", userId);
+	}
+
 
 }

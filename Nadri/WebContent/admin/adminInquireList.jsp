@@ -93,8 +93,8 @@
 							</div>
 						</div>
 						<div class="row order-option">
-							<div class="col-md-6">최신순</div>
-							<div class="col-md-6">종류별</div>
+							<div class="col-md-6"><div>최신순</div><div class="glyphicon glyphicon-arrow-up"></div><div class="glyphicon glyphicon-arrow-down"></div></div>
+							<div class="col-md-6"><div>종류별</div><div class="glyphicon glyphicon-arrow-up"></div><div class="glyphicon glyphicon-arrow-down"></div></div>
 						</div>
 					</div>
 				</div>

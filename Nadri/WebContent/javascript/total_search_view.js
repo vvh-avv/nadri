@@ -171,9 +171,9 @@ $(function() {
 
 		var height;
 		var searcher
-		if ($(document).scrollTop() > 100) {
+/*		if ($(document).scrollTop() > 100) {
 			$('.odometer').html(odo);
-		}
+		}*/
 
 		if ($(document).scrollTop() < 70) {
 			$('.fix-box').css('height', '70px');
@@ -328,9 +328,8 @@ $(function() {
 		}
 	})
 	
-	$('.logs').on('click',function(){
-		self.location = "/searchLog/listSearchLog?searchKeyword="
-			+ $(this).attr('name');
+	$('.search-history > div').on('click',function(){
+		alert($(this).attr('name'));
 	});
 
 	$('.searcher > input').on(
@@ -351,7 +350,7 @@ $(function() {
 					self.location = "/searchLog/listSearchLog?searchKeyword="
 							+ $(this).val();
 				}
-			})		
+			})
 
 	$('.expand-out').on('click',function(){
 		$('.maincon-small').css('opacity','0');
@@ -367,7 +366,7 @@ $(function() {
 	
 	$('.expand-in').on('click',function(){
 		$('.maincon-small').css('opacity','1');
-		$('.maincon-small').css('z-index','1');
+		$('.maincon-small').css('z-index','5');
 		$('.maincon-small').css('top','8px');
 		$('.expand-out').css('opacity','1');
 		$('.expand-out').css('top','15px');
@@ -380,7 +379,6 @@ $(function() {
 	$('.maincon').on('click',function(){
 		self.location = '/nadri/nadriIndex';
 	})
-	
 	$('.maincon-small').on('click',function(){
 		self.location = '/nadri/nadriIndex';
 	})

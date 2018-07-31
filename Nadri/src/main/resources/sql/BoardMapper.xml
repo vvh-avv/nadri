@@ -165,7 +165,7 @@
 	</select>
 	<!-- 메인화면 추천 게시물 (회원/친구좋아요) -->
 	<select id="getRecomUserLike" parameterType="map" resultMap="boardMap">
-		SELECT board.*, comment.commCnt, inTable.likecnt
+		SELECT board.open_range,board.board_no,board.user_id, ifnull(board.hashtag,'no_tag') hashtag, ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, comment.commCnt, inTable.likecnt
         FROM board
 			LEFT JOIN (SELECT board_no, likes_time, count(*) likeCnt FROM likes WHERE likes_time
 																				<if test="search.searchCondition.equals('최신')">
@@ -192,7 +192,7 @@
 	</select>
 	<!-- 메인화면 추천 게시물 (회원/작성글) -->
 	<select id="getRecomUserBoard" parameterType="map" resultMap="boardMap">
-		SELECT board.*, comment.commCnt, likes.likeCnt
+		SELECT board.open_range,board.board_no,board.user_id, ifnull(board.hashtag,'no_tag') hashtag, ifnull(board.board_img, 'no_img') board_img,board.board_time,board.board_title, comment.commCnt, likes.likeCnt
         FROM board
 			LEFT JOIN (SELECT board_no, count(*) commCnt FROM comment GROUP BY board_no) comment on board.board_no = comment.board_no
             LEFT JOIN (SELECT board_no, count(*) likeCnt FROM likes GROUP BY board_no) likes on board.board_no = likes.board_no

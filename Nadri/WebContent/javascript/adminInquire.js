@@ -346,15 +346,28 @@
 			$('.options > div').css('border','1px solid #c1c1c154');
 		})
 		
+/*		
+		var boxchk = true;
 		$('.cons-label').on('click',function(){
 			var id = $(this).attr('id');
-			var ic = $('input[name='+id+']').prop('checked');
-			if(ic){
-				$('input[name='+id+']').attr('checked',false);			
+			if(boxchk){
+				$('input[name='+id+']').attr('checked',false);		
+				boxchk = false;
 			}else{
 				$('input[name='+id+']').attr('checked',true);
+				boxchk = true;
 			}
 		})
+		
+		$('.conditions').on('change',function(){
+			if(boxchk){
+				$('input[name='+id+']').attr('checked',false);	
+				boxchk = false;
+			}else{
+				$('input[name='+id+']').attr('checked',true);
+				boxchk = true;
+			}
+		})*/
 		
 		
 	}); // javaScript function 

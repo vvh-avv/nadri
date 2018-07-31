@@ -5,13 +5,49 @@
 
 <mapper namespace="SearchLogMapper">
 
-	<select id="boardSearchResult" parameterType="string" resultType="hashmap">
+	<resultMap type="board" id="boardMap">
+		<result property="boardNo" column="board_no" jdbcType="INTEGER"/>
+		<result property="boardDate" column="board_time" jdbcType="DATE"/>
+		<result property="boardTitle" column="board_title" jdbcType="VARCHAR"/>
+		<result property="boardContent" column="board_content" jdbcType="VARCHAR"/>
+		<result property="openRange" column="open_range" jdbcType="VARCHAR"/>
+		<result property="boardImg" column="board_img" jdbcType="VARCHAR"/>
+		<result property="hashTag" column="hashtag" jdbcType="VARCHAR"/>
+		<result property="likeCnt" column="likeCnt" jdbcType="INTEGER"/>
+		<result property="commCnt" column="commCnt" jdbcType="INTEGER"/>
+		<result property="boardCode" column="board_code" jdbcType="VARCHAR"/>
+		
+		<association property="user" javaType="user">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<select id="boardSearchResult" parameterType="string" resultMap="boardMap">
 		SELECT
 	    A.board_no board_no, A.board_title board_title, 
 	    A.board_content board_content,A.board_time board_time,A.board_img board_img
-	    ,(SELECT COUNT(*) FROM comment B WHERE B.board_no=A.board_no) reply 
+	    ,(SELECT COUNT(*) FROM comment B WHERE B.board_no=A.board_no) commCnt 
 		FROM board A
-		WHERE A.board_title LIKE '%${value}%'
+		WHERE A.board_title LIKE '%${searchKeyword}%' AND A.open_range = '0'
+	</select>
+	
+	<select id="boardSearchResultUser" parameterType="search" resultMap="boardMap">
+		SELECT b.board_title board_title,b.user_id user_id,b.board_no board_no ,b.board_content board_content,
+			   b.board_time board_time, b.board_img board_img,(SELECT COUNT(*) FROM comment c WHERE c.board_no=b.board_no) commCnt 
+		FROM board b,
+		(SELECT user_id user_id,friend_id f_id,friend_code
+		from friend
+		where friend_code ='1') F
+		WHERE b.user_id = F.f_id AND F.user_id = #{userId} AND b.open_range = '1' AND b.board_title LIKE '%${searchKeyword}%'
+		GROUP BY b.user_id
+	</select>
+	
+	<select id="boardSearchResultSelf" parameterType="search" resultMap="boardMap">
+		SELECT b.board_title board_title,b.user_id user_id,b.board_no board_no ,b.board_content board_content,
+			   b.board_time board_time, b.board_img board_img,(SELECT COUNT(*) FROM comment c WHERE c.board_no=b.board_no) commCnt 
+		FROM board b
+		WHERE b.user_id = #{userId} AND b.board_title LIKE '%${searchKeyword}%'
+		GROUP BY b.user_id
 	</select>
 	
 	<select id="spotSearchResult" parameterType="string" resultType="hashmap">
@@ -30,7 +66,7 @@
 		   spot_detailurl,
 		   spot_readcnt
 		FROM spot
-		WHERE spot_title LIKE '%${value}%'
+		WHERE spot_title LIKE '%${value}%' 
 	</select>
 	
 	<select id="scheduleSearchResult" parameterType="string" resultType="hashmap">
@@ -43,7 +79,33 @@
 		    open_range,
 		    hashtag
 		FROM schedule
-		WHERE schedule_title LIKE '%${value}%'
+		WHERE schedule_title LIKE '%${value}%' 
 	</select>
+	
+	<select id="getSearchLog" parameterType="string" resultType="string">
+		SELECT search_keyword
+		FROM search
+		WHERE user_id = #{value}
+	</select>
+	
+	<select id="spotCount" resultType="int">
+		SELECT COUNT(*)
+		FROM spot
+	</select>
+	
+	<select id="boardCount" resultType="int">
+		SELECT COUNT(*)
+		FROM board
+	</select>
+	
+	<select id="scheduleCount" resultType="int">
+		SELECT COUNT(*)
+		FROM schedule
+	</select>
+	
+	<insert id="addSearchLog" parameterType="hashmap">
+		INSERT INTO search (user_id,search_keyword,search_condition,search_time)
+		VALUE(#{userId},#{searchKeyword},'0',NOW())
+	</insert>
 
 </mapper>

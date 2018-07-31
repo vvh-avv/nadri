@@ -2,7 +2,9 @@ package com.nadri.web.searchlog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.service.searchlog.SearchLogService;
@@ -17,6 +19,12 @@ public class SearchLogRestController {
 	
 	public SearchLogRestController() {
 		System.out.println(this.getClass());
+	}
+	
+	@RequestMapping(value ="getSearchLog/{userId}", method=RequestMethod.GET)
+	public String getSearchLog(@PathVariable String userId) {
+		System.out.println("userId = "+userId);
+		return "return";
 	}
 
 }

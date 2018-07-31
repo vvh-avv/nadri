@@ -110,6 +110,18 @@ public class AdminServiceImpl implements AdminService{
 		// TODO Auto-generated method stub
 		return adminDao.getWeather();
 	}
+
+	@Override
+	public int getTotalCount() {
+		// TODO Auto-generated method stub
+		return adminDao.getTotalCount();
+	}
+
+	@Override
+	public List<String> getSearchLog(String userId) {
+		// TODO Auto-generated method stub
+		return adminDao.getSearchLog(userId);
+	}
 	
 	
 
