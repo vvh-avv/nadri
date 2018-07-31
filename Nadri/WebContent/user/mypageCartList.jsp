@@ -108,7 +108,7 @@ function initMap() {
 						<!-- 썸네일 형식의 장소 이미지 -->
 						<div class="thumbImg" style="width:auto; height:250px;">
 							<c:if test="${cart.cartImg==null}">
-								<img src="http://placehold.it/250X250" class="img-thumbnail">
+								<img src="/images/board/posts/no_image.jpg" class="img-thumbnail">
 							</c:if>
 							<c:if test="${cart.cartImg!=null}">
 								<img src="${cart.cartImg}" class="img-thumbnail">

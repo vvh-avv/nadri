@@ -594,8 +594,8 @@ $(function(){
            }
            reader.readAsDataURL(input.files[0]);
         }
-
     }
+   
 })
 </script> 
     
@@ -705,7 +705,7 @@ $(function(){
 						</div>
 						<div class="form-group">
 							<label for="scheduleDate">나들이가는 날짜</label> 
-							<input type="text"  class="form-control"id="datepicker" placeholder="나들이가는 날짜를 입력해주세요!!">
+							<input type="text"  class="form-control"id="datepicker" placeholder="나들이가는 날짜를 입력해주세요!!" value="${date}">
 						</div>
 					</div>
 						<div class="modal-footer"> 
