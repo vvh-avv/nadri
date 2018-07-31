@@ -1,6 +1,7 @@
 package com.nadri.web.user;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +39,7 @@ public class UserController {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
+
 	
 	@Value("#{commonProperties['pageUnit']}")
 	//@Value("#{commonProperties['pageUnit'] ?: 3}")
@@ -310,8 +312,10 @@ public class UserController {
 		
 		session.setAttribute("user", dbUser);
 		
-		return "forward:/user/login";
+		return "forward:/index.jsp";
 	}
-
+	
+	
 	
 }
+

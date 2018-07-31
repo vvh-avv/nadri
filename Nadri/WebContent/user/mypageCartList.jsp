@@ -91,7 +91,7 @@ function initMap() {
 	<%@ include file="/layout/toolbar.jsp"%>
 	
  <div class="row">
-   	<div class="col-xs-2 col-md-2" style="margin-left:3%">
+   	<div class="col-xs-12 col-md-2" style="margin-left:3%">
 
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
@@ -109,7 +109,7 @@ function initMap() {
 	
 <div class="row">
 	<div class="container">
-			<div class="col-md-10">
+			<div class="col-xs-12 col-md-10">
 			<!-- 맵 뜨는 부분 -->
 			<div class="row">
 				<div id="map"></div>

@@ -89,14 +89,14 @@ $(function(){
 		<form class="form-horizontal">
 			<div class="form-group">
 				<label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
-					<div class="col-sm-4">
+					<div class="col-xs-4 col-md-4">
 						<input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력해주세요">
 					</div>
 			</div>
 		  
 		  <div class="form-group">
 		    <label for="email" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이메일</label>
-			    <div class="col-sm-4">
+			    <div class="col-xs-4 col-md-4">
 			      <input type="text" class="form-control" id="email" name="email" placeholder="가입시 입력한 이메일을 입력해주세요">
 			    </div>
 		  </div>

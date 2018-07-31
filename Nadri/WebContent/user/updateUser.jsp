@@ -107,8 +107,8 @@
 	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
 	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
-  <div class="row">
-   	<div class="col-xs-2 col-md-2" style="margin-left:3%">
+
+   	<div class="col-xs-12 col-md-2" style="margin-left:3%">
 
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
@@ -122,12 +122,12 @@
 		<br/><br/><br/><br/><br/><br/><br/><br/>
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	</div>
-</div>
+
 
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="col-xs-9 col-md-9">
-	<div class="container">
 	
+	<div class="container">
+	<div class="col-xs-12 col-md-9">
 		<div class="page-header text-center">
 	       <h3 class=" text-info">회원정보수정</h3>
 	       <h5 class="text-muted">내 정보를 <strong class="text-danger">최신정보로 관리</strong>해 주세요.</h5>
@@ -148,7 +148,7 @@
 		
 		  <div class="form-group">
 		    <label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
-		    <div class="col-xs-4 col-md-4">
+		    <div class="col-xs-12 col-md-4">
 		      <input type="text" class="form-control" id="userName" name="userName" value="${user.userName}" placeholder="변경회원이름">
 		    </div>
 		  </div>
@@ -178,7 +178,7 @@
 					<option value="019" ${ ! empty user.phone1 && user.phone1 == "019" ? "selected" : ""  } >019</option>
 				</select>
 		    </div>
-		    <div class="col-xs-2 col-md-2">
+		    <div class="col-xs-12 col-md-2">
 		      <input type="text" class="form-control" id="phone2" name="phone2" value="${ ! empty user.phone2 ? user.phone2 : ''}"  placeholder="변경번호">
 		    </div>
 		    <div class="col-xs-2 col-md-2">
@@ -189,7 +189,7 @@
 		  
 		  <div class="form-group">
 		    <label for="age" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">나이</label>
-		    <div class="col-xs-2 col-md-2">
+		    <div class="col-xs-12 col-md-2">
 		      <input type="text" class="form-control" id="age" name="age" value="${user.age}" placeholder="나이">
 		    </div>
 		    <div class="col-xs-4 col-md-4">
@@ -200,8 +200,8 @@
 		  
 		  
 		  <div class="row">
-				<label for="profileImg" class="col-sm-offset-1 col-sm-3 control-label">프로필 사진</label>
-				<div class="col-sm-4">
+				<label for="profileImg" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">프로필 사진</label>
+				<div class="col-xs-4 md-4">
 					<!-- <input type="file" class="form-control" id="profileImg" name="file"> -->
 					<input multiple="multiple" type="file" class="form-control" id="profileImg" name="file">
 				</div>
@@ -210,13 +210,13 @@
 			<br/>
 		  
 		  	<div class="row">
-				<label for="introduce" class="col-sm-offset-1 col-sm-3 control-label">자기소개</label>
+				<label for="introduce" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">자기소개</label>
 				<textarea class="col-sm-6" name="introduce" rows="10"></textarea>
 			</div>
 			<br/>
 		  
 		  <div class="form-group">
-		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		    <div class="col-xs-offset-4  col-xs-4 text-center col-md-offset-4  col-md-4 text-center">
 		      <button type="button" class="btn btn-primary"  >수 &nbsp;정</button>
 			  <a class="btn btn-danger" href="#" type="button">탈 &nbsp;퇴</a>
 		    </div>

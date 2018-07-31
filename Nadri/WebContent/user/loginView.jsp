@@ -28,7 +28,6 @@
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
 
 
-
 <style>
 	body > div.comtainer{
 		border : 3px solid #D6CDB7;
@@ -201,13 +200,12 @@
 	})
 	
 	
-	//구글 로그인
+	 //구글 로그인	
 	$(function(){
  		function onSuccess(googleUser) {
 		    var profile = googleUser.getBasicProfile();
 		    console.log(profile);
-			  
-		}
+	}
 		
 		$(".g-signin2").on("click", function(){
 		    gapi.client.load('plus', 'v1', function () {
@@ -215,7 +213,6 @@
 		            'userId': 'me'
 		        }).execute(function (res) {
 		        	console.log(JSON.stringify(res));
-		        	
 		        	res.id += "@google";
 			        
 		            $.ajax({
@@ -225,7 +222,7 @@
 		  					"Content-Type" : "application/json"
 		  				},
 		  				success : function(idChk){
-		  					  if(idChk==true){ 						//DB에 아이디가 없으면 회원가입
+		  					  if(idChk==true){ 
 		  						  console.log("회원가입 절차가 진행중입니다");
 		  						  $.ajax({
 		  							  url : "/user/json/addUser",
@@ -245,8 +242,8 @@
 		  							  }
 		  						  })
 		  					  }
-		  					  if(idChk==false){ 						//DB에 아이디가 있으면 로그인
-		  						  console.log("로그인 절차가 진행중입니다");
+		  					  if(idChk==false){ 
+		  						  console.log("로그인이 진행중입니다");
 		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  					  }
 		  				  }
@@ -265,9 +262,7 @@
 		    	self.location="/user/logout";
 		    });
 		}
-		
-	})
-
+	}) 
 
 		  
 	//네이버 로그인
@@ -291,29 +286,29 @@
 	<!-- ToolBar Start /////////////////////////////////////-->
 	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->	
-   	
-   	<div class="container">
+   
 
-   		<div class="row">
-   			<div class="col-xs-6 col-md-6">
+   	<div class="container">		
+  		<div class="row">
+   			<div class="col-xs-12 col-md-6">
 				<img src="/images/test/logo.jpg" class="img-rounded" width="100%" />
 			</div>
-			<div class="col-xs-6 col-md-6">
+			
+			<div class="col-xs-12 col-md-6">
 				<br><br>
 				<div class="jumbotron">
-				
-					
+		
 					<form class="form-horizontal">
 						<div class="form-group">
 							<label for="userId" class="col-xs-4 control-label col-md-4 control-label">아 이 디</label>
-							<div class="col-xs-6 col-md-6">
+							<div class="col-xs-12 col-md-6">
 								<input type="text" class="form-control" name="userId" id="userId"  placeholder="아이디" >
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label for="password" class="col-xs-4 control-label col-md-4 control-label">비 밀 번 호</label>
-							<div class="col-xs-6 col-md-6">
+							<div class="col-xs-12 col-md-6">
 								<input type="password" class="form-control" name="password" id="password" placeholder="비밀번호" >
 							</div>
 						</div>
@@ -331,18 +326,18 @@
 					  </div>
 					</form>
 												
+					<!--  구글 로그인 HTML -->
+					<div id="googleLogin" align="center">													
+						<div class="g-signin2" data-onsuccess="onSuccess" data-theme="dark"></div>
+					</div> 
+					
 												
 					<!-- 카카오 로그인 HTML -->
 					<div id="kakaoLogin" align="center">
 						<a id="kakao-login-btn" href="#">
-							<img src="/images/user/kakao_login_btn_small.png" /> 	
+							<img src="/images/user/kakao.png" /> 	
 						</a>
 						<a href="http://developers.kakao.com/logout"></a>
-					</div>
-												
-					<!-- 구글 로그인 HTML -->
-					<div id="googleLogin" align="center">													
-						<div class="g-signin2" data-onsuccess="onSuccess" data-theme="dark"></div>
 					</div>
 																
 					<!-- 네이버 로그인 HTML --> 
@@ -354,6 +349,7 @@
 			</div>
    		</div>
    	</div>
-
+	
+	
 </body>
 </html>

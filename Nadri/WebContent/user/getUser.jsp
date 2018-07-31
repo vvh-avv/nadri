@@ -62,8 +62,8 @@
 	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
 	<%@ include file="/layout/toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
-  <div class="row">
-	<div class="col-xs-2 col-md-2" style="margin-left:3%">
+
+  	<div class="col-xs-12 col-md-2" style= margin-left:3%>
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -77,14 +77,15 @@
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	
 	</div>
-</div>
 
-<div class="row">
+
+
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="col-xs-9 col-md-9">
-	<div class="container">
+	<div class="container" >
+	<div class="col-xs-12 col-md-9">
+		<div class="row">
 	
-		<div class="page-header">
+		<div class="page-header" >
 	       <h3 class=" text-info">회원정보조회</h3>
 	       <h5 class="text-muted">개인 정보를 <strong class="text-danger">최신상태로 관리</strong>해 주세요</h5>
 	    </div>
@@ -92,11 +93,11 @@
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2 "><strong>프로필 사진</strong></div>
 				<%--  <div class="col-xs-8 col-md-4">${user.profileImg}</div>  --%>
-					<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
-						<img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle">
-					</c:if>
+				<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
+					<img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle">
+				</c:if>
 		</div>
-		
+
 		<hr/>
 	
 		<div class="row">
@@ -165,7 +166,8 @@
 		
  	</div>
  	</div>
-</div>
+ 	</div>
+
 
 </body>
 </html>

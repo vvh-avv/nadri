@@ -78,9 +78,9 @@ $(function(){
 	<!-- 메인툴바 -->
 	<%@ include file="/layout/toolbar.jsp"%>
 	
-<div class="row">
+
 	<!-- 서브메뉴 노출 -->
-	<div class="col-sm-2" style="margin-left:3%">
+	<div class="col-xs-12 col-md-2" style="margin-left:3%">
 	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
 	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
 	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -94,7 +94,7 @@ $(function(){
   		<a href="/user/logout">로그아웃</a><br/><br/>
 	
 	</div>
-</div>
+
 
 <div class="row">	
 	<div class="container">
@@ -102,7 +102,7 @@ $(function(){
 		
 		
 		<!-- 작성한 글 리스트 뜨는 부분 -->
-		<div class="col-md-10">
+		<div class="col-xs-12 col-md-10">
 			<c:set var="i" value="0"/>
 			<c:forEach var="board" items="${list}">
 				<article class="${board.boardNo}">

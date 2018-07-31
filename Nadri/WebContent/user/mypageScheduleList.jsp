@@ -278,7 +278,7 @@ $(function(){
    <%@ include file="/layout/toolbar.jsp"%>
    
    <!-- 서브메뉴 노출 -->
-   <div class="col-sm-2" style="margin-left:3%">
+   <div class="col-xs-12 col-md-2" style="margin-left:3%">
      <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
      <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
      <a href="/user/getUser">내 정보 보기</a><br/><br/>
@@ -294,7 +294,7 @@ $(function(){
    </div>
    
    <div class="container" >
-      <div class="col-md-9">
+      <div class="col-xs-12 col-md-9">
          <div class="row">
             <p class="text-primary" style="margin:0px;">총 ${resultPage.totalCount }개의 일정이 있습니다! </p>
       
@@ -314,7 +314,7 @@ $(function(){
                  <input type="hidden" id="currentPage" name="currentPage" value="" />
             </form>
          </div>
-         
+        
       
       <!-- 작성한 글 리스트 뜨는 부분 -->
          <c:set var="i" value="0"/>
