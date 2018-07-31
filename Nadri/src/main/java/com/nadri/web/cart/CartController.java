@@ -34,7 +34,7 @@ public class CartController {
 	
 	//마이페이지 내 장소바구니를 보기 위한 메서드 입니다.
    @RequestMapping(value="/getMyCartList")
-   public String getMyCartList(Model model, HttpSession session) throws Exception{
+   public synchronized String getMyCartList(Model model, HttpSession session) throws Exception{
       System.out.println("/cart/getMyCartList : GET / POST");
       
       User user = (User)session.getAttribute("user");

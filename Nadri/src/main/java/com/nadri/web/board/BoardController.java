@@ -56,7 +56,7 @@ public class BoardController {
 	
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.GET)
-	public String addBoard(HttpSession session) throws Exception{
+	public synchronized String addBoard(HttpSession session) throws Exception{
 		System.out.println("/board/addBoard : GET");
 		
 		if(session.getAttribute("user")==null) { //비회원이 접근하면 리스트로 보내기
@@ -68,7 +68,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/board/addBoard", method=RequestMethod.POST)
-	public String addBoard(@ModelAttribute("board") Board board, @RequestParam("file") MultipartFile[] file,
+	public synchronized String addBoard(@ModelAttribute("board") Board board, @RequestParam("file") MultipartFile[] file,
 									MultipartHttpServletRequest request, Model model,
 									RedirectAttributes redirectAttributes) throws Exception{
 		System.out.println("/board/addBoard : POST");
@@ -121,7 +121,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.GET)
-	public String updateBoard( @ModelAttribute Board board, Model model, HttpSession session ) throws Exception{
+	public synchronized String updateBoard( @ModelAttribute Board board, Model model, HttpSession session ) throws Exception{
 		System.out.println("/board/updateBoard : GET");
 		
 		User user = (User)session.getAttribute("user");
@@ -143,7 +143,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="updateBoard", method=RequestMethod.POST)
-	public String updateBoard( @ModelAttribute Board board,
+	public synchronized String updateBoard( @ModelAttribute Board board,
 										MultipartHttpServletRequest request, @RequestParam("file") MultipartFile[] file) throws Exception{
 		System.out.println("/board/updateBoard : POST");
 		
@@ -207,7 +207,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="getBoard")
-	public String getBoard(@RequestParam("boardNo") int boardNo, Model model, HttpSession session) throws Exception{
+	public synchronized String getBoard(@RequestParam("boardNo") int boardNo, Model model, HttpSession session) throws Exception{
 		System.out.println("/board/getBoard : GET / POST");
 
 		Board board = boardService.getBoard(boardNo);
@@ -249,7 +249,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="listBoard")
-	public String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session,
+	public synchronized String getBoardList( @ModelAttribute("search") Search search, Model model, HttpSession session,
 										@RequestParam(value="myBoardCnt", defaultValue="0") int boardCnt) throws Exception{
 		System.out.println("/board/getBoardList : GET / POST");
 		
@@ -293,7 +293,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="deleteBoard", method=RequestMethod.POST)
-	public String deleteBoard(@RequestParam("boardNo") int boardNo) throws Exception{
+	public synchronized String deleteBoard(@RequestParam("boardNo") int boardNo) throws Exception{
 		System.out.println("/board/deleteBoard : POST");
 		
 		boardService.deleteBoard(boardNo);
@@ -303,7 +303,7 @@ public class BoardController {
 
 	//마이페이지 작성한 글보기
 	@RequestMapping(value="getMyBoardList")
-	public String getMyBoardList(Model model, HttpSession session) throws Exception{
+	public synchronized String getMyBoardList(Model model, HttpSession session) throws Exception{
 		System.out.println("/board/getMyBoardList : GET / POST");
 		
 		User user = (User)session.getAttribute("user");
