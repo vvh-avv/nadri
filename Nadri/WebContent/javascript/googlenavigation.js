@@ -68,14 +68,21 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime0").val(Math.round(route.legs[0].duration.value/60));
+	                var route = response.routes[0];
+	                var total = route.legs[0].duration.value;
+	                if(total> 3600) {
+	                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+	                } else {
+	                    time = Math.floor(total%3600/60) + "분 ";
+	                }
+	                
+	                $("#wayPointMoveTime1").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav0").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav1").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -96,14 +103,21 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime1").val(Math.round(route.legs[0].duration.value/60));
+	      		var route = response.routes[0];
+                var total = route.legs[0].duration.value;
+                if(total> 3600) {
+                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+                } else {
+                    time = Math.floor(total%3600/60) + "분 ";
+                }
+	                
+	                $("#wayPointMoveTime2").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav1").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav2").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -123,14 +137,20 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime2").val(Math.round(route.legs[0].duration.value/60));
+	      		var route = response.routes[0];
+                var total = route.legs[0].duration.value;
+                if(total> 3600) {
+                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+                } else {
+                    time = Math.floor(total%3600/60) + "분 ";
+                }
+	                $("#wayPointMoveTime3").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav2").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav3").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -150,14 +170,20 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime3").val(Math.round(route.legs[0].duration.value/60));
+	      		var route = response.routes[0];
+                var total = route.legs[0].duration.value;
+                if(total> 3600) {
+                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+                } else {
+                    time = Math.floor(total%3600/60) + "분 ";
+                }
+	                $("#wayPointMoveTime4").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav3").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav4").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -177,14 +203,20 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime4").val(Math.round(route.legs[0].duration.value/60));
+	      		var route = response.routes[0];
+                var total = route.legs[0].duration.value;
+                if(total> 3600) {
+                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+                } else {
+                    time = Math.floor(total%3600/60) + "분 ";
+                }
+	                $("#wayPointMoveTime5").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav4").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav5").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -204,14 +236,20 @@
 	          travelMode: google.maps.TravelMode["TRANSIT"] 
 	        }, function(response, status) { 
 	      	  if (status == 'OK') { 
-	                var route = response.routes[0]
-	                $("#wayPointMoveTime5").val(Math.round(route.legs[0].duration.value/60));
+	      		var route = response.routes[0];
+                var total = route.legs[0].duration.value;
+                if(total> 3600) {
+                    time = Math.floor(total/3600) + "시간 " + Math.floor(total%3600/60) + "분";
+                } else {
+                    time = Math.floor(total%3600/60) + "분 ";
+                }
+	                $("#wayPointMoveTime6").val(time);
 	                for (var i = 0; i < route.legs[0].steps.length; i++) {
 	                	try{
 	                		var nav;
 	                    	nav += "# "+route.legs[0].steps[i].instructions+"로 "+route.legs[0].steps[i].distance.text;
-	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# 탈것:" + route.legs[0].steps[i].transit.line.short_name;
-	                    	$("#wayPointNav5").val(nav);
+	                    	nav += "# 출발정류장:"+route.legs[0].steps[i].transit.departure_stop.name+"# 도착정류장:"+route.legs[0].steps[i].transit.arrival_stop.name + "# (지하철/버스):" + route.legs[0].steps[i].transit.line.short_name;
+	                    	$("#wayPointNav6").val(nav);
 	                	} catch (exception){			                     
 	                	} finally {
 	                    }
@@ -223,4 +261,19 @@
 	            }
 	        }); 
 	    };
+	    
+	    function reset(){
+	        directionsDisplay1.setMap(null);
+	        directionsDisplay2.setMap(null);
+	        directionsDisplay3.setMap(null);
+	        directionsDisplay4.setMap(null);
+	        directionsDisplay5.setMap(null);
+	        directionsDisplay6.setMap(null);
+	        directionsDisplay1.setMap(map);
+	        directionsDisplay2.setMap(map);
+	        directionsDisplay3.setMap(map);
+	        directionsDisplay4.setMap(map);
+	        directionsDisplay5.setMap(map);
+	        directionsDisplay6.setMap(map);
+	    }
 	    

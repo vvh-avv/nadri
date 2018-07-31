@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.nadri.common.Search;
 import com.nadri.service.cart.CartDao;
 import com.nadri.service.domain.Cart;
+import com.nadri.service.domain.Spot;
 
 @Repository("cartDaoImpl")
 public class CartDaoImpl implements CartDao{
@@ -54,4 +55,5 @@ public class CartDaoImpl implements CartDao{
 		return sqlSession.selectOne("CartMapper.getCart", cartNo);
 	}
 
+	
 }

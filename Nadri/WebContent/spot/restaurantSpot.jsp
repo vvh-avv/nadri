@@ -32,6 +32,8 @@
 <script src="/javascript/materialize.js"></script>
 <link rel="stylesheet" href="/css/materialize.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- sweet alert를 쓰기위한 CDN -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <html>
 <style>
@@ -92,86 +94,27 @@ padding : 5px;
 }
 
 #searchKeyword {
-	width: 10%;
+	width: 150px;
 	float: left;
 }
 </style>
 
-
-
-
 <head>
 <script>
+
 $(function(){
-	$("#park").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=0";
-	})
-
-	$("#festival").on("click", function(){
-		location.href = "/spot/getFestivalList";
-	})
-
-	$("#restaurant").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=1";
-	})
-
-	$("#river").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=4";
-	})
-
-	$("#search").on("click", function(){
-		location.href = "/spot/getSearchSpot";
-	})
-
-	});
-
-$(document).ready(function(){
 	
 	$("#searchbutton").on("click", function(){
-		
-			$.ajax({
-				type : 'post', // 요청 method 방식 
-				url : '/restspot/getSearchSpotList',// 요청할 서버의 url
-				headers : {
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "POST"
-				},
-				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
-				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
-					searchSpot : 1,
-					searchKeyword : $("#searchKeyword").val()
-				}),
-				success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
-					$(".spotImg").empty();
-					var output = '';
-					$(data).each(
-									function() {
-										output += '<div class="col-sm-3 col-md-3">';
-										output += '<div class="thumbnail">';
-										output += ' <div class="caption">';
-										output += '<h4>'+ this.spotTitle+ '</h4>';
-										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
-										output += '<p> '+ this.spotAddress+ '</p>';
-										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
-										output += '<p> '+ this.spotCreateTime+ ' / '+ this.spotModifyTime+ '</p>';
-										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-										output += ' <p>';
-										output += ' <span class="label label-success">백과</span>';
-										output += ' <span class="label label-warning">맛집</span>';
-										output += ' </p>';
-										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
-										output += '</div>';
-										output += '</div>';
-										output += '</div>';
-									});// each
-					// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
-					$(".spotImg").append(output);
-				}// else
-			}// success
-		);// ajax
-	});
+		deleteMarkers();
+		map.setZoom(11);
+		//$('#searchbutton').unbind('click');
+		searchkeyword();
+	})
+	
 });
-  
+
+
+
 	//맨위로 올라가게 만들어 주는 script
 	$(function() {
 		//*스크롤감지
@@ -319,6 +262,7 @@ $(document).ready(function(){
 
 			// 마커를 클릭했을때 이벤트 발생 시키기
 			google.maps.event.addListener(markers[i],'click',function() {
+								map.setZoom(14);
 								// 일단 마커를 모두 닫고
 								for (var i = 0; i < markers.length; i++) {
 										infowindows[i].close();
@@ -328,7 +272,124 @@ $(document).ready(function(){
 							});
 		}
 	}//end of initmap();	
+	
+	
+	// searchkeyword 눌렀을때!!
+	function searchkeyword(){
+			$.ajax({
+				type : 'post', // 요청 method 방식 
+				url : '/restspot/getSearchSpotList',// 요청할 서버의 url
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "POST"
+				},
+				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
+				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+					searchSpot : 1,
+					searchKeyword : $("#searchKeyword").val()
+				}),
+				success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+				if(data==''){
+					swal("아쉽게도 결과가 없네요?");
+				} else {
+					var spot = data; 
+					for (var i = 0 ; i < spot.length; i++){
+						if(spot[i].spotCode=='10'){
+							obj = {
+									lat : parseFloat(spot[i].spotY),
+									lng : parseFloat(spot[i].spotX),
+									addr : spot[i].spotAddress,
+									detail : spot[i].spotDetail,
+									title : spot[i].spotTitle,
+									img : spot[i].spotImg,
+									no : spot[i].spotNo,
+									type : 'samdae'
+							};
+							locations.push(obj);
+						}else{
+							obj = {
+									lat : parseFloat(spot[i].spotY),
+									lng : parseFloat(spot[i].spotX),
+									addr : spot[i].spotAddress,
+									detail : spot[i].spotDetail,
+									title : spot[i].spotTitle,
+									img : spot[i].spotImg,
+									no : spot[i].spotNo,
+									type : 'suyo'
+							};
+							locations.push(obj);	
+						}
+					};
+			          
+					for (var i = 0; i < locations.length; i++) {
+						markers[i] = new google.maps.Marker({
+							position : locations[i],
+							map : map,
+							icon: icons[locations[i].type].icon,
+							animation: google.maps.Animation.DROP
+						});
+						//인덱스를 꺼내오기.. 중요!!
+						markers[i].index = i
 
+						contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+								+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+								+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+								+ '<li class="list-group-item">'
+								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '</div>';
+
+						// 이벤트 정보 넣기
+						infowindows[i] = new google.maps.InfoWindow(
+								{
+									content : contents[i],
+									removeable : true
+								});
+
+						// 마커를 클릭했을때 이벤트 발생 시키기
+						google.maps.event.addListener(markers[i],'click',function() {
+							map.setZoom(14);
+							// 일단 마커를 모두 닫고
+							for (var i = 0; i < markers.length; i++) {
+									infowindows[i].close();
+								}
+							infowindows[this.index].open(map,markers[this.index]);
+							map.panTo(markers[this.index].getPosition());
+						});
+					}
+				}
+						
+					$(".spotImg").empty();
+					var output = '';
+					$(data).each(
+									function() {
+										output += '<div class="col-sm-3 col-md-3">';
+										output += '<div class="thumbnail">';
+										output += ' <div class="caption">';
+										output += '<h4>'+ this.spotTitle+ '</h4>';
+										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+										output += '<p> '+ this.spotAddress+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+										output += '<p> '+ this.spotCreateTime+ ' / '+ this.spotModifyTime+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+										output += ' <p>';
+										output += ' <span class="label label-success">백과</span>';
+										output += ' <span class="label label-warning">맛집</span>';
+										output += ' </p>';
+										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '</div>';
+										output += '</div>';
+										output += '</div>';
+									});// each
+					// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
+					$(".spotImg").append(output);
+				}// else
+			}// success
+		);// ajax
+}
+    
 </script>
 
 <%-- Main content --%>
@@ -348,7 +409,6 @@ $(document).ready(function(){
 	      </ul>
 	    </div>
   </nav>
-  
   
 	<div id="map">
 		<br /> <br />
@@ -405,7 +465,7 @@ $(document).ready(function(){
 																output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 																output += ' <p>';
 																output += ' <span class="label label-success">백과</span>';
-																output += ' <span class="label label-danger">공원</span>';
+																output += ' <span class="label label-warning">맛집</span>';
 																output += ' </p>';
 																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 																output += '</div>';

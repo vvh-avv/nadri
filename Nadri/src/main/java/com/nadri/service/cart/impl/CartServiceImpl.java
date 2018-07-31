@@ -10,6 +10,7 @@ import com.nadri.common.Search;
 import com.nadri.service.cart.CartDao;
 import com.nadri.service.cart.CartService;
 import com.nadri.service.domain.Cart;
+import com.nadri.service.domain.Spot;
 
 @Service("cartServiceImpl")
 public class CartServiceImpl implements CartService{

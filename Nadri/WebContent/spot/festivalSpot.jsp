@@ -116,41 +116,12 @@ td {
 </style>
 
 <head>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
-jQuery(document).ready(function( $ ) {
-    $('.counter').counterUp({
-        delay: 10,
-        time: 1500
-    });
-});
-
-$(function(){
-	$("#park").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=0";
-	})
-
-	$("#festival").on("click", function(){
-		location.href = "/spot/getFestivalList";
-	})
-
-	$("#restaurant").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=1";
-	})
-
-	$("#river").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=4";
-	})
-
-	$("#search").on("click", function(){
-		location.href = "/spot/getSearchSpot";
-	})
-
-	});
 
 
 //맨위로 올라가게 만들어 주는 script
 $(function() {
+	
 	//*스크롤감지
 	$(window).scroll(function() {
 		var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -253,13 +224,6 @@ $(function() {
 			map.data.revertStyle();
 		});
 
-		// 클릭시 이벤트 리스너 셋팅
-		map.data.addListener('click', function(event) {
-			//alert("클릭하면 현재 위치의 주소값을 가져옵니다");
-			//getAddress(event);
-			//zoomChange(event);
-		});
-
 		// 이부분은 마커를 추가해주는 부분입니다.
 		for (var i = 0; i < locations.length; i++) {
 			markers[i] = new google.maps.Marker({
@@ -269,20 +233,35 @@ $(function() {
 			});
 			//인덱스를 꺼내오기.. 중요!!
 			markers[i].index = i
-			
+			if(typeof locations[i].img == "undefined"){
 			contents[i] = '<div class="box box-primary" style="font-family : seoul">'
 				+ '<h4>'+ locations[i].title+ '</h4>'
-				+ '<img class="img-rounded" src="'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+				+ '<img class="img-rounded" src="/images/spot/festivaldefault.jpg" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
 				+ '<li class="list-group-item">'
 				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 				+ '<li class="list-group-item">'
-				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>대표전화  </b>'+ locations[i].tel+ '</li>'
+				+ '<i class="glyphicon glyphicon-earphone"></i><b>대표전화  </b>'+ locations[i].tel+ '</li>'
 				+ '<li class="list-group-item">'
-				+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>조회수  </b>'+ locations[i].readcount+ '</li>'
+				+ '<i class="glyphicon glyphicon-book"></i><b>조회수  </b>'+ locations[i].readcount+ '</li>'
 				+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
 				+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-info">축제/전시</span></li>'
 				+ '<a href="/spot/getFestival?spotNo='+ locations[i].contentid+'"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
 				+ '</div>';
+			} else {
+				contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+					+ '<h4>'+ locations[i].title+ '</h4>'
+					+ '<img class="img-rounded" src="'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-earphone"></i><b>대표전화  </b>'+ locations[i].tel+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-book"></i><b>조회수  </b>'+ locations[i].readcount+ '</li>'
+					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-info">축제/전시</span></li>'
+					+ '<a href="/spot/getFestival?spotNo='+ locations[i].contentid+'"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+					+ '</div>';
+			}
 				
 			// 이벤트 정보 넣기
 			infowindows[i] = new google.maps.InfoWindow({
@@ -297,6 +276,7 @@ $(function() {
 					infowindows[i].close();
 				}
 				infowindows[this.index].open(map, markers[this.index]);
+				map.setZoom(14);
 				map.panTo(markers[this.index].getPosition());
 			});
 		}
@@ -318,7 +298,6 @@ $(function() {
 		<nav>
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	      <li><span class="counter" style="display: inline-block;font-weight: 450; color: black; font-size: 70px"><fmt:formatNumber value="${total}" pattern="##,###"/></span>개의 장소를 검색해 보세요!</li>
 	        <li><span id="park">공원</span></li>
 	        <li><span id="restaurant">맛집</span></li>
 	        <li><span id="festival">축제/전시</span></li>
@@ -326,7 +305,7 @@ $(function() {
 	        <li><span id="search">검색</span></li>
 	      </ul>
 	    </div>
-	  </nav>
+  </nav>
 
 <div id="map">
 	<br /> <br />
@@ -373,6 +352,4 @@ $(function() {
 	</div>
 </body>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
-<script src="/javascript/jquery.counterup.min.js"></script>
 </html>
