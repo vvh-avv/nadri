@@ -27,6 +27,19 @@
 		ORDER BY spot_readcnt
 		]]>
 	</select>
+	
+	 <select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
+		 <if test="_parameter==1">
+		 	SELECT *
+			FROM spot WHERE spot_code LIKE '4%01'
+			ORDER BY spot_readcnt
+		 </if>
+		 <if test="_parameter!=1">
+			SELECT *
+			FROM spot WHERE spot_code LIKE CONCAT('4%',#{keyword})
+			ORDER BY spot_readcnt
+		</if>
+	</select>
 
 	<select id="getAllSpotList" parameterType="Int" resultMap="spotSelectMap">
 		SELECT *
@@ -134,4 +147,12 @@
         OR spot_address LIKE CONCAT('%',#{searchKeyword},'%'))
         and spot_code LIKE CONCAT(#{searchSpot},'%')
 	</select>
+	
+	<select id="getRecommandSpotList" resultMap="spotSelectMap" >
+       SELECT *
+       FROM spot
+       WHERE spot_code not like '3%'
+	   ORDER BY spot_readcnt
+       limit 0, 9
+   </select>
 </mapper>

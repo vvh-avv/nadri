@@ -159,15 +159,30 @@ $(function(){
 			self.location = '/admin/adminIndex';
 		}else if(id == 'log-out'){
 			self.location = '/user/logout';
+	// ############################### HJA 네비게이션 위해 수정! ##########################################
 		}else if(id == 'pencil'){
-			self.location = '/schedule/addSchedule';
+			$("#transportationModal").modal();
 		}
 	})
+	
+	$('#car').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=0';
+	});
+	
+	$('#pedestrian').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=1';
+	});
+	
+	$('#transit').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=2';
+	});
 	
 	$('.post-title').on('click',function(){
 		var id = $(this).attr('id');
 		self.location = '/board/getBoard?boardNo='+id;
 	});
+	
+	// ############################### HJA 네비게이션 위해 수정 끝!! ##########################################
 
 	$('.schedule-button').on('click',function(){
 		var check = $('#session-checker').val();

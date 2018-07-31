@@ -80,12 +80,12 @@ public class CartRestController{
 		String base64Image = imgdata.split(",")[1];
 		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 		BufferedImage bufImg = ImageIO.read(new ByteArrayInputStream(imageBytes));
-		ImageIO.write(bufImg, "jpg", new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\cart\\"+fileName));
+		ImageIO.write(bufImg, "jpg", new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\"+fileName));
 
 		Cart cart = cartService.getCart(cartNo);
 		
 		//기존 파일 삭제
-		new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\cart\\"+cart.getCartImg()).delete();
+		new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\"+cart.getCartImg()).delete();
 
 		cart.setCartImg(fileName);
 		cartService.updateCart(cart);
@@ -100,15 +100,14 @@ public class CartRestController{
 		
 		cartService.deleteCart(cartNo);
 	}
-	
-	@RequestMapping(value="getCart/{cartNo}", method=RequestMethod.POST)
-	public Cart getCart(@PathVariable int cartNo) throws Exception{
-		System.out.println("/restcart/getCart : POST");
-		
-		return cartService.getCart(cartNo);
-	}
-}
 
+   @RequestMapping(value="getCart/{cartNo}", method=RequestMethod.POST)
+   public Cart getCart(@PathVariable int cartNo) throws Exception{
+      System.out.println("/restcart/getCart : POST");
+      
+      return cartService.getCart(cartNo);
+   }
+}
 
 
 

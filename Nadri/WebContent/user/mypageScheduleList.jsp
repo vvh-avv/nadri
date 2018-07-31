@@ -7,6 +7,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/images/common/favicon.ico">
@@ -221,8 +222,7 @@ $(function(){
 	$("button[id^='updateSchedule']").on("click", function(e){
 		e.stopPropagation();
 		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
-		self.location="";
-		alert(scheduleNo+"번 일정을 수정합니다..");
+		self.location="/schedule/updateSchedule?scheduleNo="+scheduleNo;
 	})
 	
 	//URL 복사
@@ -292,14 +292,14 @@ $(function(){
 	
 	</div>
 	
-	<div class="container">
-	
-				<div class="col-md-6 text-left">
-					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수, 현재
-						${resultPage.currentPage} 페이지</p>
+	<div class="col-sm-9" >
+			
+			<div>
+				<div class="col-md-6">
+					<p class="text-primary" style="margin:0px;">총 ${resultPage.totalCount }개의 일정이 있습니다! </p>
 				</div>
 
-				<div class="col-md-6 text-right">
+				<div class="col-md-6">
 					<form id="detailForm" class="form-inline" name="detailForm">
 
 						<div class="form-group">
@@ -325,31 +325,32 @@ $(function(){
 
 					</form>
 				</div>
+			</div>	
 		
 		<!-- 작성한 글 리스트 뜨는 부분 -->
-		<div class="col-md-10">
+		<div class="col-md-9">
 			<c:set var="i" value="0"/>
 			<c:forEach var="schedule" items="${list}">
 				<article class="${schedule.scheduleNo}">
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
-						<c:if test="${schedule.scheduleImg==null}">
-							<img src="/images/schedule/scheduledefault.jpg" class="img-thumbnail">
-						</c:if>
-						<c:if test="${schedule.scheduleImg!=null}">
+						<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
+							<img src="/images/spot/421.jpg" class="img-thumbnail">
+						</c:if> 
+					<c:if test="${fn:length(schedule.scheduleImg) > 1}">
 							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
 							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
-						</c:if>
+					</c:if>
 					</div>
 					<!-- 마우스 오버시 보여지는 부분 -->
 					<div class="links" style="text-align:center;">
 						<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
 						<span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
 						<span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
-						<button type="button" class="btn btn-default btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
-						<button type="button" class="btn btn-default btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
+						<button type="button" class="btn btn-primary btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
+						<button type="button" class="btn btn-primary btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
+						<button type="button" class="btn btn-warning btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
 						<button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button><br>
-						<button type="button" class="btn btn-warning btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
 						<button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button>
 					</div>
 					<div class="linksIcon">
@@ -361,12 +362,13 @@ $(function(){
 			<c:if test="${empty list}">
 				<span id="defaultText" style="margin-left:40%;">생성하신 일정이 없습니다. ㅠㅠ</span>
 			</c:if>
+			
+			<!-- PageNavigation Start... -->
+				<jsp:include page="../common/pageNavigator.jsp" />
+			<!-- PageNavigation End... -->
 		</div>
 		
-		<!-- PageNavigation Start... -->
-		<jsp:include page="../common/pageNavigator.jsp" />
-		<!-- PageNavigation End... -->
-	</div> <!-- e.o.container -->
+	</div>
 </body>
 
 

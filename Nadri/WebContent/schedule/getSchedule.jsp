@@ -24,7 +24,7 @@
 <script src="/javascript/toolbar.js"></script>
 <!-- TimeLine에 관한 라인입니다. -->
 <script type="text/javascript" src="/javascript/timelinemain.js"></script>
-<link rel="stylesheet" href="/css/timelinestyle.css">
+<link rel="stylesheet" href="/css/timelinestyle.css?ver=1">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
 <!-- 툴바 넣는 CDN 입니다 -->
@@ -105,6 +105,10 @@ ul.countdown li p {
      width: 50px;
      height: 50px;
      z-index:999;
+   }
+   
+   p {
+   color : black;
    }	
 </style>
 <script>
@@ -217,7 +221,12 @@ $(function(){
 	<body>
 	<div id="schedule">
 	<ul class="countdown">
+	<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
+		<header style="background-image: url(/images/spot/421.jpg);">
+	</c:if>	
+	<c:if test="${fn:length(schedule.scheduleImg) > 1 }">
 		<header style="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
+	</c:if>	
 			<div class="cd-nugget-info">
 				<span> <polygon class="cd-nugget-info-arrow"
 						points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " />
@@ -246,13 +255,24 @@ $(function(){
 				<!-- cd-timeline__img -->
 
 			<div class="cd-timeline__content js-cd-content">
-				<h2>Start!!</h2>
-					<p>${schedule.scheduleDate}</p>
-					<p id="scheduleDetail">${schedule.scheduleDetail}</p>
-					<p>${schedule.hashTag}</p>
-					<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
+				<h2>나들이를 떠나 볼까요?</h2>
+					<hr/>
+					<p><i class="Small material-icons">today</i>${schedule.scheduleDate} ${schedule.startHour} 출발예정</p>
+					<p id="scheduleDetail"><i class="Small material-icons">subtitles</i>${schedule.scheduleDetail}</p>
+					<p><i class="Small material-icons">drive_eta</i> 교통수단은 
+					<c:if test="${schedule.transportationCode==0}">
+						'자동차'
+						</c:if>
+						<c:if test="${schedule.transportationCode==1}">
+						'도보'
+						</c:if>
+						<c:if test="${schedule.transportationCode==2}">
+						'대중교통'
+						</c:if>
+						입니다.
+					</p>
+					<p><i class="Small material-icons">title</i>${schedule.hashTag}</p>
 				<!-- <a href="#0" class="cd-timeline__read-more">Read more</a> -->
-				 <span class="cd-timeline__date">${schedule.scheduleDate}</span>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -264,39 +284,49 @@ $(function(){
 				</div>
 				<!-- cd-timeline__img -->
 				<c:set var="i" value="0" />
-				<c:forEach var="waypoint" items="${waypoint}">
+				<c:forEach var="waypoint" items="${waypoint}" begin="1">
 					<c:set var="i" value="${i+1}" />
 					<div class="cd-timeline__content js-cd-content">
-							<p>
+					<p><i class="Small material-icons">directions</i> to '${waypoint.wayPointTitle}' 까지</p>
+					<hr/>
+					<c:if test="${waypoint.wayPointNav != ''}">
+					<span>
 					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel" begin="1">
-				       * : ${sel}<br>
+				      <c:if test="${schedule.transportationCode=='0'}">
+					<i class="Tiny material-icons">directions_car</i>
+					</c:if>
+					<c:if test="${schedule.transportationCode=='1'}">
+					<i class="Tiny material-icons">directions_walk</i>
+					</c:if>
+					<c:if test="${schedule.transportationCode=='2'}">
+					<i class="Tiny material-icons">directions_transit</i>
+					</c:if>${sel}<br>
 				   </c:forTokens>
-				</p>
-						<p>${schedule.scheduleDate}</p>					
-						<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
-
+				</span>
+					<hr/>
+						<p><i class="Small material-icons">access_alarm</i>약 ${waypoint.moveTime} 걸릴 예정입니다.</p>					
+				</c:if>
 					</div>
 					<!-- cd-timeline__content -->
 			</div>
 			<!-- cd-timeline__block -->
 			
 			<div class="cd-timeline__block js-cd-block">
-			
-			
-			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">		
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
+			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg}); width:100px ; height:100px"/>
 			</c:if>
-			<c:if test="${fn:length(waypoint.wayPointImg) > 10}">
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});">
+ 			<c:if test="${fn:length(waypoint.wayPointImg) > 10}"> 
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px"/>
 			</c:if>
-				<img src="/images/spot/icon/cd-icon-movie.svg" alt="Movie">
+				<img src="/images/spot/icon/cd-icon-picture.svg" alt="Movie">
 			</div>
 			<!-- cd-timeline__img -->
 
 			<div class="cd-timeline__content js-cd-content">
-				<h3>${waypoint.wayPointTitle}</h3>
-					<p>${waypoint.wayPointDetail}</p>
-					<p>${waypoint.wayPointAddress}</p>
+				<h2>${waypoint.wayPointTitle}</h2>
+				<hr/>
+					<p><i class="Small material-icons">subtitles</i>${waypoint.wayPointDetail}</p>
+					<p><i class="Small material-icons">beach_access</i>${waypoint.wayPointAddress}</p>
 				<span class="cd-timeline__date"></span>
 			</div>
 			<!-- cd-timeline__content -->
@@ -311,8 +341,20 @@ $(function(){
 			</c:forEach>
 
 			<div class="cd-timeline__content js-cd-content">
-				<h2>나들이 후기!</h2>
+				<h3>나들이는 어떠셨나요?</h3>
 				<p>${schedule.scheduleReview}</p>
+				<p><i class="Small material-icons">create</i>최종수정일 : ${schedule.scheduleModifyTime}</p>
+				<p><i class="Small material-icons">lock</i>공개범위 : 
+				<c:if test="${schedule.openRange==0}">
+				모두공개
+				</c:if>
+				<c:if test="${schedule.openRange==1}">
+				친구공개
+				</c:if>
+				<c:if test="${schedule.openRange==2}">
+				비공개
+				</c:if>
+				</p>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>

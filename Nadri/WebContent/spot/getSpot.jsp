@@ -214,10 +214,10 @@ function addCartSpot(){
 										</div>
 										<div class="col-xs-8 col-md-10">
 											<c:if test="${spot.spotCode==0 }">
-												<img class="materialboxed" src="${spot.spotImg}" width="300" height="200" />
+												<img class="materialboxed" src="${spot.spotImg}" width="30%" height="20%" />
 											</c:if>
 											<c:if test="${spot.spotCode !=0 }">
-												<img class="materialboxed" src="/images/spot/${spot.spotImg}" width="300" height="200" />
+												<img class="materialboxed" src="/images/spot/${spot.spotImg}" width="30%" height="20%" />
 											</c:if>
 										</div>
 									</div>

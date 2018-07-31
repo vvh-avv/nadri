@@ -1,4 +1,3 @@
-// ÏïÑÏù¥ÏΩòÏóê ÎåÄÌïú Ï†ïÎ≥¥Î•º Î≥¥Ïó¨Ï§çÎãàÎã§.
 var iconBase = '/images/spot/icon/';
 var icons = {
 	baby : {
@@ -50,3 +49,99 @@ var icons = {
 		icon : iconBase + 'picnic.png'
 	}
 };
+
+$(function(){
+	$("#park").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=0";
+	})
+
+	$("#festival").on("click", function(){
+		location.href = "/spot/getFestivalList";
+	})
+
+	$("#restaurant").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=1";
+	})
+
+	$("#river").on("click", function(){
+		location.href = "/spot/getSpotList?spotCode=4";
+	})
+
+	$("#search").on("click", function(){
+		location.href = "/spot/getSearchSpot";
+	})
+	
+	$("#cartNavi").on("click", function(){
+		location.href = "/cart/getMyCartList";
+	})
+	
+	$("#spot").on("click", function(){
+		location.href = "/spot/getSearchSpot";
+	})
+	
+	 $("#addSchedule").on("click", function() {
+		 
+			var scheduleTitle =$("#scheduleTitle").val();
+			var scheduleDate=$("#scheduleDate").val();
+			var scheduleDetail=$("#scheduleDetail").val();
+			
+			if(scheduleTitle == null || scheduleTitle.length <1){
+				swal("≥™µÈ¿Ã ¡¶∏Ò¿ª ∫Ÿø©¡÷ººø‰.");
+				return;
+			}
+			if(scheduleDate == null || scheduleDate.length <1){
+				swal("≥™µÈ¿Ã ∞°Ω√¥¬ ≥Ø¬•∏¶ ¡§«ÿ¡÷ººø‰");
+				return;
+			}
+			if(scheduleDetail == null || scheduleDetail.length <1){
+				swal("≥™µÈ¿Ã¿« ∞£¥‹«— º≥∏Ì¿ª ∫–ø©¡÷ººø‰!");
+				return;
+			}
+		 
+			$("form").attr("method", "POST").attr("action","/schedule/addSchedule").submit();
+			swal("µÓ∑œø° º∫∞¯«ﬂΩ¿¥œ¥Ÿ!", "∏∂¿Ã∆‰¿Ã¡ˆø°º≠ »Æ¿Œ«ÿ¡÷ººø‰", "success");
+		});
+	
+	 $("#updateSchedule").on("click", function() {
+		 
+			var scheduleTitle =$("#scheduleTitle").val();
+			var scheduleDate=$("#scheduleDate").val();
+			var scheduleDetail=$("#scheduleDetail").val();
+			
+			if(scheduleTitle == null || scheduleTitle.length <1){
+				swal("≥™µÈ¿Ã ¡¶∏Ò¿ª ∫Ÿø©¡÷ººø‰.");
+				return;
+			}
+			if(scheduleDate == null || scheduleDate.length <1){
+				swal("≥™µÈ¿Ã ∞°Ω√¥¬ ≥Ø¬•∏¶ ¡§«ÿ¡÷ººø‰");
+				return;
+			}
+			if(scheduleDetail == null || scheduleDetail.length <1){
+				swal("≥™µÈ¿Ã¿« ∞£¥‹«— º≥∏Ì¿ª ∫–ø©¡÷ººø‰!");
+				return;
+			}
+		 
+			$("form").attr("method", "POST").attr("action","/schedule/updateSchedule").submit();
+			swal("ºˆ¡§ø° º∫∞¯«ﬂΩ¿¥œ¥Ÿ!", "∏∂¿Ã∆‰¿Ã¡ˆø°º≠ »Æ¿Œ«ÿ¡÷ººø‰", "success");
+		});
+
+});
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+ for (var i = 0; i < markers.length; i++) {
+   markers[i].setMap(map);
+ }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+ setMapOnAll(null);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+ clearMarkers();
+ markers = [];
+ locations =[];
+}

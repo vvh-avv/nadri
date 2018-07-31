@@ -216,7 +216,7 @@ function addCartSpot(){
 											<strong>장소이미지</strong>
 										</div>
 										<div class="col-xs-8 col-md-10">
-												<img class="materialboxed"  src='/images/spot/festivaldefault.jpg' width="300" height="200" />
+												<img class="materialboxed"  src='/images/spot/festivaldefault.jpg' width="30%" height="20%" />
 										</div>
 									</div>
 								</div>

@@ -52,17 +52,17 @@ public class SpotRestController {
 		
 		return map;
 	}
-		
+	
 	@RequestMapping( value="getRiverList/{spotCode}",  method=RequestMethod.GET)
 	public Map getRiverList(@PathVariable int spotCode) throws Exception{
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("spot", spotService.getAllSpotList(spotCode));
+		map.put("spot", spotService.getRiverList(spotCode));
 		
 		return map;
 	}
-	
+		
 	@RequestMapping(value="/infinityscrollDown" , method=RequestMethod.POST)
 	public @ResponseBody List<Spot> infinityscrollDown(@RequestBody Spot spot) throws Exception{
 
