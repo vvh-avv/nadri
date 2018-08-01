@@ -1,6 +1,5 @@
 package com.nadri.service.friend.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.nadri.service.domain.Friend;
+import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
 import com.nadri.service.friend.FriendService;
 
@@ -156,18 +156,5 @@ public class FriendServiceImpl implements FriendService{
 
 	
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	
-	
 
 }

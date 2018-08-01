@@ -1,13 +1,19 @@
 package com.nadri.web.friend;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.service.domain.Friend;
@@ -94,32 +100,34 @@ public class FriendRestController {
 // 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());	
  	}
  	
- 	/* //模备 铰牢
+ 	 	
+ 	//模备 铰牢(脚没 荐遏)
+ 	/*@RequestMapping(value="json/acceptFriend")
+ 	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
+ 		
+ 		System.out.println("/friend/acceptFriend: GET/POST");
+ 		System.out.println("friendId : "+friend.getFriendId());
+ 		System.out.println("userId : "+friend.getUserId());
+ 		System.out.println("restController - acceptFriend: "+friendService.acceptFriend(friend));
+ 		 		
+ 		return friendService.acceptFriend(friend);
+
+ 	}*/
+ 	
+ 	//模备 铰牢
  	@RequestMapping(value="json/acceptFriend")
  	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
  		
  		System.out.println("/friend/acceptFriend: GET/POST");
  		System.out.println("friendId : "+friend.getFriendId());
  		System.out.println("userId : "+friend.getUserId());
+ 		System.out.println("restController - acceptFriend: "+friendService.acceptFriend(friend));
  		 		
- 		return friendService.acceptFriend(friend.getUserId(), friend.getFriendId());
+ 		return friendService.acceptFriend(friend);
 
- 	}*/
+ 	}
  	
- 	//模备 铰牢
- 	 	@RequestMapping(value="json/acceptFriend")
- 	 	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
- 	 		
- 	 		System.out.println("/friend/acceptFriend: GET/POST");
- 	 		System.out.println("friendId : "+friend.getFriendId());
- 	 		System.out.println("userId : "+friend.getUserId());
- 	 		System.out.println("restController - acceptFriend: "+friendService.acceptFriend(friend));
- 	 		 		
- 	 		return friendService.acceptFriend(friend);
-
- 	 	}
  	
-
-   
+ 
    
 }

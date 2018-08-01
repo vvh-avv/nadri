@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.cj.Session;
 import com.nadri.common.Page;
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
@@ -123,34 +124,44 @@ public class UserController {
 	
 	//유저 정보 조회
 	@RequestMapping(value="getUser", method=RequestMethod.GET)
-	public String getUser( @RequestParam(value="userId", required=false) String userId , Model model ) throws Exception {
+	public String getUser( HttpSession session, Model model ) throws Exception {
 		System.out.println("/user/getUser : GET");
 		
-		User user = userService.getUser(userId);
+		User user = (User) session.getAttribute("user");
+		String userId = user.getUserId();
 		
+		//business logic
+		user = userService.getUser(userId);
+		
+		//model과 view 연결		
 		model.addAttribute("user", user);
-			
+		System.out.println("--------------getUser---------------");
+		System.out.println("개인정보조회 : "+user);
+					
 		return "forward:/user/getUser.jsp";
 	}
 	
 	//유저 정보 수정: get방식
-	@RequestMapping(value="updateUser", method=RequestMethod.GET)
-	public String updateUser( @RequestParam(value="userId", required=false) String userId , Model model ) throws Exception{
+	@RequestMapping(value="updateUser", method= RequestMethod.GET)
+	public String updateUser( HttpSession session, Model model, User user ) throws Exception{
 		System.out.println("/user/updateUser : GET");
 		
-		User user = userService.getUser(userId);
+		//business logic
+		user = (User)session.getAttribute("user");
+		user = userService.getUser(user.getUserId());
 		
+		//model과 view 연결	
 		model.addAttribute("user", user);
 		
 		return "forward:/user/updateUser.jsp";
 	}
 	
 	//유저 정보 수정: post방식
-	@RequestMapping(value="updateUser", method=RequestMethod.POST)
-	public String updateUser( @ModelAttribute("user") User user , Model model , HttpSession session, MultipartHttpServletRequest request, @RequestParam("file") MultipartFile[] file) throws Exception{
+	@RequestMapping(value="updateUser", method= RequestMethod.POST)
+	public String updateUser( @ModelAttribute("user") User user , HttpSession session, Model model , HttpServletResponse response ) throws Exception{
 		System.out.println("/user/updateUser : POST");
 		
-		//파일 업로드(수정시)
+		/*//파일 업로드(수정시)
 		String uploadPath = request.getRealPath("/images/profile");
 		
 		String fileOriginName = "";
@@ -178,16 +189,13 @@ public class UserController {
 			else{ fileMultiName += ","+fileOriginName; }
 		}
 		System.out.println("*"+fileMultiName);
-		user.setProfileImg(fileMultiName);
+		user.setProfileImg(fileMultiName);*/
 		
 		userService.updateUser(user);
 		
-		String sessionId=((User)session.getAttribute("user")).getUserId();
-		if(sessionId.equals(user.getUserId())){
-			session.setAttribute("user", user);
-		}
+		user = userService.getUser(user.getUserId());
 		
-		return "redirect:/user/getUser?userId="+user.getUserId();
+		return "forward:/user/getUser.jsp";
 	}
 
 	
