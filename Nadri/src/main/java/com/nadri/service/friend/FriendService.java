@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.service.domain.Friend;
+import com.nadri.service.domain.User;
 
 public interface FriendService {
 	
@@ -38,9 +39,9 @@ public interface FriendService {
    
    public int checkFriend(String userId, String friendId, int friendCode) throws Exception;
 
-
-
-
+   
+   
+  
 
    
 

@@ -84,19 +84,6 @@ public class FriendController {
 	}*/
 	
 	
-/*	//模备 沥焊 炼雀
-	@RequestMapping(value="getFriend", method=RequestMethod.GET)
-	public String getFriend(@RequestParam("friendId") String friendId, Model model)throws Exception{
-		System.out.println("/friend/getFriend: GET");
-		
-		Friend friend = friendService.getFriend(friendId);
-		
-		model.addAttribute("friend", friend);
-		
-		return "forward:/friend/getFreind.jsp";
-	}*/
-	
-	
 	
 	//模备 夸没	
 	@RequestMapping(value="addFriend")
@@ -113,25 +100,5 @@ public class FriendController {
 	}
 	
 	
-	/*//模备 夸没 秒家
-	@RequestMapping(value="cancelFriend")
-	public String cancelFriend(@RequestBody Map<String, String> parameterMap, Model model)throws Exception{
-		if (parameterMap != null) {
-			friendService.cancelFriend(parameterMap.get("userId"), parameterMap.get("friendId"));
-			
-				List<Friend> searchFriendList = null;
-				searchFriendList = friendService.searchFriend(parameterMap.get("userId"), parameterMap.get("searchUserId"));
-				model.addAttribute("searchFriendList", searchFriendList);
-		}
-		return "friend/listFriend";
-	}
-	
-	
-	//模备 夸没 芭例
-	@RequestMapping(value="refuseFriend")
-	public String refuseFriend(String userId, String friendId, HttpSession session) throws Exception{
-		friendService.refuseFriend(userId, friendId);
-		return "redirect:/friend/listFriend?userId="+userId;
-	}*/
 	
 }

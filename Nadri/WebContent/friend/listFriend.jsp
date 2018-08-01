@@ -61,12 +61,13 @@
 	}) 
 	
 
-	 //模备 眠啊
-	 $(function() {
+	 /* //模备 眠啊
+	  $(function() {
 		 $( "button[id^='acceptFriend']" ).on("click" , function() {
 
 			 var friendNo = $(this).attr("id").replace(/[^0-9]/g,"");
-			 var friendId = $("#"+friendNo).attr('class');
+			 var friendId = $("#"+friendNo).attr('class'); 
+			 //var userId = ${sessionScope.user.userId};
 			 
 			 console.log(userId);
 			 console.log(friendId);
@@ -79,12 +80,12 @@
 				
 						swal("模备啊 登菌嚼聪促","success");
 						
-						$("#"+friendNo).remove(); 
+						//$("#"+friendNo).remove(); 
 				}
 			})	
 		})	 
-	 }) 
-		
+	 })   */
+	
 	
 	 
 	</script>
@@ -125,10 +126,9 @@
    	<table class="table table-hover table-striped">
 	<thead>
 		<tr>
-			<th align="center">No</th>
-			<th align="center">ID</th>
-			<th align="center">模备眠啊</th>
-			<th align="center">模备昏力</th>
+			<th class="text-center">No</th>
+			<th class="text-center">ID</th>
+			<th class="text-center">模备昏力</th>
 		</tr>
 	</thead>
 	
@@ -140,11 +140,6 @@
 				<td align="center">${friend.friendNo }</td>
 				<td align="center">${friend.friendId }</td>
 				
-					<td class="text-center" >
-					<c:if test="${ friend.friendCode == '0' }">
-						<button type="button" class="btn btn-primary" id="acceptFriend${friend.friendNo}">模备眠啊</button>
-					</c:if>
-					</td>
 				
 					<td class="text-center" >
 					<c:if test="${friend.friendCode == '1' }">

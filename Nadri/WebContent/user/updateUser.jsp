@@ -203,6 +203,7 @@
 				<label for="profileImg" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">프로필 사진</label>
 				<div class="col-xs-4 md-4">
 					<!-- <input type="file" class="form-control" id="profileImg" name="file"> -->
+					<input type="hidden" class="form-control" id="profileImg" name="profileImg" value="${user.profileImg }">
 					<input multiple="multiple" type="file" class="form-control" id="profileImg" name="file">
 				</div>
 				<span class="col-sm-3"></span>
@@ -211,7 +212,7 @@
 		  
 		  	<div class="row">
 				<label for="introduce" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">자기소개</label>
-				<textarea class="col-sm-6" name="introduce" rows="10"></textarea>
+				<textarea class="col-sm-6" name="introduce" rows="10">${user.introduce }</textarea>
 			</div>
 			<br/>
 		  
