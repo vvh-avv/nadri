@@ -35,6 +35,7 @@
 		display: inline-block;
 	    position: relative;
 	    cursor: pointer;
+	    margin: 5px;
 	}
 	article:hover .thumbImg img {
 		opacity: 0.3;
@@ -109,7 +110,7 @@ $(function(){
 					<!-- 썸네일 형식의 작성한 글 이미지 -->
 					<div class="thumbImg" style="width:auto; height:250px;">
 						<c:if test="${board.boardImg==null}">
-							<img src="http://placehold.it/250X250" class="img-thumbnail">
+							<img src="/images/board/posts/no_image.jpg" class="img-thumbnail">
 						</c:if>
 						<c:if test="${board.boardImg!=null}">
 							<c:if test="${(board.boardImg).contains(',')}"> <img src="/images/board/posts/${board.boardImg.split(',')[0]}" class="img-thumbnail"> </c:if>

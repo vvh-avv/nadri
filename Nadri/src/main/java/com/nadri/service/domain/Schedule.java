@@ -146,6 +146,8 @@ public class Schedule {
 	public void setScheduleDetail(String scheduleDetail) {
 		this.scheduleDetail = scheduleDetail;
 	}
+	
+	
 
 	///toString
 	@Override

@@ -38,7 +38,7 @@
 <link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
 <link rel="stylesheet" type="text/css" media="(max-width: 600px)"
 	href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal.js"></script>
+<script src="/javascript/indexReal.js?ver=1"></script>
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
@@ -240,12 +240,10 @@
 									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
-											<span class="glyphicon glyphicon-heart"></span> <span
-												class="likes-count">${board.likeCnt}</span>
+											<span class="glyphicon glyphicon-heart"></span> <span class="likes-count">${board.likeCnt}</span>
 										</div>
 										<div class="post-reply">
-											<span class="glyphicon glyphicon-comment"></span> <span
-												class="reply-count">${board.commCnt}</span>
+											<span class="glyphicon glyphicon-comment"></span> <span class="reply-count">${board.commCnt}</span>
 										</div>
 									</div>
 									<div class="hashtags">
@@ -275,12 +273,10 @@
 									<div class="post-title" id="${board.boardNo}">${board.boardTitle}</div>
 									<div class="board-icons">
 										<div class="post-likes">
-											<span class="glyphicon glyphicon-heart"></span> <span
-												class="likes-count">${board.likeCnt}</span>
+											<span class="glyphicon glyphicon-heart"></span> <span class="likes-count">${board.likeCnt}</span>
 										</div>
 										<div class="post-reply">
-											<span class="glyphicon glyphicon-comment"></span> <span
-												class="reply-count">${board.commCnt}</span>
+											<span class="glyphicon glyphicon-comment"></span> <span class="reply-count">${board.commCnt}</span>
 										</div>
 									</div>
 									<div class="hashtags">
@@ -429,6 +425,30 @@
 			}
 		}
 	</script>
+	
+		
+	
+	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+	
 </body>
 
 </html>

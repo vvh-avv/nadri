@@ -31,7 +31,7 @@
 		
 </div> --%>
 
- <div class="container text-center">
+ <div class="text-center">
 		 
 		 <nav>
 		  <ul class="pagination" >

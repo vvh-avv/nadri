@@ -36,6 +36,12 @@ public class SpotServiceImpl implements SpotService{
 		return spotDao.getSpotList(spotCode);
 	}
 	
+	// 1-1. 장소를 보여주는 메소드 
+	public List<Spot> getRiverList(int spotCode) throws Exception {
+		return spotDao.getRiverList(spotCode);
+	}
+		
+	
 	// 2. 장소 전체 보여주는 메소드
 	@Override
 	public List<Spot> getAllSpotList(int spotCode) throws Exception {
@@ -94,6 +100,12 @@ public class SpotServiceImpl implements SpotService{
 	// 8. 검색한 장소를 가져옵니다.
 	public List<Spot> getSearchSpotList(Search search) throws Exception {
 		return spotDao.getSearchSpotList(search);
+	}
+	
+	// 3. getRecommandSpotList 가져오는 메서드
+	@Override
+	public List<Spot> getRecommandSpotList() throws Exception {
+		return spotDao.getRecommandSpotList();
 	}
 	
 }

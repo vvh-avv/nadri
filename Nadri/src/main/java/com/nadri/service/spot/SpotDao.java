@@ -9,6 +9,9 @@ public interface SpotDao {
 	
 	// 1. 장소 10개를 보여주는 메소드
 	public List<Spot> getSpotList(int spotCode) throws Exception;
+	
+	// 1-1. 장소를 보여주는 메소드 
+	public List<Spot> getRiverList(int spotCode) throws Exception;
 		
 	// 2. 장소 전체를 보여주는 메소드
 	public List<Spot> getAllSpotList(int spotCode) throws Exception;
@@ -41,4 +44,7 @@ public interface SpotDao {
 	
 	// 8. 검색한 장소를 가져옵니다.
 	public List<Spot> getSearchSpotList(Search search) throws Exception;
+	
+	// 9. getRecommandSpotList 가져오는 메서드
+	public List<Spot> getRecommandSpotList() throws Exception;
 } 

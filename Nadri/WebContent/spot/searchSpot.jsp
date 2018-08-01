@@ -139,32 +139,12 @@ padding : 5px;
 <head>
 <script>
 
-$(function(){
-	$("#park").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=0";
-	})
-
-	$("#festival").on("click", function(){
-		location.href = "/spot/getFestivalList";
-	})
-
-	$("#restaurant").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=1";
-	})
-
-	$("#river").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=4";
-	})
-
-	$("#search").on("click", function(){
-		location.href = "/spot/getSearchSpot";
-	})
-
-	});
 $(document).ready(function(){
 	// 맵을 시작하는 메서드입니다.
 	initMap();
-	
+}); // 처음 시작될때 클릭버튼 세팅
+
+$(function(){
 	// search button을 누를때..
 	$("#searchbutton").on("click", function(){
 		geocodeAddress(geocoder, map);
@@ -208,7 +188,7 @@ $(document).ready(function(){
     	$("#cartAddress").val(cartAddress);
     }); //end of click
 	
-}); // 처음 시작될때 클릭버튼 세팅
+})
 
 
 
@@ -284,11 +264,12 @@ $(document).ready(function(){
 			  			infowindow.open(map, marker);
 			  	         
 			  			marker.addListener('click', function() {
+			  				map.setZoom(15);
 			  		         infowindow.open(map, marker);
 			  		    });
 			  	         
 			            } else {
-			              alert('입력하신 장소를 찾을 수 없네요! 다시한번 체크해주세요!');
+			              swal('입력하신 장소를 찾을 수 없네요! 다시한번 체크해주세요!');
 			            }
 			          });
 			     }); 
@@ -325,8 +306,8 @@ $(document).ready(function(){
 			var nowposition = new google.maps.LatLng(37.57593689999999, 126.97681569999997), message = '<div style="font-family : seoul"><div>현재위치</div></div>'
 
 			displayMarker(nowposition, message);
-			
-			searchAround(lat, lon);
+			deleteMarkers();
+			//searchAround(lat, lon);
 		}
 		
 		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
@@ -401,6 +382,7 @@ $(document).ready(function(){
 			infowindow.open(map, marker);
 	         
 			marker.addListener('click', function() {
+				map.setZoom(15);
 		         infowindow.open(map, marker);
 		    });
 	         
@@ -459,9 +441,6 @@ $(document).ready(function(){
 				  	        }else if (parseInt(spot[i].spotCode) == 0){
 				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'park' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
 				  			    locations.push(obj)
-				  	        }else if (parseInt(spot[i].spotCode) == 11){
-				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'suyo' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
-				  			    locations.push(obj)
 				  	        }else if (parseInt(spot[i].spotCode) == 30){
 				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'baby' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo};
 				  			    locations.push(obj)
@@ -502,6 +481,7 @@ $(document).ready(function(){
 				          
 				  	        // 마커를 클릭했을때 이벤트 발생 시키기
 				  	        google.maps.event.addListener(markers[i], 'click', function() {
+				  	        	map.setZoom(15);
 				  	       		// 일단 마커를 모두 닫고
 				  	        	 infowindows[this.index].open(map, markers[this.index]);
 				  	        	map.panTo(markers[this.index].getPosition());
@@ -533,6 +513,7 @@ $(document).ready(function(){
     function deleteMarkers() {
       clearMarkers();
       markers = [];
+      locations = [];
     }
 
     //카트 등록을 위한 메소드!

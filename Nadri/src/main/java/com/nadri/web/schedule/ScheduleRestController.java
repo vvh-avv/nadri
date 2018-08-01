@@ -19,22 +19,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nadri.common.Search;
 import com.nadri.service.domain.Schedule;
-import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
 import com.nadri.service.domain.WayPoint;
 import com.nadri.service.schedule.ScheduleService;
@@ -150,11 +148,11 @@ public class ScheduleRestController {
 	      
 	      System.out.println("@2 새로운 이미지 이름 : " + fileName);
 	      //Path newFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+fileName);
-	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName+".jpg");
+	      Path newFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+fileName);
 	      
 	      System.out.println("@3 새로운 이미지 경로 : " + newFilePath);
 	      //Path originFilePath = Paths.get(request.getRealPath("/images/schedule")+"\\"+schedule.getScheduleImg());
-	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg()+".jpg");
+	      Path originFilePath = Paths.get("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\schedule\\"+schedule.getScheduleImg());
 	      System.out.println("@4 원본 이미지 경로 : " + originFilePath);
 	      Files.copy(originFilePath, newFilePath);
 	      System.out.println("@5 이미지 복사 성공");
@@ -240,4 +238,31 @@ public class ScheduleRestController {
 		   scheduleService.updateScheduleReview(schedule);
 	   }
 	
+	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   public @ResponseBody JSONArray getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
+		   System.out.println("/restschedule/getSchedule : POST");
+		   
+		   JSONObject jsonObject = new JSONObject();
+		   JSONArray jsonArray = new JSONArray();
+		   
+		  Schedule schedule = scheduleService.getSchedule(scheduleNo);
+		  List<WayPoint> list = scheduleService.getWayPoint(scheduleNo);
+		  
+		  for (int i = 0 ; i < list.size(); i++) {
+			  WayPoint waypoint = list.get(i);
+			  JSONObject object = new JSONObject();
+			  //json객체 .put ("변수명", 값)
+			  object.put("wayPointTitle", waypoint.getWayPointTitle());
+			  object.put("wayPointImg", waypoint.getWayPointImg());
+			  object.put("wayPointAddress", waypoint.getWayPointAddress());
+			  object.put("wayPointDetail", waypoint.getWayPointDetail());
+			  object.put("wayPointNav", waypoint.getWayPointNav());
+			  jsonArray.add(i,object);
+		  }
+		  
+		  // json 객체에 배열을 넣음
+		  jsonObject.put("sendData", jsonArray);
+		   
+		   return jsonArray;
+	   }
 }

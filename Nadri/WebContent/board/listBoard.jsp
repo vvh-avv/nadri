@@ -613,12 +613,12 @@ $(function(){
             method : "GET" ,
             success : function( data ) {
                
-            	alert( "noticeSendingWs함수 호출" ) ;
-            	alert( data.noticeCode ) ;
+            	//alert( "noticeSendingWs함수 호출" ) ;
+            	//alert( data.noticeCode ) ;
             	noticeSendingWs( data.receiverId + data.noticeCode ) ;
              } ,
              error : function( error ) {
-            	 alert( "에러 : " + error ) ;
+            	 //alert( "에러 : " + error ) ;
              }
          })
          
@@ -649,7 +649,7 @@ $(function(){
 	   $(this).atwho({
 	        at: "@",
 	        data: null,
-	        limit: 15,
+	        limit: 10,
 	        callbacks: {
 	          remoteFilter: function(query, callback){
 	            $.getJSON('/friend/json/listFriendFromBoard/${sessionScope.user.userId}', function(data){
@@ -678,7 +678,6 @@ $(function(){
 			   $.ajax({
 				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
 				   method : "POST",
-				   dataType : "json",
 					headers : {
 						"Accept" : "application/json",
 						"Content-Type" : "application/json"

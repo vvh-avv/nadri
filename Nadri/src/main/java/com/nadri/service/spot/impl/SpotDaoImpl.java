@@ -33,6 +33,11 @@ public class SpotDaoImpl implements SpotDao{
 		return sqlSession.selectList("SpotMapper.getSpotList", spotCode);
 	}
 	
+	// 1-1. 장소를 보여주는 메소드 
+	public List<Spot> getRiverList(int spotCode) throws Exception {
+		return sqlSession.selectList("SpotMapper.getRiverList", spotCode);
+	}
+	
 	// 2. 장소리스트를 보여주는 메소드(전체)
 	@Override
 	public List<Spot> getAllSpotList(int spotCode) throws Exception {
@@ -91,6 +96,12 @@ public class SpotDaoImpl implements SpotDao{
 	// 8. 검색한 장소를 가져옵니다.
 	public List<Spot> getSearchSpotList(Search search) throws Exception {
 		return sqlSession.selectList("SpotMapper.getSearchSpotList", search);
+	}
+	
+	// 3. getRecommandSpotList 가져오는 메서드
+	@Override
+	public List<Spot> getRecommandSpotList() throws Exception {
+		return sqlSession.selectList("SpotMapper.getRecommandSpotList");
 	}
 	
 }

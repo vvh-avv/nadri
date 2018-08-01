@@ -7,6 +7,7 @@ function ccTag(content){
 		for( var i=1; i<friend.length; i++) {
 			var friendId = friend[i].split(" ")[0];
 			//console.log(friendId+"친구가 소환됨");
+			
 			if(i==friend.length-1){
 				var cl = cc.length; //문자열 총 길이
 				var ci = cc.indexOf(friend[i]); //마지막 친구이름 시작위치

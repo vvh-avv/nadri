@@ -124,7 +124,6 @@ public class SpotController {
         br.close();
         
         model.addAttribute("a", a);
-        model.addAttribute("total", spotService.getTotalSpot());
         
         return "forward:/spot/festivalSpot.jsp";
 	}	

@@ -7,6 +7,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/images/common/favicon.ico">
@@ -29,11 +30,55 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 공유 -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<!-- full calendar CDN -->
+<script src="/javascript/moment.min.js"></script>
+<script src="/javascript/fullcalendar.js"></script>
+<script src="/javascript/fullcalendar_ko.js" charset="EUC-KR"></script>
+<link rel="stylesheet" href="/css/fullcalendar.css">
 
 <style>
    .container{
       padding-top: 10px;
    }
+   .row{
+     margin-bottom: 15px;
+  }
+  
+  
+  @media only screen and (min-width: 900px) { /* PC일때 */
+     .contentRow{
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: space-around;
+     }
+     .form-inline.formTagCss{
+        float: right;
+     }
+     .text-primary.pTagCss{
+        margin: 0px;
+        text-align: right;
+        padding-top: 7px;
+     }
+     
+      .thumbImg img{
+         width: 250px;
+         height: 250px;
+         opacity: 1;
+         transition: .5s ease;
+      }
+  }
+  
+  @media only screen and (max-width: 600px) { /* 모바일일때 */
+     .text-primary.pTagCss{
+        text-align: center;
+     }
+     .thumbImg img{
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+      transition: .5s ease;
+        }
+  }
    
    article{
       display: inline-block;
@@ -48,13 +93,6 @@
       opacity: 1;
    }
    
-   .thumbImg img{
-      width: 240px;
-      height: 240px;
-      opacity: 1;
-      transition: .5s ease;
-      margin: 5px;
-   }
    .links{
      opacity: 0;
      position: absolute;
@@ -84,19 +122,122 @@
    /*,.swal-overlay*/{
         background-image: url("/images/board/reward.gif");
       }
-      
+    
 }
 </style>
 
 <script>
-
 function fncGetList(currentPage) {
    $("#currentPage").val(currentPage)
    $("#detailForm").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
 }
 
+$(function(){
+   console.log( ${events_array} );
+   
+   //* 풀캘린더
+   $('#calendar').fullCalendar({
+      height: 600, //캘린더 높이 설정
+      firstDay: 1, //월요일부터 시작
+      customButtons: { //일정생성 바로가기 버튼 커스텀 추가
+         gotoAddSchedule: {
+            text: '일정 생성하기',
+            click: function() {
+              window.open("/schedule/addSchedule");
+            }
+          }
+      },
+      header: { //상단 바 설정
+         left: 'prev, next today',
+         center: 'title',
+            right: 'gotoAddSchedule' //'month,listMonth'
+      },
+      views: { //가운데 타이틀 커스텀 설정
+         month: {
+            titleFormat: 'YYYY년 MM월',
+            eventLimit: 3, //하루 최대 3개 일정만 보이게 설정
+         }
+      },
+      weekMode: 'variable', //월마다 주 자동으로 표시1
+      fixedWeekCount : false, //월마다 주 자동으로 표시2
+      columnHeaderHtml: function(mom) { //토요일은 파란색, 일요일은 빨간색으로 표시
+          if (mom.weekday() === 5) {
+            return "<font color='blue'>토</font>";
+          } else if (mom.weekday() === 6) {
+           return "<font color='red'>일</font>";
+          } else {
+            return mom.format('ddd');
+          }
+      },
+      selectable: true, //하루하루 날짜가 선택되도록 설정
+      editable: false, //수정 불가하도록 설정
+      dropable: false, //드랍 불가하도록 설정
+       timeFormat: 'H:mm', //보여질 시간 포멧 설정 //H:24 h:12
+      eventLimit: true, //하루 보여질 최대 일정 제한 설정
+      eventLimitText: '더보기', //하루 최대 일정이 넘으면 '더보기' 문구 출력
+      eventLimitClick: 'popover',
+      
+       events: ${events_array},
+       eventRender: function(event, element) { //공휴일엔 빨간날로 표시
+           if (event.className == 'specialDay') {
+               element.css({
+                   'background-color': '#FF6E6E', //#333333
+                   'border-color': '#FF6E6E'
+               })
+           }else if (event.className == 'generalDay'){
+              element.css({
+                   'background-color': '#36A8CF',
+                   'border-color': '#36A8CF'
+               })
+           }
+       },
+       
+      
+        dayClick : function(date){
+           if( new Date(date.format())< new Date()){ //오늘 날짜 이전은 생성불가 설정
+              return;
+           }
+           
+           swal({
+                title: "해당 날짜엔 나들이 일정이 없습니다.",
+                text: date.format()+" 날짜로 일정을 새로 생성하시겠습니까?",
+                buttons: ["취소", "생성하기"],
+           }).then((willGo) => {
+                if (willGo) {
+                   
+                   swal("교통수단은 무엇으로 지정하시겠습니까?",{
+                      buttons: {
+                         0: "자동차",
+                         1: "도보",
+                         2: "대중교통"
+                      },
+                   }).then((value)=>{
+                      switch(value){
+                        case "0" :
+                           window.open("/schedule/addSchedule?transportationCode=0&date="+date.format()+'');
+                           break;
+                        case "1" :
+                           window.open("/schedule/addSchedule?transportationCode=1&date="+date.format()+'');
+                           break;
+                        default:
+                           window.open("/schedule/addSchedule?transportationCode=2&date="+date.format()+'');
+                      }
+                   })
+                }
+           });
+      },
 
-$(function(){   
+      eventClick: function(calEvent, jsEvent, view) {
+         if(calEvent.id!=0){ //공휴일이 아닐 때만 반응
+            console.log(calEvent.title+" 일정으로 이동");
+            window.open("/schedule/getSchedule?scheduleNo="+calEvent.id);
+              return false;
+         }
+      },
+      
+      
+   });
+   
    
    $("button.btn.btn-default:contains('검색')").on("click", function() {
       fncGetList(1);
@@ -222,8 +363,8 @@ $(function(){
    $("button[id^='updateSchedule']").on("click", function(e){
       e.stopPropagation();
       var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
-      self.location="";
-      alert(scheduleNo+"번 일정을 수정합니다..");
+      self.location="/schedule/updateSchedule?scheduleNo="+scheduleNo;
+      //alert(scheduleNo+"번 일정을 수정합니다..");
    })
    
    //URL 복사
@@ -277,85 +418,102 @@ $(function(){
    <!-- 메인툴바 -->
    <%@ include file="/layout/toolbar.jsp"%>
    
-   <!-- 서브메뉴 노출 -->
-   <div class="col-xs-12 col-md-2" style="margin-left:3%">
-     <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-     <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
-     <a href="/user/getUser">내 정보 보기</a><br/><br/>
-     <a href="/user/updateUser">내 정보 수정</a><br/><br/>
-     <a href="/friend/listFriend">친구 목록</a><br/><br/>
-     <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
-     <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-     <a href="#">장소 바구니</a><br/><br/>
-     
-        <br/><br/><br/><br/><br/><br/><br/><br/>
-        <a href="/user/logout">로그아웃</a><br/><br/>
-   
-   </div>
-   
    <div class="container" >
-      <div class="col-xs-12 col-md-9">
-         <div class="row">
-            <p class="text-primary" style="margin:0px;">총 ${resultPage.totalCount }개의 일정이 있습니다! </p>
-      
-         <form id="detailForm" class="form-inline" name="detailForm" style="float:right;">
-                 <div class="form-group">
-                    <select class="form-control" name="searchCondition">
-                       <option value="0" ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>제목</option>
-                       <option value="1" ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>해쉬태그</option>
-                    </select>
-                 </div>
-                 <div class="form-group">
-                    <label class="sr-only" for="searchKeyword">검색어</label>
-                    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-                 </div>
-                 <button type="button" class="btn btn-default">검색</button>
-                 <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-                 <input type="hidden" id="currentPage" name="currentPage" value="" />
-            </form>
-         </div>
-        
-      
-      <!-- 작성한 글 리스트 뜨는 부분 -->
-         <c:set var="i" value="0"/>
-         <c:forEach var="schedule" items="${list}">
-            <article class="${schedule.scheduleNo}">
-               <!-- 썸네일 형식의 작성한 글 이미지 -->
-               <div class="thumbImg" style="width:auto; height:250px;">
-<%--                   <c:if test="${schedule.scheduleImg==null}">
-                     <img src="/images/schedule/scheduledefault.jpg" class="img-thumbnail">
-                  </c:if> --%>
-   <%--                <c:if test="${schedule.scheduleImg!=null}"> --%>
-                     <c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
-                     <c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
-<%--                   </c:if> --%>
-               </div>
-               <!-- 마우스 오버시 보여지는 부분 -->
-               <div class="links" style="text-align:center;">
-                  <span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
-                  <span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
-                  <span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
-                  <button type="button" class="btn btn-primary btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
-                  <button type="button" class="btn btn-primary btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
-                  <button type="button" class="btn btn-warning btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
-                  <%-- <button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button><br> --%>
-                  <button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button>
-               </div>
-               <div class="linksIcon">
-                  <img id="deleteSchedule${schedule.scheduleNo}" src="/images/board/delete2.png">
-               </div>
-            </article>
-            
-         </c:forEach>
-         <c:if test="${empty list}">
-            <span id="defaultText" style="margin-left:40%;">생성하신 일정이 없습니다. ㅠㅠ</span>
-         </c:if>
-         
-         <!-- PageNavigation Start... -->
-            <jsp:include page="../common/pageNavigator.jsp" />
-         <!-- PageNavigation End... -->
-         
+      <!-- 서브메뉴 노출 -->
+      <div class="col-md-2">
+        <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
+        <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
+        <a href="/user/getUser">내 정보 보기</a><br/><br/>
+        <a href="/user/updateUser">내 정보 수정</a><br/><br/>
+        <a href="/friend/listFriend">친구 목록</a><br/><br/>
+        <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
+        <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
+        <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
+           <br/><br/><br/><br/><br/><br/><br/><br/>
+           <a href="/user/logout">로그아웃</a><br/><br/>
       </div>
+      
+        <!-- 실제 보여지는 리스트 -->
+      <div class="col-md-10">
+         <!-- 캘린더 -->
+         <div class="row">
+            <div id="calendar" class="fc fc-ltr fc-bootstrap4"></div>
+         </div>
+      
+         <!-- 검색어 -->
+         <div class="row">
+            <div class="col-md-6">
+               <p class="text-primary pTagCss">총 <b>${resultPage.totalCount}</b>개의 일정이 있습니다! </p>
+            </div>
+            <div class="col-md-6">
+            <form id="detailForm" class="form-inline formTagCss" name="detailForm">
+                    <div class="form-group">
+                       <select class="form-control" name="searchCondition">
+                          <option value="0" ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>제목</option>
+                          <option value="1" ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>해쉬태그</option>
+                       </select>
+                    </div>
+                    <div class="form-group">
+                       <label class="sr-only" for="searchKeyword">검색어</label>
+                       <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+                    </div>
+                    <button type="button" class="btn btn-default">검색</button>
+                    <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+                    <input type="hidden" id="currentPage" name="currentPage" value="" />
+               </form>
+            </div>
+         </div>
+      
+         <!-- 작성한 글 리스트 뜨는 부분 -->
+         <div class="row">
+            <c:set var="i" value="0"/>
+            <c:forEach var="schedule" items="${list}">
+            
+            <c:if test="${i%3==0}"><div class="row contentRow"></c:if>
+            
+          <c:set var="i" value="${i+1}" />
+            
+               <article class="${schedule.scheduleNo}">
+                  <!-- 썸네일 형식의 작성한 글 이미지 -->
+                  <div class="thumbImg" style="width:auto; height:250px;">
+						<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
+							<img src="/images/spot/421.jpg" class="img-thumbnail">
+						</c:if> 
+					<c:if test="${fn:length(schedule.scheduleImg) > 1}">
+							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
+							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
+					</c:if>
+                  </div>
+                  <!-- 마우스 오버시 보여지는 부분 -->
+                  <div class="links" style="text-align:center;">
+                     <span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
+                     <span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
+                     <span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
+                     <button type="button" class="btn btn-primary btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button> 
+                     <button type="button" class="btn btn-primary btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button><br>
+                     <button type="button" class="btn btn-warning btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
+                     <button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button><br>
+                     <button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button>
+                  </div>
+                  <div class="linksIcon">
+                     <img id="deleteSchedule${schedule.scheduleNo}" src="/images/board/delete2.png">
+                  </div>
+               </article>
+               
+            <c:if test="${i%3==0}"></div></c:if>
+            
+            </c:forEach>
+            
+            <c:if test="${empty list}">
+               <span id="defaultText" style="margin-left:40%;">생성하신 일정이 없습니다. ㅠㅠ</span>
+            </c:if>
+      </div>      
+      
+     <!-- PageNavigation Start... -->
+        <jsp:include page="../common/pageNavigator.jsp" />
+     <!-- PageNavigation End... -->
+     
+     </div>
    </div> <!-- e.o.container -->
 </body>
 
