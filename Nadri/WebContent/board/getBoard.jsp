@@ -29,9 +29,12 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js / toolbar.css CDN -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
 <!-- board.js -->
 <script src="/javascript/board.js"></script>
 
@@ -62,9 +65,13 @@
 
 <style>
 	.getBody{
-	  margin-top : 10px;
-	  border-radius: 3px;
+	  margin-top : 30px;
+	  margin-bottom : 30px;
+	  padding : 20px;
+	  border-radius: 5px;
 	  border: 1px solid #e6e6e6;
+	  background : white;
+	  box-shadow : 1px 2px 10px 0px #80808040;
 	}
 	#boardTitle{
       height : auto;
@@ -122,11 +129,14 @@
        margin-left: auto;
    }
    #moreContent{
+      display : none;
       position : absolute;
       border-radius: 10%;
-      background-color : #E6F5FA;
+      background-color : white;
       z-index : 10;
       text-align : center;
+      padding : 10px;
+      box-shadow : 0px 0px 15px 0px #dadada;
    }
    .moreDetail{
       cursor : pointer;
@@ -134,7 +144,7 @@
    }
    /* 화면이 작아졌을 때 유저정보가 위로 가게끔 설정 */
    @media only screen and (max-width: 992px) {/*600px) {*/
-      .container{
+      .container-get-board{
          display: flex;
          flex-direction: column;
       }
@@ -212,9 +222,13 @@
    	 padding: 16px;
    	 height: 100px;
    }
+   .b1Section{
+   	 margin-bottom : 2px;
+   }
    .b1Section,
    .b2Section{
    	  padding: 16px;
+   	  border : 1px solid lightgrey;
    }
    #commContent{
      width: 100%;
@@ -328,8 +342,10 @@ $(function(){
    
       if( $(".moreDetail").is(":visible")){
           $(".moreDetail").slideUp();
+          $("#moreContent").slideUp();
       }else{
           $(".moreDetail").slideDown();
+          $("#moreContent").slideDown();
       }
    })
    //*더보기 메뉴
@@ -922,8 +938,155 @@ $(function(){
 </head>
 
 <body>
-	<!-- 메인 툴바 -->
-   <%@ include file="/layout/toolbar.jsp"%>
+	<!-- 메인툴바 -->
+	<nav class="head-section">
+		<div class="fix-box">
+			<div class="container header-box">
+				<span class="glyphicon glyphicon-apple maincon"></span>
+				<div class="title-section">
+					<div class="title-text">너,나들이</div>
+					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
+						id="jolly-icon"></span>
+				</div>
+
+				<div class="middle-section">
+					<div class="searcher">
+						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
+							type="text" name="searchKeyword" value=""
+							placeholder="검색어를 입력해주세요." autocomplete=off>
+					</div>
+				</div>
+
+				<div class="side-section">
+					<span class="glyphicon glyphicon-bell top-icons"
+						id="noticeRoomList"></span> <span
+						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
+					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
+					<c:if test="${!empty user}">
+						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
+						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
+						<c:if test="${user.role == 1}">
+							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
+						</c:if>
+						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
+					</c:if>
+					<c:if test="${empty user}">
+						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
+					</c:if>
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: 35%;"
+						id="chatRoomContainer">
+						<div id="notificationTitle">채팅방</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="chatFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
+						<div id="notificationTitle">알림</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="noticeFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="container search-log-container">
+		<div class="log-wrapper">
+			<div class="search-logs">
+				<div class="row log-detail">
+					<div class="col-md-6 col-xs-12 search-history">
+						최근 검색 기록
+						<c:if test="${searchLog.size()==0}">
+						<%-- <c:forEach var="board" items="${boardList}"> --%>
+						<div>최근 검색 기록이 없습니다.</div>
+						</c:if>
+						<c:if test="${searchLog.size()>0}">
+							<c:set var="i" value="0" />		
+							<c:forEach var="keyword" items="${searchLog}">
+							<c:set var="i" value="${ i+1 }" />
+								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
+							</c:forEach>
+						</c:if>
+					</div>
+					<div class="col-md-6 col-xs-12 search-recommand">
+						추천검색어
+						
+						<div>검색어2</div>
+					</div>`
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<nav class="head-section-small">
+		<div class="fix-box-small">
+			<div class="container header-box">
+				<span class="glyphicon glyphicon-apple maincon-small"></span>
+				
+				<div class="title-section-small">
+					<div class="title-text-small"></div>
+					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
+						id="jolly-icon-small"></span>
+				</div>
+
+				<div class="middle-section-small">
+					<div class="searcher-small">
+						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
+							type="text" name="searchKeyword" value=""
+							placeholder="검색어를 입력해주세요." autocomplete=off>
+					</div>
+				</div>
+
+				<div class="side-section-small">
+					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
+					<div class="side-section-icons">
+						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
+						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
+						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
+						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
+						<c:if test="${!empty user}">
+							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
+							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
+							<c:if test="${user.role == 1}">
+								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
+							</c:if>
+							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
+						</c:if>
+						<c:if test="${empty user}">
+							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
+						</c:if>
+					</div>
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: 35%;"
+						id="chatRoomContainer">
+						<div id="notificationTitle">채팅방</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="chatFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
+						<div id="notificationTitle">알림</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="noticeFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</nav> 
 
 	<input type="hidden" id="boardCode" value="${board.boardCode}">
    <!-- 더보기 버튼 클릭시 노출될 항목 -->
@@ -939,7 +1102,7 @@ $(function(){
       </c:if>
    </span>
                
-   <div class="container getBody">
+   <div class="container container-get-board getBody">
       <div class="col-md-8 aSection"> <!-- 제목+이미지+내용 -->
          <form id="firstForm" class="form-horizontal">
             <!-- 제목 -->
@@ -1122,6 +1285,27 @@ $(function(){
 
       </div>
    </div>
+   
+   	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
    
 </body>
 </html>

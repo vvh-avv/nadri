@@ -623,7 +623,6 @@
 		</div>
 	</div>
 
-
 	<nav class="head-section-small">
 		<div class="fix-box-small">
 			<div class="container header-box">

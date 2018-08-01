@@ -23,9 +23,10 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js CDN -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 공유 -->
@@ -37,10 +38,10 @@
 <link rel="stylesheet" href="/css/fullcalendar.css">
 
 <style>
-   .container{
+   .container-mypage{
       padding-top: 10px;
    }
-   .row{
+   .row-mypage{
      margin-bottom: 15px;
   }
   
@@ -416,9 +417,156 @@ $(function(){
 </head>
 <body>
    <!-- 메인툴바 -->
-   <%@ include file="/layout/toolbar.jsp"%>
+   <nav class="head-section">
+		<div class="fix-box">
+			<div class="container header-box">
+				<span class="glyphicon glyphicon-apple maincon"></span>
+				<div class="title-section">
+					<div class="title-text">너,나들이</div>
+					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
+						id="jolly-icon"></span>
+				</div>
+
+				<div class="middle-section">
+					<div class="searcher">
+						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
+							type="text" name="searchKeyword" value=""
+							placeholder="검색어를 입력해주세요." autocomplete=off>
+					</div>
+				</div>
+
+				<div class="side-section">
+					<span class="glyphicon glyphicon-bell top-icons"
+						id="noticeRoomList"></span> <span
+						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
+					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
+					<c:if test="${!empty user}">
+						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
+						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
+						<c:if test="${user.role == 1}">
+							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
+						</c:if>
+						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
+					</c:if>
+					<c:if test="${empty user}">
+						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
+					</c:if>
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: 35%;"
+						id="chatRoomContainer">
+						<div id="notificationTitle">채팅방</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="chatFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
+						<div id="notificationTitle">알림</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="noticeFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="container search-log-container">
+		<div class="log-wrapper">
+			<div class="search-logs">
+				<div class="row log-detail">
+					<div class="col-md-6 col-xs-12 search-history">
+						최근 검색 기록
+						<c:if test="${searchLog.size()==0}">
+						<%-- <c:forEach var="board" items="${boardList}"> --%>
+						<div>최근 검색 기록이 없습니다.</div>
+						</c:if>
+						<c:if test="${searchLog.size()>0}">
+							<c:set var="i" value="0" />		
+							<c:forEach var="keyword" items="${searchLog}">
+							<c:set var="i" value="${ i+1 }" />
+								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
+							</c:forEach>
+						</c:if>
+					</div>
+					<div class="col-md-6 col-xs-12 search-recommand">
+						추천검색어
+						
+						<div>검색어2</div>
+					</div>`
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<nav class="head-section-small">
+		<div class="fix-box-small">
+			<div class="container header-box">
+				<span class="glyphicon glyphicon-apple maincon-small"></span>
+				
+				<div class="title-section-small">
+					<div class="title-text-small"></div>
+					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
+						id="jolly-icon-small"></span>
+				</div>
+
+				<div class="middle-section-small">
+					<div class="searcher-small">
+						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
+							type="text" name="searchKeyword" value=""
+							placeholder="검색어를 입력해주세요." autocomplete=off>
+					</div>
+				</div>
+
+				<div class="side-section-small">
+					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
+					<div class="side-section-icons">
+						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
+						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
+						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
+						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
+						<c:if test="${!empty user}">
+							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
+							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
+							<c:if test="${user.role == 1}">
+								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
+							</c:if>
+							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
+						</c:if>
+						<c:if test="${empty user}">
+							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
+						</c:if>
+					</div>
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: 35%;"
+						id="chatRoomContainer">
+						<div id="notificationTitle">채팅방</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="chatFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="notificationContainer"
+						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
+						<div id="notificationTitle">알림</div>
+						<div class="col-md-15 bg-white">
+							<ul class="friend-list" id="noticeFriendList">
+								<!--             여기에 채팅방 리스트가 출력됨. -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</nav>
    
-   <div class="container" >
+   <div class="container container-mypage" >
       <!-- 서브메뉴 노출 -->
       <div class="col-md-2">
         <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
@@ -436,12 +584,12 @@ $(function(){
         <!-- 실제 보여지는 리스트 -->
       <div class="col-md-10">
          <!-- 캘린더 -->
-         <div class="row">
+         <div class="row row-mypage">
             <div id="calendar" class="fc fc-ltr fc-bootstrap4"></div>
          </div>
       
          <!-- 검색어 -->
-         <div class="row">
+         <div class="row row-mypage">
             <div class="col-md-6">
                <p class="text-primary pTagCss">총 <b>${resultPage.totalCount}</b>개의 일정이 있습니다! </p>
             </div>
@@ -465,11 +613,11 @@ $(function(){
          </div>
       
          <!-- 작성한 글 리스트 뜨는 부분 -->
-         <div class="row">
+         <div class="row row-mypage">
             <c:set var="i" value="0"/>
             <c:forEach var="schedule" items="${list}">
             
-            <c:if test="${i%3==0}"><div class="row contentRow"></c:if>
+            <c:if test="${i%3==0}"><div class="row row-mypage contentRow"></c:if>
             
           <c:set var="i" value="${i+1}" />
             

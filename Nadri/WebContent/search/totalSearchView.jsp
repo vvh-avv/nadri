@@ -191,7 +191,6 @@
 			</div>
 		</div>
 		</nav>
-	</nav>
 
 	<div class="container search-result-container">
 		<div class="content-box">
@@ -236,7 +235,7 @@
 				<div class="col-md-12 col-xs-12 section-title"
 					style="display: flex; justify-content: space-between; align-items: center;">
 					<h3 style="display: inline-block; font-weight: 700;">게시글</h3>
-					<div>더보기 >></div>
+					<div class="board-more">더보기 >></div>
 				</div>
 				<hr />
 				<c:if test="${!empty list_board}">
@@ -254,11 +253,8 @@
 					</c:forEach>
 				</c:if>
 				<c:if test="${empty list_board}">
-					<div class="col-md-12 col-xs-12 board-box">
-						<img
-							src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg"
-							class="boardImg"
-							style="width: 100%; height: 200px; opacity: 0.5;">
+					<div class="col-md-12 col-xs-12 board-box no-boards">
+						<div>검색된 게시물이 없습니다.</div>
 					</div>
 				</c:if>
 			</div>

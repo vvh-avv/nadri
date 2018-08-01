@@ -56,9 +56,9 @@ $(function() {
 			$('.top-icons').css('opacity', '1');
 			$('.top-icons').css('top', '7px');
 			$('.searcher').css('opacity', '1');
-			$('.searcher-icon').css('top',searcherIconTop);
+			$('.searcher-icon').css('top','28px');
 			$('.maincon').css('opacity','1');
-			$('.maincon').css('top',mainconTop);
+			$('.maincon').css('top','14px');
 			t_chk = false;
 		} else {
 			$('.fix-box').css('height', '10px');
@@ -116,39 +116,6 @@ $(function() {
 		$('.title-section > div').css('opacity', '0');
 	})
 
-	$('.more-than-three')
-			.slick(
-					{
-						prevArrow : "<span class='glyphicon glyphicon-triangle-left slide-button'></span>",
-						nextArrow : "<span class='glyphicon glyphicon-triangle-right slide-button'></span>",
-						centerMode : true,
-						centerPadding : '40px',
-						slidesToShow : 3,
-						autoplay : true,
-						autoplaySpeed : 2000,
-						responsive : [ {
-							breakpoint : 768,
-							settings : {
-								arrows : true,
-								centerMode : true,
-								centerPadding : '40px',
-								slidesToShow : 1,
-								autoplay : true,
-								autoplaySpeed : 2000
-							}
-						}, {
-							breakpoint : 480,
-							settings : {
-								arrows : true,
-								centerMode : true,
-								centerPadding : '40px',
-								slidesToShow : 1,
-								autoplay : true,
-								autoplaySpeed : 2000
-							}
-						} ]
-					});
-
 	$('.list-element').on('mouseover', function() {
 		var id = $(this).attr('id');
 		var cls = $(this).attr('class');
@@ -168,12 +135,6 @@ $(function() {
 	})
 
 	$(window).on('scroll', function() {
-
-		var height;
-		var searcher
-		if ($(document).scrollTop() > 100) {
-			$('.odometer').html(odo);
-		}
 
 		if ($(document).scrollTop() < 70) {
 			$('.fix-box').css('height', '70px');
@@ -247,7 +208,7 @@ $(function() {
 			self.location = '/admin/adminIndex';
 		} else if (id == 'log-out') {
 			self.location = '/user/logout';
-	// ############################### HJA 네비게이션 위해 수정! ##########################################
+	// ############################### HJA! ##########################################
 		}else if(id == 'pencil'){
 			$("#transportationModal").modal();
 		}
@@ -264,19 +225,22 @@ $(function() {
 	$('#transit').on('click',function(){
 		self.location = '/schedule/addSchedule?transportationCode=2';
 	});
-
-	$('.schedule-button').on('click',function(){
-		var check = $('#session-checker').val();
-		console.log(check);
-		if( check == null ){
-			swal({
-				  title: "회원만 이용하실 수 있어요!",
-				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
-				  icon: "error",
-				  button: " 닫 기 ",
-				});	
-		}else{
-			self.location = '/schedule/addSchedule';
+	
+	$('.post-title').on('click',function(){
+		var id = $(this).attr('id');
+		if (id == 'login-open') {
+			self.location = '/user/login';
+		} else if (id == 'chat-open') {
+			self.location = '/board/listBoard';
+		} else if (id == 'join-open') {
+			self.location = '/user/listUser';
+		} else if (id == 'admin-page') {
+			self.location = '/admin/adminIndex';
+		} else if (id == 'log-out') {
+			self.location = '/user/logout';
+		} else if (id == 'pencil') {
+		console.log(id);
+		self.location = '/board/getBoard?boardNo='+id;
 		}
 	});
 
@@ -290,16 +254,16 @@ $(function() {
 		var check = $('#session-checker').val();
 		console.log(check);
 		if (check != 'no_user') {
-			console.log("session 여부 : 있음");
+			console.log("session 유무 : 있음");
 			self.location = '/schedule/addSchedule';
 
 		} else {
-			console.log("session 여부 : 없음");
+			console.log("session 유무 : 없음");
 			swal({
-				title : "회원만 이용하실 수 있어요!",
-				text : "일정작성을 위해 가입 또는 로그인을 해주세요.",
-				icon : "error",
-				button : " 닫 기 ",
+				  title: "회원만 이용하실 수 있어요!",
+				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
+				  icon: "error",
+				  button: " 닫 기 ",
 			});
 		}
 	});
