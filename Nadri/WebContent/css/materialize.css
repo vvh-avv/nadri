@@ -2938,12 +2938,20 @@ thead {
   border-bottom: 1px solid #d0d0d0;
 }
 
-td, th {
+/* td, th {
   padding: 15px 5px;
   display: table-cell;
   text-align: left;
   vertical-align: middle;
   border-radius: 2px;
+}
+ */
+td, th {
+    /* padding: 15px 5px; */
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 2px;
 }
 
 @media only screen and (max-width: 992px) {

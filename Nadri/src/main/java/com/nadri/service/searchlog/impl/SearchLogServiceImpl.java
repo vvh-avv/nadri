@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.nadri.service.domain.SearchLog;
+import com.nadri.common.Search;
 import com.nadri.service.searchlog.SearchLogDao;
 import com.nadri.service.searchlog.SearchLogService;
 
@@ -30,9 +30,9 @@ public class SearchLogServiceImpl implements SearchLogService{
 
 	//method
 	@Override
-	public List<Object> getSearchResult(String searchKeyword) {
+	public List<Object> getSearchResult(Search search) {
 		// TODO Auto-generated method stub
-		return searchLogDao.getSearchResult(searchKeyword);
+		return searchLogDao.getSearchResult(search);
 	}
 
 	

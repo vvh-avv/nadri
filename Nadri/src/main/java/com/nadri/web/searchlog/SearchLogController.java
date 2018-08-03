@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -19,12 +20,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nadri.common.Search;
 import com.nadri.service.domain.Insta;
+import com.nadri.service.domain.User;
 import com.nadri.service.searchlog.SearchLogService;
 
 @Controller
@@ -40,13 +44,28 @@ public class SearchLogController {
 	}
 	
 	@RequestMapping(value="listSearchLog")
-	public String getSearchList(@RequestParam("searchKeyword")String searchKeyword, Model model) throws Exception {
+	public String getSearchList(@RequestParam("searchKeyword")String searchKeyword, Model model,HttpServletRequest request) throws Exception {
 
 		System.out.println("listSearchLog -> controller 들어옴");
 		
+		HttpSession session =  request.getSession(true);
+		User user = (User)session.getAttribute("user");
+		
+		Search search = new Search();
+		
+		if(user != null) {
+			search.setMemberFlag(0);
+			search.setUserId(user.getUserId());
+		}else {
+			search.setMemberFlag(1);
+		}
+		
+		search.setSearchKeyword(searchKeyword);
+		search.setSearchCondition("normal");
+		
 		List<ArrayList> list = new ArrayList<ArrayList>();
 
-		//instagram info
+		// instagram info
 		List<Insta> insta_list = new ArrayList<Insta>();
 		
 		String URL = "https://www.instagram.com/explore/tags/";
@@ -116,10 +135,9 @@ public class SearchLogController {
 		
 		// board & spot result
 		
-		HttpSession session;
 		
 		
-		List<Object> list_all = searchLogService.getSearchResult(searchKeyword);
+		List<Object> list_all = searchLogService.getSearchResult(search);
 		
 		List<Object> list_board = (List<Object>) list_all.get(0);
 		List<Object> list_spot = (List<Object>) list_all.get(1);
@@ -130,15 +148,47 @@ public class SearchLogController {
 		for(Object obj2:list_spot) {
 			array.add(new ArrayList<Object>());
 			HashMap<String,Object> json2 = (HashMap<String, Object>) obj2;
+			
+			int spotCode = Integer.parseInt((String) json2.get("spot_code"));
+			
+			if(spotCode >= 4100 && spotCode < 4200) {
+				array.get(i).add("'/images/spot/icon/river.png'");
+			}else if(spotCode >= 4200 && spotCode < 4300) {
+				array.get(i).add("'/images/spot/icon/parking.png'");
+			}else if(spotCode >= 4300 && spotCode < 4400) {
+				array.get(i).add("'/images/spot/icon/info.png'");
+			}else if(spotCode >= 4400 && spotCode < 4500) {
+				array.get(i).add("'/images/spot/icon/bike.png'");
+			}else if(spotCode >= 4500 && spotCode < 4600) {
+				array.get(i).add("'/images/spot/icon/store.png'");
+			}else if(spotCode == 10) {
+				array.get(i).add("'/images/spot/icon/samdae.png'");
+			}else if(spotCode == 11) {
+				array.get(i).add("'/images/spot/icon/suyo.png'");
+			}else if(spotCode == 0) {
+				array.get(i).add("'/images/spot/icon/park.png'");
+			}else if(spotCode == 30) {
+				array.get(i).add("'/images/spot/icon/baby.png'");
+			}else if(spotCode == 31) {
+				array.get(i).add("'/images/spot/icon/car.png'");
+			}else if(spotCode == 32) {
+				array.get(i).add("'/images/spot/icon/bike.png'");
+			}
 			array.get(i).add("'"+json2.get("spot_title")+"'");
 			array.get(i).add(json2.get("spot_y"));
 			array.get(i).add(json2.get("spot_x"));
 			array.get(i).add("'"+json2.get("spot_detail")+"'");
-			array.get(i).add("'"+json2.get("spot_img")+"'");
+			if(json2.get("spot_img").equals("")) {
+				array.get(i).add("'no_image.jpg'");
+			}else {
+				array.get(i).add("'"+json2.get("spot_img")+"'");				
+			}
+			array.get(i).add(json2.get("spot_no"));
 			i++;
 		}
 		
 		System.out.println("가져온 스팟 리스트의 결과 : "+array);
+		System.out.println("가져온 보드의 결과 : "+list_board);
 		
 		model.addAttribute("insta_list", insta_list);
 		model.addAttribute("list_board", list_board);

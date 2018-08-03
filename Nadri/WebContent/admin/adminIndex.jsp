@@ -55,9 +55,7 @@
 			}
 		})
 
-		/* index page animation end */
-		
-		
+		/* index page animation end */	
 
 	})
 </script>
@@ -77,6 +75,7 @@
 		<div class="spot">백과관리</div>
 		<div class="inquire">문의관리</div>
 	</nav>
+	
 	<div class="container">
 	<div class="alert-one">지난 접속 이후 새로운 문의가 <span>12개</span> 있습니다.</div>
 		<div class="row boxes-first">

@@ -38,5 +38,9 @@ public interface AdminDao {
 	public void addWeather(Weather weather);
 	
 	public String getWeather();
+	
+	public int getTotalCount();
+	
+	public List<String> getSearchLog(String userId);
 
 }

@@ -25,17 +25,18 @@
 <script src="/javascript/juanMap.js"></script>
 <!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! -->
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- materialize 넣는 css -->
-<script src="/javascript/materialize.js"></script>
+<!-- <script src="/javascript/materialize.js"></script>
 <link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 
 <html>
 <style>
-@font-face {
+/* @font-face {
 	font-family: 'seoul';
 	src: url('/css/fonts/seoulhangangjangm.eot');
 	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -47,13 +48,61 @@
 		format('svg');
 	font-weight: normal;
 	font-style: normal;
-}
+} */
 
 
 body {
 	height: 100%;
 	margin: 0px;
-	font-family : seoul;
+/* 	font-family : seoul; */
+}
+
+.spot-top-box{
+	width : 65%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+@media only screen and (max-width : 600px){
+	.spot-top-box{
+		width : 100%;
+		margin-left:auto;
+		margin-right:auto;
+	}
+}
+
+.nav-wrapper{
+	border-radius: 0px 0px 60px 60px;
+	background: #6d91af94;
+	margin: 0px 15px 15px 15px;
+	box-shadow : 1px 2px 10px 0px #a7a7a7;
+}
+
+#nav-mobile{
+	list-style: none;
+	display : flex;
+	margin : 0px;
+	justify-content: space-evenly;
+	padding : 15px;
+	color : white;
+}
+
+#nav-mobile:hover{
+	z-index : 99;
+}
+
+li > span{
+	transition : all 1s;
+}
+
+li > span:hover{
+	cursor : pointer;
+	font-weight : 900;
+	font-size:20px;
+}
+
+.waves-light:hover{
+	background : white;
 }
 
 #map {
@@ -77,13 +126,14 @@ body {
 
 /* jumbotron 이미지를 넣는 부분 입니다!*/
 	.jumbotron {
-	   margin-bottom: 0px;
+	   margin-bottom: 15px;
 	   background-image: url(/images/spot/422.jpg);
 	   background-position: 0% 25%;
 	   background-size: cover;
 	   background-repeat: no-repeat;
 	   color: #393535;
 	   padding-left : 10%;
+	   box-shadow : 1px 1px 10px 0px #8080807d;
 	}
 
 /*spot에 패딩을 넣는 장소 입니다!!*/
@@ -99,30 +149,6 @@ padding : 5px;
 
 <head>
 <script>
-
-$(function(){
-	$("#park").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=0";
-	})
-
-	$("#festival").on("click", function(){
-		location.href = "/spot/getFestivalList";
-	})
-
-	$("#restaurant").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=1";
-	})
-
-	$("#river").on("click", function(){
-		location.href = "/spot/getSpotList?spotCode=4";
-	})
-
-	$("#search").on("click", function(){
-		location.href = "/spot/getSearchSpot";
-	})
-
-	});
-
 
 $(document).ready(function(){
 	// materialboxed
@@ -157,7 +183,7 @@ $(document).ready(function(){
 										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 										output += ' <p>';
 										output += ' <span class="label label-success">백과</span>';
-										output += ' <span class="label label-danger">공원</span>';
+										output += ' <span class="label label-primary">한강</span>';
 										output += ' </p>';
 										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 										output += '</div>';
@@ -171,72 +197,6 @@ $(document).ready(function(){
 		);// ajax
   });
 });
-  
-function getRiverList(spotCode){
-	$(".spotImg").empty();
-	$.ajax({ 
-        type : "GET", 
-        url : "/restspot/getSpotList/"+spotCode, 
-        headers : { 
-            "Content-type" : "application/json", 
-            "X-HTTP-Method-Override" : "POST" 
-        }, 
-        dataType : "text", 
-        success : function (result) { 
-         var result = JSON.parse(result); 
-         var spot = result.spot 
-         for ( var i = 0 ; i<spot.length ; i++){ 
-       	  
-	      $('.spotImg').append(function (index){ 
-		  		 // 변수를 선언합니다. 
-			      var item = spot[index]; 
-			      var output = '';
-			      if(spot[i].spotImg != ""){
-				      output += '<div class="item big">';
-				       output += '<div class="thumbnail">';
-				      output += '<img class="materialboxed" src="/images/spot/ ' + spot[i].spotImg + ' " height="100px" width="100%"/>';
-				      output += ' <div class="caption">';
-				      output += '<h3>' + spot[i].spotTitle + '</h3>';
-					  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-					  output += '<p> ' + spot[i].spotAddress+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-					  output += '<p> ' + spot[i].spotPhone+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-					 output += ' <p>';
-					 output += ' <span class="label label-danger">공원</span>';
-					 output += '  <span class="label label-warning">한강</span>';
-					 output += ' </p>';
-					  output += '<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>';
-					  output += '</div>';
-					  output += '</div>'; 
-					  output += '</div>';
-			      }else{
-			    	  output += '<div class="item normal">';
-				       output += '<div class="thumbnail">';
-				      output += ' <div class="caption">';
-				      output += '<h3>' + spot[i].spotTitle + '</h3>';
-					  output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> Location</strong>';
-					  output += '<p> ' + spot[i].spotAddress+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-earphone"></i> Phone</strong>';
-					  output += '<p> ' + spot[i].spotPhone+'</p>';
-					  output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-					 output += ' <p>';
-					 output += ' <span class="label label-danger">공원</span>';
-					 output += '  <span class="label label-warning">한강</span>';
-					 output += ' <span class="label label-primary">편의시설</span>';
-					 output += ' </p>';
-					  output += '<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>';
-					  output += '</div>';
-					  output += '</div>'; 
-					  output += '</div>';
-			      }
-				  return output; 
-		      })//end of append	
-    }//end of for문 
- }//end of success 
-});// end of ajax 
-} // end of getSpotList()
-  
   
 	//맨위로 올라가게 만들어 주는 script
 	$(function() {
@@ -348,7 +308,7 @@ function getRiverList(spotCode){
 	    			title : spot[i].spotTitle,
 	    			img : spot[i].spotImg,
 	    			no : spot[i].spotNo,
-	    			type : 'store'
+	    			type : 'delivery'
 	    	};           
 	      	locations.push(obj);    
 	      };
@@ -394,30 +354,6 @@ function getRiverList(spotCode){
 			});
 		});
 
-		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
-		function displayMarker(nowposition, message) {
-			// 마커를 생성합니다
-			var marker = new google.maps.Marker({
-				map : map,
-				position : nowposition,
-				icon : icons['myplace'].icon
-			});
-
-			var iwContent = message, // 인포윈도우에 표시할 내용
-			iwRemoveable = false;
-			// 인포윈도우를 생성합니다
-			var infowindow = new google.maps.InfoWindow({
-				content : iwContent,
-				removable : iwRemoveable
-			});
-
-			// 인포윈도우를 마커위에 표시합니다 
-			infowindow.open(map, marker);
-
-			// 지도 중심좌표를 접속위치로 변경합니다
-			map.setCenter(nowposition);
-		}
-
 		geocoder = new google.maps.Geocoder;
 
 		// When the user clicks, set 'isColorful', changing the color of the letters.
@@ -451,7 +387,7 @@ function getRiverList(spotCode){
 					+ '<li class="list-group-item">'
 					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-danger"> 공원</span></li>'
+					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-primary"> 한강</span></li>'
 					+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
 					+ '</div>';
 
@@ -464,66 +400,385 @@ function getRiverList(spotCode){
 
 			// 마커를 클릭했을때 이벤트 발생 시키기
 			google.maps.event.addListener(markers[i],'click',function() {
-								// 일단 마커를 모두 닫고
-								for (var i = 0; i < markers.length; i++) {
-										infowindows[i].close();
-									}
-								infowindows[this.index].open(map,markers[this.index]);
-								map.panTo(markers[this.index].getPosition());
-							});
+				map.setZoom(14);
+				// 일단 마커를 모두 닫고
+				for (var i = 0; i < markers.length; i++) {
+						infowindows[i].close();
+					}
+				infowindows[this.index].open(map,markers[this.index]);
+				map.panTo(markers[this.index].getPosition());
+			});
 		}
 	}//end of initmap();	
 
-	//장소를 불러오는 코드
-	function getSpotList(spotCode) {
-		$.ajax({
-					type : "GET",
-					url : "/restspot/getSpotList/" + spotCode,
-					headers : {
-						"Content-type" : "application/json",
-						"X-HTTP-Method-Override" : "POST"
-					},
-					dataType : "text",
-					success : function(result) {
-						var result = JSON.parse(result);
-						var spot = result.spot
-						for (var i = 0; i < spot.length; i++) {
-							$('.spotImg').empty();
-							$('.spotImg').append(
-											function(index) {
-												// 변수를 선언합니다. 
-												var item = spot[index];
-												var output = '';
-												output += '<div class="col-sm-4 col-md-4">';
-												output += '<div class="thumbnail">';
-												output += ' <div class="caption">';
-												output += '<h5 text-align="center">'+ spot[i].spotTitle+ '</h5>';
-												output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
-												output += '<p> '+ spot[i].spotAddress+ '</p>';
-												output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 등록날짜 / 수정날짜 </strong>';
-												output += '<p> '+ spot[i].spotCreateTime+ ' / '+ spot[i].spotModifyTime+ '</p>';
-												output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
-												output += ' <p>';
-												output += ' <span class="label label-danger">공원</span>';
-												output += ' </p>';
-												output += '<p><a href="/spot/getSpot?spotNo='+ spot[i].spotNo+ '" class="btn btn-primary" role="button">상세보기</a> <a href="#" class="btn btn-default" role="button">장소바구니</a></p>';
-												output += '</div>';
-												output += '</div>';
-												output += '</div>';
-												return output;
-											})//end of append		     		     		      
+	// searchkeyword 눌렀을때!!
+	function searchkeyword(spotCode){
+		deleteMarkers();
+		map.setZoom(11);
+			$.ajax({ 
+		        type : "GET", 
+		        url : "/restspot/getSpotList/"+spotCode, 
+		        headers : { 
+		            "Content-type" : "application/json", 
+		            "X-HTTP-Method-Override" : "POST" 
+		        }, 
+		        dataType : "json", 
+				success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+				if(data==''){
+					swal("아쉽게도 결과가 없네요?");
+				} else {
+					var spot = data.spot; 
+					for (var i = 0 ; i < spot.length; i++){
+						// spotCode에 따라서 각기 다른 마커 이미지를 넣어주는 부분입니다.
+						// 공원
+					      if(parseInt(spot[i].spotCode)>=4100 && parseInt(spot[i].spotCode) <4200){
+					        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg };
+					        obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'river'
+					    	};
+					        locations.push(obj); 
+					      // 주차장
+					      }else if (parseInt(spot[i].spotCode)>=4200 && parseInt(spot[i].spotCode) <4300){
+					        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'parking', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					        obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'parking'
+					    	};  
+					        locations.push(obj);
+						     // 안내소
+					      }else if (parseInt(spot[i].spotCode)>=4300 && parseInt(spot[i].spotCode) <4400){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'info' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+							obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'info'
+					    	};    
+					      	locations.push(obj);
+							 // 자전거 대여소
+					      }else if (parseInt(spot[i].spotCode)>=4400 && parseInt(spot[i].spotCode) <4500){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					      	obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'bike'
+					    	};    
+					      	locations.push(obj);
+							 // 편의점
+					      }else if (parseInt(spot[i].spotCode)>=4500 && parseInt(spot[i].spotCode) <4600){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'store' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					      	obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'store'
+					    	};        
+					      	locations.push(obj);
+							 // 배달존
+					      }else if(parseInt(spot[i].spotCode)>=4600 && parseInt(spot[i].spotCode) <4700){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'food' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+							obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'store'
+					    	};           
+					      	locations.push(obj);    
+					      };
+					};
+			          
+					for (var i = 0; i < locations.length; i++) {
+						markers[i] = new google.maps.Marker({
+							position : locations[i],
+							map : map,
+							icon: icons[locations[i].type].icon,
+							animation: google.maps.Animation.DROP
+						});
+						//인덱스를 꺼내오기.. 중요!!
+						markers[i].index = i
+						if(locations[i].img === ''){ 
+							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+									+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+									+ '<li class="list-group-item">'
+									+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+									+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+									+ '</div>';
+						} else {
+							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+								+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+								+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+								+ '<li class="list-group-item">'
+								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '</div>';	
 						}
+
+						// 이벤트 정보 넣기
+						infowindows[i] = new google.maps.InfoWindow(
+								{
+									content : contents[i],
+									removeable : true
+								});
+
+						// 마커를 클릭했을때 이벤트 발생 시키기
+						google.maps.event.addListener(markers[i],'click',function() {
+							map.setZoom(14);
+							// 일단 마커를 모두 닫고
+							for (var i = 0; i < markers.length; i++) {
+									infowindows[i].close();
+								}
+							infowindows[this.index].open(map,markers[this.index]);
+							map.panTo(markers[this.index].getPosition());
+						});
 					}
-				});// end of ajax 
-	} // end of getSpotList()
+				}
+						
+					$(".spotImg").empty();
+					var output = '';
+					$(data.spot).each(
+									function() {
+										output += '<div class="col-sm-3 col-md-3">';
+										output += '<div class="thumbnail">';
+										output += ' <div class="caption">';
+										output += '<h5>'+ this.spotTitle+ '</h5>';
+										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+										output += '<p> '+ this.spotAddress+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+										output += '<p> '+ this.spotCreateTime+ ' / '+ this.spotModifyTime+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+										output += ' <p>';
+										output += ' <span class="label label-success">백과</span>';
+										output += ' <span class="label label-warning">맛집</span>';
+										output += ' </p>';
+										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '</div>';
+										output += '</div>';
+										output += '</div>';
+									});// each
+					// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
+					$(".spotImg").append(output);
+				}// else
+			}// success
+		);// ajax
+}
+	
+	function searchRiver(spotCode){
+		deleteMarkers();
+		map.setZoom(11);
+			$.ajax({ 
+		        type : "GET", 
+		        url : "/restspot/getRiverList/"+spotCode, 
+		        headers : { 
+		            "Content-type" : "application/json", 
+		            "X-HTTP-Method-Override" : "POST" 
+		        }, 
+		        dataType : "json", 
+				success : function(data) {// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+				if(data==''){
+					swal("아쉽게도 결과가 없네요?");
+				} else {
+					var spot = data.spot; 
+					for (var i = 0 ; i < spot.length; i++){
+						// spotCode에 따라서 각기 다른 마커 이미지를 넣어주는 부분입니다.
+						// 공원
+					      if(parseInt(spot[i].spotCode)>=4100 && parseInt(spot[i].spotCode) <4200){
+					        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg };
+					        obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'river'
+					    	};
+					        locations.push(obj); 
+					      // 주차장
+					      }else if (parseInt(spot[i].spotCode)>=4200 && parseInt(spot[i].spotCode) <4300){
+					        //obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'parking', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					        obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'parking'
+					    	};  
+					        locations.push(obj);
+						     // 안내소
+					      }else if (parseInt(spot[i].spotCode)>=4300 && parseInt(spot[i].spotCode) <4400){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'info' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+							obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'info'
+					    	};    
+					      	locations.push(obj);
+							 // 자전거 대여소
+					      }else if (parseInt(spot[i].spotCode)>=4400 && parseInt(spot[i].spotCode) <4500){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'bike', spotAddress :spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					      	obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'bike'
+					    	};    
+					      	locations.push(obj);
+							 // 편의점
+					      }else if (parseInt(spot[i].spotCode)>=4500 && parseInt(spot[i].spotCode) <4600){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'store' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+					      	obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'store'
+					    	};        
+					      	locations.push(obj);
+							 // 배달존
+					      }else if(parseInt(spot[i].spotCode)>=4600 && parseInt(spot[i].spotCode) <4700){
+					      	//obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'food' , spotAddress : spot[i].spotAddress, spotTitle : spot[i].spotTitle, spotImg : spot[i].spotImg};
+							obj = {
+					    			lat : parseFloat(spot[i].spotY),
+					    			lng : parseFloat(spot[i].spotX),
+					    			addr : spot[i].spotAddress,
+					    			title : spot[i].spotTitle,
+					    			img : spot[i].spotImg,
+					    			no : spot[i].spotNo,
+					    			type : 'store'
+					    	};           
+					      	locations.push(obj);    
+					      };
+					};
+			          
+					for (var i = 0; i < locations.length; i++) {
+						markers[i] = new google.maps.Marker({
+							position : locations[i],
+							map : map,
+							icon: icons[locations[i].type].icon,
+							animation: google.maps.Animation.DROP
+						});
+						//인덱스를 꺼내오기.. 중요!!
+						markers[i].index = i
+						if(locations[i].img === ''){ 
+							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+									+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+									+ '<li class="list-group-item">'
+									+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+									+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+									+ '</div>';
+						} else {
+							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+								+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+								+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+								+ '<li class="list-group-item">'
+								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '</div>';	
+						}
+
+						// 이벤트 정보 넣기
+						infowindows[i] = new google.maps.InfoWindow(
+								{
+									content : contents[i],
+									removeable : true
+								});
+
+						// 마커를 클릭했을때 이벤트 발생 시키기
+						google.maps.event.addListener(markers[i],'click',function() {
+							map.setZoom(14);
+							// 일단 마커를 모두 닫고
+							for (var i = 0; i < markers.length; i++) {
+									infowindows[i].close();
+								}
+							infowindows[this.index].open(map,markers[this.index]);
+							map.panTo(markers[this.index].getPosition());
+						});
+					}
+				}
+						
+					$(".spotImg").empty();
+					var output = '';
+					$(data.spot).each(
+									function() {
+										output += '<div class="col-sm-3 col-md-3">';
+										output += '<div class="thumbnail">';
+										output += ' <div class="caption">';
+										output += '<h5>'+ this.spotTitle+ '</h5>';
+										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+										output += '<p> '+ this.spotAddress+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+										output += '<p> '+ this.spotCreateTime+ ' / '+ this.spotModifyTime+ '</p>';
+										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+										output += ' <p>';
+										output += ' <span class="label label-success">백과</span>';
+										output += ' <span class="label label-warning">맛집</span>';
+										output += ' </p>';
+										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '</div>';
+										output += '</div>';
+										output += '</div>';
+									});// each
+					// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
+					$(".spotImg").append(output);
+				}// else
+			}// success
+		);// ajax
+}
+
+	
+	
 </script>
 
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 <body>
-	<%@ include file="/layout/toolbar.jsp"%>
 	
-	<nav>
+<%@include file="/layout/new_toolbar.jsp"%>
+	
+	<nav class="spot-top-box">
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
 	        <li><span id="park">공원</span></li>
@@ -543,17 +798,33 @@ function getRiverList(spotCode){
 			<div class="jumbotron">
 				<h1>한강</h1>
 					<p>한강의 나들이를 즐겨보세요!</p>
-					  <span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(41)">한강공원</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(42)">주차장</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(43)">안내소</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(44)">자전거</a><span>
-	  					<span><a class="btn btn-primary btn-lg" role="button" onclick="getRiverList(45)">편의점</a><span>
+						<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(1)">광나루</a></span>
+					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(2)">잠실</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(3)">뚝섬</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(4)">잠원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(5)">반포</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(6)">이촌</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(7)">여의도</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(8)">망원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(9)">난지</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(10)">강서</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(11)">양화</a></span>
+	  					<p></p>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(4)">전체</a></span>
+					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(41)">한강공원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(42)">주차장</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(43)">안내소</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(44)">자전거</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(45)">편의점</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(46)">배달존</a></span>
+					 	
 			</div>
 	
 				<div class="spotImg">
 				</div>
 				<br />  
 			</div>	 
+			
 </body>
 
 <script>
@@ -590,7 +861,7 @@ function getRiverList(spotCode){
 																output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 																output += ' <p>';
 																output += ' <span class="label label-success">백과</span>';
-																output += ' <span class="label label-danger">공원</span>';
+																output += ' <span class="label label-primary">한강</span>';
 																output += ' </p>';
 																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
 																output += '</div>';

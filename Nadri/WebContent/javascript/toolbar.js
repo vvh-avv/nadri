@@ -1,5 +1,5 @@
 /**
- *  Jquery°¡ ¹Ýµå½Ã ÀÖ¾î¾ßÇÕ´Ï´Ù.
+ *  Jqueryï¿½ï¿½ ï¿½Ýµï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
  */
 
 $(function(){
@@ -87,13 +87,13 @@ $(function(){
    });
    
    $('.searcher').on('focusout',function(){
-      $(this).attr('placeholder',"°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+      $(this).attr('placeholder',"ï¿½Ë»ï¿½ï¿½î¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.");
    });
    
    $('.searcher').on('keypress',function(e){
       if(e.which == 13){
          if($('.searcher').val() == ""){
-            alert("°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+            alert("ï¿½Ë»ï¿½ï¿½î¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
             return;
          }else{
             $('body').css('overflow','hidden');
@@ -107,7 +107,7 @@ $(function(){
    $(document).on('keypress','.mobSearcher',function(e){
       if(e.which == 13){
          if($(this).val() == ""){
-            alert("°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+            alert("ï¿½Ë»ï¿½ï¿½î¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
             return;
          }else{
             self.location = "/searchLog/listSearchLog?searchKeyword="+$(this).val();
@@ -160,7 +160,7 @@ $(function(){
    })
    
    $('.mobSearcher').on('focusout',function(){
-      $('.mobSearcher').attr('placeholder','°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.');
+      $('.mobSearcher').attr('placeholder','ï¿½Ë»ï¿½ï¿½î¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.');
    })
    
    $(document).on('click','.userMenus',function(){
@@ -168,9 +168,11 @@ $(function(){
       $(this).css('color','white');
    })
    
+   //#################### HJA UPDATE FOR ADDSCHEDULE #############################
    $('.schedules').on('click',function(){
-      self.location = "/schedule/addSchedule";
+	   $("#transportationModal").modal();
    })
+   	//#################### HJA UPDATE FOR ADDSCHEDULE #############################
    
    $('.spots').on('click',function(){
       self.location = "/spot/getSpotList?spotCode=0";
@@ -191,6 +193,20 @@ $(function(){
    $('.friendAlert').on('click',function(){
       $('.friendSmall').css('display','block');
    })
+   
+   //#################### HJA UPDATE FOR ADDSCHEDULE #############################
+	$('#car').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=0';
+	});
+	
+	$('#pedestrian').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=1';
+	});
+	
+	$('#transit').on('click',function(){
+		self.location = '/schedule/addSchedule?transportationCode=2';
+	});
+	//#################### HJA UPDATE FOR ADDSCHEDULE #############################
 
    
    

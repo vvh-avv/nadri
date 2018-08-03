@@ -69,12 +69,15 @@ public class NadriController {
 		
 		search.setSearchCondition("주간");
 		
-		List<Board> board_list = new ArrayList<Board>();			
+		List<Board> board_list = new ArrayList<Board>();	
+		List<String> search_log = new ArrayList<String>();
 		
 		if(user == null) {
 			board_list = boardService.getRecomBoard(search);
 		}else {
 			board_list = boardService.getRecomUserLike(search, user.getUserId());
+			search_log = adminService.getSearchLog(user.getUserId());
+			System.out.println("가져온 검색기록 : "+search_log);
 		}
 		
 		System.out.println("게시물 갯수 : "+board_list.size());
@@ -115,9 +118,10 @@ public class NadriController {
 			videoName = "js3";
 		}
 		
+		model.addAttribute("searchLog", search_log);
 		model.addAttribute("boardList",board_list);
 		model.addAttribute("videoName",videoName);
-		model.addAttribute("nadriCounter",3785);
+		model.addAttribute("nadriCounter",adminService.getTotalCount());
 		
 		return "/indexReal.jsp";
 	}

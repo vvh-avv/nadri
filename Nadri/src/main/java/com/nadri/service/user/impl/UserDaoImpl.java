@@ -1,6 +1,5 @@
 package com.nadri.service.user.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,8 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.nadri.common.Search;
 import com.nadri.service.domain.User;
 import com.nadri.service.user.UserDao;
@@ -40,10 +37,20 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	public User getUser(String userId) throws Exception {
-		return sqlSession.selectOne("UserMapper.getUser", userId);
+		System.out.println("userDaoImpl - getUser(userId): "+userId);
+		
+		if(sqlSession.selectOne("UserMapper.getUser", userId) != null) {
+			return sqlSession.selectOne("UserMapper.getUser", userId);
+		}else {
+			return new User();
+		}
+		
 	}
 	
 	public void updateUser(User user) throws Exception {
+		System.out.println("////////////////////////////////////////////////////");
+		System.out.println("userDaoImpl - updateUser: "+sqlSession.update("UserMapper.updateUser", user));
+		System.out.println("////////////////////////////////////////////////////");
 		sqlSession.update("UserMapper.updateUser", user);
 	}
 

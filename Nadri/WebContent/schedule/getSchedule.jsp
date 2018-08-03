@@ -20,27 +20,23 @@
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/commonfont.css">
-<!-- toolbar.js CDN -->
-<script src="/javascript/toolbar.js"></script>
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- TimeLine에 관한 라인입니다. -->
 <script type="text/javascript" src="/javascript/timelinemain.js"></script>
-<link rel="stylesheet" href="/css/timelinestyle.css">
+<link rel="stylesheet" href="/css/timelinestyle.css?ver=1">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
-<!-- materialize.js -->
-<script src="/javascript/materialize.js"></script>
-<link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 <script src="/javascript/printThis.js"></script>
 
 <style>
-@font-face {
+
+/* @font-face {
 	font-family: 'seoul';
 	src: url('/css/fonts/seoulhangangjangm.eot');
 	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -52,6 +48,11 @@
 		format('svg');
 	font-weight: normal;
 	font-style: normal;
+} */
+
+body {
+	font-size:14px;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 ul.countdown {
@@ -60,6 +61,10 @@ ul.countdown {
 	padding: 0;
 	display: block;
 	text-align: center;
+}
+
+.maincon {
+	color : #404548;
 }
 
 ul.countdown li {
@@ -88,7 +93,7 @@ ul.countdown li p {
 	fill: #383838;
 }
 
-.container {
+.container-get {
     padding-right: 30px;
     padding-left: 30px;
     margin-right: auto;
@@ -105,13 +110,15 @@ ul.countdown li p {
      width: 50px;
      height: 50px;
      z-index:999;
+   }
+   
+   p {
+   color : black;
    }	
 </style>
 <script>
 // 맨위로 올라가게 만들어 주는 script
 $(function(){
-	
-	$('.materialboxed').materialbox();
 	
     //*스크롤감지
     $(window).scroll(function(){
@@ -200,7 +207,9 @@ $(function(){
 </head>
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png">
-      <%@ include file="/layout/toolbar.jsp"%>
+    <%@include file="/layout/new_toolbar.jsp"%>
+		
+		    
 	<ul class="countdown">
 		<li><span class="days">00</span>
 			<p class="days_ref">days</p></li>
@@ -217,7 +226,12 @@ $(function(){
 	<body>
 	<div id="schedule">
 	<ul class="countdown">
+	<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
+		<header style="background-image: url(/images/spot/421.jpg);">
+	</c:if>	
+	<c:if test="${fn:length(schedule.scheduleImg) > 1 }">
 		<header style="background-image: url(/images/spot/uploadFiles/${schedule.scheduleImg});">
+	</c:if>	
 			<div class="cd-nugget-info">
 				<span> <polygon class="cd-nugget-info-arrow"
 						points="15,7 4.4,7 8.4,3 7,1.6 0.6,8 0.6,8 0.6,8 7,14.4 8.4,13 4.4,9 15,9 " />
@@ -226,7 +240,7 @@ $(function(){
 			</div>
 			<!-- cd-nugget-info -->
 		</header>
-		<div class="container">
+		<div class="container container-get">
 		<br/>
 		<div>
 			<span id="SKY"></span>
@@ -246,13 +260,24 @@ $(function(){
 				<!-- cd-timeline__img -->
 
 			<div class="cd-timeline__content js-cd-content">
-				<h2>Start!!</h2>
-					<p>${schedule.scheduleDate}</p>
-					<p id="scheduleDetail">${schedule.scheduleDetail}</p>
-					<p>${schedule.hashTag}</p>
-					<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
+				<h2>나들이를 떠나 볼까요?</h2>
+					<hr/>
+					<p><i class="Small material-icons">today</i>${schedule.scheduleDate} ${schedule.startHour} 출발예정</p>
+					<p id="scheduleDetail"><i class="Small material-icons">subtitles</i>${schedule.scheduleDetail}</p>
+					<p><i class="Small material-icons">drive_eta</i> 교통수단은 
+					<c:if test="${schedule.transportationCode==0}">
+						'자동차'
+						</c:if>
+						<c:if test="${schedule.transportationCode==1}">
+						'도보'
+						</c:if>
+						<c:if test="${schedule.transportationCode==2}">
+						'대중교통'
+						</c:if>
+						입니다.
+					</p>
+					<p><i class="Small material-icons">title</i>${schedule.hashTag}</p>
 				<!-- <a href="#0" class="cd-timeline__read-more">Read more</a> -->
-				 <span class="cd-timeline__date">${schedule.scheduleDate}</span>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -264,39 +289,49 @@ $(function(){
 				</div>
 				<!-- cd-timeline__img -->
 				<c:set var="i" value="0" />
-				<c:forEach var="waypoint" items="${waypoint}">
+				<c:forEach var="waypoint" items="${waypoint}" begin="1">
 					<c:set var="i" value="${i+1}" />
 					<div class="cd-timeline__content js-cd-content">
-							<p>
+					<p><i class="Small material-icons">directions</i> to '${waypoint.wayPointTitle}' 까지</p>
+					<hr/>
+					<c:if test="${waypoint.wayPointNav != ''}">
+					<span>
 					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel" begin="1">
-				       * : ${sel}<br>
+				      <c:if test="${schedule.transportationCode=='0'}">
+					<i class="Tiny material-icons">directions_car</i>
+					</c:if>
+					<c:if test="${schedule.transportationCode=='1'}">
+					<i class="Tiny material-icons">directions_walk</i>
+					</c:if>
+					<c:if test="${schedule.transportationCode=='2'}">
+					<i class="Tiny material-icons">directions_transit</i>
+					</c:if>${sel}<br>
 				   </c:forTokens>
-				</p>
-						<p>${schedule.scheduleDate}</p>					
-						<span>${schedule.scheduleCreateTime}</span> / <span>${schedule.scheduleModifyTime}</span>
-
+				</span>
+					<hr/>
+						<p><i class="Small material-icons">access_alarm</i>약 ${waypoint.moveTime} 걸릴 예정입니다.</p>					
+				</c:if>
 					</div>
 					<!-- cd-timeline__content -->
 			</div>
 			<!-- cd-timeline__block -->
 			
 			<div class="cd-timeline__block js-cd-block">
-			
-			
-			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">		
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg});">
+			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg}); width:100px ; height:100px"/>
 			</c:if>
-			<c:if test="${fn:length(waypoint.wayPointImg) > 10}">
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});">
+ 			<c:if test="${fn:length(waypoint.wayPointImg) > 10}"> 
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px"/>
 			</c:if>
-				<img src="/images/spot/icon/cd-icon-movie.svg" alt="Movie">
+				<img src="/images/spot/icon/cd-icon-picture.svg" alt="Movie">
 			</div>
 			<!-- cd-timeline__img -->
 
 			<div class="cd-timeline__content js-cd-content">
-				<h3>${waypoint.wayPointTitle}</h3>
-					<p>${waypoint.wayPointDetail}</p>
-					<p>${waypoint.wayPointAddress}</p>
+				<h2>${waypoint.wayPointTitle}</h2>
+				<hr/>
+					<p><i class="Small material-icons">subtitles</i>${waypoint.wayPointDetail}</p>
+					<p><i class="Small material-icons">beach_access</i>${waypoint.wayPointAddress}</p>
 				<span class="cd-timeline__date"></span>
 			</div>
 			<!-- cd-timeline__content -->
@@ -311,8 +346,20 @@ $(function(){
 			</c:forEach>
 
 			<div class="cd-timeline__content js-cd-content">
-				<h2>나들이 후기!</h2>
+				<h3>나들이는 어떠셨나요?</h3>
 				<p>${schedule.scheduleReview}</p>
+				<p><i class="Small material-icons">create</i>최종수정일 : ${schedule.scheduleModifyTime}</p>
+				<p><i class="Small material-icons">lock</i>공개범위 : 
+				<c:if test="${schedule.openRange==0}">
+				모두공개
+				</c:if>
+				<c:if test="${schedule.openRange==1}">
+				친구공개
+				</c:if>
+				<c:if test="${schedule.openRange==2}">
+				비공개
+				</c:if>
+				</p>
 			</div>
 			<!-- cd-timeline__content -->
 		</div>
@@ -322,5 +369,6 @@ $(function(){
 	</section>
 	<!-- cd-timeline -->
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
+
 </body>
 </html>
