@@ -238,8 +238,9 @@ public class ScheduleRestController {
 		   scheduleService.updateScheduleReview(schedule);
 	   }
 	
-	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   /*@RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
 	   public @ResponseBody JSONArray getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
+		   
 		   System.out.println("/restschedule/getSchedule : POST");
 		   
 		   JSONObject jsonObject = new JSONObject();
@@ -248,21 +249,50 @@ public class ScheduleRestController {
 		  Schedule schedule = scheduleService.getSchedule(scheduleNo);
 		  List<WayPoint> list = scheduleService.getWayPoint(scheduleNo);
 		  
-		  for (int i = 0 ; i < list.size(); i++) {
-			  WayPoint waypoint = list.get(i);
-			  JSONObject object = new JSONObject();
-			  //json객체 .put ("변수명", 값)
-			  object.put("wayPointTitle", waypoint.getWayPointTitle());
-			  object.put("wayPointImg", waypoint.getWayPointImg());
-			  object.put("wayPointAddress", waypoint.getWayPointAddress());
-			  object.put("wayPointDetail", waypoint.getWayPointDetail());
-			  object.put("wayPointNav", waypoint.getWayPointNav());
-			  jsonArray.add(i,object);
-		  }
+		  //스케쥴 넣기
+		  jsonObject.put("scheduleTitle", schedule.getScheduleTitle());
+		  jsonObject.put("scheduleDate", schedule.getScheduleDate());
+		  jsonObject.put("scheduleReview", schedule.getScheduleReview());
+		  jsonObject.put("hashTag", schedule.getHashTag());
+		  jsonObject.put("scheduleModifyTime", schedule.getScheduleModifyTime());
+		  jsonObject.put("openRange", schedule.getOpenRange());
+		  jsonObject.put("transportationCode", schedule.getTransportationCode());
+		  jsonObject.put("startHour", schedule.getStartHour());
+		  jsonObject.put("scheduleDetail", schedule.getScheduleDetail());
+		  jsonArray.add(0, jsonObject);
 		  
-		  // json 객체에 배열을 넣음
-		  jsonObject.put("sendData", jsonArray);
-		   
+		  for (int i = 1 ; i < list.size(); i++) {
+			  WayPoint waypoint = list.get(i);
+			  jsonObject = new JSONObject();
+			  //json객체 .put ("변수명", 값)
+			  jsonObject.put("wayPointTitle", waypoint.getWayPointTitle());
+			  jsonObject.put("wayPointImg", waypoint.getWayPointImg());
+			  jsonObject.put("wayPointAddress", waypoint.getWayPointAddress());
+			  jsonObject.put("wayPointDetail", waypoint.getWayPointDetail());
+			  jsonObject.put("wayPointNav", waypoint.getWayPointNav());
+			  jsonObject.put("moveTime", waypoint.getMoveTime());
+			  jsonArray.add(i,jsonObject);
+		  }
+		  	   
 		   return jsonArray;
+	   }*/
+	   
+	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   public List<WayPoint> getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
+		   
+		   System.out.println("/restschedule/getSchedule : POST");
+		   
+		  Schedule schedule = scheduleService.getSchedule(scheduleNo);
+		  List<WayPoint> list = scheduleService.getWayPoint(scheduleNo);
+		  
+		   return scheduleService.getWayPoint(scheduleNo);
 	   }
+		
+		//안드로이드로 스케쥴 리스트 가져오기
+		@RequestMapping(value="getMyScheduleListRest/{userId}", method=RequestMethod.GET)
+		public List<Schedule> getMyScheduleListRest( @PathVariable String userId ) throws Exception{
+			
+			return scheduleService.getMyScheduleListRest(userId);
+		}
+ 		
 }
