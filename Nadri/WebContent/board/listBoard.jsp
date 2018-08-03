@@ -673,6 +673,14 @@ $(function(){
 				}
 			   
 			   if($(this).val().indexOf('\n')!=-1){ //줄바꿈 감지 => autocomplete 과 submit 구별
+				 
+				 var content = $(this).val();
+				 if(content.length>50){
+					 swal ( "댓글 입력 실패!" ,  "50자 이상 입력이 불가합니다." ,  "error" );
+					 $(this).val("");
+					 return;
+				 }
+				 
 			   //comment submit
 			   var num = $(this).closest('article').attr("class");
 			   $.ajax({
@@ -1201,7 +1209,7 @@ $(function(){
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
-            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.." ${empty user.userId ? "readonly" : ""}></textarea></form>
+            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요. (50자 이하)" ${empty user.userId ? "readonly" : ""}></textarea></form>
             </section>
       </div>
    </article><br>

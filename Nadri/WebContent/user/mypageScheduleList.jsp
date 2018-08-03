@@ -218,7 +218,7 @@ $(function(){
         				    case "1" :
         				    	window.open("/schedule/addSchedule?transportationCode=1&date="+date.format()+'');
         				    	break;
-        				    default:
+        				    case "2":
         				    	window.open("/schedule/addSchedule?transportationCode=2&date="+date.format()+'');
         				  }
         			  })
