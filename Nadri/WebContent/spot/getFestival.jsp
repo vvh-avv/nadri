@@ -13,23 +13,89 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js"></script> 
 <!-- sweetAlert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- materialize 넣는 css -->
-<script src="/javascript/materialize.js"></script>
+<!-- <script src="/javascript/materialize.js"></script>
 <link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+
 <html>
 <style>
 html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+}
+
+.detail-box{
+	background : white;
+	padding : 20px;
+	padding-bottom : 50px;
+}
+
+.box-footer{
+	display : flex;
+	justify-content: center;
+	padding : 0px 50px 0px 50px;
+	width : 100%;
+}
+
+.pull-left{
+	display : flex;
+	width : 100%;
+	justify-content: space-evenly;
+	margin-top : 20px;
+}
+
+.spot-top-box{
+	width : 65%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+@media only screen and (max-width : 600px){
+	.spot-top-box{
+		width : 100%;
+		margin-left:auto;
+		margin-right:auto;
+	}
+}
+
+.nav-wrapper{
+	border-radius: 0px 0px 60px 60px;
+	background: linear-gradient(#888888,#525252);
+	margin: 0px 15px 15px 15px;
+	box-shadow : 1px 2px 10px 0px #a7a7a7;
+}
+
+#nav-mobile{
+	list-style: none;
+	display : flex;
+	margin : 0px;
+	justify-content: space-evenly;
+	padding : 15px;
+	color : white;
+}
+
+#nav-mobile:hover{
+	z-index : 99;
+}
+
+li > span{
+	transition : all 1s;
+}
+
+li > span:hover{
+	cursor : pointer;
+	font-weight : 900;
+	font-size:20px;
 }
 
 #map {
@@ -131,7 +197,7 @@ function addCartSpot(){
         });
         
         var nowposition = new google.maps.LatLng(JSON.stringify(${a.response.body.items.item.mapy}), JSON.stringify(${a.response.body.items.item.mapx})),    
-        message = '<div style="font-family : seoul"><div>여기에요!</div></div>';
+        message = '<div style="font-family : seoul"><div>여기예요!</div></div>';
         
     	displayMarker(nowposition, message);
       }
@@ -169,14 +235,14 @@ function addCartSpot(){
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 
-	<%@ include file="/layout/toolbar.jsp"%>
-			<div class="container">
+<%@include file="/layout/new_toolbar.jsp"%>
+
+			<div class="container detail-box">
 				<%-- Content Header (Page header) --%>
 				<div class="jumbotron" id="map">
 				</div>
 				<%-- Main content --%>
 					<div class="col-lg-12">
-							<div class="container">
 								<div class="box-header with-border">
 									<h5 class="text-align-center" style="text-align: center;">
 										선택하신 나들이백과의 <strong class="text-danger">상세정보 </strong>입니다!
@@ -299,28 +365,27 @@ function addCartSpot(){
 										</div>
 									</div>
 								</div>
-							</div>
+								
+								<hr/>
+								
+							</div>					
 							
-							<hr/>
-							</div>
 							<div class="box-footer">
 								<div class="pull-left">
 									<button type="button" class="btn btn-secondary" id="listbutton"><i class="fa fa-list"></i> 목록으로</button>
-								</div>
-								<c:if test="${sessionScope.user.userId != null}">
-								<div class="pull-right">
-									<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
-									<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
-								</div>
-								</c:if>
-								<c:if test="${sessionScope.user.userId == null}">
-								<div class="pull-right">
-									<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
-									<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
-								</div>
-								</c:if>	
+									<c:if test="${sessionScope.user.userId != null}">
+										<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
+										<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
+									</c:if>
+									<c:if test="${sessionScope.user.userId == null}">
+										<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
+										<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
+									</c:if>	
+								</div>											
 							</div>
-				
+							
+						</div>
+									
 				<form id=cart>
 					<div class="modal fade" id="cartModal" role="dialog">
 						<div class="modal-dialog" id="cartModal">
@@ -353,7 +418,26 @@ function addCartSpot(){
 						</div>
 					</div>
 				</form>
-				
+	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
 				
 			</div>
 				

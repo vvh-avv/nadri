@@ -75,6 +75,7 @@
 	}
 	#boardTitle{
       height : auto;
+      text-align: center;
    }
    #boardImg{
       width : 500px;
@@ -160,6 +161,9 @@
       	order: 3;
       }
    }
+   .bSection{
+   	background : #f3f3f399;
+   }
    #userProfile .img-circle{	
       cursor : pointer;
       height : 64px;
@@ -196,6 +200,7 @@
       height: 15px;
       float: right;
       margin-right: .3em;
+      margin-top: .3em;
    }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
@@ -220,7 +225,6 @@
    }
    .aSection{
    	 padding: 16px;
-   	 height: 100px;
    }
    .b1Section{
    	 margin-bottom : 2px;
@@ -229,6 +233,10 @@
    .b2Section{
    	  padding: 16px;
    	  border : 1px solid lightgrey;
+   	  
+   }
+   .b2Section{
+   	float:right;
    }
    #commContent{
      width: 100%;
@@ -236,9 +244,13 @@
      max-height: 80px;
      border: 0;
      outline: 0;
-     padding: 0;
+     padding: 5px;
      justify-content: center;
      resize: none;
+ 	 border-radius : 5px;
+   }
+   #commContent:focus{
+   	background : #eaeaeac7;
    }
    .commProm{
      border-top: 1px solid #efefef;
@@ -251,6 +263,12 @@
    .commTag{
    	 cursor: pointer;
    	 background-color: #dce6f8;
+   }
+   #commList{
+   	padding : 5px;
+   }
+   #commList:hover{
+   	background : #eaeaeac7;
    }
    
    /*  신고기능을 위한 admin css  */
@@ -517,6 +535,15 @@ $(function(){
 			   
 			   if($(this).val().indexOf('\n')!=-1){ //줄바꿈 감지 => autocomplete 과 submit 구별
 				   //comment submit
+				   
+				   //댓글길이 유효성체크
+				   var content = $(this).val();
+		             if(content.length>50){
+		                swal ( "댓글 입력 실패!" ,  "50자 이상 입력이 불가합니다." ,  "error" );
+		                $(this).val("");
+		                return;
+		             }
+				   //실제 submit 되는 부분
 				   $.ajax({
 					   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
 					   method : "POST",
@@ -915,13 +942,13 @@ $(function(){
       $('.inquireWrite').on("input", function() {
          var maxlength = $(this).attr("maxlength");
          var currentLength = $(this).val().length;
-         $('.textCounter2').text(currentLength - 1);
+         $('.textCounter2').text(currentLength);
       });
 
       $('.inquireTitle').on("input", function() {
          var maxlength = $(this).attr("maxlength");
          var currentLength = $(this).val().length;
-         $('.textCounter1').text(currentLength - 1);
+         $('.textCounter1').text(currentLength);
       });
       
       $('#inquireBoard').on('click', function() {
@@ -938,155 +965,8 @@ $(function(){
 </head>
 
 <body>
-	<!-- 메인툴바 -->
-	<nav class="head-section">
-		<div class="fix-box">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon"></span>
-				<div class="title-section">
-					<div class="title-text">너,나들이</div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon"></span>
-				</div>
 
-				<div class="middle-section">
-					<div class="searcher">
-						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section">
-					<span class="glyphicon glyphicon-bell top-icons"
-						id="noticeRoomList"></span> <span
-						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
-					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
-					<c:if test="${!empty user}">
-						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
-						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
-						<c:if test="${user.role == 1}">
-							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
-						</c:if>
-						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
-					</c:if>
-					<c:if test="${empty user}">
-						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
-					</c:if>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav>
-	<div class="container search-log-container">
-		<div class="log-wrapper">
-			<div class="search-logs">
-				<div class="row log-detail">
-					<div class="col-md-6 col-xs-12 search-history">
-						최근 검색 기록
-						<c:if test="${searchLog.size()==0}">
-						<%-- <c:forEach var="board" items="${boardList}"> --%>
-						<div>최근 검색 기록이 없습니다.</div>
-						</c:if>
-						<c:if test="${searchLog.size()>0}">
-							<c:set var="i" value="0" />		
-							<c:forEach var="keyword" items="${searchLog}">
-							<c:set var="i" value="${ i+1 }" />
-								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
-							</c:forEach>
-						</c:if>
-					</div>
-					<div class="col-md-6 col-xs-12 search-recommand">
-						추천검색어
-						
-						<div>검색어2</div>
-					</div>`
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<nav class="head-section-small">
-		<div class="fix-box-small">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon-small"></span>
-				
-				<div class="title-section-small">
-					<div class="title-text-small"></div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon-small"></span>
-				</div>
-
-				<div class="middle-section-small">
-					<div class="searcher-small">
-						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section-small">
-					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
-					<div class="side-section-icons">
-						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
-						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
-						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
-						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
-						<c:if test="${!empty user}">
-							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
-							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
-							<c:if test="${user.role == 1}">
-								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
-							</c:if>
-							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
-						</c:if>
-						<c:if test="${empty user}">
-							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
-						</c:if>
-					</div>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</nav> 
+<%@include file="/layout/new_toolbar.jsp"%>
 
 	<input type="hidden" id="boardCode" value="${board.boardCode}">
    <!-- 더보기 버튼 클릭시 노출될 항목 -->
@@ -1107,7 +987,7 @@ $(function(){
          <form id="firstForm" class="form-horizontal">
             <!-- 제목 -->
       		<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
-            <div id="boardTitle" class="bg-warning">${board.boardTitle}</div>
+            <div id="boardTitle">${board.boardTitle}</div>
             
             <!-- 이미지 -->
             <input type="hidden" id="boardImg" name="boardImg" value="${board.boardImg}">
@@ -1129,7 +1009,7 @@ $(function(){
             </c:if>
             
             <!-- 내용 -->
-            <div id="boardContent" class="bg-warning">${board.boardContent}</div>
+            <div id="boardContent">${board.boardContent}</div>
          </form>
       </div>
       
@@ -1200,7 +1080,7 @@ $(function(){
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
-            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.." ${empty user.userId ? "readonly" : ""}></textarea></form>
+            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.. (50자 이하)" ${empty user.userId ? "readonly" : ""}></textarea></form>
             </section>
       </div>
    </div><!-- e.o.container -->
@@ -1302,9 +1182,9 @@ $(function(){
 					</div>
 						<div class="modal-footer"> 
                             <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
-                        </div> 
-                    </div> 
-                </div> 
+                        </div>
+                    </div>
+                </div>
             </div>
    
 </body>

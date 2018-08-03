@@ -1,16 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=EUC-KR"%>
+<%@ page pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <title>너, 나들이</title>
+<meta charset="EUC-KR">
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
+<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/images/common/favicon.ico">
 
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -23,10 +24,13 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
+
 <!-- layout css -->
 <link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)"
+	href="/css/indexRealSmall.css" />
 <script src="/javascript/indexReal_nonIndex.js"></script>
+
 <!-- sweet alert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 공유 -->
@@ -37,97 +41,9 @@
 <script src="/javascript/fullcalendar_ko.js" charset="EUC-KR"></script>
 <link rel="stylesheet" href="/css/fullcalendar.css">
 
-<style>
-   .container-mypage{
-      padding-top: 10px;
-   }
-   .row-mypage{
-     margin-bottom: 15px;
-  }
-  
-  
-  @media only screen and (min-width: 900px) { /* PC일때 */
-     .contentRow{
-       display: flex;
-       flex-wrap: wrap;
-       justify-content: space-around;
-     }
-     .form-inline.formTagCss{
-        float: right;
-     }
-     .text-primary.pTagCss{
-        margin: 0px;
-        text-align: right;
-        padding-top: 7px;
-     }
-     
-      .thumbImg img{
-         width: 250px;
-         height: 250px;
-         opacity: 1;
-         transition: .5s ease;
-      }
-  }
-  
-  @media only screen and (max-width: 600px) { /* 모바일일때 */
-     .text-primary.pTagCss{
-        text-align: center;
-     }
-     .thumbImg img{
-      width: 200px;
-      height: 200px;
-      opacity: 1;
-      transition: .5s ease;
-        }
-  }
-   
-   article{
-      display: inline-block;
-       position: relative;
-       cursor: pointer;
-   }
-   article:hover .thumbImg img {
-      opacity: 0.3;
-   }
-   article:hover .links,
-   article:hover .linksIcon {
-      opacity: 1;
-   }
-   
-   .links{
-     opacity: 0;
-     position: absolute;
-     text-align: center;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
-     -ms-transform: translate(-50%, -50%);
-     transition: .5s ease;
-     width: 80%
-   }
-   .linksIcon {
-     opacity: 0;
-     position: absolute;
-     top: 10%;
-     left: 90%;
-     transform: translate(-50%, -50%);
-     -ms-transform: translate(-50%, -50%);
-     transition: .5s ease;
-   }
-   .linksIcon img{
-     width: 15px;
-     height: 15px;
-   }
-   
-   .rewardModal
-   /*,.swal-overlay*/{
-        background-image: url("/images/board/reward.gif");
-      }
-    
-}
-</style>
-
+<!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script>
+
 function fncGetList(currentPage) {
    $("#currentPage").val(currentPage)
    $("#detailForm").attr("method", "POST").attr("action", "/schedule/getMyScheduleList").submit();
@@ -220,7 +136,7 @@ $(function(){
                         case "1" :
                            window.open("/schedule/addSchedule?transportationCode=1&date="+date.format()+'');
                            break;
-                        default:
+                        case "2":
                            window.open("/schedule/addSchedule?transportationCode=2&date="+date.format()+'');
                       }
                    })
@@ -414,280 +330,291 @@ $(function(){
    
 });
 </script>
+
+<style>
+
+.user-profile-section {
+	padding-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	background: white;
+	border-radius: 10px;
+	box-shadow: 1px 2px 10px 0px #c7c7c7;
+}
+
+.user-detail-section {
+	background: white;
+	margin: 15px 0px 15px 0px;
+	border-radius: 10px;
+	box-shadow: 1px 2px 10px 0px #c7c7c7;
+}
+
+@media only screen and (max-width : 600px) {
+	.user-profile-section {
+		margin: 0px;
+	}
+}
+
+.container-mypage {
+	padding-top: 10px;
+}
+
+.row-mypage {
+	margin-bottom: 15px;
+}
+
+@media only screen and (min-width: 900px) { /* PC일때 */
+	.contentRow {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+	.form-inline.formTagCss {
+		float: right;
+	}
+	.text-primary.pTagCss {
+		margin: 0px;
+		text-align: right;
+		padding-top: 7px;
+	}
+	.thumbImg img {
+		width: 250px;
+		height: 250px;
+		opacity: 1;
+		transition: .5s ease;
+	}
+}
+
+@media only screen and (max-width: 600px) { /* 모바일일때 */
+	.text-primary.pTagCss {
+		text-align: center;
+	}
+	.thumbImg img {
+		width: 200px;
+		height: 200px;
+		opacity: 1;
+		transition: .5s ease;
+	}
+}
+
+article {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+}
+
+article:hover .thumbImg img {
+	opacity: 0.3;
+}
+
+article:hover .links, article:hover .linksIcon {
+	opacity: 1;
+}
+
+.links {
+	opacity: 0;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transition: .5s ease;
+	width: 80%
+}
+
+.linksIcon {
+	opacity: 0;
+	position: absolute;
+	top: 10%;
+	left: 90%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transition: .5s ease;
+}
+
+.linksIcon img {
+	width: 15px;
+	height: 15px;
+}
+
+.rewardModal /*,.swal-overlay*/ {
+	background-image: url("/images/board/reward.gif");
+}
+
+}
+</style>
+
 </head>
+
 <body>
-   <!-- 메인툴바 -->
-   <nav class="head-section">
-		<div class="fix-box">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon"></span>
-				<div class="title-section">
-					<div class="title-text">너,나들이</div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon"></span>
-				</div>
 
-				<div class="middle-section">
-					<div class="searcher">
-						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
+	<%@include file="/layout/new_toolbar.jsp"%>
 
-				<div class="side-section">
-					<span class="glyphicon glyphicon-bell top-icons"
-						id="noticeRoomList"></span> <span
-						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
-					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
-					<c:if test="${!empty user}">
-						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
-						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
-						<c:if test="${user.role == 1}">
-							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
-						</c:if>
-						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<div class="col-md-12 user-profile-section">
+					<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
+						<img src="/images/profile/${user.profileImg}" width="133"
+							height="133" class="img-circle">
+						<br />
+						<br />
 					</c:if>
-					<c:if test="${empty user}">
-						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
+					<c:if test="${ empty user.profileImg} ">
+						<img src="/images/profile/default.png" width="133" height="133"
+							class="img-circle">
 					</c:if>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
+					<h4>
+						<a href="/user/listUser">마이 페이지</a>
+					</h4>
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
+						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
+						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
+						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
+						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
+						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> <a
+						href="/user/logout">로그아웃</a><br /> <br />
 				</div>
 			</div>
-		</div>
-	</nav>
-	<div class="container search-log-container">
-		<div class="log-wrapper">
-			<div class="search-logs">
-				<div class="row log-detail">
-					<div class="col-md-6 col-xs-12 search-history">
-						최근 검색 기록
-						<c:if test="${searchLog.size()==0}">
-						<%-- <c:forEach var="board" items="${boardList}"> --%>
-						<div>최근 검색 기록이 없습니다.</div>
-						</c:if>
-						<c:if test="${searchLog.size()>0}">
-							<c:set var="i" value="0" />		
-							<c:forEach var="keyword" items="${searchLog}">
-							<c:set var="i" value="${ i+1 }" />
-								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
-							</c:forEach>
-						</c:if>
+
+			<div class="col-xs-12 col-md-9">
+
+				<div class="col-md-12 user-detail-section">
+
+					<!-- 캘린더 -->
+					<div class="row row-mypage">
+						<div id="calendar" class="fc fc-ltr fc-bootstrap4"></div>
 					</div>
-					<div class="col-md-6 col-xs-12 search-recommand">
-						추천검색어
-						
-						<div>검색어2</div>
-					</div>`
+
+					<!-- 검색어 -->
+					<div class="row row-mypage">
+						<div class="col-md-6">
+							<p class="text-primary pTagCss">
+								총 <b>${resultPage.totalCount}</b>개의 일정이 있습니다!
+							</p>
+						</div>
+						<div class="col-md-6">
+							<form id="detailForm" class="form-inline formTagCss"
+								name="detailForm">
+								<div class="form-group">
+									<select class="form-control" name="searchCondition">
+										<option value="0"
+											${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>제목</option>
+										<option value="1"
+											${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>해쉬태그</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="searchKeyword">검색어</label> <input
+										type="text" class="form-control" id="searchKeyword"
+										name="searchKeyword" placeholder="검색어"
+										value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+								</div>
+								<button type="button" class="btn btn-default">검색</button>
+								<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+								<input type="hidden" id="currentPage" name="currentPage"
+									value="" />
+							</form>
+						</div>
+					</div>
+
+					<!-- 작성한 글 리스트 뜨는 부분 -->
+					<div class="row row-mypage">
+						<c:set var="i" value="0" />
+						<c:forEach var="schedule" items="${list}">
+
+							<c:if test="${i%3==0}">
+								<div class="row row-mypage contentRow">
+							</c:if>
+
+							<c:set var="i" value="${i+1}" />
+
+							<article class="${schedule.scheduleNo}">
+								<!-- 썸네일 형식의 작성한 글 이미지 -->
+								<div class="thumbImg" style="width: auto; height: 250px;">
+									<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
+										<img src="/images/spot/421.jpg" class="img-thumbnail">
+									</c:if>
+									<c:if test="${fn:length(schedule.scheduleImg) > 1}">
+										<c:if test="${(schedule.scheduleImg).contains(',')}">
+											<img
+												src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}"
+												class="img-thumbnail">
+										</c:if>
+										<c:if test="${!(schedule.scheduleImg).contains(',')}">
+											<img src="/images/spot/uploadFiles/${schedule.scheduleImg}"
+												class="img-thumbnail">
+										</c:if>
+									</c:if>
+								</div>
+								<!-- 마우스 오버시 보여지는 부분 -->
+								<div class="links" style="text-align: center;">
+									<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
+									<span id="scheduleDetail">${schedule.scheduleDetail}<br>
+										<br></span> <span id="scheduleHashTag">${schedule.hashTag}<br>
+										<br></span>
+									<button type="button" class="btn btn-primary btn-xs"
+										id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
+									<button type="button" class="btn btn-primary btn-xs"
+										id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button>
+									<br>
+									<button type="button" class="btn btn-warning btn-xs"
+										id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
+									<button type="button" class="btn btn-warning btn-xs"
+										id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button>
+									<br>
+									<button type="button" class="btn btn-default btn-xs"
+										id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button>
+								</div>
+								<div class="linksIcon">
+									<img id="deleteSchedule${schedule.scheduleNo}"
+										src="/images/board/delete2.png">
+								</div>
+							</article>
+
+							<c:if test="${i%3==0}">
+					</div>
+					</c:if>
+
+					</c:forEach>
+
+					<c:if test="${empty list}">
+						<span id="defaultText" style="margin-left: 40%;">생성하신 일정이
+							없습니다. ㅠㅠ</span>
+					</c:if>
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
+	<div class="modal" id="transportationModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
+				</div>
+				<div class="modal-body">
+					<button type="button" class="btn btn-primary" id="car">자동차</button>
+					<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+					<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="waves-effect waves-light btn"
+						id="modalinsert">입력!</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<nav class="head-section-small">
-		<div class="fix-box-small">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon-small"></span>
-				
-				<div class="title-section-small">
-					<div class="title-text-small"></div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon-small"></span>
-				</div>
-
-				<div class="middle-section-small">
-					<div class="searcher-small">
-						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section-small">
-					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
-					<div class="side-section-icons">
-						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
-						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
-						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
-						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
-						<c:if test="${!empty user}">
-							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
-							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
-							<c:if test="${user.role == 1}">
-								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
-							</c:if>
-							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
-						</c:if>
-						<c:if test="${empty user}">
-							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
-						</c:if>
-					</div>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</nav>
-   
-   <div class="container container-mypage" >
-      <!-- 서브메뉴 노출 -->
-      <div class="col-md-2">
-        <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-        <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
-        <a href="/user/getUser">내 정보 보기</a><br/><br/>
-        <a href="/user/updateUser">내 정보 수정</a><br/><br/>
-        <a href="/friend/listFriend">친구 목록</a><br/><br/>
-        <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
-        <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-        <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
-           <br/><br/><br/><br/><br/><br/><br/><br/>
-           <a href="/user/logout">로그아웃</a><br/><br/>
-      </div>
-      
-        <!-- 실제 보여지는 리스트 -->
-      <div class="col-md-10">
-         <!-- 캘린더 -->
-         <div class="row row-mypage">
-            <div id="calendar" class="fc fc-ltr fc-bootstrap4"></div>
-         </div>
-      
-         <!-- 검색어 -->
-         <div class="row row-mypage">
-            <div class="col-md-6">
-               <p class="text-primary pTagCss">총 <b>${resultPage.totalCount}</b>개의 일정이 있습니다! </p>
-            </div>
-            <div class="col-md-6">
-            <form id="detailForm" class="form-inline formTagCss" name="detailForm">
-                    <div class="form-group">
-                       <select class="form-control" name="searchCondition">
-                          <option value="0" ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>제목</option>
-                          <option value="1" ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>해쉬태그</option>
-                       </select>
-                    </div>
-                    <div class="form-group">
-                       <label class="sr-only" for="searchKeyword">검색어</label>
-                       <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="검색어" value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-                    </div>
-                    <button type="button" class="btn btn-default">검색</button>
-                    <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-                    <input type="hidden" id="currentPage" name="currentPage" value="" />
-               </form>
-            </div>
-         </div>
-      
-         <!-- 작성한 글 리스트 뜨는 부분 -->
-         <div class="row row-mypage">
-            <c:set var="i" value="0"/>
-            <c:forEach var="schedule" items="${list}">
-            
-            <c:if test="${i%3==0}"><div class="row row-mypage contentRow"></c:if>
-            
-          <c:set var="i" value="${i+1}" />
-            
-               <article class="${schedule.scheduleNo}">
-                  <!-- 썸네일 형식의 작성한 글 이미지 -->
-                  <div class="thumbImg" style="width:auto; height:250px;">
-						<c:if test="${fn:length(schedule.scheduleImg) <= 1}">
-							<img src="/images/spot/421.jpg" class="img-thumbnail">
-						</c:if> 
-					<c:if test="${fn:length(schedule.scheduleImg) > 1}">
-							<c:if test="${(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg.split(',')[0]}" class="img-thumbnail"> </c:if>
-							<c:if test="${!(schedule.scheduleImg).contains(',')}"> <img src="/images/spot/uploadFiles/${schedule.scheduleImg}" class="img-thumbnail"> </c:if>
-					</c:if>
-                  </div>
-                  <!-- 마우스 오버시 보여지는 부분 -->
-                  <div class="links" style="text-align:center;">
-                     <span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
-                     <span id="scheduleDetail">${schedule.scheduleDetail}<br><br></span>
-                     <span id="scheduleHashTag">${schedule.hashTag}<br><br></span>
-                     <button type="button" class="btn btn-primary btn-xs" id="shortURL${schedule.scheduleNo}">URL 복사하기</button> 
-                     <button type="button" class="btn btn-primary btn-xs" id="updateReview${schedule.scheduleNo}">일정 리뷰등록</button><br>
-                     <button type="button" class="btn btn-warning btn-xs" id="shareSNS${schedule.scheduleNo}">카카오로 공유하기</button>
-                     <button type="button" class="btn btn-warning btn-xs" id="shareBoard${schedule.scheduleNo}">게시물로 공유하기</button><br>
-                     <button type="button" class="btn btn-default btn-xs" id="updateSchedule${schedule.scheduleNo}">일정 수정하기</button>
-                  </div>
-                  <div class="linksIcon">
-                     <img id="deleteSchedule${schedule.scheduleNo}" src="/images/board/delete2.png">
-                  </div>
-               </article>
-               
-            <c:if test="${i%3==0}"></div></c:if>
-            
-            </c:forEach>
-            
-            <c:if test="${empty list}">
-               <span id="defaultText" style="margin-left:40%;">생성하신 일정이 없습니다. ㅠㅠ</span>
-            </c:if>
-      </div>      
-      
-     <!-- PageNavigation Start... -->
-        <jsp:include page="../common/pageNavigator.jsp" />
-     <!-- PageNavigation End... -->
-     
-     </div>
-   </div> <!-- e.o.container -->
 </body>
-
-<!-- 리뷰를 등록하는 모달창 시작! --> 
-   <form id="reviewform">
-      <div class="modal" id="review" role="dialog"> 
-          <div class="modal-dialog modal-sm"> 
-              <div class="modal-content"> 
-                  <div class="modal-header"> 
-                      <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                      <h4 class="modal-title">나들이 어떠셨어요??</h4> 
-                  </div>
-         <div class="modal-body">
-            <div class="form-group">
-               <label for="scheduleTitle">후기작성</label> 
-               <input type="text" class="form-control" id="modalscheduleReview" name="scheduleReview" placeholder="나들이 후기를 작성해주세요!">
-               <input type="hidden" id="modalscheduleNo" name="scheduleNo">
-         </div>
-            <div class="modal-footer"> 
-                      <button type="button" class="btn btn-danger modalModBtn" id="modalinsert">입력!</button> 
-                  </div> 
-              </div> 
-          </div> 
-      </div>
-      </div>
-   </form>
-<!-- 리뷰를 등록하는 모달창 끝! --> 
-
 </html>

@@ -201,7 +201,7 @@
 
 		});
 
-		$('.duration').on('change',function() {
+/*		$('.duration').on('change',function() {
 
 			var id = $('.userIdLog').text();
 			console.log(id);
@@ -279,7 +279,7 @@
 
 			})
 
-		});
+		});*/
 
 		$('.modal-close').on('click',function() {
 			var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -320,7 +320,7 @@
 			
 			if(chk){
 				console.log("hihi");
-				$('.option-box > div').css('height','300px');
+				$('.option-box > div').css('height','200px');
 				console.log($('.inquire-title').css('margin-left'));
 				male = $('.inquire-title').css('margin-left');
 				$('.inquire-title').css('margin-left','0%');

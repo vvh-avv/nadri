@@ -9,12 +9,33 @@ $(function() {
 	 * console.log(data.boardList.length); for(i = 0; i < data.boardList.length;
 	 * i++){ console.log(data.boardList[i]); } })
 	 */
+	var loginchk = true;
 	var original_width = $('.searcher > input').css('width');
 	var top = $('.bottom-section').offset();
 	console.log(top);
 	
 	$('.search-logs').css('width',original_width);
 	$('.searcher > input').css('width',original_width);
+	
+	$('#spot-lists').on('click', function() {
+		self.location = '/spot/getSpotList?spotCode=4';
+	})
+	
+	$('#sign-up').on('click',function(){
+		self.location = '/user/addUser';
+	})
+	
+	$('.id-look-submit').on('click',function(){
+		self.location = '/user/findUser';
+	})
+	
+	$('.pw-look-submit').on('click',function(){
+		self.location = '/user/findPassword';
+	})
+	
+	$('.join-submit').on('click',function(){
+		self.location = '/user/addUser';
+	})
 
 	$('.spots').on(
 			'mouseenter',
@@ -59,6 +80,7 @@ $(function() {
 			$('.searcher-icon').css('top','28px');
 			$('.maincon').css('opacity','1');
 			$('.maincon').css('top','14px');
+			$('.searcher').css('margin-top','8px');
 			t_chk = false;
 		} else {
 			$('.fix-box').css('height', '10px');
@@ -70,6 +92,9 @@ $(function() {
 			$('.searcher-icon').css('top','-10px');
 			$('.maincon').css('opacity','0');
 			$('.maincon').css('top','-10px');
+			$('.searcher').css('margin-top','0px');
+			$('.login-box').css('top','-350px');
+			loginchk = true;
 			t_chk = true;
 		}
 
@@ -136,11 +161,17 @@ $(function() {
 
 	$(window).on('scroll', function() {
 
+		var height;
+		var searcher
+/*		if ($(document).scrollTop() > 100) {
+			$('.odometer').html(odo);
+		}*/
+
 		if ($(document).scrollTop() < 70) {
 			$('.fix-box').css('height', '70px');
 			$('.fix-box-small').css('height', '50px');
-			$('.fix-box').css('border-bottom', '0px solid #404548');
-			$('.fix-box-small').css('border-bottom', '0px solid #404548');
+			$('.fix-box').css('border-bottom', '0px solid rgb(44, 64, 91)');
+			$('.fix-box-small').css('border-bottom', '0px solid rgb(44, 64, 91)');
 			$('.title-section').css('opacity', '0');
 			$('.title-section').css('pointer-events', 'none');
 			$('.title-section').css('top', '70px');
@@ -161,8 +192,8 @@ $(function() {
 		} else {
 			$('.fix-box').css('height', '10');
 			$('.fix-box-small').css('height', '10');
-			$('.fix-box-small').css('border-bottom', '10px solid #404548');
-			$('.fix-box').css('border-bottom', '10px solid #404548');
+			$('.fix-box-small').css('border-bottom', '10px solid rgb(44, 64, 91)');
+			$('.fix-box').css('border-bottom', '10px solid rgb(44, 64, 91)');
 			$('.title-section').css('opacity', '1');
 			$('.title-section').css('pointer-events', 'all');
 			$('.title-section').css('top', '10px');
@@ -180,35 +211,58 @@ $(function() {
 			$('.maincon-small').css('top','-10px');
 			$('.expand-out').css('opacity','0');
 			$('.expand-out').css('top','-10px');
+			$('.middle-section-small').css('top','-10px');
+			$('.side-section-icons').css('left','100%');
+			$('.searcher').css('margin-top','0px');
+			$('.login-box').css('top','-350px');
+			loginchk = true;
 		}
 	})
 
-	$('.spots').on('click', function() {
-		var id = $(this).attr('id');
-		if (id == 'rivers') {
-			self.location = '/spot/getSpotList?spotCode=4';
-		} else if (id == 'parks') {
-			self.location = '/spot/getSpotList?spotCode=0';
-		} else if (id == 'festivals') {
-			self.location = '/spot/getFestivalList';
-		} else {
-			self.location = '/spot/getSpotList?spotCode=1';
+	$('#spot-lists').on('click', function() {
+		self.location = '/spot/getSpotList?spotCode=4';
+	})
+
+	$('#login-open').on('click',function(){
+		var scroll = $(document).scrollTop();
+		if(loginchk){
+			$('.login-box').css('top','70px');
+			loginchk = false;
+		}else{
+			$('.login-box').css('top','-350px');
+			loginchk = true;
 		}
 	})
 
 	$('.side-section > span').on('click', function() {
+		var id = $(this).attr('id');
+		if (id == 'chat-open') {
+			self.location = '/board/listBoard';
+		} else if (id == 'join-open') {
+			self.location = '/user/getUser';
+		} else if (id == 'admin-page') {
+			self.location = '/admin/adminIndex';
+		} else if (id == 'log-out') {
+			self.location = '/user/logout';
+	// ############################### HJA 네비게이션 위해 수정! ##########################################
+		}else if(id == 'pencil'){
+			$("#transportationModal").modal();
+		}
+	});
+	
+	$('.top-icons-small').on('click', function() {
 		var id = $(this).attr('id');
 		if (id == 'login-open') {
 			self.location = '/user/login';
 		} else if (id == 'chat-open') {
 			self.location = '/board/listBoard';
 		} else if (id == 'join-open') {
-			self.location = '/user/listUser';
+			self.location = '/user/getUser';
 		} else if (id == 'admin-page') {
 			self.location = '/admin/adminIndex';
 		} else if (id == 'log-out') {
 			self.location = '/user/logout';
-	// ############################### HJA! ##########################################
+	// ############################### HJA 네비게이션 위해 수정! ##########################################
 		}else if(id == 'pencil'){
 			$("#transportationModal").modal();
 		}
@@ -225,22 +279,19 @@ $(function() {
 	$('#transit').on('click',function(){
 		self.location = '/schedule/addSchedule?transportationCode=2';
 	});
-	
-	$('.post-title').on('click',function(){
-		var id = $(this).attr('id');
-		if (id == 'login-open') {
-			self.location = '/user/login';
-		} else if (id == 'chat-open') {
-			self.location = '/board/listBoard';
-		} else if (id == 'join-open') {
-			self.location = '/user/listUser';
-		} else if (id == 'admin-page') {
-			self.location = '/admin/adminIndex';
-		} else if (id == 'log-out') {
-			self.location = '/user/logout';
-		} else if (id == 'pencil') {
-		console.log(id);
-		self.location = '/board/getBoard?boardNo='+id;
+
+	$('.schedule-button').on('click',function(){
+		var check = $('#session-checker').val();
+		console.log(check);
+		if( check == null ){
+			swal({
+				  title: "회원만 이용하실 수 있어요!",
+				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
+				  icon: "error",
+				  button: " 닫 기 ",
+				});	
+		}else{
+			self.location = '/schedule/addSchedule';
 		}
 	});
 
@@ -254,16 +305,16 @@ $(function() {
 		var check = $('#session-checker').val();
 		console.log(check);
 		if (check != 'no_user') {
-			console.log("session 유무 : 있음");
+			console.log("session 여부 : 있음");
 			self.location = '/schedule/addSchedule';
 
 		} else {
-			console.log("session 유무 : 없음");
+			console.log("session 여부 : 없음");
 			swal({
-				  title: "회원만 이용하실 수 있어요!",
-				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
-				  icon: "error",
-				  button: " 닫 기 ",
+				title : "회원만 이용하실 수 있어요!",
+				text : "일정작성을 위해 가입 또는 로그인을 해주세요.",
+				icon : "error",
+				button : " 닫 기 ",
 			});
 		}
 	});
@@ -280,8 +331,23 @@ $(function() {
 		$('.maincon').css('opacity','0');
 		$('.maincon').css('top','-50px');
 		if(check != 'no_user'){		
+			$.get('/restSearchLog/getSearchLog/'+check,function(returned,status){
+				console.log(returned,returned.length,returned[0]);
+				console.log(status);
+				if(returned.length == 0){
+					$('.search-history').html('<div>최근 검색 기록이 없습니다.</div>');
+				}else{
+					console.log('검색기록 있음');
+					$('.search-history').text('최근 검색 기록');
+					for(i=0; i < returned.length;i++){
+						console.log('<div class="logs keyword'+i+'" name="'+returned[i]+'">'+returned[i]+'</div>');
+						$('.search-history').append('<div class="logs keyword'+i+'" name="'+returned[i]+'">'+returned[i]+'</div>');
+					}
+				}
+				$('.search-logs').css('visibility','visible');
 				$('.search-logs').css('opacity','1');
 				$('.search-logs').css('width',big_width);
+			})	
 		}
 	})
 
@@ -295,16 +361,18 @@ $(function() {
 		$('.maincon').css('opacity','1');
 		$('.maincon').css('top','14px');
 		if(check != 'no_user'){
+			$('.search-logs').css('visibility','hidden');
 			$('.search-logs').css('opacity','0');
 			$('.search-logs').css('width',width);
 		}
 	})
 	
-	$('.logs').on('click',function(){
+	$('.search-history').on('click','.logs',function(){
+		console.log("work check");
 		self.location = "/searchLog/listSearchLog?searchKeyword="
 			+ $(this).attr('name');
-	});
-
+	})
+	
 	$('.searcher > input').on(
 			'keydown',
 			function(e) {
@@ -356,5 +424,249 @@ $(function() {
 	$('.maincon-small').on('click',function(){
 		self.location = '/nadri/nadriIndex';
 	})
+	
+	//로그인 버튼 누르면 밑의 메서드에 의해 동작
+	function fncLogin(){
+		var id = $("#userId").val();
+		var pw = $("#password").val();
+		//아이디, 비번 입력해야 : 유효성 검사
+		if(id==null || id.length<1){
+			alert('아이디를 입력하지 않으셨습니다.');
+			$("input:text").focus();
+			return;
+		}
+			
+		if(pw==null || pw.length<1){
+			alert('패스워드를 입력하지 않으셨습니다.');
+			$("input:password").focus();
+			return;
+		}
+
+		$.ajax({
+			url : "/user/json/login",
+			method : "POST",
+			dataType : "json",
+			headers : {
+				"Accept" : "application/json",
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				userId : id,
+				password : pw
+			}),
+			success : function(JSONData, status){
+				
+				if(JSONData.userId != "none"){
+					var userStatus = JSONData.userStatus;
+					if( JSONData.password == $("#password").val() ){
+						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+					}else if(userStatus == '1'){
+						alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						self.location = "/index.jsp";
+					}else if(userStatus == '2'){
+						alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						self.location = "/index.jsp";
+					}else if(userStatus == '0'){
+						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+					}else{
+						alert("비밀번호를 다시 확인하세요!");
+						$("#password").val("").focus();
+					}
+					
+				}else{
+					$("#userId").val("").focus();
+					$("#password").val("");
+					alert("아이디 / 패스워드를 다시 확인하세요.");
+				}
+			}
+		});
+	}
+	//버튼 클릭 시 fnclogin 발동
+	$(function(){
+		$("#userId").focus();
+
+	
+		$("#logInButton").on("click", function(){
+			fncLogin();
+		});
+		
+
+		$("a.btn.btn-primary.btn").on("click", function(){
+			self.location="/user/addUser";
+		});	
+	});
+	
+	//enter key로 로그인
+	$(function(){
+		$("#userId, #password").keydown(function(e){
+			if(e.keyCode ==13){
+				fncLogin();
+			}
+		});
+	});
+
+	
+	//아이디 / 비밀번호 찾기 화면 이동
+	$( function() {	
+		$("#findUser").on("click", function() {
+			self.location = "/user/findUser.jsp"
+		});
+	});
+	
+	$( function() {	
+		$("#findPassword").on("click", function() {
+			self.location = "/user/findPassword.jsp"
+		});
+	});
+	
+	//sns 로그인 파트
+	//카카오 로그인
+	$(function(){
+		
+/*		Kakao.init('7368fcab4bac4f1c102ca1316601d03f');     
+ * 		한번만 실행됨
+ * 		*/
+		
+		$("#kakao-login-btn").on("click", function(){
+			//로그인 시도
+			Kakao.Auth.login({
+		        success: function(authObj) {
+		       	alert(authObj);
+		          //로그인 성공시에 api호출
+		          Kakao.API.request({
+		            url: '/v1/user/me',
+		            success: function(res) {
+		              res.id += "@kakao";
+		              alert(res.id);
+		              alert("넘어온 데이터 확인");
+		              $.ajax({
+		            	  url : "/user/json/checkDuplication/"+res.id,
+		            	  headers : {
+		  					"Accept" : "application/json",
+		  					"Content-Type" : "application/json"
+		  				  },
+		  				  success : function(userIdChk){
+		  					//DB에 아이디가 없으면 회원가입창으로
+		  					  if(userIdChk==true){ 
+		  						 alert("회원가입중입니다");
+		  						  console.log("회원가입중입니다");
+		  						  $.ajax({
+		  							  url : "/user/json/addUser",
+		  							  method : "POST",
+		  							  headers : {
+		  								"Accept" : "application/json",
+		  								"Content-Type" : "application/json"
+		  							  },
+		  							  data : JSON.stringify({
+  		  								userId : res.id,
+		  								userName : res.properties.nickname,
+  		  								password : "kakao123",
+		  							  }),
+		  							  success : function(JSONData){
+		  								 alert("회원가입이 완료되었습니다");
+		  								console.log("회원가입이 완료되었습니다.");
+		  								 $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
+		  							  }
+		  						  })
+		  					  }
+		  					//DB에 아이디 있으면 로그인
+		  					  if(userIdChk==false){ 
+		  						 alert("로그인중입니다");
+		  						  console.log("로그인중입니다");
+		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
+		  					  }
+		  				  }
+		              })
+		            },
+		            fail: function(error) {
+		              alert(JSON.stringify(error));
+		            }
+		          });
+		          
+		        },
+		        fail: function(err) {
+		          alert(JSON.stringify(err));
+		        }
+		      });
+		})
+	})
+	
+	
+	 //구글 로그인	
+	$(function(){
+ 		function onSuccess(googleUser) {
+		    var profile = googleUser.getBasicProfile();
+		    console.log(profile);
+	}
+		
+		$(".google").on("click", function(){
+		    gapi.client.load('plus', 'v1', function () {
+		        gapi.client.plus.people.get({
+		            'userId': 'me'
+		        }).execute(function (res) {
+		        	console.log(JSON.stringify(res));
+		        	res.id += "@google";
+			        
+		            $.ajax({
+		            	url : "/user/json/checkDuplication/"+res.id,
+		            	headers : {
+		  					"Accept" : "application/json",
+		  					"Content-Type" : "application/json"
+		  				},
+		  				success : function(idChk){
+		  					  if(idChk==true){ 
+		  						  console.log("회원가입 절차가 진행중입니다");
+		  						  $.ajax({
+		  							  url : "/user/json/addUser",
+		  							  method : "POST",
+		  							  headers : {
+		  								"Accept" : "application/json",
+		  								"Content-Type" : "application/json"
+		  							  },
+		  							  data : JSON.stringify({
+		  								userId : res.id,
+		  								userName : res.displayName,
+		  								password : "google",
+		  							  }),
+		  							  success : function(JSONData){
+		  								 alert("회원가입이 완료되었습니다");
+		  								 $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
+		  							  }
+		  						  })
+		  					  }
+		  					  if(idChk==false){ 
+		  						  console.log("로그인이 진행중입니다");
+		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
+		  					  }
+		  				  }
+		              })
+		        	})
+	        })
+		})
+		
+		function onFailure(error) {
+		    console("error : "+error);
+		}
+		
+		function signOut() {
+		    var auth2 = gapi.auth2.getAuthInstance();
+		    auth2.signOut().then(function () {
+		    	self.location="/user/logout";
+		    });
+		}
+	}) 
+
+		  
+	//네이버 로그인
+		$('.naver').on('click',function(){
+	   		var naverLogin = new naver.LoginWithNaverId({
+				clientId: "HOBzhSrHnwuHLQpiDnzI",
+				callbackUrl: "http://192.168.0.30:8080/user/naverCallback.jsp",
+				isPopup: true
+/*				loginButton: {color: "green", type: 1, height: 35}*/
+			});
+	   		//설정정보를 초기화하고 연동 준비
+			naverLogin.init();
+		})
 
 });

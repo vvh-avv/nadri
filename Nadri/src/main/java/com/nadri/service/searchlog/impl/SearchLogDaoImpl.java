@@ -37,6 +37,9 @@ public class SearchLogDaoImpl implements SearchLogDao {
 		
 		if(search.getMemberFlag() == 0) {
 			
+			int isit = sqlSession.insert("SearchLogMapper.insertKeyword", search);
+			
+			System.out.println("insert work = "+isit);
 			/*board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultUser", search));
 			board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultSelf", search));*/
 			

@@ -20,6 +20,13 @@
 <!-- 카카오 로그인 -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
+<!-- 구글 로그인 -->
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+<meta name="google-signin-client_id" content="910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com"></meta>
+
+<!-- 네이버 로그인 -->
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"></script>
+
 <!--  slick  -->
 <link rel="stylesheet" type="text/css"
 	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
@@ -71,7 +78,7 @@
 		// 로그인 창을 띄웁니다.
 		Kakao.Auth.login({
 			success : function(authObj) {
-				// 로그인 성공시, API를 호출합니다.
+				/// 로그인 성공시 API를 호출합니다.
 				Kakao.API.request({
 					url : '/v1/user/me',
 					success : function(res) {
@@ -90,7 +97,7 @@
 	};
 	
 	
-	<!-- 채팅 소스 -->
+	<!--- 채팅소스 --->
 	
 	function deleteIframe(chatRoomNo) {
 		$('#iframe' + chatRoomNo.substring( chatRoomNo.indexOf('m') + 1 , chatRoomNo.length )).html('') ;
@@ -523,8 +530,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <body>
-	<input type="hidden" name="session" id="session-checker"
-		value="${empty user.userId ? 'no_user' : user.userId}" />
+	
 	<!-- 삽입된 비디오 부분 건드리지마세요! -->
 
 	<div class="background-video">
@@ -537,154 +543,8 @@
 	</div>
 
 	<div class="contents">
-		<nav class="head-section">
-		<div class="fix-box">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon"></span>
-				<div class="title-section">
-					<div class="title-text">너,나들이</div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon"></span>
-				</div>
-
-				<div class="middle-section">
-					<div class="searcher">
-						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section">
-					<span class="glyphicon glyphicon-bell top-icons"
-						id="noticeRoomList"></span> <span
-						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
-					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
-					<c:if test="${!empty user}">
-						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
-						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
-						<c:if test="${user.role == 1}">
-							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
-						</c:if>
-						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
-					</c:if>
-					<c:if test="${empty user}">
-						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
-					</c:if>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav>
-	<div class="container search-log-container">
-		<div class="log-wrapper">
-			<div class="search-logs">
-				<div class="row log-detail">
-					<div class="col-md-6 col-xs-12 search-history">
-						최근 검색 기록
-						<c:if test="${searchLog.size()==0}">
-						<%-- <c:forEach var="board" items="${boardList}"> --%>
-						<div>최근 검색 기록이 없습니다.</div>
-						</c:if>
-						<c:if test="${searchLog.size()>0}">
-							<c:set var="i" value="0" />		
-							<c:forEach var="keyword" items="${searchLog}">
-							<c:set var="i" value="${ i+1 }" />
-								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
-							</c:forEach>
-						</c:if>
-					</div>
-					<div class="col-md-6 col-xs-12 search-recommand">
-						추천검색어
-						
-						<div>검색어2</div>
-					</div>`
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<nav class="head-section-small">
-		<div class="fix-box-small">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon-small"></span>
-				
-				<div class="title-section-small">
-					<div class="title-text-small"></div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon-small"></span>
-				</div>
-
-				<div class="middle-section-small">
-					<div class="searcher-small">
-						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section-small">
-					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
-					<div class="side-section-icons">
-						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
-						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
-						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
-						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
-						<c:if test="${!empty user}">
-							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
-							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
-							<c:if test="${user.role == 1}">
-								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
-							</c:if>
-							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
-						</c:if>
-						<c:if test="${empty user}">
-							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
-						</c:if>
-					</div>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</nav>
+	
+	<%@include file="/layout/new_toolbar.jsp"%>
 
 		<div class="main-text">
 			<div>
@@ -697,9 +557,6 @@
 	</div>
 
 	<div class="container contents-wrapper">
-		<div class="searcher" style="display: none">
-			<div class="search-text">검 색 하 기</div>
-		</div>
 		<div class="first-line">
 			<div class="row spots-list">
 				<div class="col-md-3 col-xs-3">
@@ -972,28 +829,6 @@
 		}
 	</script>
 	
-		
-	
-	<!-- HJA 일정등록 transportation navigation -->
-	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
-            <div class="modal" id="transportationModal" role="dialog"> 
-                <div class="modal-dialog modal-sm"> 
-                    <div class="modal-content"> 
-                        <div class="modal-header"> 
-                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
-                        </div>
-					<div class="modal-body">
-							<button type="button" class="btn btn-primary" id="car">자동차</button>
-							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
-							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
-					</div>
-						<div class="modal-footer"> 
-                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
-                        </div> 
-                    </div> 
-                </div> 
-            </div>
 	
 </body>
 

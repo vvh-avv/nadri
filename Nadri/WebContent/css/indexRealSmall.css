@@ -26,7 +26,6 @@
 		position: absolute;
 		top : 0px;
 		width : 100%;
-		height:100%;
 	}
 	
 	.fix-box-small{
@@ -36,7 +35,7 @@
 		height:50px;
 		box-shadow:2px 2px 3px 0px #2323234f;
 		transition : all 1s;
-	 	background: #fbfff4;
+	 	background: linear-gradient(#455973,#2a3f5a);
 	 	width:100%;
 	 	position:fixed;
 	 	z-index:999;
@@ -45,7 +44,7 @@
 	.title-section-small{
 		width:150px;
 		height:35px;
-		background: #404548;
+		background: rgb(44, 64, 91);
 		border-bottom-left-radius: 15px;
 		border-bottom-right-radius: 15px;
 		text-align: center;
@@ -70,10 +69,11 @@
 		transition : all 1s;
 		top : 8px;
 		z-index : 5;
+		color : #9fadb9;
 	}
 	
 	.maincon-small:focus{
-		color : #bde426;
+		color : white;
 	}
 	
 	.middle-section-small{
@@ -91,7 +91,7 @@
 		justify-content: center;
 		align-items: center;
 		opacity : 1;
-		transition : all 1s;
+		transition : all 1s;		
 	}
 	
 	.searcher-icon-small {
@@ -99,24 +99,39 @@
 		position:absolute;
 		font-size : 15px;
 	/* 	left:24px; */
-		color: grey;
-		text-shadow : 1px 1px 0px white;
+		color: #40556f;
+/* 		text-shadow : 1px 1px 0px white; */
 		font-weight : 800;
 		transition : all 1s;
 		top : 28px;
 		left : 91px;
+		z-index:6;
 	}
 	
 	.searcher-small > input {
-		background-color: #4045481a;
-		border : 1px solid #e8ece2;
-		border-radius: 5px;
+		background-color: #9fadb97d;
+		border : 1px solid transparent;
+		border-radius: 10px;
 		height:35px;
 		transition : width 1s;
 		width : 250px;
 		min-width : 200px;
 		text-align: center;
 		z-index : 5;
+		
+		::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+		    color: white;
+		    opacity: 1; /* Firefox */
+		}
+		
+		:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		    color: white;
+		}
+		
+		::-ms-input-placeholder { /* Microsoft Edge */
+		    color: white;
+		}
+		
 	}
 	
 	.expand-out{
@@ -126,10 +141,11 @@
 		top : 15px;
 		opacity : 1;
 		transition : all 1s;
+		color : rgb(159, 173, 185);
 	}
 	
 	.expand-out:focus{
-		color : #bde426;
+		color : white;
 	}
 	
 	.side-section-icons{
@@ -141,10 +157,11 @@
 		top : 13px;
 		left : 100%;
 		transition : all 1s;
+		color : rgb(159, 173, 185);
 	}
 	
 	.side-section-icons > span:focus {
-		color : #bde426;
+		color : white;
 	}
 	
 	.label-box>label {
@@ -234,5 +251,9 @@
 	}
 	.schedule-button {
 		font-size: 3vw;
+	}
+	
+	.search-log-container{
+		height:50px;
 	}
 }

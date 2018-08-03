@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -19,8 +19,10 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	<script src="/javascript/toolbar.js"></script>
-	<link rel="stylesheet" href="/css/toolbar.css">
+	<!-- layout css -->
+	<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+	<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+	<script src="/javascript/indexReal_nonIndex.js"></script>
 
 	<style>
 
@@ -160,12 +162,12 @@
 	</script>
 </head>
 
-<body bgcolor="#ffffff" text="#000000">
+<body>
 
 	<%-- <jsp:include page="/layout/toolbar.jsp"> 
 		<jsp:param name="uri" value="../"/>
 	</jsp:include> --%>
-	<%@ include file="/layout/toolbar.jsp"%>
+	<%@include file="/layout/new_toolbar.jsp"%>
 
 <div class="container">
 

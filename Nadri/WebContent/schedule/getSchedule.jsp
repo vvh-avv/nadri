@@ -29,10 +29,6 @@
 <link rel="stylesheet" href="/css/timelinestyle.css?ver=1">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
-<!-- materialize.js -->
-<script src="/javascript/materialize.js"></script>
-<link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
@@ -40,16 +36,7 @@
 
 <style>
 
-.maincon{
-	color : #404548;
-	z-index:15;
-}
-
-.title-section > div{
-	top : -15px;
-}
-
-@font-face {
+/* @font-face {
 	font-family: 'seoul';
 	src: url('/css/fonts/seoulhangangjangm.eot');
 	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -61,6 +48,11 @@
 		format('svg');
 	font-weight: normal;
 	font-style: normal;
+} */
+
+body {
+	font-size:14px;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 ul.countdown {
@@ -69,6 +61,10 @@ ul.countdown {
 	padding: 0;
 	display: block;
 	text-align: center;
+}
+
+.maincon {
+	color : #404548;
 }
 
 ul.countdown li {
@@ -123,8 +119,6 @@ ul.countdown li p {
 <script>
 // 맨위로 올라가게 만들어 주는 script
 $(function(){
-	
-	$('.materialboxed').materialbox();
 	
     //*스크롤감지
     $(window).scroll(function(){
@@ -213,155 +207,7 @@ $(function(){
 </head>
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png">
-    <!-- 메인툴바 -->
-	<nav class="head-section">
-		<div class="fix-box">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon"></span>
-				<div class="title-section">
-					<div class="title-text">너,나들이</div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon"></span>
-				</div>
-
-				<div class="middle-section">
-					<div class="searcher">
-						<span class="glyphicon glyphicon-search searcher-icon"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section">
-					<span class="glyphicon glyphicon-bell top-icons"
-						id="noticeRoomList"></span> <span
-						class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
-					<span class="glyphicon glyphicon-list-alt top-icons" id="chat-open"></span>
-					<c:if test="${!empty user}">
-						<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
-						<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>
-						<c:if test="${user.role == 1}">
-							<span class="glyphicon glyphicon-cog top-icons" id="admin-page"></span>
-						</c:if>
-						<span class="glyphicon glyphicon-log-out top-icons" id="log-out"></span>
-					</c:if>
-					<c:if test="${empty user}">
-						<span class="glyphicon glyphicon-log-in top-icons" id="login-open"></span>
-					</c:if>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav>
-	<div class="container search-log-container">
-		<div class="log-wrapper">
-			<div class="search-logs">
-				<div class="row log-detail">
-					<div class="col-md-6 col-xs-12 search-history">
-						최근 검색 기록
-						<c:if test="${searchLog.size()==0}">
-						<%-- <c:forEach var="board" items="${boardList}"> --%>
-						<div>최근 검색 기록이 없습니다.</div>
-						</c:if>
-						<c:if test="${searchLog.size()>0}">
-							<c:set var="i" value="0" />		
-							<c:forEach var="keyword" items="${searchLog}">
-							<c:set var="i" value="${ i+1 }" />
-								<div class="logs keyword${i}" name="${keyword}">${keyword}</div>
-							</c:forEach>
-						</c:if>
-					</div>
-					<div class="col-md-6 col-xs-12 search-recommand">
-						추천검색어
-						
-						<div>검색어2</div>
-					</div>`
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<nav class="head-section-small">
-		<div class="fix-box-small">
-			<div class="container header-box">
-				<span class="glyphicon glyphicon-apple maincon-small"></span>
-				
-				<div class="title-section-small">
-					<div class="title-text-small"></div>
-					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
-						id="jolly-icon-small"></span>
-				</div>
-
-				<div class="middle-section-small">
-					<div class="searcher-small">
-						<span class="glyphicon glyphicon-search searcher-icon-small"></span> <input
-							type="text" name="searchKeyword" value=""
-							placeholder="검색어를 입력해주세요." autocomplete=off>
-					</div>
-				</div>
-
-				<div class="side-section-small">
-					<span class="glyphicon glyphicon-chevron-left expand-out"></span>
-					<div class="side-section-icons">
-						<span class="glyphicon glyphicon-chevron-right expand-in"></span>
-						<span class="glyphicon glyphicon-bell top-icons-small" id="noticeRoomList"></span> 
-						<span class="glyphicon glyphicon-comment top-icons-small" id="chatRoomList"></span>
-						<span class="glyphicon glyphicon-list-alt top-icons-small" id="chat-open"></span>
-						<c:if test="${!empty user}">
-							<span class="glyphicon glyphicon-pencil top-icons-small" id="pencil"></span>
-							<span class="glyphicon glyphicon-user top-icons-small" id="join-open"></span>
-							<c:if test="${user.role == 1}">
-								<span class="glyphicon glyphicon-cog top-icons-small" id="admin-page"></span>
-							</c:if>
-							<span class="glyphicon glyphicon-log-out top-icons-small" id="log-out"></span>
-						</c:if>
-						<c:if test="${empty user}">
-							<span class="glyphicon glyphicon-log-in top-icons-small" id="login-open"></span>
-						</c:if>
-					</div>
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: 35%;"
-						id="chatRoomContainer">
-						<div id="notificationTitle">채팅방</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="chatFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-
-					<div class="notificationContainer"
-						style="display: none; top: 170%; left: -15%;" id="noticeContainer">
-						<div id="notificationTitle">알림</div>
-						<div class="col-md-15 bg-white">
-							<ul class="friend-list" id="noticeFriendList">
-								<!--             여기에 채팅방 리스트가 출력됨. -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</nav>
+    <%@include file="/layout/new_toolbar.jsp"%>
 		
 		    
 	<ul class="countdown">
@@ -523,5 +369,6 @@ $(function(){
 	</section>
 	<!-- cd-timeline -->
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
+
 </body>
 </html>
