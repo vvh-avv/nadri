@@ -41,7 +41,8 @@
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">
 			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
-			<div class="profile-photo"></div>
+			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
+			</div>
 		</div>
 	</nav>
 	<nav class="admin-sub-navbar">
@@ -85,7 +86,7 @@
 									value="이름"><label class="cons-label" id="endCon">
 									검색어로 끝나는 검색 </label>
 							</div>
-							
+
 							<div class="col-md-3 col-xs-3">
 								<input type="checkbox" name="noChecked" class="conditions"
 									value="이름"><label class="cons-label" id="noChecked">
@@ -184,13 +185,15 @@
 
 											<ul>
 
-												<li class="ele-inquire">문의글 작성 유저 아이디 : ${inquire.userId}
+												<li class="ele-inquire">문의글 작성 유저 아이디 :
+													${inquire.userId}
 													<button class="logbutton userInqLog" data-toggle="modal"
 														data-target="#modal2" name="${inquire.userId}">활동보기</button>
 												</li>
 
 												<c:if test="${inquire.inquireCode==0}">
-													<li class="ele-inquire">신고된 해당 유저 아이디 : ${inquire.reportUserId}
+													<li class="ele-inquire">신고된 해당 유저 아이디 :
+														${inquire.reportUserId}
 														<button class="logbutton userReportLog"
 															data-toggle="modal" data-target="#modal2"
 															name="${inquire.reportUserId}">활동보기</button>
@@ -205,11 +208,11 @@
 												<li class="ele-inquire">첨부 파일</li>
 
 											</ul>
-											
+
 											<div class="inquire-detail-bottom">
 												<img src="/images/inquire/${inquire.inquireFile1}"
 													style="width: 100px; height: 100px;">
-	
+
 												<c:if test="${inquire.inquireChkCode==0}">
 													<button class="btn btn-primary inquirebutton" id="${i}"
 														data-toggle="modal" data-target="#inquire-taken">신고처리하기</button>
@@ -238,16 +241,16 @@
 		</div>
 	</div>
 
-<!-- modal start (do not mess with below) -->
-<div class="modal fade" id="inquire-taken" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- modal start (do not mess with below) -->
+	<!-- <div class="modal fade" id="inquire-taken" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <div class="row">
           <div class="col-lg-5">
-            <!--Carousel Wrapper-->
+            Carousel Wrapper
             <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel">
-                <!--Slides-->
+                Slides
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(23).jpg" alt="First slide">
@@ -259,8 +262,8 @@
                         <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(25).jpg" alt="Third slide">
                     </div>
                 </div>
-                <!--/.Slides-->
-                <!--Controls-->
+                /.Slides
+                Controls
                 <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
@@ -269,14 +272,14 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-                <!--/.Controls-->
+                /.Controls
                 <ol class="carousel-indicators">
                     <li data-target="#carousel-thumb" data-slide-to="0" class="active"> <img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(23).jpg" class="img-fluid"></li>
                     <li data-target="#carousel-thumb" data-slide-to="1"><img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(24).jpg" class="img-fluid"></li>
                     <li data-target="#carousel-thumb" data-slide-to="2"><img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(25).jpg" class="img-fluid"></li>
                 </ol>
             </div>
-            <!--/.Carousel Wrapper-->
+            /.Carousel Wrapper
           </div>
           <div class="col-lg-7">
             <h2 class="h2-responsive product-name">
@@ -293,13 +296,13 @@
               </span>
             </h4>
 
-            <!--Accordion wrapper-->
+            Accordion wrapper
             <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
 
-                <!-- Accordion card -->
+                Accordion card
                 <div class="card">
 
-                    <!-- Card header -->
+                    Card header
                     <div class="card-header" role="tab" id="headingOne">
                         <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <h5 class="mb-0">
@@ -308,7 +311,7 @@
                         </a>
                     </div>
 
-                    <!-- Card body -->
+                    Card body
                     <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" >
                         <div class="card-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
@@ -316,12 +319,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- Accordion card -->
+                Accordion card
 
-                <!-- Accordion card -->
+                Accordion card
                 <div class="card">
 
-                    <!-- Card header -->
+                    Card header
                     <div class="card-header" role="tab" id="headingTwo">
                         <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             <h5 class="mb-0">
@@ -330,7 +333,7 @@
                         </a>
                     </div>
 
-                    <!-- Card body -->
+                    Card body
                     <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" >
                         <div class="card-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
@@ -338,12 +341,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- Accordion card -->
+                Accordion card
 
-                <!-- Accordion card -->
+                Accordion card
                 <div class="card">
 
-                    <!-- Card header -->
+                    Card header
                     <div class="card-header" role="tab" id="headingThree">
                         <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             <h5 class="mb-0">
@@ -352,7 +355,7 @@
                         </a>
                     </div>
 
-                    <!-- Card body -->
+                    Card body
                     <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
@@ -360,11 +363,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- Accordion card -->
+                Accordion card
             </div>
-            <!--/.Accordion wrapper-->
+            /.Accordion wrapper
 
-            <!-- Add to Cart -->
+            Add to Cart
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
@@ -398,15 +401,15 @@
                 </button>
               </div>
             </div>
-            <!-- /.Add to Cart -->
+            /.Add to Cart
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Modal: modalQuickView -->
-	
+</div> -->
+	<!-- Modal: modalQuickView -->
+
 	</div>
 
 	<script src="/javascript/adminInquire.js"></script>

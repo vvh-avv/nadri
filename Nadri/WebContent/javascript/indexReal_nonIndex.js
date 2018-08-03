@@ -14,6 +14,10 @@ $(function() {
 	var top = $('.bottom-section').offset();
 	console.log(top);
 	
+	$('.login-submit').on('click',function(){
+		fncLogin();
+	});
+	
 	$('.search-logs').css('width',original_width);
 	$('.searcher > input').css('width',original_width);
 	

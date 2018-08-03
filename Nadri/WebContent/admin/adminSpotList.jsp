@@ -23,6 +23,8 @@
 
 <!-- admin index 전용 css  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
+<link rel="stylesheet" href="/css/adminIndexSmall.css">
+<script src="/javascript/adminIndex.js"></script>
 
 <title>너나들이 나들이백과목록</title>
 
@@ -35,8 +37,12 @@ html, body {
 	font-size: 65px;
 }
 
+.text-center{
+	font-size : 12px;
+}
+
 .tableset {
-	margin: 10% 5%;
+	margin: 5% 5%;
 	width: 90%;
 	text-align: right;
 	font-size: 0.2em;
@@ -145,7 +151,7 @@ h5 {
 
 		/* index page animation start */
 
-		$('.adminmenus > div').on('click', function() {
+		$('.admin-sub-navbar > div').on('click', function() {
 			var way = $(this).attr('class');
 			if (way == "inquire") {
 				self.location = '/admin/listInquire';
@@ -222,21 +228,19 @@ h5 {
 </script>
 <body>
 
-	<nav class="navbar navbar-default navbar-fixed-top"
-		style="padding: 0px 20px;">
-		<div class="container-fluid">
-			<div class="adminmenus">
-				<div class="userList">회원목록</div>
-				<div class="graph">통계내역</div>
-				<div class="spot">백과관리</div>
-				<div class="inquire">문의관리</div>
+	<nav class="admin-navbar">
+		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
+		<div class="navbar-side">
+			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
+			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
 			</div>
 		</div>
-		<div class="navbar-right" >
-			<a href="/"><img src="/images/common/home.png"
-				style="width: 34px; height: auto;" title="너나들이페이지로 돌아가기"></a>
-		</div>
-		<!-- /.container-fluid -->
+	</nav>
+	<nav class="admin-sub-navbar">
+		<div class="userList">회원목록</div>
+		<div class="graph">통계보기</div>
+		<div class="spot">백과관리</div>
+		<div class="inquire">문의관리</div>
 	</nav>
 
 	<c:if test="${list.size()==0}">
@@ -251,7 +255,7 @@ h5 {
 			<div class="tableset-top">
 				<div class="col-md-6 text-left">
 					<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
-						${resultPage.currentPage} 페이지</p>
+						${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
 				</div>
 
 				<div class="col-md-6 text-right">

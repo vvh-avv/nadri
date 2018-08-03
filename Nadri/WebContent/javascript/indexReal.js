@@ -467,6 +467,10 @@ $(function() {
 		self.location = '/nadri/nadriIndex';
 	})
 	
+	$('.login-submit').on('click',function(){
+		fncLogin();
+	});
+	
 	//로그인 버튼 누르면 밑의 메서드에 의해 동작
 	function fncLogin(){
 		var id = $("#userId").val();
