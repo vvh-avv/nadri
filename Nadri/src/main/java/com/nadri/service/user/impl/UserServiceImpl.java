@@ -1,6 +1,5 @@
 package com.nadri.service.user.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public User getUser(String userId) throws Exception {
-		return userDao.getUser(userId);
+		User user = userDao.getUser(userId);
+		System.out.println("/////////////////////////");
+		System.out.println("serviceImpl - getUser"+user);
+		return user;
 	}
 
 	public Map<String, Object> getUserList(Search search) throws Exception {
@@ -58,6 +60,7 @@ public class UserServiceImpl implements UserService{
 
 	public void updateUser(User user) throws Exception {
 		userDao.updateUser(user);
+		System.out.println("serviceImpl - updateUser: "+user);
 	}
 
 	public boolean checkDuplication(String userId) throws Exception {

@@ -21,6 +21,11 @@ body{
 	overflow:hidden;
 }
 
+.table{
+	font-size : 12px;
+	margin-top : 20px;
+}
+
 .admin-sub-navbar div:last-child{
 	color : #337ab7;
 	border-bottom : 3px solid #337ab7;
@@ -28,14 +33,28 @@ body{
 /* 	pointer-events: none; */
 }
 
+.body-box{
+	padding : 15px;
+}
+
+.inquire-detail-title{
+	font-size : 15px;
+	margin-bottom : 10px;
+	font-weight: 700;
+}
+
+.ele-inquire{
+	padding : 5px;
+}
+
 .inquire-lists > div{
-	height:500px;
 	background:white;
 	box-shadow:0px 0px 10px 1px #bec6d22b;
 	margin:10px;
 	border-radius:20px;
 	margin-bottom:50px;
 	padding:20px;
+	font-size : 15px;
 }
 
 .open-searcher{
@@ -55,6 +74,13 @@ body{
 	margin-left:40%;
 	position:absolute;
 	display:inline-block;
+}
+
+.inquire-detail-bottom{
+	display : flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	padding : 0px 50px 10px 50px;
 }
 
 .options{
@@ -147,6 +173,28 @@ body{
 	color:#777;
 }
 
+.order-option {
+	font-size : 15px;
+	text-align: center;
+	color : #7d7d7d;
+	letter-spacing : 2px;
+}
+
+.option-align{
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	height:50px;
+}
+
+.option-icons{
+	font-size:10px;
+}
+
+.option-icons:hover{
+	cursor : pointer;
+	color : #33AEF7;
+}
 
 /* slider */
 
@@ -301,3 +349,4 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+

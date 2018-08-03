@@ -7,14 +7,14 @@ public class Friend {
 	private String userId;							//蜡历 酒捞叼(夸没茄 模备)
 	private String friendId;							//模备 酒捞叼(夸没罐篮 模备)
 	private String friendCode;					//模备 内靛 (0: 酒公巴档 酒丛, 1: 模备)
-	private String friendRequest;				//模备 夸没 (Y: 模备 夸没しし, N: 模备 夸没 救 窃)
-	private String userName;					//模备 捞抚
-
+	private String userName;						//模备 捞抚
+	
 	
 	///Constructor method
-		public Friend(){
-		}
+	public Friend(){
+	}
 	
+		
 	
 	public int getFriendNo() {
 		return friendNo;
@@ -48,15 +48,6 @@ public class Friend {
 		this.friendCode = friendCode;
 	}
 
-	public String getFriendRequest() {
-		return friendRequest;
-	}
-
-
-	public void setFriend_request(String friendRequest) {
-		this.friendRequest = friendRequest;
-	}
-
 	
 	public String getUserName() {
 		return userName;
@@ -68,15 +59,12 @@ public class Friend {
 	}
 
 
-	public void setFriendRequest(String friendRequest) {
-		this.friendRequest = friendRequest;
-	}
 
 
 	@Override
 	public String toString() {
 		return "Friend [friendNo=" + friendNo + ", userId=" + userId + ", friendId=" + friendId + ", friendCode="
-				+ friendCode + ", friendRequest=" + friendRequest + ", userName=" + userName + "]";
+				+ friendCode + ", userName=" + userName + "]";
 	}
 
 

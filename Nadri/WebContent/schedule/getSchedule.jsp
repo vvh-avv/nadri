@@ -20,27 +20,23 @@
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/commonfont.css">
-<!-- toolbar.js CDN -->
-<script src="/javascript/toolbar.js"></script>
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- TimeLine에 관한 라인입니다. -->
 <script type="text/javascript" src="/javascript/timelinemain.js"></script>
 <link rel="stylesheet" href="/css/timelinestyle.css?ver=1">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
-<!-- materialize.js -->
-<script src="/javascript/materialize.js"></script>
-<link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 <script src="/javascript/printThis.js"></script>
 
 <style>
-@font-face {
+
+/* @font-face {
 	font-family: 'seoul';
 	src: url('/css/fonts/seoulhangangjangm.eot');
 	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -52,6 +48,11 @@
 		format('svg');
 	font-weight: normal;
 	font-style: normal;
+} */
+
+body {
+	font-size:14px;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 ul.countdown {
@@ -60,6 +61,10 @@ ul.countdown {
 	padding: 0;
 	display: block;
 	text-align: center;
+}
+
+.maincon {
+	color : #404548;
 }
 
 ul.countdown li {
@@ -88,7 +93,7 @@ ul.countdown li p {
 	fill: #383838;
 }
 
-.container {
+.container-get {
     padding-right: 30px;
     padding-left: 30px;
     margin-right: auto;
@@ -114,8 +119,6 @@ ul.countdown li p {
 <script>
 // 맨위로 올라가게 만들어 주는 script
 $(function(){
-	
-	$('.materialboxed').materialbox();
 	
     //*스크롤감지
     $(window).scroll(function(){
@@ -204,7 +207,9 @@ $(function(){
 </head>
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png">
-      <%@ include file="/layout/toolbar.jsp"%>
+    <%@include file="/layout/new_toolbar.jsp"%>
+		
+		    
 	<ul class="countdown">
 		<li><span class="days">00</span>
 			<p class="days_ref">days</p></li>
@@ -235,7 +240,7 @@ $(function(){
 			</div>
 			<!-- cd-nugget-info -->
 		</header>
-		<div class="container">
+		<div class="container container-get">
 		<br/>
 		<div>
 			<span id="SKY"></span>
@@ -364,5 +369,6 @@ $(function(){
 	</section>
 	<!-- cd-timeline -->
 	<script type="text/javascript" src="/javascript/timelinemain.js"></script>
+
 </body>
 </html>

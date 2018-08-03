@@ -48,7 +48,11 @@ public class FriendDaoImpl implements FriendDao{
 		System.out.println("--------------------------DaoImpl - acceptFriend---------------------------");
 		System.out.println("DaoImpl - acceptFriend start"+friend);
 		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", friend));
-		return sqlSession.insert("FriendMapper.acceptFriend", friend);
+		//return sqlSession.insert("FriendMapper.acceptFriend", friend);
+		if(sqlSession.update("FriendMapper.acceptFriend", friend) == 0) {
+			return sqlSession.insert("FriendMapper.acceptFriend", friend);
+		}
+		return 1;
 	}
 
 	//模备 昏力
@@ -79,6 +83,8 @@ public class FriendDaoImpl implements FriendDao{
 
 		sqlSession.insert("FriendMapper.addFriend", map);
 	}
+	
+	
 
 	//模备 夸没 芭例
 	@Override
@@ -140,14 +146,18 @@ public class FriendDaoImpl implements FriendDao{
 	   }
 	   
 	 //模备 咯何 犬牢
-	      @Override
-	      public int checkFriend(String userId, String friendId, int status) throws Exception {
-	         // TODO Auto-generated method stub
-	         Map<String, Object> map = new HashMap<String, Object>();
-	         map.put("userId", userId);
-	         map.put("friendId", friendId);
-	         map.put("friendCode", status);
-	                  
-	         return sqlSession.selectOne("FriendMapper.checkFriend", map);
-	      }
+      @Override
+      public int checkFriend(String userId, String friendId, int status) throws Exception {
+         // TODO Auto-generated method stub
+         Map<String, Object> map = new HashMap<String, Object>();
+         map.put("userId", userId);
+         map.put("friendId", friendId);
+         map.put("friendCode", status);
+                  
+         return sqlSession.selectOne("FriendMapper.checkFriend", map);
+      }
+	      
+	      
+
+    
 }

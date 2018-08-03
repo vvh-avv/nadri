@@ -20,13 +20,18 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js CDN -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 
 <style>
 	.addBody{
-		padding-top:10px;
+		margin-top : 30px;
+		background : white;
+		padding : 20px;
+		border-radius : 5px;
+		box-shadow : 1px 2px 10px 0px #80808040;
 	}
 	.well > div{
 		cursor : pointer;
@@ -51,6 +56,12 @@
 		white-space:nowrap; /*가로스크롤 사용 설정*/
 		overflow-x:scroll; /*가로스크롤 활성화 설정*/
 		/*overflow:auto; /*영역 초과시 스크롤 보이고, 초과안하면 스크롤 감추는 auto 설정 */
+		margin-bottom : 35px;
+	}
+	.img-upload{
+		display : flex;
+		justify-content: space-around;
+		padding : 0px 10px 0px 0px;
 	}
 	textarea{
 		resize: none;
@@ -229,8 +240,7 @@ $(function(){
 </head>
 
 <body>
-	<!-- 메인툴바 -->
-   <%@ include file="/layout/toolbar.jsp"%>
+	<%@include file="/layout/new_toolbar.jsp"%>
 	
 	<div class="container addBody">
 		<form class="form-horizontal" enctype="multipart/form-data">
@@ -243,7 +253,7 @@ $(function(){
 							<input class="form-control" type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력해주세요..">
 						</div>
 						<!-- 파일업로드 -->
-						<div class="col-xs-4 col-md-2" align="right">
+						<div class="col-xs-4 col-md-2 img-upload" align="right">
 							<img src="/images/board/imgUpload.png" id="imgUpload" alt="이미지 업로드하기">
 							<img src="/images/board/imgDelete.png" id="imgDelete" alt="이미지 삭제하기">
 							<input multiple="multiple" class="form-control" type="file" id="file" name="file" style="display:none" accept=".gif, .jpg, .png, .jpeg">
@@ -288,6 +298,27 @@ $(function(){
 			</div>
 		</form>
 	</div><!--e.o.container-->
+	
+	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
 	
 </body>
 </html>

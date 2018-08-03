@@ -22,9 +22,10 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js CDN -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- board.js -->
 <script src="/javascript/board.js"></script>
 
@@ -54,6 +55,11 @@
 <link href="/css/atwho.css" rel="stylesheet">
 
 <style>	
+	.flexslider{
+		background : transparent;
+		border-radius : 0px;
+		
+	}
 	.ListBody{
 		padding-top: 10px;
 		overflow: hidden;
@@ -82,8 +88,11 @@
 	  z-index:999;
 	}
 	article{
-	  border-radius: 3px;
+	  border-radius: 5px;
 	  border: 1px solid #e6e6e6;
+	  background : white;
+	  padding : 10px;
+	  box-shadow : 1px 2px 10px 0px #80808040;
 	}
    /* 화면이 작아졌을 때 gotoTop이 gotoBoard 위로 가게끔 설정 */
    @media only screen and (max-width: 600px) {
@@ -148,11 +157,14 @@
        margin-left: auto;
    }
    span[id^='moreContent']{
+   	  display : none;
       position : absolute;
       border-radius: 10%;
-      background-color : #E6F5FA;
+      background-color : white;
       z-index : 10;
       text-align : center;
+      padding : 10px;
+      box-shadow : 0px 0px 15px 0px #dadada;
    }
    span[class^='moreDetail']{
       cursor : pointer;
@@ -166,6 +178,12 @@
    .modalUserProfile .img-circle{
       width: 100px;
       height: auto;
+   }
+   #commList{
+   	padding : 5px;
+   }
+   #commList:hover{
+   	background : #eaeaeac7;
    }
    #commListUser .img-circle{
       cursor : pointer;
@@ -187,6 +205,7 @@
       width: 10px;
       height: 10px;
       float: right;
+      margin : 0.5em 0.5em 0em 0.5em;
     }
    #commListInquire img{
       cursor: pointer;
@@ -194,6 +213,7 @@
       height: 15px;
       float: right;
       margin-right: .3em;
+      margin-top: .3em;
    }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
@@ -219,6 +239,9 @@
    span[id^='boardDetail']{
      cursor: pointer;
    }
+   .bSection{
+   	background : #f3f3f399;
+   }
    .aSection,
    .bSection #boardTitle,
    .bSection #boardContent{
@@ -234,9 +257,13 @@
      max-height: 80px;
      border: 0;
      outline: 0;
-     padding: 0;
+     padding: 5px;
      justify-content: center;
      resize: none;
+     border-radius : 5px;
+   }
+   #commContent:focus{
+   	background : #eaeaeac7;
    }
    .commProm{
      border-top: 1px solid #efefef;
@@ -409,7 +436,7 @@ $(function(){
 			            			tag += "<div id='more'><img class='moreImg' src='/images/board/more.png' style='cursor:pointer;width:20px;height:20px;margin-top:10px'></div>";
 			            		}
 			            			tag += "</div> </div>";
-			            			tag += "<div class='bSection'> <input type='hidden' id='boardNo' name='boardNo' value='"+boardNo+"'> <div id='boardTitle' class='bg-success'>"+this.boardTitle+"</div>"
+			            			tag += "<div class='bSection'> <input type='hidden' id='boardNo' name='boardNo' value='"+boardNo+"'> <div id='boardTitle'>"+this.boardTitle+"</div>"
 			            					+ "<div class='flexslider'> <ul class='slides'>";
 			            		if(this.boardImg!=null){ //이미지가 존재할 경우
 			            			if((this.boardImg).indexOf(',')==-1){ //하나일 경우
@@ -430,7 +457,7 @@ $(function(){
 			            			}
 			            			tag += "</div>";
 		            			}
-			            			tag += "<div id='boardContent' class='bg-warning'>"+this.boardContent+"</div></div><br>"
+			            			tag += "<div id='boardContent'>"+this.boardContent+"</div></div><br>"
 			            			+"<div class='cSection'> <div id='iconList'> <span id='likeIcon'>";
 			            		if(this.likeFlag==0){
 			            			tag += "<img class='icon' src='/images/board/like_empty.png'>";
@@ -501,8 +528,10 @@ $(function(){
    
       if( $(".moreDetail"+num).is(":visible")){
           $(".moreDetail"+num).slideUp();
+          $('#moreContent'+num).slideUp();
       }else{
           $(".moreDetail"+num).slideDown();
+          $("#moreContent"+num).slideDown();
       }
       
    })
@@ -674,6 +703,15 @@ $(function(){
 			   
 			   if($(this).val().indexOf('\n')!=-1){ //줄바꿈 감지 => autocomplete 과 submit 구별
 			   //comment submit
+			   
+			   //댓글길이 유효성체크
+			   var content = $(this).val();
+	             if(content.length>50){
+	                swal ( "댓글 입력 실패!" ,  "50자 이상 입력이 불가합니다." ,  "error" );
+	                $(this).val("");
+	                return;
+	             }
+			   //실제 submit 되는 부분
 			   var num = $(this).closest('article').attr("class");
 			   $.ajax({
 				   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
@@ -897,12 +935,12 @@ $(function(){
 		   url : "/friend/json/chkFriend/"+modalFriendId+"/0",
 		   success : function(data){
 			   if(data==1){ //친구요청이 이미 된 경우
-				   swal ( "친구추가 실패!" ,  "이미 상대방에게 친구요청이 갔습니다!" ,  "error" );
+				   swal ( "친구추가 실패!" ,  "이미 우리는 친구예요!" ,  "error" );
 			   }else{ //친구요청이 안 된 경우
 				   $.ajax({
 					   url : "/friend/json/addFriend/"+modalFriendId,
 					   success : function(){
-						   swal("친구추가 완료!", "상대방의 친구수락을 기다려보세요!", "success");
+						   swal("친구추가 완료!", "상대방을 친구로 추가했습니다!", "success");
 					   }
 				   }) //e.o.ajax
 			   }
@@ -1053,15 +1091,18 @@ $(function(){
       $('.inquireWrite').on("input", function() {
          var maxlength = $(this).attr("maxlength");
          var currentLength = $(this).val().length;
-         $('.textCounter2').text(currentLength - 1);
+         $('.textCounter2').text(currentLength);
       });
 
       $('.inquireTitle').on("input", function() {
-         var maxlength = $(this).attr("maxlength");
-         var currentLength = $(this).val().length;
-         $('.textCounter1').text(currentLength - 1);
-      });
-      
+    	  if($(this).val() == ''){
+    		  console.log('no value');
+    	  }
+    	  var maxlength = $(this).attr("maxlength");
+          var currentLength = $(this).val().length;
+          $('.textCounter1').text(currentLength);
+       });        
+               
       $('span[id^="inquireBoard"]').on('click', function() {
          var counter = $(this).attr('name');
          $('.inquireLink').val(counter);
@@ -1083,8 +1124,7 @@ $(function(){
 	<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 	<img class="gotoTop" src="/images/common/gotoTop.png">
 	
-	<!-- 메인툴바 -->
-	<%@ include file="/layout/toolbar.jsp"%>
+	<%@include file="/layout/new_toolbar.jsp"%>
 	
 	<!-- 페이징처리를 위함 -->
 	<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}">
@@ -1132,7 +1172,7 @@ $(function(){
 		<div class="bSection"> <!-- 제목+이미지+내용 -->
       		<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
             <!-- 제목 -->
-            <div id="boardTitle" class="bg-success">${board.boardTitle}</div>
+            <div id="boardTitle">${board.boardTitle}</div>
             <!-- 이미지 -->
             <div class="flexslider">
                <ul class="slides">
@@ -1155,7 +1195,7 @@ $(function(){
             	</div>
             </c:if>
             <!-- 내용 -->
-            <div id="boardContent" class="bg-warning">${board.boardContent}</div>
+            <div id="boardContent">${board.boardContent}</div>
 		</div><br>
 		
 		<div class="cSection"> <!--아이콘+좋아요+댓글 -->
@@ -1201,7 +1241,7 @@ $(function(){
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
-            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.." ${empty user.userId ? "readonly" : ""}></textarea></form>
+            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.. (50자 이하)" ${empty user.userId ? "readonly" : ""}></textarea></form>
             </section>
       </div>
    </article><br>
@@ -1287,6 +1327,27 @@ $(function(){
 	      </div>
 	   </div>
 	   <!-- 신고 Modal content 끝 -->   
+	   
+	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
 	   
 	<div style="display:none" id="boardLoading">
 		<img src="/images/board/loading3.gif" style="margin-left:40%;">

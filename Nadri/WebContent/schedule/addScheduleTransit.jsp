@@ -24,9 +24,10 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 구글맵을 사용하기 위한 CDN -->
@@ -34,7 +35,7 @@
 <!-- 구글맵 매서드가 담긴 주머니 -->
 <script src="/javascript/googlenavigation.js?ver=2"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="/css/materialize.css">
+<!-- <link rel="stylesheet" href="/css/materialize.css"> -->
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js?ver=1"></script> 
 
@@ -42,16 +43,26 @@
 <head>
 <title>Insert title here</title>
 <style>
+
+.maincon{
+	color : #404548;
+	z-index:15;
+}
+
+.title-section > div{
+	top : -15px;
+}
+
 #map { 
         height: 45%;
         width:100%; 
       } 
 
-	.container {
+	.container-transport {
     margin-right: 5%;
 	}
 
-	@font-face {
+	/* @font-face {
 		font-family: 'seoul';
 		src: url('/css/fonts/seoulhangangjangm.eot');
 		src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -67,7 +78,7 @@
 		
 		* {
 		font-family : 'seoul';
-		}
+		} */
 		
 		#scheduleTitle2 {
 		font-size : 60px;
@@ -173,7 +184,7 @@
 body, html {
   height: 100%;
   margin: 0;
-  padding: 1px;
+/*   padding: 1px; */
 }
 
 .tabcontent {
@@ -555,6 +566,9 @@ $(function(){
     
 </head>
 <body>
+
+<%@include file="/layout/new_toolbar.jsp"%>
+
 <div class="sidenav">
     <button class="tablink" onclick="openPage('Home', this, '#45ba31')" id="defaultOpen">장소바구니</button>
 	<button class="tablink" onclick="openPage('Contact', this, '#45ba31')">추천바구니</button>
@@ -670,7 +684,6 @@ $(function(){
 
 </div>
 	<form enctype="multipart/form-data" >
-      <%@ include file="/layout/toolbar.jsp"%>
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  
            <div id="scheduleTitle2">환영합니다 일정등록입니다!</div>
@@ -712,7 +725,7 @@ $(function(){
                 </div> 
             </div>
             
-     <div class="container">
+     <div class="container container-transport">
      	<hr/>	
 		
 		<div id="map"></div>
@@ -790,6 +803,6 @@ $(function(){
 				<hr />
 			<button class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5); float: right;" id="addSchedule" >등록</button>
 	</form>
-	
+
 </body>
 </html>

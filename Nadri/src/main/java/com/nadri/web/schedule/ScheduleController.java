@@ -76,11 +76,14 @@ public class ScheduleController {
 	      user = (User)session.getAttribute("user");
 	      	
 	      if(user==null) { //세션이 끊겼을 경우
+	    	 System.out.println("session is gone");
 	         return "redirect:/";
 	      }
 		
 		// 세션에서 userId 를 가져옵니다!
 		String userId=((User) session.getAttribute("user")).getUserId();
+		System.out.println("session id = "+userId);
+		
 		
 		// model에 담습니다!
 		model.addAttribute("cart", cartService.getSpotCartList(userId));

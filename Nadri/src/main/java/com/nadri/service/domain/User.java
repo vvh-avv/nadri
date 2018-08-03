@@ -101,6 +101,11 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+		if(phone != null && phone.length()!=0){
+			phone1 = phone.split("-")[0];
+			phone2 = phone.split("-")[1];
+			phone3 = phone.split("-")[2];
+		}
 	}
 
 	public String getPhone1() {

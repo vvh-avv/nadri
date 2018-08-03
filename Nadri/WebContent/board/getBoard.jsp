@@ -29,9 +29,12 @@
 <!-- common.js / common.css CDN -->
 <script src="/javascript/common.js"></script>
 <link rel="stylesheet" href="/css/common.css">
-<!-- toolbar.js / toolbar.css CDN -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
 <!-- board.js -->
 <script src="/javascript/board.js"></script>
 
@@ -62,12 +65,17 @@
 
 <style>
 	.getBody{
-	  margin-top : 10px;
-	  border-radius: 3px;
+	  margin-top : 30px;
+	  margin-bottom : 30px;
+	  padding : 20px;
+	  border-radius: 5px;
 	  border: 1px solid #e6e6e6;
+	  background : white;
+	  box-shadow : 1px 2px 10px 0px #80808040;
 	}
 	#boardTitle{
       height : auto;
+      text-align: center;
    }
    #boardImg{
       width : 500px;
@@ -122,11 +130,14 @@
        margin-left: auto;
    }
    #moreContent{
+      display : none;
       position : absolute;
       border-radius: 10%;
-      background-color : #E6F5FA;
+      background-color : white;
       z-index : 10;
       text-align : center;
+      padding : 10px;
+      box-shadow : 0px 0px 15px 0px #dadada;
    }
    .moreDetail{
       cursor : pointer;
@@ -134,7 +145,7 @@
    }
    /* 화면이 작아졌을 때 유저정보가 위로 가게끔 설정 */
    @media only screen and (max-width: 992px) {/*600px) {*/
-      .container{
+      .container-get-board{
          display: flex;
          flex-direction: column;
       }
@@ -149,6 +160,9 @@
       .b2Section{
       	order: 3;
       }
+   }
+   .bSection{
+   	background : #f3f3f399;
    }
    #userProfile .img-circle{	
       cursor : pointer;
@@ -186,6 +200,7 @@
       height: 15px;
       float: right;
       margin-right: .3em;
+      margin-top: .3em;
    }
 	.userModal{
   		padding-top : 10%; /*모달창 상하좌우 여백줘서 정가운데 뜨게끔 정렬*/
@@ -210,11 +225,18 @@
    }
    .aSection{
    	 padding: 16px;
-   	 height: 100px;
+   }
+   .b1Section{
+   	 margin-bottom : 2px;
    }
    .b1Section,
    .b2Section{
    	  padding: 16px;
+   	  border : 1px solid lightgrey;
+   	  
+   }
+   .b2Section{
+   	float:right;
    }
    #commContent{
      width: 100%;
@@ -222,9 +244,13 @@
      max-height: 80px;
      border: 0;
      outline: 0;
-     padding: 0;
+     padding: 5px;
      justify-content: center;
      resize: none;
+ 	 border-radius : 5px;
+   }
+   #commContent:focus{
+   	background : #eaeaeac7;
    }
    .commProm{
      border-top: 1px solid #efefef;
@@ -237,6 +263,12 @@
    .commTag{
    	 cursor: pointer;
    	 background-color: #dce6f8;
+   }
+   #commList{
+   	padding : 5px;
+   }
+   #commList:hover{
+   	background : #eaeaeac7;
    }
    
    /*  신고기능을 위한 admin css  */
@@ -328,8 +360,10 @@ $(function(){
    
       if( $(".moreDetail").is(":visible")){
           $(".moreDetail").slideUp();
+          $("#moreContent").slideUp();
       }else{
           $(".moreDetail").slideDown();
+          $("#moreContent").slideDown();
       }
    })
    //*더보기 메뉴
@@ -501,6 +535,15 @@ $(function(){
 			   
 			   if($(this).val().indexOf('\n')!=-1){ //줄바꿈 감지 => autocomplete 과 submit 구별
 				   //comment submit
+				   
+				   //댓글길이 유효성체크
+				   var content = $(this).val();
+		             if(content.length>50){
+		                swal ( "댓글 입력 실패!" ,  "50자 이상 입력이 불가합니다." ,  "error" );
+		                $(this).val("");
+		                return;
+		             }
+				   //실제 submit 되는 부분
 				   $.ajax({
 					   url : "/board/json/addComment/${sessionScope.user.userId}", //세션
 					   method : "POST",
@@ -899,13 +942,13 @@ $(function(){
       $('.inquireWrite').on("input", function() {
          var maxlength = $(this).attr("maxlength");
          var currentLength = $(this).val().length;
-         $('.textCounter2').text(currentLength - 1);
+         $('.textCounter2').text(currentLength);
       });
 
       $('.inquireTitle').on("input", function() {
          var maxlength = $(this).attr("maxlength");
          var currentLength = $(this).val().length;
-         $('.textCounter1').text(currentLength - 1);
+         $('.textCounter1').text(currentLength);
       });
       
       $('#inquireBoard').on('click', function() {
@@ -922,8 +965,8 @@ $(function(){
 </head>
 
 <body>
-	<!-- 메인 툴바 -->
-   <%@ include file="/layout/toolbar.jsp"%>
+
+<%@include file="/layout/new_toolbar.jsp"%>
 
 	<input type="hidden" id="boardCode" value="${board.boardCode}">
    <!-- 더보기 버튼 클릭시 노출될 항목 -->
@@ -939,12 +982,12 @@ $(function(){
       </c:if>
    </span>
                
-   <div class="container getBody">
+   <div class="container container-get-board getBody">
       <div class="col-md-8 aSection"> <!-- 제목+이미지+내용 -->
          <form id="firstForm" class="form-horizontal">
             <!-- 제목 -->
       		<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
-            <div id="boardTitle" class="bg-warning">${board.boardTitle}</div>
+            <div id="boardTitle">${board.boardTitle}</div>
             
             <!-- 이미지 -->
             <input type="hidden" id="boardImg" name="boardImg" value="${board.boardImg}">
@@ -966,7 +1009,7 @@ $(function(){
             </c:if>
             
             <!-- 내용 -->
-            <div id="boardContent" class="bg-warning">${board.boardContent}</div>
+            <div id="boardContent">${board.boardContent}</div>
          </form>
       </div>
       
@@ -1037,7 +1080,7 @@ $(function(){
             
             <!-- 댓글입력폼 -->
             <section class="commProm">
-            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.." ${empty user.userId ? "readonly" : ""}></textarea></form>
+            	<form><textarea id="commContent" name="commContent" placeholder="댓글을 입력해주세요.. (50자 이하)" ${empty user.userId ? "readonly" : ""}></textarea></form>
             </section>
       </div>
    </div><!-- e.o.container -->
@@ -1122,6 +1165,27 @@ $(function(){
 
       </div>
    </div>
+   
+   	<!-- HJA 일정등록 transportation navigation -->
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start --> 
+            <div class="modal" id="transportationModal" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이는 뭐타고 가시나요?</h4> 
+                        </div>
+					<div class="modal-body">
+							<button type="button" class="btn btn-primary" id="car">자동차</button>
+							<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+							<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
    
 </body>
 </html>

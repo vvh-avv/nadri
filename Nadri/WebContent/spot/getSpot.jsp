@@ -13,17 +13,19 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)"
+	href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js"></script> 
 <!-- sweetAlert CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- materialize 넣는 css -->
-<script src="/javascript/materialize.js"></script>
+<!-- <script src="/javascript/materialize.js"></script>
 <link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 <html>
 <style>
 html, body {
@@ -49,7 +51,7 @@ html, body {
    }	
    
 /*모달 위치 비교 css */
-.modal {
+/* .modal {
 	top : 20%;
 } 
 
@@ -59,7 +61,7 @@ html, body {
 
 .materialboxed {
 	text-align : center;
-}
+} */
 </style>
 
 
@@ -143,7 +145,7 @@ function addCartSpot(){
         });
         
         var nowposition = new google.maps.LatLng(${spot.spotY}, ${spot.spotX}),    
-        message = '<div style="font-family : seoul"><div>여기에요!</div></div>'
+        message = '<div style="font-family : seoul"><div>여기예요!</div></div>'
         
     	displayMarker(nowposition, message);
       }
@@ -179,7 +181,7 @@ function addCartSpot(){
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 
-	<%@ include file="/layout/toolbar.jsp"%>
+	<%@include file="/layout/new_toolbar.jsp"%>
 			<%-- Content Wrapper. Contains page content --%>
 			<div class="container">
 				<%-- Content Header (Page header) --%>

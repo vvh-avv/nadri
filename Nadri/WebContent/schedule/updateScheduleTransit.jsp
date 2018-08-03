@@ -24,9 +24,10 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 구글맵을 사용하기 위한 CDN -->
@@ -34,7 +35,7 @@
 <!-- 구글맵 매서드가 담긴 주머니 -->
 <script src="/javascript/googlenavigation.js?ver=3"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="/css/materialize.css">
+<!-- <link rel="stylesheet" href="/css/materialize.css"> -->
 <!-- juanMap.js CDN --> 
 <script src="/javascript/juanMap.js?ver=1"></script> 
 <html>
@@ -46,7 +47,7 @@
         width:100%; 
       } 
 
-	.container {
+	.container-transitU {
     margin-right: 5%;
 	}
 
@@ -682,7 +683,7 @@ $(function(){
 
 </div>
 	<form enctype="multipart/form-data" >
-      <%@ include file="/layout/toolbar.jsp"%>
+      <%@include file="/layout/new_toolbar.jsp"%>
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  
            <div id="scheduleTitle2">일정수정페이지 입니다!</div>
@@ -724,7 +725,7 @@ $(function(){
                 </div> 
             </div>
             
-     <div class="container">
+     <div class="container container-transitU">
      	<hr/>	
 		
 		<div id="map"></div>

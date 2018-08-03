@@ -1,49 +1,31 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
+<%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-<!DOCTYPE html>
-
-<html lang="ko">
-	
+<html>
 <head>
-	<meta charset="EUC-KR">
-	
-	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<!-- jQuery CDN -->
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	
-	<!-- Bootstrap CDN -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-	
-	<!-- common.js / common.css CDN -->
-	<script src="/javascript/common.js"></script>
-	<link rel="stylesheet" href="/css/common.css">
-	
-	<!-- Bootstrap Dropdown Hover CSS -->
-   <link href="/css/animate.min.css" rel="stylesheet">
-   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
-   
-    <!-- Bootstrap Dropdown Hover JS -->
-   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-   
-   <script src="/javascript/toolbar.js"></script>
-   <link rel="stylesheet" href="/css/toolbar.css">
-	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
+<meta charset="EUC-KR">
 
-     </style>
-    
-     <!--  ///////////////////////// JavaScript ////////////////////////// -->
-	<script type="text/javascript">
+<!-- 참조 : http://getbootstrap.com/css/   참조 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!--  Bootstrap, jQuery CDN  -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)"
+	href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
+<!--  ///////////////////////// JavaScript ////////////////////////// -->
+<script type="text/javascript">
 		
 		//============= 회원정보수정 Event  처리 =============	
 		 $(function() {
@@ -53,121 +35,206 @@
 				});
 		});
 
-	</script>	
+</script>
+
+<style>
+.user-profile-section {
+	padding-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	background: white;
+	border-radius: 10px;
+	box-shadow: 1px 2px 10px 0px #c7c7c7;
+}
+
+.user-detail-section {
+	background: white;
+	margin: 15px 0px 15px 0px;
+	border-radius: 10px;
+	box-shadow: 1px 2px 10px 0px #c7c7c7;
+}
+
+.user-detail-section > div{
+	margin : 10px;
+}
+
+.page-header{
+	text-align: center;
+	margin : 0px 0px 20px 0px;
+}
+
+@media only screen and (max-width : 600px) {
+	.user-profile-section {
+		margin: 0px;
+	}
+}
+</style>
+
 </head>
 
 <body>
 
-	<!-- ToolBar Start /////////////////////////////////////-->
-	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
-	<%@ include file="/layout/toolbar.jsp"%>
-   	<!-- ToolBar End /////////////////////////////////////-->
+	<%@include file="/layout/new_toolbar.jsp"%>
 
-  	<div class="col-xs-12 col-md-2" style= margin-left:3%>
-	  <img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle"><br/><br/>
-	  <h4><a href="/user/listUser">마이 페이지</a></h4><br/>
-	  <a href="/user/getUser">내 정보 보기</a><br/><br/>
-	  <a href="/user/updateUser">내 정보 수정</a><br/><br/>
-	  <a href="/friend/listFriend">친구 목록</a><br/><br/>
-	  <a href="/board/getMyBoardList">작성한 글</a><br/><br/>
-	  <a href="/schedule/getMyScheduleList">내 일정</a><br/><br/>
-	  <a href="/cart/getMyCartList">장소 바구니</a><br/><br/>
-	  
-	  	<br/><br/><br/><br/><br/><br/><br/><br/>
-  		<a href="/user/logout">로그아웃</a><br/><br/>
-	
-	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-3">
+				<div class="col-md-12 user-profile-section">
+					<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
+						<img src="/images/profile/${user.profileImg}" width="133"
+							height="133" class="img-circle">
+						<br />
+						<br />
+					</c:if>
+					<c:if test="${ empty user.profileImg} ">
+						<img src="/images/profile/default.png" width="133" height="133"
+							class="img-circle">
+					</c:if>
+					<h4>
+						<a href="/user/listUser">마이 페이지</a>
+					</h4>
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
+						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
+						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
+						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
+						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
+						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> <a
+						href="/user/logout">로그아웃</a><br /> <br />
+				</div>
+			</div>
 
+			<div class="col-xs-12 col-md-9">
 
+				<div class="col-md-12 user-detail-section">
+					<div class="row">
 
-	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container" >
-	<div class="col-xs-12 col-md-9">
-		<div class="row">
-	
-		<div class="page-header" >
-	       <h3 class=" text-info">회원정보조회</h3>
-	       <h5 class="text-muted">개인 정보를 <strong class="text-danger">최신상태로 관리</strong>해 주세요</h5>
-	    </div>
-	
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>프로필 사진</strong></div>
-				<%--  <div class="col-xs-8 col-md-4">${user.profileImg}</div>  --%>
-				<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
-					<img src = "/images/profile/${user.profileImg}" width="133" height="133" class="img-circle">
-				</c:if>
-		</div>
+						<div class="page-header">
+							<h3 class=" text-info">회원정보조회</h3>
+							<h5 class="text-muted">
+								개인 정보를 <strong class="text-danger">최신상태로 관리</strong>해 주세요
+							</h5>
+						</div>
 
-		<hr/>
-	
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>이 름</strong></div>
-			<div class="col-xs-8 col-md-4">${user.userName}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>아 이 디</strong></div>
-			<div class="col-xs-8 col-md-4">${user.userId}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2">
-	  			<strong>이 메 일</strong>
-	  		</div>
-			<div class="col-xs-8 col-md-6">
-				${user.email}    
+						<div class="row">
+							<div class="col-xs-4 col-md-2 ">
+								<strong>프로필 사진</strong>
+							</div>
+							<%--  <div class="col-xs-8 col-md-4">${user.profileImg}</div>  --%>
+							<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
+								<img src="/images/profile/${user.profileImg}" width="133"
+									height="133" class="img-circle">
+							</c:if>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2 ">
+								<strong>이 름</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">${user.userName}</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2">
+								<strong>아 이 디</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">${user.userId}</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2">
+								<strong>이 메 일</strong>
+							</div>
+							<div class="col-xs-8 col-md-6">${user.email}</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2">
+								<strong>성 별</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">
+								<c:if test="${ ! empty user.sex && user.sex == 0}">남성</c:if>
+								<c:if test="${ ! empty user.sex && user.sex == 1}">여성</c:if>
+							</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2 ">
+								<strong>휴대전화번호</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">${ !empty user.phone ? user.phone : ''}
+							</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2 ">
+								<strong>나이</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">${!empty user.age ? user.age : ''}
+							</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-4 col-md-2 ">
+								<strong>자기소개</strong>
+							</div>
+							<div class="col-xs-8 col-md-4">${ !empty user.introduce ? user.introduce : ''}
+							</div>
+						</div>
+
+						<hr />
+
+						<div class="row">
+							<div class="col-xs-12 col-md-12 text-center ">
+								<button type="button" class="btn btn-primary">회원정보수정</button>
+							</div>
+						</div>
+
+						<br />
+
+					</div>
+				</div>
+
 			</div>
 		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>성 별</strong></div>
-	  		<div class="col-xs-8 col-md-4">
-		  		<c:if test="${ ! empty user.sex && user.sex == 0}">남성</c:if>
-		  		<c:if test="${ ! empty user.sex && user.sex == 1}">여성</c:if>
+		<!-- HJA 일정등록 transportation navigation -->
+		<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
+		<div class="modal" id="transportationModal" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
+					</div>
+					<div class="modal-body">
+						<button type="button" class="btn btn-primary" id="car">자동차</button>
+						<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
+						<button type="button" class="btn btn-primary" id="transit">대중교통</button>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="waves-effect waves-light btn"
+							id="modalinsert">입력!</button>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>휴대전화번호</strong></div>
-			<div class="col-xs-8 col-md-4">${ !empty user.phone ? user.phone : ''}	</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>나이</strong></div>
-			<div class="col-xs-8 col-md-4">${!empty user.age ? user.age : ''}	</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>자기소개</strong></div>
-			<div class="col-xs-8 col-md-4">${ !empty user.introduce ? user.introduce : ''}	</div>
-		</div>
-		
-		<hr/>
-						
-		<div class="row">
-	  		<div class="col-xs-12 col-md-12 text-center ">
-	  			<button type="button" class="btn btn-primary">회원정보수정</button>
-	  		</div>
-		</div>
-		
-		<br/>
-		
- 	</div>
- 	</div>
- 	</div>
-
-
 </body>
 </html>

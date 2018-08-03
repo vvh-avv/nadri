@@ -25,17 +25,18 @@
 <script src="/javascript/juanMap.js"></script>
 <!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! -->
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-<!-- 툴바 넣는 CDN 입니다 -->
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- materialize 넣는 css -->
-<script src="/javascript/materialize.js"></script>
+<!-- <script src="/javascript/materialize.js"></script>
 <link rel="stylesheet" href="/css/materialize.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 
 <html>
 <style>
-@font-face {
+/* @font-face {
 	font-family: 'seoul';
 	src: url('/css/fonts/seoulhangangjangm.eot');
 	src: url('/css/fonts/seoulhangangjangm.eot?#iefix')
@@ -47,13 +48,61 @@
 		format('svg');
 	font-weight: normal;
 	font-style: normal;
-}
+} */
 
 
 body {
 	height: 100%;
 	margin: 0px;
-	font-family : seoul;
+/* 	font-family : seoul; */
+}
+
+.spot-top-box{
+	width : 65%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+@media only screen and (max-width : 600px){
+	.spot-top-box{
+		width : 100%;
+		margin-left:auto;
+		margin-right:auto;
+	}
+}
+
+.nav-wrapper{
+	border-radius: 0px 0px 60px 60px;
+	background: #6d91af94;
+	margin: 0px 15px 15px 15px;
+	box-shadow : 1px 2px 10px 0px #a7a7a7;
+}
+
+#nav-mobile{
+	list-style: none;
+	display : flex;
+	margin : 0px;
+	justify-content: space-evenly;
+	padding : 15px;
+	color : white;
+}
+
+#nav-mobile:hover{
+	z-index : 99;
+}
+
+li > span{
+	transition : all 1s;
+}
+
+li > span:hover{
+	cursor : pointer;
+	font-weight : 900;
+	font-size:20px;
+}
+
+.waves-light:hover{
+	background : white;
 }
 
 #map {
@@ -77,13 +126,14 @@ body {
 
 /* jumbotron 이미지를 넣는 부분 입니다!*/
 	.jumbotron {
-	   margin-bottom: 0px;
+	   margin-bottom: 15px;
 	   background-image: url(/images/spot/422.jpg);
 	   background-position: 0% 25%;
 	   background-size: cover;
 	   background-repeat: no-repeat;
 	   color: #393535;
 	   padding-left : 10%;
+	   box-shadow : 1px 1px 10px 0px #8080807d;
 	}
 
 /*spot에 패딩을 넣는 장소 입니다!!*/
@@ -725,9 +775,10 @@ $(document).ready(function(){
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 <img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 <body>
-	<%@ include file="/layout/toolbar.jsp"%>
 	
-	<nav>
+<%@include file="/layout/new_toolbar.jsp"%>
+	
+	<nav class="spot-top-box">
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
 	        <li><span id="park">공원</span></li>
@@ -747,25 +798,25 @@ $(document).ready(function(){
 			<div class="jumbotron">
 				<h1>한강</h1>
 					<p>한강의 나들이를 즐겨보세요!</p>
-						<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(1)">광나루</a><span>
-					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(2)">잠실</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(3)">뚝섬</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(4)">잠원</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(5)">반포</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(6)">이촌</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(7)">여의도</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(8)">망원</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(9)">난지</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(10)">강서</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(11)">양화</a><span>
+						<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(1)">광나루</a></span>
+					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(2)">잠실</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(3)">뚝섬</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(4)">잠원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(5)">반포</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(6)">이촌</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(7)">여의도</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(8)">망원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(9)">난지</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(10)">강서</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(11)">양화</a></span>
 	  					<p></p>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(4)">전체</a><span>
-					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(41)">한강공원</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(42)">주차장</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(43)">안내소</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(44)">자전거</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(45)">편의점</a><span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(46)">배달존</a><span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(4)">전체</a></span>
+					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(41)">한강공원</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(42)">주차장</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(43)">안내소</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(44)">자전거</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(45)">편의점</a></span>
+	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(46)">배달존</a></span>
 					 	
 			</div>
 	
@@ -773,6 +824,7 @@ $(document).ready(function(){
 				</div>
 				<br />  
 			</div>	 
+			
 </body>
 
 <script>

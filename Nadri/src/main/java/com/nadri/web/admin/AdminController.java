@@ -1,10 +1,6 @@
 package com.nadri.web.admin;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -121,6 +117,8 @@ public class AdminController {
 		Map<String , Object> map=adminService.getInquireList(search);
 		List<Inquire> list = new ArrayList<Inquire>();
 		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		list = (List<Inquire>) map.get("list");
+		
 		System.out.println(resultPage);
 		
 		// Model °ú View ¿¬°á

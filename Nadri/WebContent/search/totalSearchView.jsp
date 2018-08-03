@@ -22,180 +22,221 @@
 <title>너나들이 통합검색결과</title>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
-<script src="/javascript/toolbar.js"></script>
-<link rel="stylesheet" href="/css/toolbar.css">
-
 <!--  slick  -->
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<style>
-	#map {
-		height: 500px;  /* The height is 400 pixels */
-		width: 100%;  /* The width is the width of the web page */
-    }
-    .place-info{
-    	margin-top:1vh;
-    	width:100%;
-    	hegiht:200px;
-    }
-    .contents{
-    	margin: 1vh 0vh;
-    }
-    .insta-box{
-    	margin-bottom:1vh;
-    }
-    
-    .section-title{
-    	margin-top:5vh;
-    }
+<link rel="stylesheet" type="text/css"
+	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<script type="text/javascript"
+	src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-</style>
+<link rel="stylesheet" type="text/css"
+	href="/css/fonts/kirang/fonts.css" />
+<link rel="stylesheet" type="text/css" href="/css/fonts/JuA/fonts.css" />
+<link rel="stylesheet" type="text/css"
+	href="/css/fonts/HanNa11/fonts.css" />
+
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)"
+	href="/css/indexRealSmall.css" />
+<link rel="stylesheet" type="text/css" href="/css/totalSearchView.css" />
+<!-- <script src="/javascript/indexReal.js"></script> -->
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
 </head>
 <body>
-	<%@ include file="/layout/toolbar.jsp"%>
-	<div class="container">
+
+<%@include file="/layout/new_toolbar.jsp"%>
+
+	<div class="container search-result-container">
 		<div class="content-box">
-		<div><h2><span style="font-weight:700">${searchKeyword}</span>의 검색결과입니다.</h2></div>
-			<div class="row contents">
-				<div class="col-md-12">
-					<div id="map"></div>
+			<div class="search-title-wrapper">
+				<h2>
+					' <span style="font-weight: 700">${searchKeyword}</span> '의
+					검색결과입니다.
+				</h2>
+				<div class="option-on-off on">검색옵션켜기</div>
+				<div class="option-on-off off">검색옵션끄기</div>
+				<div class="open-searcher">
+					<label class="switch"> <input type="checkbox"> <span
+						class="slider round"></span>
+					</label>
 				</div>
 			</div>
-			<div class="row place-info contents">
-				<div class="col-md-6 col-xs-12">
-					<h3 class="placeTitle"></h3>
-					<div class="placeContent"></div>
+			<div class="map-wrapper">
+				<div class="row search-results">
+					<div class="col-md-12">
+						<div id="map"></div>
+						<div class="map-button"></div>
+					</div>
 				</div>
-				<div class="col-md-6 col-xs-12">
-					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="placeImg" style="background-color:black; width:100%; height:300px;">
+				<div class="row place-info search-results">
+					<div class="col-md-6 col-xs-12">
+						<div class="map-detail-wrapper">
+							<h3 class="placeTitle"></h3>
+							<div class="placeContent"></div>
+						</div>
+					</div>
+					<div class="col-md-6 col-xs-12">
+						<img
+							src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg"
+							class="placeImg"
+							style="background-color: black; width: 100%; height: 300px;">
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="contents">
-				
-			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
-				<h3 style="display:inline-block; font-weight:700;">게시글</h3><div>더보기 >></div>
-			</div>
-			<hr/>
-			<c:if test="${!empty list_board}">
-			<c:set var="i" value="0"/>
-			<c:forEach var="board" items="${list_board}" end="2">
-			<c:set var="i" value="${i+1}"/>
-				<div class="col-md-4 col-xs-6 board-box">
-					<img src="/images/board/posts/${board.board_img}" class="boardImg" style="width:100%; height:200px;">
-					<div class="boardBox">
-						<h3>${board.board_title}</h3>
-						${board.board_content}
+		<div class="search-results">
+			<div class="">
+				<div class="col-md-12 col-xs-12 section-title"
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<h3 style="display: inline-block; font-weight: 700;">게시글</h3>
+					<div class="board-more">더보기 >></div>
+				</div>
+				<hr />
+				<c:if test="${!empty list_board}">
+					<c:set var="i" value="0" />
+					<c:forEach var="board" items="${list_board}" end="2">
+						<c:set var="i" value="${i+1}" />
+						<div class="col-md-4 col-xs-6 board-box">
+							<img src="/images/board/posts/${board.boardImg}"
+								class="boardImg" style="width: 100%; height: 200px;">
+							<div class="boardBox">
+								<h3>${board.boardTitle}</h3>
+								${board.boardContent}
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+				<c:if test="${empty list_board}">
+					<div class="col-md-12 col-xs-12 board-box no-boards">
+						<div>검색된 게시물이 없습니다.</div>
 					</div>
-				</div>
-			</c:forEach>
-			</c:if>
-			<c:if test="${empty list_board}">
-				<div class="col-md-12 col-xs-12 board-box">
-					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="boardImg" style="width:100%; height:200px; opacity:0.5;">
-				</div>
-			</c:if>
-			
-			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
-				<h3 style="display:inline-block; font-weight:700;">일정</h3><div>더보기 >></div>
+				</c:if>
 			</div>
-			<hr/>
-			
-			<c:if test="${!empty list_schedule}">
-			<c:set var="i" value="0"/>
-			<c:forEach var="schedule" items="${list_schedule}" end="3">
-			<c:set var="i" value="${i+1}"/>
-				<div class="col-md-6 col-xs-12 board-box">
-					<img src="/images/schedule/${schedule.img}" class="boardImg" style="width:100%; height:200px;">
-					<div class="boardBox">
-						<h3>${schedule.title}</h3>
-						${schedule.content}
-					</div>
-				</div>
-			</c:forEach>
-			</c:if>
-			<c:if test="${empty list_schedule}">
-				<div class="col-md-12 col-xs-12 board-box">
-					<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="boardImg" style="width:100%; height:200px; opacity:0.5;">
-				</div>
-			</c:if>
 
-			
-			<div class="col-md-12 col-xs-12 section-title" style="display:flex; justify-content:space-between; align-items:center;">
-				<h3 style="display:inline-block; font-weight:700;">인스타그램</h3><div>더보기 >></div>
+			<div>
+				<div class="col-md-12 col-xs-12 section-title"
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<h3 style="display: inline-block; font-weight: 700;">일정</h3>
+					<div>더보기 >></div>
+				</div>
+				<hr />
+
+				<c:if test="${!empty list_schedule}">
+					<c:set var="i" value="0" />
+					<c:forEach var="schedule" items="${list_schedule}" end="3">
+						<c:set var="i" value="${i+1}" />
+						<div class="col-md-6 col-xs-12 board-box">
+							<img src="/images/schedule/${schedule.img}" class="boardImg"
+								style="width: 100%; height: 200px;">
+							<div class="boardBox">
+								<h3>${schedule.title}</h3>
+								${schedule.content}
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+				<c:if test="${empty list_schedule}">
+					<div class="col-md-12 col-xs-12 board-box">
+						<img
+							src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg"
+							class="boardImg"
+							style="width: 100%; height: 200px; opacity: 0.5;">
+					</div>
+				</c:if>
 			</div>
-			<hr/>
-			
-			<c:set var="i" value="0"/>
-			<c:forEach var="insta" items="${insta_list}">
-			<c:set var="i" value="${i+1}"/>
-			<div class="col-md-3 col-xs-4 insta-box">
-				<a href="https://www.instagram.com/p/${insta.shortLink}" target="_blank"><img src="${insta.img}" class="boardImg" style="width:100%; height:250px;"></a>
+
+			<div>
+				<div class="col-md-12 col-xs-12 section-title"
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<h3 style="display: inline-block; font-weight: 700;">인스타그램</h3>
+					<div>더보기 >></div>
+				</div>
+				<hr />
+
+				<c:set var="i" value="0" />
+				<c:forEach var="insta" items="${insta_list}">
+					<c:set var="i" value="${i+1}" />
+					<div class="col-md-3 col-xs-4 insta-box">
+						<a href="https://www.instagram.com/p/${insta.shortLink}"
+							target="_blank"><img src="${insta.img}" class="boardImg"
+							style="width: 100%;"></a>
+					</div>
+				</c:forEach>
 			</div>
-			</c:forEach>
+
 		</div>
 	</div>
+
 	<script>
 		// Initialize and add the map
 		function initMap() {
 			var locations;
-			var size = ${spot_location.size()};
-			if(size==0){
-				locations = ['검색결과가 없습니다.',37.581095,126.977156];
+			var size = ${spot_location.size()}
+			;
+			if (size == 0) {
+				locations = [ '검색결과가 없습니다.', 37.581095, 126.977156 ];
 				var map = new google.maps.Map(document.getElementById('map'), {
-				      zoom: 15,
-				      center: new google.maps.LatLng(37.581095,126.977156),
-				      mapTypeId: google.maps.MapTypeId.ROADMAP
-				      
-				    });
-			}else{
+					zoom : 15,
+					center : new google.maps.LatLng(37.581095, 126.977156),
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+
+				});
+			} else {
 				locations = ${spot_location};
 				var map = new google.maps.Map(document.getElementById('map'), {
-				      zoom: 10,
-				      center: new google.maps.LatLng(locations[0][1], locations[0][2]),
-				      mapTypeId: google.maps.MapTypeId.ROADMAP
-				      
-				    });
+					zoom : 15,
+					center : new google.maps.LatLng(locations[0][2],
+							locations[0][3]),
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+
+				});
 			}
 
+			var infowindow = new google.maps.InfoWindow();
 
-		    var infowindow = new google.maps.InfoWindow();
+			var marker, i;
 
-		    var marker, i;
-		    
-		    if(size==0){
-		    	console.log('검색결과가 없습니다.');
-		    	$('.placeTitle').text("검색결과가 없습니다 ㅠㅠ");
-		        $('.placeContent').text("미아내오 준비하께오ㅜㅜㅜㅜㅠㅠㅠㅠㅠ");
-		        $('.placeImg').attr("src","https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
-		    }else{
-		    	for (i = 0; i < locations.length; i++) {  
-				      marker = new google.maps.Marker({
-				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-				        map: map
-				      });
-	
-				      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				        return function() {
-				          infowindow.setContent(locations[i][0]);
-				          infowindow.open(map, marker);
-				          $('.placeTitle').text(locations[i][0]);
-				          $('.placeContent').text(locations[i][3]);
-				          $('.placeImg').attr("src","/images/spot/"+locations[i][4]);
-				        }
-				      })(marker, i));
-				    }
-				    
-			    $('.placeTitle').text(locations[0][0]);
-		        $('.placeContent').text("information of selected place");
-		        $('.placeImg').attr("src","/images/spot/"+locations[0][4]);
-		    }
+			if (size == 0) {
+				console.log('검색결과가 없습니다.');
+				$('.placeTitle').text("검색결과가 없습니다 ㅠㅠ");
+				$('.placeContent').text("미아내오 준비하께오ㅜㅜㅜㅜㅠㅠㅠㅠㅠ");
+				$('.placeImg')
+						.attr("src",
+								"https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
+			} else {
+				for (i = 0; i < locations.length; i++) {
+					marker = new google.maps.Marker({
+						position : new google.maps.LatLng(locations[i][2],
+								locations[i][3]),
+						icon : locations[i][0],
+						map : map
+					});
 
-		    
+					google.maps.event.addListener(marker, 'click', (function(
+							marker, i) {
+						return function() {
+							infowindow.setContent(locations[i][1]);
+							infowindow.open(map, marker);
+							$('.placeTitle').text(locations[i][1]);
+							$('.placeContent').text(locations[i][4]);
+							$('.placeImg').attr("src",
+									"/images/spot/" + locations[i][5]);
+							$('.placeTitle').attr('name', locations[i][6]);
+						}
+					})(marker, i));
+				}
+
+				$('.placeTitle').text(locations[0][1]);
+				$('.placeTitle').attr('name', locations[0][6]);
+				$('.placeContent').text("information of selected place");
+				$('.placeImg').attr("src", "/images/spot/" + locations[0][5]);
+			}
+
 		}
-    </script>
+	</script>
 	<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap">
-    </script>
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap">
+		
+	</script>
 </body>
 </html>
