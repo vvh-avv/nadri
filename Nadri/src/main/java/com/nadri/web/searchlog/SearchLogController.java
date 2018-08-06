@@ -88,50 +88,55 @@ public class SearchLogController {
 	    int responseCode = con.getResponseCode();
 	    System.out.println("\nSending 'GET' request to URL : " + URL);
 	    System.out.println("Response Code : " + responseCode+" "+returnMsg);
-	    BufferedReader in = new BufferedReader(
-	            new InputStreamReader(con.getInputStream()));
-	    String inputLine;
-	    StringBuffer response = new StringBuffer();
-	    while ((inputLine = in.readLine()) != null) {
-	    	response.append(inputLine);
-	    }
-	    in.close();
-	    
-	    JSONObject json = new JSONObject(response.toString());
-	    		
-		JSONObject counter = (JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag")).get("edge_hashtag_to_media");
-		
-		int count = counter.getInt("count");
-		
-		JSONArray graphql;
-		
-		if(count == 0) {
-			graphql = (JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag"))
-					.get("edge_hashtag_to_top_posts")).get("edges");
-		}else {
-			graphql = (JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag"))
-					.get("edge_hashtag_to_media")).get("edges");
+	    if(responseCode == 200) {
+	    	BufferedReader in = new BufferedReader(
+		            new InputStreamReader(con.getInputStream()));
+		    String inputLine;
+		    StringBuffer response = new StringBuffer();
+		    while ((inputLine = in.readLine()) != null) {
+		    	response.append(inputLine);
+		    }
+		    in.close();
+		    
+		    JSONObject json = new JSONObject(response.toString());
+		    		
+			JSONObject counter = (JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag")).get("edge_hashtag_to_media");
 			
-		}
-		
-		for(int i = 0; i < 12; i++) {
-			Insta insta = new Insta();
-			JSONObject node = (JSONObject) graphql.getJSONObject(i).get("node");
-			JSONObject likeCount = node.getJSONObject("edge_liked_by");
-			insta.setImg((node.getString("thumbnail_src")));
-			insta.setShortLink(node.getString("shortcode"));
-			int likeCounter = likeCount.getInt("count");
-			insta.setLikes(Integer.toString(likeCounter));
-			int xi = node.getInt("taken_at_timestamp");
-			String x = Integer.toString(xi);
-			long foo = Long.parseLong(x)*1000;
-			Date date = new Date(foo);
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			insta.setDate(formatter.format(date));
-			insta_list.add(insta);
-		}
-		
-		System.out.println("인스타 리스트의 결과 : "+insta_list);
+			int count = counter.getInt("count");
+			
+			JSONArray graphql;
+			
+			if(count == 0) {
+				graphql = (JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag"))
+						.get("edge_hashtag_to_top_posts")).get("edges");
+			}else {
+				graphql = (JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) (json.get("graphql"))).get("hashtag"))
+						.get("edge_hashtag_to_media")).get("edges");
+				
+			}
+			
+			for(int i = 0; i < 12; i++) {
+				Insta insta = new Insta();
+				JSONObject node = (JSONObject) graphql.getJSONObject(i).get("node");
+				JSONObject likeCount = node.getJSONObject("edge_liked_by");
+				insta.setImg((node.getString("thumbnail_src")));
+				insta.setShortLink(node.getString("shortcode"));
+				int likeCounter = likeCount.getInt("count");
+				insta.setLikes(Integer.toString(likeCounter));
+				int xi = node.getInt("taken_at_timestamp");
+				String x = Integer.toString(xi);
+				long foo = Long.parseLong(x)*1000;
+				Date date = new Date(foo);
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				insta.setDate(formatter.format(date));
+				insta_list.add(insta);
+			}
+			
+			System.out.println("인스타 리스트의 결과 : "+insta_list);
+	    }else {
+	    	
+	    }
+	    
 		
 		// board & spot result
 		
@@ -189,6 +194,7 @@ public class SearchLogController {
 		
 		System.out.println("가져온 스팟 리스트의 결과 : "+array);
 		System.out.println("가져온 보드의 결과 : "+list_board);
+		System.out.println("가져온 일정의 결과 : "+list_schedule);
 		
 		model.addAttribute("insta_list", insta_list);
 		model.addAttribute("list_board", list_board);

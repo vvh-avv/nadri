@@ -104,6 +104,8 @@ $(function(){
 
  $("#updateSchedule").on("click", function() {
 	 
+	 	console.log('update!');
+	 
 		var scheduleTitle =$("#scheduleTitle").val();
 		var scheduleDate=$("#scheduleDate").val();
 		var scheduleDetail=$("#scheduleDetail").val();
@@ -121,7 +123,7 @@ $(function(){
 			return;
 		}
 	 
-		$("form").attr("method", "POST").attr("action","/schedule/updateSchedule").submit();
+		$("form[name='updateForm']").attr("method", "POST").attr("action","/schedule/updateSchedule").submit();
 		swal("수정에 성공했습니다!", "마이페이지에서 확인해주세요", "success");
 	});
  

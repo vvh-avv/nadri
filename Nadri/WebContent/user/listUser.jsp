@@ -149,9 +149,6 @@
 						<img src="/images/profile/default.png" width="133" height="133"
 							class="img-circle">
 					</c:if>
-					<h4>
-						<a href="/user/listUser">마이 페이지</a>
-					</h4>
 					<br /> <a href="/user/getUser">내 정보 보기</a><br />
 					<br /> <a href="/user/updateUser">내 정보 수정</a><br />
 					<br /> <a href="/friend/listFriend">친구 목록</a><br />
