@@ -694,8 +694,8 @@ $(function(){
 	</div>
 
 </div>
-	<form enctype="multipart/form-data" >
-      <%@ include file="/layout/toolbar.jsp"%>
+    <%@ include file="/layout/new_toolbar.jsp"%>
+	<form enctype="multipart/form-data" name="updateForm">
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  
            <div id="scheduleTitle2">일정수정페이지 입니다!</div>
@@ -805,6 +805,7 @@ $(function(){
 			
 				<hr />
 			<button class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5); float: right;" id="updateSchedule" >수정</button>
+	</div>
 	</form>
 	
 </body>

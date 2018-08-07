@@ -91,7 +91,7 @@ public class AdminController {
 				}else {
 					System.out.println("1개의 정상적 이미지만 가진 착한 게시물");
 				}
-								
+			
 			}
 		}
 	    

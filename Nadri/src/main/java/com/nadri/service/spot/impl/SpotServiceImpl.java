@@ -66,6 +66,12 @@ public class SpotServiceImpl implements SpotService{
 		return spotDao.searchAround(spot);
 	}
 	
+	// 5-1. 주변 식당 정보를 가져오는 메소드
+	@Override
+	public List<Spot> searchAroundRestaurant(Spot spot) throws Exception {
+		return spotDao.searchAroundRestaurant(spot);
+	}
+	
 	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 	@Override
 	   public List<Spot> getSpotList() throws Exception {

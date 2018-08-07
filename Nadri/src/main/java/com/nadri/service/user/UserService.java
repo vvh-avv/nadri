@@ -27,6 +27,8 @@ public interface UserService {
 	//회원탈퇴
 	public void quitUser(String userId) throws Exception;
 	
+	public void quitUser(User user) throws Exception;
+	
 	//아이디 찾기
 	public User findUserId(User user) throws Exception;
 	
@@ -56,5 +58,9 @@ public interface UserService {
 	////////////////////180712 예지 추가///////////////////////
 	//회원 활동 불러오기
 	public Map<String,Object> getUserLog(String userId,int number,String duration);
+
+	
+
+	
 
 }

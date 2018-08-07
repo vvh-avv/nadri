@@ -285,7 +285,6 @@ var options = {
 	$(function() {
 		
 		$(document).on("click", "#modalinsert", function(){
-			alert("hello!");
 			// 모달에서 적은 제목의 value을 가져옵니다.
 			var modalscheduleTitle = $("#modalscheduleTitle").val();
 			// 일정 제목값에 넣습니다.
@@ -693,7 +692,7 @@ $(function(){
 	</div>
 
 </div>
-	<form enctype="multipart/form-data" >
+	<form enctype="multipart/form-data" name="updateForm">
       <%@ include file="/layout/toolbar.jsp"%>
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  

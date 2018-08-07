@@ -715,7 +715,7 @@
 				<c:if test="${boardList.size()==0}">
 					<div class="boards-list">
 						<div class="empty-boards">
-							<div>추천 게시물이 없습니다.</div>
+							<div>인기 장소가 없습니다.</div>
 						</div>
 					</div>
 				</c:if>

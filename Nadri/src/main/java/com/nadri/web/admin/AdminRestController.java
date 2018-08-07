@@ -51,7 +51,7 @@ public class AdminRestController {
 	}
 	
 	@RequestMapping(value = "addInquire/{reportUser}/{inquireCode}/{write_enc}/{title_enc}/{inquireLink}", method=RequestMethod.POST)
-	public String addInquire(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@RequestParam("inquire_file")MultipartFile file,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
+	public String addInquire(HttpServletRequest request,@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@RequestParam("inquire_file")MultipartFile file,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
 		System.out.println("addInquire -> Restcontroller µé¾î¿È");
 		System.out.println("µé¾î¿Â fileName : "+file.getOriginalFilename());
 		System.out.println(reportUser+" / "+inquireCode);
@@ -83,8 +83,10 @@ public class AdminRestController {
             inquire.setInquireFile1(fileOriginName);
             
 		}
+		HttpSession session = request.getSession(true);
+		User user = (User)session.getAttribute("user");
 		
-		inquire.setUserId("user02");
+		inquire.setUserId(user.getUserId());
 		
 		if (reportUser.equals("null")) {
 			inquire.setReportUserId(null);
@@ -101,7 +103,7 @@ public class AdminRestController {
 	}
 	
 	@RequestMapping(value = "addInquireNoFile/{reportUser}/{inquireCode}/{write_enc}/{title_enc}/{inquireLink}", method=RequestMethod.POST)
-	public String addInquireNoFile(@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
+	public String addInquireNoFile(HttpServletRequest request,@PathVariable String inquireLink,@PathVariable String title_enc,@PathVariable String write_enc,@PathVariable String reportUser,@PathVariable String inquireCode,@ModelAttribute("inquire") Inquire inquire,Model model) throws Exception {
 		System.out.println("addInquireNoFile -> Restcontroller µé¾î¿È");
 		System.out.println(reportUser+" / "+inquireCode);
 		System.out.println("inquireLink = "+inquireLink);
@@ -112,7 +114,10 @@ public class AdminRestController {
 		inquire.setReportUserId(reportUser);
 		inquire.setInquireLink(inquireLink);
 		
-		inquire.setUserId("user02");
+		HttpSession session = request.getSession(true);
+		User user = (User)session.getAttribute("user");
+		
+		inquire.setUserId(user.getUserId());
 		
 		if (reportUser.equals("null")) {
 			inquire.setReportUserId(null);

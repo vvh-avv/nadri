@@ -26,6 +26,9 @@ public interface SpotService {
 	// 5. 주변 장소 정보를 가져오는 메소드
 	public List<Spot> searchAround(Spot spot) throws Exception;
 	
+	// 5-1. 주변 식당 정보를 가져오는 메소드
+	public List<Spot> searchAroundRestaurant(Spot spot) throws Exception;
+	
 	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 	// 3. 장소삭제 (admin only)
 	public void deleteSpot(String spotNo);

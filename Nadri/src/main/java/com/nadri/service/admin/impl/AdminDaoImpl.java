@@ -143,6 +143,7 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public Map<String, Object> getSpotList(Search search) {
 		// TODO Auto-generated method stub
+		System.out.println("µé¾î¿Â start row num = "+search.getStartRowNum());
 		Map<String,Object> map= new HashMap<String,Object>();
 		List<Spot> list = sqlSession.selectList("AdminMapper.getSpotList", search);
 		int count = sqlSession.selectOne("AdminMapper.getSpotCount", search);

@@ -9,10 +9,21 @@ $(function() {
 	 * console.log(data.boardList.length); for(i = 0; i < data.boardList.length;
 	 * i++){ console.log(data.boardList[i]); } })
 	 */
+	
 	var loginchk = true;
 	var original_width = $('.searcher > input').css('width');
 	var top = $('.bottom-section').offset();
 	console.log(top);
+	
+	$('#unexpanded').on('click',function(){
+		$('.spot-top-box').css('left','100%');
+		$('.expander-box').css('right','0%');
+	})
+	
+	$('#expander-spots').on('click',function(){
+		$('.spot-top-box').css('left','0%');
+		$('.expander-box').css('right','100%');
+	})
 	
 	$('.login-submit').on('click',function(){
 		fncLogin();
@@ -240,6 +251,7 @@ $(function() {
 
 	$('.side-section > span').on('click', function() {
 		var id = $(this).attr('id');
+		
 		if (id == 'chat-open') {
 			self.location = '/board/listBoard';
 		} else if (id == 'join-open') {
@@ -256,6 +268,7 @@ $(function() {
 	
 	$('.top-icons-small').on('click', function() {
 		var id = $(this).attr('id');
+		
 		if (id == 'login-open') {
 			self.location = '/user/login';
 		} else if (id == 'chat-open') {
@@ -272,22 +285,22 @@ $(function() {
 		}
 	});
 	
-	$('#car').on('click',function(){
+	$('.car > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=0';
 	});
 	
-	$('#pedestrian').on('click',function(){
+	$('.walk > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=1';
 	});
 	
-	$('#transit').on('click',function(){
+	$('.public > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=2';
 	});
 
 	$('.schedule-button').on('click',function(){
 		var check = $('#session-checker').val();
 		console.log(check);
-		if( check == null ){
+		if( check == 'no-user' ){
 			swal({
 				  title: "회원만 이용하실 수 있어요!",
 				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
@@ -295,7 +308,7 @@ $(function() {
 				  button: " 닫 기 ",
 				});	
 		}else{
-			self.location = '/schedule/addSchedule';
+			$("#transportationModal").modal();
 		}
 	});
 
@@ -303,24 +316,6 @@ $(function() {
 		var id = $(this).attr('id');
 		console.log(id);
 		self.location = '/board/getBoard?boardNo=' + id;
-	});
-
-	$('.schedule-button').on('click', function() {
-		var check = $('#session-checker').val();
-		console.log(check);
-		if (check != 'no_user') {
-			console.log("session 여부 : 있음");
-			self.location = '/schedule/addSchedule';
-
-		} else {
-			console.log("session 여부 : 없음");
-			swal({
-				title : "회원만 이용하실 수 있어요!",
-				text : "일정작성을 위해 가입 또는 로그인을 해주세요.",
-				icon : "error",
-				button : " 닫 기 ",
-			});
-		}
 	});
 
 	$('.searcher > input').on('focusin', function() {
@@ -373,6 +368,9 @@ $(function() {
 	
 	$('.search-history').on('click','.logs',function(){
 		console.log("work check");
+		$('body').css('overflow','hidden');
+		$('.loader-background').css('display','block');
+		$('.loader-background').css('left','0%');
 		self.location = "/searchLog/listSearchLog?searchKeyword="
 			+ $(this).attr('name');
 	})
@@ -382,6 +380,9 @@ $(function() {
 			function(e) {
 				console.log(e.which);
 				if (e.which == 13) {
+					$('body').css('overflow','hidden');
+					$('.loader-background').css('display','block');
+					$('.loader-background').css('left','0%');
 					self.location = "/searchLog/listSearchLog?searchKeyword="
 							+ $(this).val();
 				}
@@ -392,6 +393,9 @@ $(function() {
 			function(e) {
 				console.log(e.which);
 				if (e.which == 13) {
+					$('body').css('overflow','hidden');
+					$('.loader-background').css('display','block');
+					$('.loader-background').css('left','0%');
 					self.location = "/searchLog/listSearchLog?searchKeyword="
 							+ $(this).val();
 				}
@@ -463,7 +467,7 @@ $(function() {
 				if(JSONData.userId != "none"){
 					var userStatus = JSONData.userStatus;
 					if( JSONData.password == $("#password").val() ){
-						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else if(userStatus == '1'){
 						alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						self.location = "/index.jsp";
@@ -471,7 +475,7 @@ $(function() {
 						alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						self.location = "/index.jsp";
 					}else if(userStatus == '0'){
-						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else{
 						alert("비밀번호를 다시 확인하세요!");
 						$("#password").val("").focus();

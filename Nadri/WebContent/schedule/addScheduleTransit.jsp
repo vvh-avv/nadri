@@ -24,10 +24,6 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- layout css -->
-<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 구글맵을 사용하기 위한 CDN -->
@@ -45,7 +41,6 @@
 <style>
 
 .maincon{
-	color : #404548;
 	z-index:15;
 }
 
@@ -193,6 +188,14 @@ body, html {
   height: 80%;
 }
 
+#Tmap_Control_ZoomBar_46{
+	z-index : 998;
+}
+
+#Tmap_Control_ScaleLine_47{
+	z-index : 998;
+}
+
 #News {background-color: #f5f5f5;}
 #Contact {background-color: #f5f5f5;}
 
@@ -279,8 +282,8 @@ var options = {
     };
        
 	$(function() {
-		$(document).on("click", "#modalinsert", function(){
-			alert("hello!");
+		
+		$(document).on("click", "#modalinsert",function(){
 			// 모달에서 적은 제목의 value을 가져옵니다.
 			var modalscheduleTitle = $("#modalscheduleTitle").val();
 			// 일정 제목값에 넣습니다.
@@ -302,10 +305,9 @@ var options = {
 			// 모달을 닫습니다.
 			$("#myModal").modal('hide');
 		});
-					
+
 		$(window).scroll(function(){
 	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-	        
 	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
 	        	$("body > div.sidenav").fadeIn();
 	        	$("body > div.sidenav").css("display", "block");
@@ -339,7 +341,7 @@ var options = {
 			  }); //end of datepicker
 		  
 		$('#timepicker').wickedpicker(options);
-			
+
 		$(document).on("click", "#modal", function(){
 			$('#myModal').modal();
 		});
@@ -563,7 +565,10 @@ $(function(){
     }
 })
 </script> 
-    
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 </head>
 <body>
 

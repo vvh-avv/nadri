@@ -38,7 +38,7 @@
 	 	background: linear-gradient(#455973,#2a3f5a);
 	 	width:100%;
 	 	position:fixed;
-	 	z-index:999;
+	 	z-index:1020;
 	}
 	
 	.title-section-small{
@@ -255,5 +255,22 @@
 	
 	.search-log-container{
 		height:50px;
+	}
+	
+	.section-title{
+		align-items : center;
+	}
+	
+	.menu-title{
+		font-size : 20px;
+	}
+	
+	.mini-title{
+		font-size : 10px;
+	}
+	
+	.title-flex-box{
+		align-items: center;
+		margin-bottom : 0px;
 	}
 }

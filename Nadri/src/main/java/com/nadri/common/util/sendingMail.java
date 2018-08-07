@@ -25,7 +25,7 @@ public class sendingMail {
 		String clientEmail = userEmail ;
 		final String HOST     = "smtp.gmail.com" ;
     	final String USER   = "nadritest@gmail.com" ;
-    	final String PASSWORD  = "nadritest3" ;
+    	final String PASSWORD  = "nadritest9870" ;
     	final int authenticationNumber = new Random().nextInt(10000) ;
     	// 세션 가져오기
     	Properties props = new Properties();

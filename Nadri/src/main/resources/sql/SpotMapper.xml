@@ -86,6 +86,21 @@
 		]]>
 	</select>
 	
+	<select id="searchAroundRestaurant" parameterType="spot" resultMap="spotSelectMap">
+	    <![CDATA[
+		    SELECT 
+			*,
+			( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+			+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+			FROM
+			spot
+			WHERE spot_code LIKE '1%'
+			HAVING 
+			distance < 2
+			ORDER BY  distance
+		]]>
+	</select>
+	
 	<!-- 예지누나 추가!!(20180712) -->
 	<select id="listSpot" resultMap="spotSelectMap">
 		SELECT * FROM spot

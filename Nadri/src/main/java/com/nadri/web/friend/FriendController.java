@@ -69,6 +69,24 @@ public class FriendController {
 		
 		return "forward:/friend/listFriend.jsp";
 	}
+	
+	//method
+		@RequestMapping(value = "listFriend2", method= {RequestMethod.GET, RequestMethod.POST})
+		public String listFriend2(HttpSession session, Model model)throws Exception{
+
+			String userId = ((User)session.getAttribute("user")).getUserId();
+			
+			System.out.println("/friend/listFriend2 start: "+userId);
+			List<Friend> fList2 = friendService.listFriend2(userId);
+			System.out.println("//////////////////////////"+fList2);
+			
+			System.out.println("-------------------------------------listFriend2 controller-------------------------------------");
+			System.out.println("controller fList2: "+fList2);
+			model.addAttribute("fList2", fList2);
+			System.out.println("friend controller - after fList2: "+fList2);
+			
+			return "forward:/friend/listFriend.jsp";
+		}
 
 	
 	//친구 추가

@@ -90,6 +90,14 @@ public class SpotRestController {
 		return spotService.searchAround(spot);
 	}//end of searchArround
 	
+	@RequestMapping(value="/searchAroundRestaurant" , method=RequestMethod.POST)
+	public @ResponseBody List<Spot> searchAroundRestaurant(@RequestBody Spot spot) throws Exception{
+
+		System.out.println("/searchAroundRestaurant");
+			
+		return spotService.searchAroundRestaurant(spot);
+	}//end of searchArround
+	
 	@RequestMapping(value="/getSearchSpotList" , method=RequestMethod.POST)
 	public @ResponseBody List<Spot> getSearchSpotList(@RequestBody Search search) throws Exception{
 

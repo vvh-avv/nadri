@@ -24,10 +24,6 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- layout css -->
-<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- T-map 지도를 쓰기위한 선언 -->
@@ -44,7 +40,6 @@
 <style>
 
 .maincon{
-	color : #404548;
 	z-index:15;
 }
 
@@ -57,9 +52,9 @@
         width:100%; 
       } 
 
-	.container-add-schedule {
+/* 	.container-add-schedule {
     margin-right: 5%;
-	}
+	} */
 
 	/* @font-face {
 		font-family: 'seoul';
@@ -116,7 +111,7 @@
 .sidenav {
     width: 25%;
     position: fixed;
-    z-index: 1;
+    z-index: 1010;
     top: 120px;
     left: 10px;
     background: #eee;
@@ -190,6 +185,14 @@ body, html {
   display: none;
   padding:10px;
   height: 80%;
+}
+
+#Tmap_Control_ZoomBar_46{
+	z-index : 998;
+}
+
+#Tmap_Control_ScaleLine_47{
+	z-index : 998;
 }
 
 #News {background-color: #f5f5f5;}
@@ -298,8 +301,7 @@ var options = {
        
 	$(function() {
 		
-		$(document).on("click", "#modalinsert", function(){
-			alert("hello!");
+		$(document).on("click", "#modalinsert",function(){
 			// 모달에서 적은 제목의 value을 가져옵니다.
 			var modalscheduleTitle = $("#modalscheduleTitle").val();
 			// 일정 제목값에 넣습니다.
@@ -321,11 +323,9 @@ var options = {
 			// 모달을 닫습니다.
 			$("#myModal").modal('hide');
 		});
-				
 			
 		$(window).scroll(function(){
-	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-	        
+	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값     
 	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
 	        	$("body > div.sidenav").fadeIn();
 	        	$("body > div.sidenav").css("display", "block");
@@ -590,7 +590,10 @@ $(function(){
     }
 })
 </script> 
-    
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 </head>
 <body>
 
@@ -730,24 +733,24 @@ $(function(){
                     <div class="modal-content"> 
                         <div class="modal-header"> 
                             <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                            <h4 class="modal-title">나들이 가세요?</h4> 
+                            <h4 class="modal-title"> 나들이 가세요? </h4> 
                         </div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label for="scheduleTitle">나들이에 제목을 지어주세요</label> 
-							<input type="text" class="form-control" id="modalscheduleTitle" placeholder="제목">
+							<label for="scheduleTitle">나들이의 제목을 지어주세요.</label> 
+							<input type="text" class="form-control" id="modalscheduleTitle" placeholder="제목을 입력해주세요!">
 						</div>
 						<div class="form-group">
-							<label for="scheduleDetail">주제를 간단히 설명해주세요</label> 
-							<input type="text" class="form-control" id="modalscheduleDetail" placeholder="장소를 간단히 설명해주세요!!">
+							<label for="scheduleDetail">나들이주제를 간단히 설명해주세요</label> 
+							<input type="text" class="form-control" id="modalscheduleDetail" placeholder="장소를 간단히 설명해주세요!">
 						</div>
 						<div class="form-group">
 							<label for="scheduleDate">언제 나들이 가세요?</label> 
-							 <input type="text"  class="form-control"id="datepicker" placeholder="나들이가는 날짜를 입력해주세요!!" value="${date}" readOnly>
+							 <input type="text"  class="form-control"id="datepicker" placeholder="클릭하여 날짜를 선택해주세요!" value="${date}" readOnly>
 						</div>
 					</div>
 						<div class="modal-footer"> 
-                            <button type="button" class="waves-effect waves-light btn" id="modalinsert">입력!</button> 
+                            <button type="button" class="waves-effect waves-light btn" id="modalinsert"> 입 력 </button> 
                         </div> 
                     </div> 
                 </div> 
