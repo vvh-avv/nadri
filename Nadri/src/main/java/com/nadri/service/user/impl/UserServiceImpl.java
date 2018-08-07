@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService{
 		User user = userDao.getUser(userId);
 		System.out.println("/////////////////////////");
 		System.out.println("serviceImpl - getUser"+user);
+		System.out.println("/////////////////////////");
 		return user;
 	}
 

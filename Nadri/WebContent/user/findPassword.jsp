@@ -25,8 +25,10 @@
 	<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
 	<script src="/javascript/indexReal_nonIndex.js"></script>
 
-<style type="text/css">
+	<!-- sweet alert CDN -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style type="text/css">
 </style>
     
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -41,9 +43,9 @@ $(function(){
 	
 	$(".btn:contains('비밀번호 찾기')").on("click",function(){
 		
-		var userName=$("input[name='userName']").val();
-		var userId=$("input[name='userId']").val();
-		var email=$("input[name='email']").val();
+		var userName=$("input[id='userName']").val();
+		var userId=$("input[id='id']").val();
+		var email=$("input[id='email']").val();
 		
 		$.ajax({		
 			type:"POST",
@@ -63,9 +65,22 @@ $(function(){
 				var check = JSONData;
 		    	//JSONData에서 유저 아이디 추출 
 		    	if(check == null) {
-		    		$("span.col-password-check").html("해당하는 정보가 존재하지 않습니다").css("color","red");
+		    		//$("span.col-password-check").html("해당하는 정보가 존재하지 않습니다").css("color","red");
+		    		swal({
+		    			   title: "실패!",
+		    			   text: "해당하는 정보가 존재하지 않습니다!",
+		    			   icon: "warning",
+		    			   buttons: false,
+		    			   dangerMode: true,
+		    			 });
 		    	} else {
-		    		$("span.col-password-check").html("회원님의 이메일로 임시 비밀번호가 전송되었습니다").css("color","blue");
+		    		//$("span.col-password-check").html("회원님의 이메일로 임시 비밀번호가 전송되었습니다").css("color","blue");
+		    		swal({
+		    			   title: "성공!",
+		    			   text: "회원님의 이메일로 임시 비밀번호가 전송되었습니다!",
+		    			   icon: "success",
+		    			   buttons: false,
+		    			 });
 		    	}  	
 		   	 }		
 		});							
@@ -93,25 +108,25 @@ $(function(){
 		</div>
 		  
 		  	
-	  	<form class="form-horizontal" id="findPassword" name="findPassword" >
+	  	<form class="form-horizontal" >
 		   <div class="form-group">
 		    <label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
 			    <div class="col-xs-4 col-md-4">
-			      <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력해주세요">
+			      <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요">
 			    </div>
 		  </div>
 		  
 		  <div class="form-group">
 		    <label for="userId" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">아이디</label>
 			    <div class="col-xs-4 col-md-4">
-			    	<input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요"> 
+			    	<input type="text" class="form-control" id="id" placeholder="아이디를 입력해주세요"> 
 				</div>
 		  </div>
 		  		  	  	   
 		  <div class="form-group">
 		    <label for="email" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이메일</label>
 			    <div class="col-xs-4 col-md-4">
-			      <input type="text" class="form-control" id="email" name="email" placeholder="가입시 입력한 이메일을 입력해주세요	">
+			      <input type="text" class="form-control" id="email" placeholder="가입시 입력한 이메일을 입력해주세요	">
 			    </div>
 		  </div>	  
 		  <br/>

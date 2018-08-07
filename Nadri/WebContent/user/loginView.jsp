@@ -123,13 +123,13 @@
 	//아이디 / 비밀번호 찾기 화면 이동
 	$( function() {	
 		$("#findUser").on("click", function() {
-			self.location = "/user/findUser.jsp"
+			self.location = "/user/findUser"
 		});
 	});
 	
 	$( function() {	
 		$("#findPassword").on("click", function() {
-			self.location = "/user/findPassword.jsp"
+			self.location = "/user/findPassword"
 		});
 	});
 	

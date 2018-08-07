@@ -778,12 +778,12 @@ $(function(){
 		   url : "/friend/json/chkFriend/"+modalFriendId+"/0",
 		   success : function(data){
 			   if(data==1){ //친구요청이 이미 된 경우
-				   swal ( "친구추가 실패!" ,  "이미 상대방에게 친구요청이 갔습니다!" ,  "error" );
+				   swal ( "친구추가 실패!" ,  "이미 상대방과 친구예요!" ,  "error" );
 			   }else{ //친구요청이 안 된 경우
 				   $.ajax({
 					   url : "/friend/json/addFriend/"+modalFriendId,
 					   success : function(){
-						   swal("친구추가 완료!", "상대방의 친구수락을 기다려보세요!", "success");
+						   swal("친구추가 완료!", "상대방을 친구로 추가했습니다!", "success");
 					   }
 				   }) //e.o.ajax
 			   }

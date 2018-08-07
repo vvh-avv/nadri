@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
 import com.nadri.service.friend.FriendDao;
-import com.nadri.service.friend.FriendService;
 
 
 @Repository("friendDaoImpl")
@@ -107,6 +107,22 @@ public class FriendDaoImpl implements FriendDao{
 		
 		System.out.println("friendDaoImpl: "+sqlSession.selectList("FriendMapper.listFriend", userId));
 		return sqlSession.selectList("FriendMapper.listFriend", userId);
+	}
+	
+	@Override
+	public List<Friend> listFriend2(@PathVariable String userId) throws Exception {
+		// TODO Auto-generated method stub
+
+		System.out.println("-------------------------------------DaoImpl2---------------------------------------");
+		List<Friend> friend = sqlSession.selectList("FriendMapper.listFriend2", userId);
+		List<String> friendId = new ArrayList<String>();
+		
+		for(int i = 0; i<friend.size(); i++) {
+			friendId.add(friend.get(i).getFriendId());
+		}
+		
+		System.out.println("friendDaoImpl2: "+sqlSession.selectList("FriendMapper.listFriend2", userId));
+		return sqlSession.selectList("FriendMapper.listFriend2", userId);
 	}
 	
 

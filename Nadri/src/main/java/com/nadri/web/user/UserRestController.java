@@ -250,16 +250,20 @@ public class UserRestController {
 		
 		String receiver = email2;
 		
-		String emailHtml = "<HTML>"+
-										"<HEAD><TITLE></TITLE></HEAD>"+
-										"<BODY>"+
-										"<h3>너, 나들이에서 알려드립니다</h3>"+
-										"<h4>고객님이 요청하신 비밀번호 찾기에 의해 임시 비밀번호가 전송되었습니다</h4>"+
-										"<h5>임시 비밀번호는 다음과 같습니다</h5>"+
-										"<h5>"+passwordNo+"</h5>"+
-										"<br>"+
-										"<img src =  >"+							//이미지 주소 넣기!!!!!
-										"<br/></BODY></HTML>";
+		String emailHtml = "<HTML>"
+									+ "<HEAD><TITLE></TITLE></HEAD>"
+									+ "<BODY>"
+									+ "<div style=\"background:url(https://66.media.tumblr.com/1532bff6c66f588d3fb279b7af8370be/tumblr_pd0mrrQvZJ1v6rnvho1_540.png) no-repeat center;\">"
+									+ "<div style=\"text-align:center; margin-bottom: 60px; margin-top: 44px; color: #000000;\"><p style=\"padding-top:33px; margin-bottom: 13px;\">"
+									+ "<h3>당신과 함께해서 더욱 즐거운 서울<br>너, 나들이에서 알려드립니다</h3>"
+									+ "<h3>고객님이 요청하신 비밀번호 찾기에 의해 임시 비밀번호가 전송되었습니다</h3>"
+									+ "<h4>임시 비밀번호는 다음과 같습니다</h4>"
+									+ "<h4>임시 비밀번호: <b>"+passwordNo+"</b></h4>"
+											+ "</p>"
+											+ "<br><br/></div>"
+											+ "</div>"
+											+ "</BODY>"
+											+ "</HTML>";
 		
 		 Properties props = new Properties();
 		  props.put("mail.smtp.host", host);
@@ -344,6 +348,14 @@ public class UserRestController {
 			return "1" ;
 		}
 	}
+	
+	//회원탈퇴
+   @RequestMapping(value="json/quitUser/{userId}", method=RequestMethod.POST)
+   public void quitUser( @PathVariable("userId") String userId) throws Exception{
+      System.out.println("RestController:: /user/json/quitUser : POST");
+      
+      userService.quitUser(userId);
+   }
 	
 	
 }

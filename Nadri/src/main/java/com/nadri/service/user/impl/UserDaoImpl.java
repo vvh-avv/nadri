@@ -50,6 +50,7 @@ public class UserDaoImpl implements UserDao{
 	public void updateUser(User user) throws Exception {
 		System.out.println("////////////////////////////////////////////////////");
 		System.out.println("userDaoImpl - updateUser: "+sqlSession.update("UserMapper.updateUser", user));
+		System.out.println("userDaoImpl - 업데이트 전 유저 정보:"+user);
 		System.out.println("////////////////////////////////////////////////////");
 		sqlSession.update("UserMapper.updateUser", user);
 	}

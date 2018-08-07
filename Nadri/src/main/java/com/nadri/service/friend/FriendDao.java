@@ -3,6 +3,8 @@ package com.nadri.service.friend;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.nadri.common.Search;
 import com.nadri.service.domain.Friend;
 import com.nadri.service.domain.User;
@@ -26,13 +28,13 @@ public interface FriendDao {
 	public int refuseFriend(Map<String, String> map) throws Exception;
 	
 	//친구 리스트
-	//public List<Friend> listFriend(String userId)throws Exception;
-
 	public List<Friend> listFriend(String userId) throws Exception;
+	
+	public List<Friend> listFriend2(String userId) throws Exception;
 
+	
 	//친구 정보 조회
 	public Friend getFriend(String friendId)throws Exception;
-	
 	
 	public List<Friend> searchFriend(Map<String, String> map)throws Exception;
 
@@ -48,6 +50,12 @@ public interface FriendDao {
 		
 	
 	public List<Friend> selectFriendList(User user) throws Exception;
+
+	
+
+	
+
+
 
 
 

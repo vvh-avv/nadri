@@ -88,11 +88,13 @@ public class FriendRestController {
  	@RequestMapping(value="json/deleteFriend")
  	public int deleteFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
  		
+ 		User user = ((User) session.getAttribute("user"));
+ 		
  		System.out.println("/friend/deleteFriend: GET/POST");
  		System.out.println("friendId : "+friend.getFriendId());
- 		System.out.println("userId : "+friend.getUserId());
+ 		System.out.println("userId : "+user.getUserId());
  	 		
- 		return friendService.deleteFriend(friend.getUserId(), friend.getFriendId());
+ 		return friendService.deleteFriend(user.getUserId(), friend.getFriendId());
 // 		System.out.println("/friend/deleteFriend: GET/POST");
 // 		User user = (User) session.getAttribute("user");
 // 		Friend friend = (Friend) session.getAttribute("friend");

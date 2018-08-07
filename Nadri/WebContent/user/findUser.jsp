@@ -24,23 +24,27 @@
 	<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
 	<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
 	<script src="/javascript/indexReal_nonIndex.js"></script>
+	
+	<!-- sweet alert CDN -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style type="text/css"></style>
     
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
-	
-	
 
-	
+var createA = document.createElement('a');
+createA.setAttribute('href', "/user/findPassword");
+createA.innerHTML="<span style='color:#516ed6'>비밀번호 찾기로 이동</span>"
+
 	
 //ajax이용해서 아이디 알려주기
 $(function(){
 	
 	$(".btn:contains('아이디 찾기')").on("click",function(){
 		
-		var userName=$("input[name='userName']").val();
-		var email=$("input[name='email']").val();
+		var userName=$("input[id='name']").val();
+		var email=$("input[id='mail']").val();
 		
 		$.ajax({		
 			type:"POST",
@@ -61,12 +65,21 @@ $(function(){
 		    	if(JSONData.userId == null) {
 		    		$("span.col-id-check").html("해당하는 아이디가 존재하지 않습니다").css("color","red");
 		    	} else {
-		    		$("span.col-id-check").html("회원님의 아이디는"+JSONData.userId+"입니다").css("color","blue");
+		    		//$("span.col-id-check").html("회원님의 아이디는"+JSONData.userId+"입니다").css("color","blue");
+		    		swal({
+		    			title: "성공!",
+		    			   text: "회원님의 아이디는 \""+JSONData.userId+"\"입니다!",
+		    			   icon: "success",
+		    			   buttons: false,
+		    			   content: createA,
+		    		});
 		    	}  	
 		   	 }		
 		});							
 	});			
 });	
+
+
 
 </script>		
 </head>
@@ -91,14 +104,14 @@ $(function(){
 			<div class="form-group">
 				<label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
 					<div class="col-xs-4 col-md-4">
-						<input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력해주세요">
+						<input type="text" class="form-control" id="name"  placeholder="이름을 입력해주세요">
 					</div>
 			</div>
 		  
 		  <div class="form-group">
 		    <label for="email" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이메일</label>
 			    <div class="col-xs-4 col-md-4">
-			      <input type="text" class="form-control" id="email" name="email" placeholder="가입시 입력한 이메일을 입력해주세요">
+			      <input type="text" class="form-control" id="mail"  placeholder="가입시 입력한 이메일을 입력해주세요">
 			    </div>
 		  </div>
 		 	<br/>
