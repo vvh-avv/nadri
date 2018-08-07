@@ -24,6 +24,7 @@
       <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+      <result property="token" column="token" jdbcType="VARCHAR"/>
    </resultMap>
       
   
@@ -44,14 +45,12 @@
       FROM user
       WHERE user_id = #{value}
    </select>
-
+   
    <!-- SQL: UPDATE -->
    <update id="updateUser" parameterType="user">
       UPDATE user
-      	<set> 
-      		user_name = #{userName}, email = #{email}, password = #{password}, sex=#{sex},
-     	 	phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}
-      	</set>
+      SET user_name = #{userName}, email = #{email}, password = #{password},  sex=#{sex}, 
+      phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}, token=#{token}
       WHERE user_id = #{userId}
    </update>
 		   

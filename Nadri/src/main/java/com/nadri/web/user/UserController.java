@@ -296,8 +296,8 @@ public class UserController {
 	public String quitUser(@RequestParam("userId")String userId, HttpSession session) throws Exception{
 		
 		System.out.println("/user/quitUser : POST");
-		
-		userService.quitUser(userId);
+		User user = (User) session.getAttribute(userId);
+		userService.quitUser(user);
 		session.invalidate();
 		
 		return "redirect:/index.jsp";

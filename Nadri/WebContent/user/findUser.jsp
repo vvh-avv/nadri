@@ -37,6 +37,46 @@ var createA = document.createElement('a');
 createA.setAttribute('href', "/user/findPassword");
 createA.innerHTML="<span style='color:#516ed6'>비밀번호 찾기로 이동</span>"
 
+//아이디 찾기 유효성 검사
+function fncFindUserId(){
+	var name = $('#name').val();
+	var mail = $('#mail').val();
+	
+	//alert("name:: "+name);
+	//alert("mail:: "+mail);
+	
+	if(name == ""){
+		//alert("이름을 입력해야 아이디를 찾을 수 있습니다");
+		swal({
+			   title: "확인하세요!",
+			   text: "이름을 입력해야 아이디를 찾을 수 있습니다!",
+			   icon: "error",
+			   buttons: false,
+			 });
+		return;
+	}
+	
+	if(mail == ""){
+		//alert("이메일을 입력해야 아이디를 찾을 수 있습니다");
+		swal({
+			   title: "확인하세요!",
+			   text: "이메일을 입력해야 아이디를 찾을 수 있습니다!",
+			   icon: "error",
+			   buttons: false,
+			 });
+		return;
+	}
+	
+}
+
+//아이디 찾기 버튼 클릭 시 행위 발생
+$(function(){
+	$('#findUserIdChk').on('click', function(){
+		fncFindUserId();
+	});
+});
+
+
 	
 //ajax이용해서 아이디 알려주기
 $(function(){
@@ -63,7 +103,13 @@ $(function(){
 
 		    	//JSONData에서 유저 아이디 추출 
 		    	if(JSONData.userId == null) {
-		    		$("span.col-id-check").html("해당하는 아이디가 존재하지 않습니다").css("color","red");
+		    		//$("span.col-id-check").html("해당하는 아이디가 존재하지 않습니다").css("color","red");
+		    		swal({
+		    			title: "실패!",
+		    			   text: "해당하는 아이디가 존재하지 않습니다!",
+		    			   icon: "error",
+		    			   buttons: false,
+		    		});
 		    	} else {
 		    		//$("span.col-id-check").html("회원님의 아이디는"+JSONData.userId+"입니다").css("color","blue");
 		    		swal({
@@ -96,6 +142,7 @@ $(function(){
 			<div class="col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info">아이디 찾기</h3>
+					<h5><b>이름</b>과 <b>이메일</b>을 입력하세요</h5>
 				</div>
 			</div>
 		</div>
@@ -118,7 +165,7 @@ $(function(){
 		  
 		<div class="form-group">
 			<div class="col-xs-offset-4  col-xs-4 text-center col-md-offset-4  col-md-4 text-center">
-			    <button type="button" class="btn btn-primary">아이디 찾기</button>
+			    <button type="button" id="findUserIdChk" class="btn btn-primary">아이디 찾기</button>
 			</div>
 		</div>
 		  

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>너, 나들이 test</title>
+<title>너, 나들이</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 

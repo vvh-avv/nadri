@@ -34,8 +34,56 @@
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	
+//비밀번호 찾기 유효성 검사
+function fncFindPassword(){
+	var id = $('#id').val();
+	var name = $('#name').val();
+	var mail = $('#mail').val(); 
 	
+	//alert("name:: "+name);
+	//alert("id:: "+id);
+	//alert("mail:: "+mail);
+	
+	if(name == ""){
+		//alert("이름을 입력해야 비밀번호를 찾을 수 있습니다");
+		swal({
+			   title: "확인하세요!",
+			   text: "이름을 입력해야 비밀번호를 찾을 수 있습니다!",
+			   icon: "error",
+			   buttons: false,
+			 });
+		return;
+	}
+	
+	if(id == ""){
+		//alert("아이디를 입력해야 비밀번호를 찾을 수 있습니다");
+		swal({
+			   title: "확인하세요!",
+			   text: "아이디를 입력해야 비밀번호를 찾을 수 있습니다!",
+			   icon: "error",
+			   buttons: false,
+			 });
+		return;
+	}
+	
+	if(mail == ""){
+		//alert("이메일을 입력해야 비밀번호를 찾을 수 있습니다");
+		swal({
+			   title: "확인하세요!",
+			   text: "이메일을 입력해야 비밀번호를 찾을 수 있습니다!",
+			   icon: "error",
+			   buttons: false,
+			 });
+		return;
+	}
+}
 
+//비밀번호 찾기 버튼 클릭 시 행위 발생
+$(function(){
+	$('#findPasswordChk').on('click', function(){
+		fncFindPassword();
+	});
+});
 	
 	
 //ajax이용해서 아이디 알려주기
@@ -43,9 +91,9 @@ $(function(){
 	
 	$(".btn:contains('비밀번호 찾기')").on("click",function(){
 		
-		var userName=$("input[id='userName']").val();
+		var userName=$("input[id='name']").val();
 		var userId=$("input[id='id']").val();
-		var email=$("input[id='email']").val();
+		var email=$("input[id='mail']").val();
 		
 		$.ajax({		
 			type:"POST",
@@ -103,6 +151,7 @@ $(function(){
 			<div class="col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">
 				<div class="page-header text-center">
 					<h3 class="text-info">비밀번호 찾기</h3>
+					<h5><b>아이디</b>와 <b>이름</b> 그리고 <b>이메일</b>을 입력하세요</h5>
 				</div>
 			</div>
 		</div>
@@ -112,7 +161,7 @@ $(function(){
 		   <div class="form-group">
 		    <label for="userName" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이름</label>
 			    <div class="col-xs-4 col-md-4">
-			      <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요">
+			      <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요">
 			    </div>
 		  </div>
 		  
@@ -126,14 +175,14 @@ $(function(){
 		  <div class="form-group">
 		    <label for="email" class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">이메일</label>
 			    <div class="col-xs-4 col-md-4">
-			      <input type="text" class="form-control" id="email" placeholder="가입시 입력한 이메일을 입력해주세요	">
+			      <input type="text" class="form-control" id="mail" placeholder="가입시 입력한 이메일을 입력해주세요	">
 			    </div>
 		  </div>	  
 		  <br/>
 		  
 		  <div class="form-group">
 		    <div class="col-xs-offset-4  col-xs-4 text-center col-md-offset-4  col-md-4 text-center">
-		      <button type="button" class="btn btn-primary"  id=findPW>비밀번호 찾기</button>
+		      <button type="button" class="btn btn-primary"  id=findPasswordChk>비밀번호 찾기</button>
 		  	</div>
 		  </div>
 		  

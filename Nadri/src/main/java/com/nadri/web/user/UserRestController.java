@@ -149,7 +149,7 @@ public class UserRestController {
 		boolean check = false;
 		String host = "smtp.google.com";
 		String user = "nadritest@google.com";
-		String password = "nadritest3";	
+		String password = "nadritest9870";	
 		String receiveMail = email;
 		String code = emailCode;
 		String nextUrl="http://localhost:8080/user/checkUserMail?user="+userId+"&code="+emailCode;
@@ -197,18 +197,34 @@ public class UserRestController {
 	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
 		
-		System.out.println("RestController:: /json/findUserId : POST");
+		/*System.out.println("RestController:: /json/findUserId : POST");
 		
 		//User user = new User();
 		user = userService.findUserId(user);
-		
+		System.out.println("user rest controller - userid찾기 - 아이: "+user);
 		
 		String userId = user.getUserId();
 		
 		//제이슨 데이터는 맵이나 도메인으로 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
-		return map;
+		return map;*/
+		
+		System.out.println("RestController:: /json/findUserId : POST");
+	      
+	      //User user = new User();
+	      user = userService.findUserId(user);
+
+	      //제이슨 데이터는 맵이나 도메인으로 
+	      Map<String, String> map = new HashMap<String, String>();
+	      if(user==null) {
+	         map.put("userId", null);
+	      }else {
+	         String userId = user.getUserId();
+	         map.put("userId", userId);
+	      }
+	      
+	      return map;
 	}
 	
 	//회원 비밀번호 찾기
@@ -246,7 +262,7 @@ public class UserRestController {
 	public boolean sendEmail(String email2, int passwordNo) throws Exception{
 		String host = "smtp.gmail.com";
 		String user = "nadritest@gmail.com";
-		String password = "nadritest3";
+		String password = "nadritest9870";
 		
 		String receiver = email2;
 		
@@ -350,7 +366,7 @@ public class UserRestController {
 	}
 	
 	//회원탈퇴
-   @RequestMapping(value="json/quitUser/{userId}", method=RequestMethod.POST)
+	@RequestMapping(value="json/quitUser/{userId}", method=RequestMethod.POST)
    public void quitUser( @PathVariable("userId") String userId) throws Exception{
       System.out.println("RestController:: /user/json/quitUser : POST");
       

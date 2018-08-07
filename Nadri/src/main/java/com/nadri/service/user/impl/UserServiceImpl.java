@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 	public User getUser(String userId) throws Exception {
 		User user = userDao.getUser(userId);
 		System.out.println("/////////////////////////");
-		System.out.println("serviceImpl - getUser"+user);
+		System.out.println("serviceImpl - getUser:: "+user);
 		System.out.println("/////////////////////////");
 		return user;
 	}
@@ -114,6 +114,13 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		userDao.quitUser(userId);
 	}
+	
+	@Override
+	public void quitUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		userDao.quitUser(user);
+	}
+	
 
 	//회원 아이디 찾기
 	@Override
@@ -136,4 +143,7 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return userDao.getUserLog(userId, number, duration);
 	}
+
+
+	
 }

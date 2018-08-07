@@ -39,11 +39,13 @@ public class UserDaoImpl implements UserDao{
 	public User getUser(String userId) throws Exception {
 		System.out.println("userDaoImpl - getUser(userId): "+userId);
 		
-		if(sqlSession.selectOne("UserMapper.getUser", userId) != null) {
+		/*if(sqlSession.selectOne("UserMapper.getUser", userId) != null) {
 			return sqlSession.selectOne("UserMapper.getUser", userId);
 		}else {
 			return new User();
-		}
+		}*/
+		
+		return sqlSession.selectOne("UserMapper.getUser", userId);
 		
 	}
 	
@@ -72,6 +74,12 @@ public class UserDaoImpl implements UserDao{
 	public void quitUser(String userId) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.update("UserMapper.quitUser", userId);
+	}
+	
+	@Override
+	public void quitUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("UserMapper.quitUser", user);
 	}
 	
 	//회원 아이디 찾기
@@ -151,4 +159,6 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
+
+	
 }

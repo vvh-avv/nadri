@@ -7,8 +7,7 @@
 
 <html>
 <head>
-	<title>너, 나들이 test</title>
-	<meta charset="EUC-KR">
+	<title>너, 나들이</title>
 	
 	<!-- 참조 : http://getbootstrap.com/css/   -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,22 +29,22 @@
 	<script type="text/javascript">		
 		function fncAddUser() {
 			// Form 유효성 검증
-			var id=$('#userId').val();
-			var pw=$('#password').val();
+			var userId=$('#addUserId').val();
+			var password=$('#addUserPw').val();
 			var pw_confirm=$('#passwordChk').val();
 			var name=$('#userName').val();
 			
-			if(id == null || id.length <1){
+			if(userId == null || userId.length <1){
 				alert("아이디는 반드시 입력해야 합니다.");
 				return;
 			}
 			
-			if(id.length<3 || id.length>9){
-				alert("아이디는 4글자 이상 8글자 이내로 입력해야합니다");
+			if(userId.length>9){
+				alert("아이디는 8글자 이내로 입력해야합니다");
 				return;
 			}
 			
-			if(pw == null || pw.length <1){
+			if(password == null || password.length <1){
 				alert("패스워드는 반드시 입력해야 합니다.");
 				return;
 			}
@@ -58,7 +57,7 @@
 				return;
 			}
 			
-			if(pw != pw_confirm) {
+			if(password != pw_confirm) {
 				alert("비밀번호가 일치하지 않습니다.");
 				$('#passwordChk').focus();
 				return;
@@ -126,7 +125,7 @@
 		
 		<%-- 아이디 중복 확인: ajax 이용 --%>
 		$(function(){
-			$('#userId').on('keyup', function(){
+			$('#addUserId').on('keyup', function(){
 				var userId = $(this).val().trim();
 				
 				$.ajax({
@@ -139,10 +138,10 @@
 					},
 					success : function(JSONData , status){
 						if(JSONData){
-							$('span.help-block').html('사용할 수 있는 아이디입니다.').css('color','green');
+							$('#helpBlock').html('사용할 수 있는 아이디입니다.').css('color','green');
 							check = true;
 						}else{
-							$('span.help-block').html('이미 존재하는 아이디입니다.').css('color','red');
+							$('#helpBlock').html('이미 존재하는 아이디입니다.').css('color','red');
 							check = false;
 						}
 					}
@@ -156,7 +155,7 @@
 		<%-- 비밀번호 중복 확인: ajax 이용 --%>
 		$(function(){
 			$('#passwordChk').on('keyup',function(){
-				if( $('#password').val() != $(this).val()){
+				if( $('#addUserPw').val() != $(this).val()){
 					$('#helpBlock2').text("비밀번호 불일치").css('color','red');
 				}else{
 					$('#helpBlock2').text("비밀번호 일치").css('color','green');
@@ -194,7 +193,7 @@
 			<div class="row">
 				<label for="userId" class="col-sm-3 control-label">아이디</label>
 				<div class="col-sm-3">
-					<input type="text" class="form-control" id="userId" name="userId" placeholder="ID" aria-describedby="helpBlock">
+					<input type="text" class="form-control" id="addUserId" name = "addUserId" placeholder="ID" aria-describedby="helpBlock">
 				</div>
 				<span id="helpBlock" class="help-block col-sm-6"></span>
 			</div>
@@ -216,7 +215,7 @@
 			<div class="row">
 				<label for="password" class="col-sm-3 control-label">비밀번호</label>
 				<div class="col-sm-3">
-					<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
+					<input type="password" class="form-control" id="addUserPw" name="password" placeholder="비밀번호를 입력하세요">
 				</div>
 				<span class="col-sm-6"></span>
 			</div>
@@ -244,10 +243,10 @@
 			<div class="form-group">
 		     <label for="sex" class="col-sm-3 control-label">성별</label>
 			   <span class="col-sm-2">
-		         <label><input type="radio" id="sex" name="sex" value="0">남자</label>
+		         <label><input type="radio" id="addUserSex"  value="0">남자</label>
 		       </span>
 		      <span class="col-sm-2">
-		         <label><input type="radio" id="sex" name="sex" value="1">여자</label>
+		         <label><input type="radio" id="addUserSex" value="1">여자</label>
 		        </span>
 			</div>
 			<br/>
