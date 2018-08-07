@@ -24,10 +24,6 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- layout css -->
-<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- T-map 지도를 쓰기위한 선언 -->
@@ -43,7 +39,6 @@
 <style>
 
 .maincon{
-	color : #404548;
 	z-index:15;
 }
 
@@ -190,6 +185,14 @@ body, html {
   height: 80%;
 }
 
+#Tmap_Control_ZoomBar_46{
+	z-index : 998;
+}
+
+#Tmap_Control_ScaleLine_47{
+	z-index : 998;
+}
+
 #News {background-color: #f5f5f5;}
 #Contact {background-color: #f5f5f5;}
 
@@ -227,7 +230,6 @@ body, html {
 </style>
 
 <script>
-alert('${user}');
 //오늘 날짜 구하기
 var today = new Date();
 var dd = today.getDate();
@@ -588,7 +590,11 @@ $(function(){
     }
 })
 </script> 
-    
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
 </head>
 <body>
 

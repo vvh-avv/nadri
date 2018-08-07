@@ -285,19 +285,15 @@ $(function() {
 		}
 	});
 	
-	$('#car').on('click',function(){
-		$('body').css('overflow','hidden');
-		
+	$('.car > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=0';
 	});
 	
-	$('#pedestrian').on('click',function(){
-		
+	$('.walk > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=1';
 	});
 	
-	$('#transit').on('click',function(){
-		
+	$('.public > img').on('click',function(){		
 		self.location = '/schedule/addSchedule?transportationCode=2';
 	});
 
@@ -471,7 +467,7 @@ $(function() {
 				if(JSONData.userId != "none"){
 					var userStatus = JSONData.userStatus;
 					if( JSONData.password == $("#password").val() ){
-						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else if(userStatus == '1'){
 						alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						self.location = "/index.jsp";
@@ -479,7 +475,7 @@ $(function() {
 						alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						self.location = "/index.jsp";
 					}else if(userStatus == '0'){
-						$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else{
 						alert("비밀번호를 다시 확인하세요!");
 						$("#password").val("").focus();
