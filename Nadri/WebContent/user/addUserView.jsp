@@ -23,10 +23,9 @@
 	<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
 	<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
 	<script src="/javascript/indexReal_nonIndex.js"></script>
-
-	<style>
-
-	</style>
+	
+	<!-- sweet alert CDN -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	
 	<script type="text/javascript">		
 		function fncAddUser() {
@@ -40,6 +39,12 @@
 				alert("아이디는 반드시 입력해야 합니다.");
 				return;
 			}
+			
+			if(id.length<3 || id.length>9){
+				alert("아이디는 4글자 이상 8글자 이내로 입력해야합니다");
+				return;
+			}
+			
 			if(pw == null || pw.length <1){
 				alert("패스워드는 반드시 입력해야 합니다.");
 				return;

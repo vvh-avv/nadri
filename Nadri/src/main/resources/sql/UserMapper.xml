@@ -54,11 +54,12 @@
       	</set>
       WHERE user_id = #{userId}
    </update>
-   
+		   
    <!-- SQL: SELECT LIST -->
-	<select id="getUserList" parameterType="search" resultMap="userMap"> 
-	SELECT profile_img, user_id, user_name, email, status, reg_date 
-	FROM user </select>
+   <select id="getUserList" parameterType="search" resultMap="userMap"> 
+   SELECT profile_img, user_id, user_name, email, status, reg_date, token
+   FROM user
+   </select>
    
    <!-- SQL: SELECT ROW COUNT -->
    <select id="getTotalCount" parameterType="search" resultType="int">
@@ -180,4 +181,6 @@
          </if>
         </if>
    </select>
+
+   
 </mapper>

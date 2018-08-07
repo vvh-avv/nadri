@@ -27,6 +27,7 @@ public class User {
 	private String infoOption;					//°Λ»φ½Γ Α€ΊΈ °ψ°³ Ώ©ΊΞ(0: °ψ°³, 1: Ίρ°ψ°³)
 	private Date quitDate;							//Ε»ΕπΐΟ
 	private String quitReason;					//Ε»Επ »ηΐ―
+	private String token;
 
 	
 	
@@ -237,6 +238,15 @@ public class User {
 		this.quitReason = quitReason;
 	}
 
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
@@ -244,7 +254,9 @@ public class User {
 				+ ", phone2=" + phone2 + ", phone3=" + phone3 + ", age=" + age + ", introduce=" + introduce
 				+ ", regDate=" + regDate + ", role=" + role + ", lastLogin=" + lastLogin + ", status=" + status
 				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
-				+ "]";
+				+ ", token=" + token + "]";
 	}
+	
+	
 	
 }
