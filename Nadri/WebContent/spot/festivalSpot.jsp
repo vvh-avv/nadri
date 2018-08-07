@@ -24,7 +24,7 @@
 <!-- juanMap.js CDN -->
 <script src="/javascript/juanMap.js"></script>
 <!-- Mansory CDN 블럭처럼 게시물을 쌓을 수 있도록 만들어주는 CDN입니다! -->
-<!-- <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script> -->
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
 <!-- layout css -->
 <link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
 <link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
@@ -362,14 +362,14 @@ $(function() {
 				map : map,
 				icon : icons['festival'].icon
 			});
-/* 			if(typeof locations[i].img == "undefined"){
+ 			if(typeof locations[i].img == "undefined"){
 							
 			} else {
 				
-			} */
+			} 
 			
 			//인덱스를 꺼내오기.. 중요!!
-			/* markers[i].index = i
+			 markers[i].index = i
 			if(typeof locations[i].img == "undefined"){
 			contents[i] = '<div class="box box-primary" style="font-family : seoul">'
 				+ '<h4>'+ locations[i].title+ '</h4>'
@@ -398,7 +398,7 @@ $(function() {
 					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-info">축제/전시</span></li>'
 					+ '<a href="/spot/getFestival?spotNo='+ locations[i].contentid+'"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
 					+ '</div>';
-			} */
+			} 
 				
 			// 이벤트 정보 넣기
 			infowindows[i] = new google.maps.InfoWindow({
@@ -428,9 +428,9 @@ $(function() {
 			self.location = "/spot/getFestival?spotNo=" +$(this).attr('name');
 		});
 		
-/* 		$(".spot").on('click', function() {
+	/*$(".spot").on('click', function() {
 			self.location = "/spot/getFestival?spotNo=" +$(this).children(':first').text();
-		}); */
+		});  */
 	});
 </script>
 	<%-- Main content --%>

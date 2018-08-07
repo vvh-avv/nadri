@@ -24,10 +24,6 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- layout css -->
-<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 구글맵을 사용하기 위한 CDN -->
@@ -45,7 +41,6 @@
 <style>
 
 .maincon{
-	color : #404548;
 	z-index:15;
 }
 
@@ -191,6 +186,14 @@ body, html {
   display: none;
   padding:10px;
   height: 80%;
+}
+
+#Tmap_Control_ZoomBar_46{
+	z-index : 998;
+}
+
+#Tmap_Control_ScaleLine_47{
+	z-index : 998;
 }
 
 #News {background-color: #f5f5f5;}
@@ -564,7 +567,10 @@ $(function(){
     }
 })
 </script> 
-    
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 </head>
 <body>
 
