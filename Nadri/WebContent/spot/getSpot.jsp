@@ -124,7 +124,7 @@ function addCartSpot(){
 				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
 				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
 					spotNo : $("#spotNo").val(),
-					userId : $("#userId").val(),
+					userId : $("#cartUserId").val(),
 					cartDetail : $("#cartDetail").val(),
 					cartTitle : $("#cartTitle").val(),
 					cartAddress :$("#cartAddress").val(),
@@ -418,7 +418,7 @@ function addCartSpot(){
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
 									</div>
-									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}">
+									<input type="hidden" id="cartUserId" name="userId" value="${sessionScope.user.userId}">
 									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
 							</div>
 								<div class="modal-footer">
@@ -429,7 +429,6 @@ function addCartSpot(){
 						</div>
 					</div>
 				</form>
-				
 				
 			</div>
 

@@ -104,4 +104,9 @@ public class SpotDaoImpl implements SpotDao{
 		return sqlSession.selectList("SpotMapper.getRecommandSpotList");
 	}
 	
+	// 10. 안드로이드에서 getSpot
+	public List<Spot> getSpotListRest(Search search) throws Exception {
+		return sqlSession.selectList("SpotMapper.getSpotListRest", search);
+	}
+	
 }

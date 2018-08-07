@@ -238,7 +238,7 @@ public class ScheduleRestController {
 		   scheduleService.updateScheduleReview(schedule);
 	   }
 	
-	   /*@RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
 	   public @ResponseBody JSONArray getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
 		   
 		   System.out.println("/restschedule/getSchedule : POST");
@@ -275,9 +275,9 @@ public class ScheduleRestController {
 		  }
 		  	   
 		   return jsonArray;
-	   }*/
+	   }
 	   
-	   @RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
+	   /*@RequestMapping(value="getSchedule/{scheduleNo}", produces="application/json;charset=utf-8")
 	   public List<WayPoint> getScheduleList( HttpSession session, @PathVariable int scheduleNo ) throws Exception{
 		   
 		   System.out.println("/restschedule/getSchedule : POST");
@@ -286,7 +286,7 @@ public class ScheduleRestController {
 		  List<WayPoint> list = scheduleService.getWayPoint(scheduleNo);
 		  
 		   return scheduleService.getWayPoint(scheduleNo);
-	   }
+	   }*/
 		
 		//안드로이드로 스케쥴 리스트 가져오기
 		@RequestMapping(value="getMyScheduleListRest/{userId}", method=RequestMethod.GET)

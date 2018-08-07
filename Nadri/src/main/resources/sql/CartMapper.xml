@@ -19,33 +19,9 @@
 		<result property="cartImg" 	                        column="cart_img" 		                jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<insert 	id="addCartSpot"	parameterType="cart" >
-	 	INSERT
-		INTO cart  (
-					spot_no, 
-					user_id, 
-					cart_code,
-					cart_detail,
-					cart_title,
-					cart_address,
-					cart_x,
-					cart_y,
-					cart_time,
-					stamp_code,
-					cart_img)
-		VALUES ( 	
-					#{spotNo:INTEGER},
-					#{userId:VARCHAR},
-					'0',
-					#{cartDetail:VARCHAR},
-					#{cartTitle:VARCHAR},
-					#{cartAddress:VARCHAR},
-					#{cartX},
-					#{cartY},
-					now(),
-					'0',
-					#{cartImg:VARCHAR})		
-	 </insert>
+	<insert id="addCartSpot" parameterType="cart"> 
+	INSERT INTO cart ( spot_no, user_id, cart_code, cart_detail, cart_title, cart_address, cart_x, cart_y, cart_time, stamp_code, cart_img) VALUES ( #{spotNo:INTEGER}, #{userId:VARCHAR}, '0', #{cartDetail:VARCHAR}, #{cartTitle:VARCHAR}, #{cartAddress:VARCHAR}, #{cartX}, #{cartY}, now(), '0', #{cartImg:VARCHAR}) 
+	</insert>
 	 
 	 <select id="getSpotCartList" parameterType="String" resultMap="cartSelectMap" >
        SELECT *

@@ -297,38 +297,43 @@ $(function(){
          }
       })
    })
-   
-   // 버튼이면서 updateScheduleReview로 시작하는거 클릭했을때!!
-   $("button[id^='updateReview']").on("click", function(e){
-      e.stopPropagation();
-   
-      var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
-      $("#modalscheduleNo").val(scheduleNo);
-      $("#review").modal();
-   });
-   
-   // modal전송 버튼을 눌렀을때
-   $("#modalinsert").on("click", function(){
-       $.ajax({
-         method : "POST",
-         url : "/restschedule/updateReview",
-         headers : {
-            "Content-Type" : "application/json",
-            "X-HTTP-Method-Override" : "POST"
-         },
-         data : JSON.stringify({ // 서버로 보낼 데이터 명시 
-            scheduleNo : $("#modalscheduleNo").val(),
-            scheduleReview : $("#modalscheduleReview").val()
-         }),
-         success : function(){
-         }
-      });
-      swal("리뷰가 등록되었어요!");
-      // 모달을 닫습니다.
-      $("#review").modal('hide');
-   });
-   
+    
 });
+
+$(function(){
+	
+	// 버튼이면서 updateScheduleReview로 시작하는거 클릭했을때!!
+	$("button[id^='updateReview']").on("click", function(e){
+		e.stopPropagation();
+	
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		$("#modalscheduleNo").val(scheduleNo);
+		$("#review").modal();
+	});
+	
+	// modal전송 버튼을 눌렀을때
+	$("#reviewmodalinsert").on("click", function(){
+ 		$.ajax({
+			method : "POST",
+			url : "/restschedule/updateReview",
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+				scheduleNo : $("#modalscheduleNo").val(),
+				scheduleReview : $("#modalscheduleReview").val()
+			}),
+			success : function(){
+			}
+		});
+		swal("리뷰가 등록되었어요!");
+		// 모달을 닫습니다.
+		$("#review").modal('hide');
+	});
+	   
+});
+
 </script>
 
 <style>
@@ -616,5 +621,32 @@ article:hover .links, article:hover .linksIcon {
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	<!-- 리뷰를 등록하는 모달창! --> 
+	<form id="reviewform">
+            <div class="modal" id="review" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이 어떠셨어요??</h4> 
+                        </div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="scheduleTitle">후기작성</label> 
+							<input type="text" class="form-control" id="modalscheduleReview" name="scheduleReview" placeholder="나들이 후기를 작성해주세요!">
+							<input type="hidden" id="modalscheduleNo" name="scheduleNo">
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="btn btn-danger modalModBtn" id="reviewmodalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+       </form>
+       
+       
 </body>
 </html>

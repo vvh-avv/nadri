@@ -108,4 +108,9 @@ public class SpotServiceImpl implements SpotService{
 		return spotDao.getRecommandSpotList();
 	}
 	
+	// 10. 안드로이드에서 getSpot
+	public List<Spot> getSpotListRest(Search search) throws Exception {
+		return spotDao.getSpotListRest(search);
+	}
+	
 }

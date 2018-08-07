@@ -155,4 +155,27 @@
 	   ORDER BY spot_readcnt
        limit 0, 9
    </select>
+   
+  <!--  안드로이드에서 장소를 가져오기 위한 메서드입니다. -->
+   <select id="getSpotListRest" parameterType="search" resultMap="spotSelectMap" >
+       SELECT spot_no, spot_title, spot_img, spot_address, spot_phone
+       FROM spot
+       <if test="searchCondition == '' and searchKeyword != '' ">
+              WHERE spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+       </if>
+       <if test="searchCondition =='제목' and searchKeyword != '' ">
+            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+       		AND spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+       </if>
+       <if test="searchCondition =='주소' and searchKeyword != '' ">
+            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+       		AND spot_address LIKE CONCAT('%',#{searchKeyword},'%')
+       </if>
+       <if test="searchCondition =='상세내용' and searchKeyword != '' ">
+            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+       		AND spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+       </if>
+        ORDER BY spot_readcnt
+        limit 0, 30
+   </select>
 </mapper>

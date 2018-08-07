@@ -48,4 +48,7 @@ public interface SpotService {
 	
 	// 10. getRecommandSpotList 가져오는 메서드
 	public List<Spot> getRecommandSpotList() throws Exception;
+	
+	// 10. 안드로이드에서 getSpot
+	public List<Spot> getSpotListRest(Search search) throws Exception;
 }
