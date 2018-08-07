@@ -256,4 +256,21 @@
 	.search-log-container{
 		height:50px;
 	}
+	
+	.section-title{
+		align-items : center;
+	}
+	
+	.menu-title{
+		font-size : 20px;
+	}
+	
+	.mini-title{
+		font-size : 10px;
+	}
+	
+	.title-flex-box{
+		align-items: center;
+		margin-bottom : 0px;
+	}
 }

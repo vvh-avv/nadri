@@ -424,6 +424,8 @@ function addCartSpot(){
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">´Ý±â</button>
 									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">Ãß°¡</button>
+									
+									<%-- *** : <%= session.getAttribute("user") %> --%>
 								</div>
 							</div>
 						</div>

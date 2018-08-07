@@ -189,7 +189,7 @@ body {
 	transition: opacity 0.5s;
 	position : absolute;
 	top : 5px;
-	left: 34px;
+	left: 30px;
 }
 
 #jolly-icon{
@@ -884,4 +884,23 @@ body {
 
 .gotoTop{
 	filter : grayscale(100%);
+}
+
+.loader-background{
+	position : absolute;
+	width : 100%;
+	height : 100%;
+	background : #ffffffbd;
+	z-index : 1;
+	left : 100%;
+	transition : all 1s;
+	display : none;
+}
+
+.loader{
+	position : relative;
+	height : 80%;
+	display : flex;
+	justify-content: center;
+	align-items: center;
 }

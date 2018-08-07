@@ -57,25 +57,45 @@ body {
 /* 	font-family : seoul; */
 }
 
+.expander-box{
+	position : absolute;
+	top : 70px;
+	padding : 17.5px;
+	background: #748ea98a;
+	color : white;
+	z-index : 1;
+	right : 100%;
+	transition : all 1s;
+	border-radius : 50px 0px 0px 50px;
+}
+
+#expander-spots:hover{
+	cursor : pointer;
+}
+
 .spot-top-box{
-	width : 65%;
+	width : 100%;
 	margin-left:auto;
 	margin-right:auto;
+	position : absolute;
+	top : 70px;
+	z-index : 1;
+	transition : all 1s;
+	left : 0%;
 }
 
 @media only screen and (max-width : 600px){
 	.spot-top-box{
-		width : 100%;
-		margin-left:auto;
-		margin-right:auto;
+		top : 50px;
+	}
+	
+	.expander-box{
+		top : 50px;
 	}
 }
 
 .nav-wrapper{
-	border-radius: 0px 0px 60px 60px;
 	background: #6d91af94;
-	margin: 0px 15px 15px 15px;
-	box-shadow : 1px 2px 10px 0px #a7a7a7;
 }
 
 #nav-mobile{
@@ -772,23 +792,28 @@ $(document).ready(function(){
 	
 </script>
 
-<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
-<img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
 <body>
 	
+<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
+<img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
+
 <%@include file="/layout/new_toolbar.jsp"%>
 	
-	<nav class="spot-top-box">
-	    <div class="nav-wrapper">
-	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	        <li><span id="park">공원</span></li>
-	        <li><span id="restaurant">맛집</span></li>
-	        <li><span id="festival">축제/전시</span></li>
-			<li><span id="river">한강</span></li>
-	        <li><span id="search">검색</span></li>
-	      </ul>
-	    </div>
-  </nav>
+<nav class="spot-top-box">
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><span class="glyphicon glyphicon-triangle-right" id="unexpanded"></span></li>
+        <li><span id="park">공원</span></li>
+        <li><span id="restaurant">맛집</span></li>
+        <li><span id="festival">축제/전시</span></li>
+		<li><span id="river">한강</span></li>
+        <li><span id="search">검색</span></li>
+      </ul>
+    </div>
+</nav>
+<div class="expander-box">
+	<span class="glyphicon glyphicon-triangle-left" id="expander-spots"></span>
+</div>
   
   
 	<div id="map">

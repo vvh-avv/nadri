@@ -254,6 +254,9 @@ $(function() {
 
 	$('.spots').on('click', function() {
 		var id = $(this).attr('id');
+		$('body').css('overflow','hidden');
+		$('.loader-background').css('display','block');
+		$('.loader-background').css('left','0%');
 		if (id == 'rivers') {
 			self.location = '/spot/getSpotList?spotCode=4';
 		} else if (id == 'parks') {
@@ -278,11 +281,15 @@ $(function() {
 
 	$('.side-section > span').on('click', function() {
 		var id = $(this).attr('id');
+		
 		if (id == 'chat-open') {
+
 			self.location = '/board/listBoard';
 		} else if (id == 'join-open') {
+
 			self.location = '/user/getUser';
 		} else if (id == 'admin-page') {
+
 			self.location = '/admin/adminIndex';
 		} else if (id == 'log-out') {
 			self.location = '/user/logout';
@@ -294,13 +301,17 @@ $(function() {
 	
 	$('.top-icons-small').on('click', function() {
 		var id = $(this).attr('id');
+		
 		if (id == 'login-open') {
 			self.location = '/user/login';
 		} else if (id == 'chat-open') {
+
 			self.location = '/board/listBoard';
 		} else if (id == 'join-open') {
+
 			self.location = '/user/getUser';
 		} else if (id == 'admin-page') {
+
 			self.location = '/admin/adminIndex';
 		} else if (id == 'log-out') {
 			self.location = '/user/logout';
@@ -311,10 +322,12 @@ $(function() {
 	});
 	
 	$('#car').on('click',function(){
+
 		self.location = '/schedule/addSchedule?transportationCode=0';
 	});
 	
 	$('#pedestrian').on('click',function(){
+
 		self.location = '/schedule/addSchedule?transportationCode=1';
 	});
 	
@@ -325,7 +338,7 @@ $(function() {
 	$('.schedule-button').on('click',function(){
 		var check = $('#session-checker').val();
 		console.log(check);
-		if( check == null ){
+		if( check == 'no_user' ){
 			swal({
 				  title: "회원만 이용하실 수 있어요!",
 				  text: "일정작성을 위해서는 회원가입이나 로그인을 해주세요.",
@@ -333,32 +346,15 @@ $(function() {
 				  button: " 닫 기 ",
 				});	
 		}else{
-			self.location = '/schedule/addSchedule';
+			$("#transportationModal").modal();
 		}
 	});
 
 	$('.post-title').on('click', function() {
 		var id = $(this).attr('id');
 		console.log(id);
+
 		self.location = '/board/getBoard?boardNo=' + id;
-	});
-
-	$('.schedule-button').on('click', function() {
-		var check = $('#session-checker').val();
-		console.log(check);
-		if (check != 'no_user') {
-			console.log("session 여부 : 있음");
-			self.location = '/schedule/addSchedule';
-
-		} else {
-			console.log("session 여부 : 없음");
-			swal({
-				title : "회원만 이용하실 수 있어요!",
-				text : "일정작성을 위해 가입 또는 로그인을 해주세요.",
-				icon : "error",
-				button : " 닫 기 ",
-			});
-		}
 	});
 
 	$('.searcher > input').on('focusin', function() {
@@ -411,6 +407,9 @@ $(function() {
 	
 	$('.search-history').on('click','.logs',function(){
 		console.log("work check");
+		$('body').css('overflow','hidden');
+		$('.loader-background').css('display','block');
+		$('.loader-background').css('left','0%');
 		self.location = "/searchLog/listSearchLog?searchKeyword="
 			+ $(this).attr('name');
 	})
@@ -420,6 +419,9 @@ $(function() {
 			function(e) {
 				console.log(e.which);
 				if (e.which == 13) {
+					$('body').css('overflow','hidden');
+					$('.loader-background').css('display','block');
+					$('.loader-background').css('left','0%');
 					self.location = "/searchLog/listSearchLog?searchKeyword="
 							+ $(this).val();
 				}
@@ -430,6 +432,9 @@ $(function() {
 			function(e) {
 				console.log(e.which);
 				if (e.which == 13) {
+					$('body').css('overflow','hidden');
+					$('.loader-background').css('display','block');
+					$('.loader-background').css('left','0%');
 					self.location = "/searchLog/listSearchLog?searchKeyword="
 							+ $(this).val();
 				}
@@ -714,5 +719,7 @@ $(function() {
 	   		//설정정보를 초기화하고 연동 준비
 			naverLogin.init();
 		})
+		
+		
 
 });
