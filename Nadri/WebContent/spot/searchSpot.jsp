@@ -547,7 +547,7 @@ $(function(){
 				          
 				  	        // 마커를 클릭했을때 이벤트 발생 시키기
 				  	        google.maps.event.addListener(markers[i], 'click', function() {
-				  	        	map.setZoom(15);
+				  	        	//map.setZoom(15);
 				  	       		// 일단 마커를 모두 닫고
 				  	        	 infowindows[this.index].open(map, markers[this.index]);
 				  	        	map.panTo(markers[this.index].getPosition());

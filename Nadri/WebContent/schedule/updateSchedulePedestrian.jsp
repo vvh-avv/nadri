@@ -562,7 +562,7 @@ $(function(){
                    cartImg : e.target.result
                 }),
                 success : function(data){
-                   alert(data);
+                   //alert(data);
                    //$("."+updateCartImgNo).find("img").attr('src',data);
                    //$("#cartImg"+i+"").attr('src');
                 }

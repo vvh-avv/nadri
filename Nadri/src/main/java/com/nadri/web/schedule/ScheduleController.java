@@ -116,7 +116,11 @@ public class ScheduleController {
 			//Business Logic
 			schedule.setScheduleImg(fileName);
 		} else {
-			fileName = format+multipartFile.getOriginalFilename();
+			
+			// 확장자 구하기
+			int pos = multipartFile.getOriginalFilename().lastIndexOf( "." );
+			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
+
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
 			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
 			
@@ -333,9 +337,13 @@ public class ScheduleController {
 	    	  //multipartFile.transferTo(file);
 			fileName = schedule.getScheduleImg();
 		} else {
-			fileName = format+multipartFile.getOriginalFilename();
+			//fileName = format+multipartFile.getOriginalFilename();
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
 			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			
+			// 확장자 구하기
+			int pos = multipartFile.getOriginalFilename().lastIndexOf( "." );
+			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
 			
 			// 파일 객체 생성
 			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
