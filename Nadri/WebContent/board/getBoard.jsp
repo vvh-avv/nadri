@@ -428,7 +428,7 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
-	   //alert("아이디 : " + $(this).attr("id")) ;
+	  // alert("아이디 : " + $(this).attr("id")) ;
 	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
@@ -440,6 +440,7 @@ $(function(){
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
             method : "POST",
             success : function(map, status){
+            	
             	//보상 (좋아요)
             	if( map.myLikeCnt==5 ){
             		swal({
@@ -737,7 +738,9 @@ $(function(){
    
    //*유저프로필 모달창
    var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
+   var modalMyself = false; //본인이 본인프로필을 열었는지 체크하기 위함 //본인은 신고하지 못하도록
    $('.userModal').on('show.bs.modal', function (event) {
+	   
 		var button = $(event.relatedTarget);
   		var modal = $(this);
   		
@@ -754,7 +757,9 @@ $(function(){
   			if( '${sessionScope.user.userId}' == modalFriendId ){  //본인일 경우
 				$("#addFriend").remove();
 				$("#chatFriend").remove();
+				modalMyself = true;
   			}else{ //본인이 아니면 실제 로직 수행
+  				modalMyself = false;
   	  	  		$.ajax({
   	  	  			url : "/friend/json/chkFriend/"+recipient[2]+"/1",
   	  	  			success : function(data){
@@ -817,13 +822,18 @@ $(function(){
    })
    //*유저프로필 모달창 내 신고하기
    $("#inquireUser").on("click", function(){
-	   var counter = $(this).attr('name');
-	   $('.reportedUserId').val(counter);
-	   $('.reportedUserId').attr('disabled', 'disabled');
-	   $('.inquireCode').val('0').prop("selected", true);
-	   $('.inquireCode').attr('disabled', 'disabled');
-	   $('.reportUser').css('visibility', 'visible');
-	   $('.reportLink').css('visibility', 'hidden');
+	   if(!modalMyself){
+		   var counter = $(this).attr('name');
+		   $('.reportedUserId').val(counter);
+		   $('.reportedUserId').attr('disabled', 'disabled');
+		   $('.inquireCode').val('0').prop("selected", true);
+		   $('.inquireCode').attr('disabled', 'disabled');
+		   $('.reportUser').css('visibility', 'visible');
+		   $('.reportLink').css('visibility', 'hidden');
+	   }else{
+		   alert("본인은 신고할 수 없습니다.");
+			$(this).attr("data-toggle","");
+	   }
 	})
    
    

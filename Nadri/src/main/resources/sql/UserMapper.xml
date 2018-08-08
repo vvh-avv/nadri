@@ -24,6 +24,7 @@
       <result property="infoOption" column="info_option" jdbcType="VARCHAR" />
       <result property="quitDate" column="quit_date" jdbcType="DATE" />
       <result property="quitReason" column="quit_reason" jdbcType="VARCHAR" />
+      <result property="token" column="token" jdbcType="VARCHAR"/>
    </resultMap>
       
   
@@ -48,15 +49,15 @@
    <!-- SQL: UPDATE -->
    <update id="updateUser" parameterType="user">
       UPDATE user
-      SET user_name = #{userName}, email = #{email}, password = #{password},
-      phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}
+      SET user_name = #{userName}, email = #{email}, password = #{password}, phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}, token=#{token}
       WHERE user_id = #{userId}
    </update>
    
    <!-- SQL: SELECT LIST -->
 	<select id="getUserList" parameterType="search" resultMap="userMap"> 
-	SELECT profile_img, user_id, user_name, email, status, reg_date 
-	FROM user </select>
+	SELECT profile_img, user_id, user_name, email, status, reg_date, token
+	FROM user
+	</select>
    
    <!-- SQL: SELECT ROW COUNT -->
    <select id="getTotalCount" parameterType="search" resultType="int">

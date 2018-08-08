@@ -23,10 +23,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.common.Page;
@@ -193,7 +195,7 @@ public class UserRestController {
 	}
 	
 
-	//회원 아이디 찾기
+	//*회원 아이디 찾기
 	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
 		
@@ -201,13 +203,16 @@ public class UserRestController {
 		
 		//User user = new User();
 		user = userService.findUserId(user);
-		
-		
-		String userId = user.getUserId();
-		
+
 		//제이슨 데이터는 맵이나 도메인으로 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
+		if(user==null) {
+			map.put("userId", null);
+		}else {
+			String userId = user.getUserId();
+			map.put("userId", userId);
+		}
+		
 		return map;
 	}
 	
@@ -345,5 +350,13 @@ public class UserRestController {
 		}
 	}
 	
+	//=>여기서부턴 안드로이드 작업하다 없는 메소드 추가한 부분
+	//회원탈퇴
+	@RequestMapping(value="json/quitUser/{userId}", method=RequestMethod.POST)
+	public void quitUser( @PathVariable("userId") String userId) throws Exception{
+		System.out.println("RestController:: /user/json/quitUser : POST");
+		
+		userService.quitUser(userId);
+	}
 	
 }
