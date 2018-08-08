@@ -24,6 +24,9 @@
 	href="/css/indexRealSmall.css" />
 <script src="/javascript/indexReal_nonIndex.js"></script>
 
+<!-- sweet alert CDN -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
 	//친구 삭제
@@ -34,16 +37,23 @@
 
 					var friendNo = $(this).attr("id").replace(/[^0-9]/g, ""); //td로 나뉘어 있는 것들을 tr로 행 기준으로 삼아서 숫자를 제외한 나머지는 nullstring으로 대체
 					var friendId = $("#" + friendNo).attr('class');
-
+					var userId = document.getElementById("userId").value;
+					
 					console.log(friendId);
+					//alert("친구 아이디: "+friendId);
+					//alert("유저 아이디: "+userId);
 
 					$.ajax({
-						url : "/friend/json/deleteFriend?userId=" + userId
-								+ "&friendId=" + friendId,
+						url : "/friend/json/deleteFriend?userId=" + userId+ "&friendId=" + friendId,
 						method : "GET",
 						data : "json",
 						success : function(data) {
-							swal("친구가 삭제되었습니다", "success");
+							swal({
+				    			   title: "삭제 완료!",
+				    			   text: "회원님이 친구 \""+friendId+"\"를 삭제했습니다!",
+				    			   icon: "error",
+				    			   buttons: false,
+				    			 });
 
 							$("#" + friendNo).remove();
 						}
@@ -51,7 +61,7 @@
 				})
 	})
 
-	/* //친구 추가
+	 /* //친구 추가
 	 $(function() {
 	 $( "button[id^='acceptFriend']" ).on("click" , function() {
 
@@ -74,7 +84,7 @@
 			}
 		})	
 	})	 
-	})   */
+	})    */
 </script>
 
 <style>
@@ -116,26 +126,24 @@
 			<div class="col-xs-12 col-md-3">
 				<div class="col-md-12 user-profile-section">
 					<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
-						<img src="/images/profile/${user.profileImg}" width="133"
-							height="133" class="img-circle">
+						<img src="/images/profile/${user.profileImg}" width="133" height="133" class="img-circle">
 						<br />
 						<br />
 					</c:if>
 					<c:if test="${ empty user.profileImg} ">
-						<img src="/images/profile/default.png" width="133" height="133"
-							class="img-circle">
+						<img src="/images/profile/default.png" width="133" height="133" class="img-circle">
 					</c:if>
 					<h4>
 						<a href="/user/listUser">마이 페이지</a>
 					</h4>
-					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
-						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
-						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
-						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
-						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
-						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
-					<br /> <br /> <br /> <br /> <br /> <br /> <a
-						href="/user/logout">로그아웃</a><br /> <br />
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
+						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
+						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
+						<a href="/board/getMyBoardList">작성한 글</a><br /> <br /> 
+						<a href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> 
+						<a href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
 			</div>
 
@@ -154,23 +162,23 @@
 									<tr>
 										<th class="text-center">No</th>
 										<th class="text-center">ID</th>
+										<th class="text-center">프로필사진</th>
 										<th class="text-center">친구삭제</th>
 									</tr>
 								</thead>
 
 								<tbody>
 
-									<c:forEach var="friend" items="${fList }">
+									<c:forEach var="friend" items="${fList2 }">
 
 										<tr id="${friend.friendNo}" class="${friend.friendId }">
 											<td align="center">${friend.friendNo }</td>
 											<td align="center">${friend.friendId }</td>
+											<td align="center"><img src="/images/profile/${friend.friendId }.png" width="73" height="73" ></td>
 
 
-											<td class="text-center"><c:if
-													test="${friend.friendCode == '1' }">
-													<button type="button" class="btn btn-danger"
-														id="deleteFriend${friend.friendNo}">삭제</button>
+											<td class="text-center"><c:if test="${friend.friendCode == '1' }">
+													<button type="button" class="btn btn-danger" id="deleteFriend${friend.friendNo}">삭제</button>
 												</c:if></td>
 
 										</tr>

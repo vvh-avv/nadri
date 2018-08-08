@@ -133,7 +133,7 @@ body {
 /* 	background: white; */
  	width:100%;
  	position:fixed;
- 	z-index:999;
+ 	z-index:1020;
 }
 
 .maincon{
@@ -189,7 +189,7 @@ body {
 	transition: opacity 0.5s;
 	position : absolute;
 	top : 5px;
-	left: 34px;
+	left: 30px;
 }
 
 #jolly-icon{
@@ -884,4 +884,85 @@ body {
 
 .gotoTop{
 	filter : grayscale(100%);
+}
+
+.loader-background{
+	position : absolute;
+	width : 100%;
+	height : 100%;
+	background : #ffffffbd;
+	z-index : 1;
+	left : 100%;
+	transition : all 1s;
+	display : none;
+}
+
+.loader{
+	position : relative;
+	height : 80%;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.gm-style-iw{
+	display : flex;
+	justify-content: space-around;
+	align-items : center;
+	flex-direction: column;
+}
+
+#transportationModal {
+	overflow : hidden;
+}
+
+/* .modal-body{
+	width : 100%;
+	height: 100%;
+	overflow : hidden;
+	margin : 0;
+} */
+
+.modal-schedule{
+	top : 40%;
+	left : 35%;
+	min-width : 250px;
+	min-height: 100px;
+	width : 30%;
+	height: 20%;
+	position : absolute;
+}
+
+.modal-header{
+	display : flex;
+}
+
+.modal-title{
+	float : left;
+	margin-left : auto;
+	margin-right : auto;
+}
+
+.modal-header > button {
+	float : right;
+}
+
+.dialogue-schedule{
+	width : 100%;
+	height : 100%;
+}
+
+.schedule-trans{
+	width : 80px;
+	opacity : .5;
+}
+
+.schedule-trans:hover{
+	cursor : pointer;
+	opacity : 1;
+}
+
+.schedules-icons{
+	display : flex;
+	justify-content: space-evenly;
 }

@@ -62,6 +62,50 @@ html, body {
 .materialboxed {
 	text-align : center;
 } */
+
+
+/*  신고기능을 위한 admin css  */
+   .inquireTitle {
+      margin-bottom: 10px;
+      width: 100%;
+   }
+   .reportUser {
+      display: inline;
+      float: right;
+      visibility: hidden;
+      position : absolute;
+      right:1vw;
+   }
+   .reportLink{
+      display: inline;
+      float: right;
+      visibility: hidden;
+      position : absolute;
+      right:1vw;   
+   }
+   .inquireWrite {
+      width: 100%;
+   }
+   body.waiting * {
+      cursor: progress;
+   }
+   .count1 div {
+      display: none;
+      float: right;
+   }
+   .count2 div {
+      display: none;
+      float: right;
+   }
+   
+   .count2 p{
+  	float:left;
+   }
+   
+   .fonted{
+      float: left;
+      margin-bottom: 10px;
+   }
 </style>
 
 
@@ -73,6 +117,131 @@ $(document).ready(function(){
   
 //맨위로 올라가게 만들어 주는 script
 $(function(){
+	
+	$('button#inquirebutton').on('click',function(){
+		var counter = $(this).attr('name');
+		console.log(counter);
+	    $('.inquireLink').val(counter);
+	    $('.inquireLink').attr('disabled', 'disabled');
+	    $('.inquireCode').val('3').prop("selected", true);
+	    $('.inquireCode').attr('disabled', 'disabled');
+	    $('.reportUser').css('visibility', 'hidden');
+	    $('.reportLink').css('visibility', 'visible');
+	});
+	
+	$('.inquireTitle').on('click', function() {
+       $('.count1 div').css('display', 'inline-block');
+    })
+
+    $('.inquireTitle').on('focusout', function() {
+       $('.count1 div').css('display', 'none');
+    })
+
+    $('.inquireWrite').on('click', function() {
+       $('.count2 div').css('display', 'inline-block');
+    })
+
+    $('.inquireWrite').on('focusout', function() {
+       $('.count2 div').css('display', 'none');
+    })
+
+    $('.inquireWrite').on("input", function() {
+       var maxlength = $(this).attr("maxlength");
+       var currentLength = $(this).val().length;
+       $('.textCounter2').text(currentLength);
+    });
+
+    $('.inquireTitle').on("input", function() {
+  	  if($(this).val() == ''){
+  		  console.log('no value');
+  	  }
+  	  var maxlength = $(this).attr("maxlength");
+        var currentLength = $(this).val().length;
+        $('.textCounter1').text(currentLength);
+     });
+
+    $(".inquireSend").on(
+          "click",
+          function(e) {
+             var inquireFile = $('.inquire_file').val();
+           
+           if(inquireFile==""){
+              console.log("파일없음");
+              var formData = $(".inquire_form");
+              var requestMapping = 'addInquireNoFile';
+           }else{
+              console.log("파일있음");
+              $('.inquire_form').attr('enctype','multipart/form-data');
+              var requestMapping = 'addInquire';
+              var form = $(".inquire_form");
+              // you can't pass Jquery form it has to be javascript form object
+              var formData = new FormData(form[0]);
+           }
+
+           //if you only need to upload files then 
+           //Grab the File upload control and append each file manually to FormData
+           //var files = form.find("#fileupload")[0].files;
+
+           //$.each(files, function() {
+           //  var file = $(this);
+           //  formData.append(file[0].name, file[0]);
+           //});
+
+           if ($('.inquireTitle').val() == '') {
+              alert("제목을 입력해주세요!");
+              $('.inquireTitle').focusin();
+              return;
+           } else if ($('.inquireWrite').val() == '') {
+              alert("내용을 입력해주세요!");
+              $('.inquireTitle').focusin();
+           } else {
+
+              $('body').addClass('waiting');
+              
+              var reportUser = $('.reportedUserId').val();
+              
+              if(reportUser==''){
+                 console.log("유저신고가 아닙니다~");
+                 reportUser = 'null';
+              }
+              
+              var inquireCode = $('.inquireCode').val();
+              
+              var title = $('.inquireTitle').val();
+              var title_enc = encodeURI(encodeURIComponent(title));
+              
+              var write = $('.inquireWrite').val();
+              var write_enc = encodeURI(encodeURIComponent(write));
+              
+              var inquireLink = $('.inquireLink').val();
+              
+              if(inquireLink == ''){
+                 
+                 console.log("링크가 없어요~");
+                 inquireLink = "null";
+                 
+              }
+              
+              $.ajax({
+                 type : "POST",
+                 url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
+                 //dataType: 'json', //not sure but works for me without this
+                 data : formData,
+                 contentType: false,//this is requireded please see answers above
+                 processData : false, //this is requireded please see answers above
+                 //cache: false, //not sure but works for me without this
+                 success : function(data, status) {
+                    if (status == "success") {
+                       $('body').removeClass('waiting');
+                       $('.inquire_form')[0].reset();
+                       $('#inquireModal').modal('hide');
+                       console.log(data);
+                    }
+                 }
+              });
+           }
+
+          });
 	
 	
 	$("#nologininquire").on("click", function(){
@@ -124,7 +293,7 @@ function addCartSpot(){
 				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
 				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
 					spotNo : $("#spotNo").val(),
-					userId : $("#userId").val(),
+					userId : $("#cartUserId").val(),
 					cartDetail : $("#cartDetail").val(),
 					cartTitle : $("#cartTitle").val(),
 					cartAddress :$("#cartAddress").val(),
@@ -384,7 +553,7 @@ function addCartSpot(){
 								
 								<c:if test="${sessionScope.user.userId != null}">
 								<div class="pull-right">
-									<button type="button" class="btn btn-secondary" id="inquirebutton"><i class="fa fa-save"></i> 신고하기</button>
+									<button type="button" class="btn btn-secondary" id="inquirebutton" name="${spot.spotNo}" data-toggle="modal" data-target="#inquireModal"><i class="fa fa-save"></i> 신고하기</button>
 									<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
 								</div>
 								</c:if>
@@ -418,20 +587,76 @@ function addCartSpot(){
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
 									</div>
-									<input type="hidden" id="userId" name="userId" value="${sessionScope.user.userId}">
+									<input type="hidden" id="cartUserId" name="userId" value="${sessionScope.user.userId}">
 									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
 							</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
 									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
+									
+									<%-- *** : <%= session.getAttribute("user") %> --%>
 								</div>
 							</div>
 						</div>
 					</div>
 				</form>
 				
-				
 			</div>
+			
+			<!-- 신고 Modal content 시작 -->
+	   <div class="modal fade" id="inquireModal" role="dialog">
+	      <div class="modal-dialog">
+	         <div class="modal-content">
+	            <div class="modal-header">
+	               <button type="button" class="close" data-dismiss="modal">&times;</button>
+	               <h4 class="modal-title">
+	                  	신고하기<br>
+	                  <h6 style="color:lightgrey">신고내용은 창을 닫아도 유지됩니다</h6>
+	               </h4>
+	            </div>
+	            <div class="modal-body">
+	               <form class="inquire_form">
+		              	 신 고 종 류
+		              <select class="inquireCode" name="inquireCode" style="height: 30px;">
+	                     <option value="9">선택하세요</option>
+	                     <option value="0">유저신고</option>
+	                     <option value="1">게시글신고</option>
+	                     <option value="2">댓글신고</option>
+	                     <option value="3">정정신청</option>
+	                     <option value="4">기타문의</option>
+	                  </select>
+	                  <span class="reportUser">신고유저아이디<input type="text" name="reportUserId" class="reportedUserId" value="">
+	                  </span>
+	                  <span class="reportLink">신 고 링 크<input type="text" name="inquireLink" class="inquireLink" value="${spot.spotNo}">
+	                  </span>
+	                  <hr />
+	                  <div class="count1">
+	                     <p class="fonted">제목</p>
+	                     <div>/30</div>
+	                     <div class="textCounter1">0</div>
+	                  </div>
+	                  <input type="text" class="inquireTitle" name="inquireTitle" value="" placeholder="제목을 입력해주세요." maxlength="30"><br>
+	                  <div class="count2">
+	                     <p>신 고 내 용</p>
+	                     <div>/100</div>
+	                     <div class="textCounter2">0</div>
+	                  </div>
+	                  <textarea class="inquireWrite" name="inquireWrite" value="" placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
+	                  <br>
+	                  <p class="fonted">
+	                     <input type="file" name="inquire_file" multiple="multiple">
+	                  </p>
+	                  <br>
+	               </form>
+	            </div>
+	            <div class="modal-footer">
+	               <button type="button" class="btn btn-primary inquireSend">보내기</button>
+	               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	            </div>
+	         </div>
+	      </div>
+	   </div>
+	   <!-- 신고 Modal content 끝 --> 
 
 <!-- 구글맵을 불러쓰기위한 CDN -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>

@@ -65,8 +65,14 @@
 	
 	<insert id="insertInquire" parameterType="inquire">
 		INSERT
-		INTO inquire(user_id, reported_user_id, inquire_code, inquire_title, inquire_link, inquire_detail, inquire_file1, inquire_time)
-		VALUES( #{userId}, #{reportUserId}, #{inquireCode}, #{inquireTitle} , #{inquireLink}, #{inquireWrite}, #{inquireFile1} ,NOW())
+		<if test="reportUserId != null">
+		INTO inquire(user_id, reported_user_id, inquire_code, inquire_title, inquire_detail, inquire_file1, inquire_time)
+		VALUES( #{userId}, #{reportUserId}, #{inquireCode}, #{inquireTitle} ,  #{inquireWrite}, #{inquireFile1} ,NOW())
+		</if>
+		<if test="reportUserId == null">
+		INTO inquire(user_id, inquire_code, inquire_title, inquire_link, inquire_detail, inquire_file1, inquire_time)
+		VALUES( #{userId}, #{inquireCode}, #{inquireTitle} , #{inquireLink}, #{inquireWrite}, #{inquireFile1} ,NOW())
+		</if>
 	</insert>
 	
 	<select id="getInquireList" resultMap="inquireMap">
@@ -133,7 +139,7 @@
 		<choose>
 			<when test="time.equals('board_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(board_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d') 
+					WHERE DATE_FORMAT(board_time, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') 
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(board_time) = WEEKOFYEAR(CURDATE())
@@ -144,7 +150,7 @@
 			</when>
 			<when test="time.equals('inquire_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(inquire_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d')  
+					WHERE DATE_FORMAT(inquire_time, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d')  
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(inquire_time) = WEEKOFYEAR(CURDATE())
@@ -155,7 +161,7 @@
 			</when>
 			<when test="time.equals('comm_time')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(comm_time, '%Y-%m-%d') = DATE_FORMAT('CURDATE()', '%Y-%m-%d') 
+					WHERE DATE_FORMAT(comm_time, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d')
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(comm_time) = WEEKOFYEAR(CURDATE())
@@ -166,7 +172,7 @@
 			</when>
 			<when test="time.equals('schedule_createtime')">
 				<if test="duration.equals('day')">
-					WHERE DATE_FORMAT(schedule_createtime, '%Y-%m-%d') = DATE_FORMAT('2018-07-14', '%Y-%m-%d') 
+					WHERE DATE_FORMAT(schedule_createtime, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') 
 				</if>
 				<if test="duration.equals('week')">
 					WHERE WEEKOFYEAR(schedule_createtime) = WEEKOFYEAR(CURDATE())

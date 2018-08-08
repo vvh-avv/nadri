@@ -57,7 +57,7 @@
 		   spot_title,
 		   spot_address,
 		   spot_phone,
-		   replace(replace(spot_detail, char(13), ''), char(10), '') spot_detail,
+		   replace(replace(replace(spot_detail, char(13), ''), char(10), ''),'\'','\"') spot_detail,
 		   spot_x,
 		   spot_y,
 		   spot_img,
@@ -71,7 +71,10 @@
 	
 	<select id="scheduleSearchResult" parameterType="string" resultType="hashmap">
 		SELECT 
-			schedule_img,
+			CASE
+	     	    WHEN schedule_img = '' THEN 'no_image.jpg'
+		        ELSE schedule_img 
+		    END AS schedule_img,
 		    schedule_no,
 		    user_id,
 		    schedule_title,
@@ -79,7 +82,7 @@
 		    open_range,
 		    hashtag
 		FROM schedule
-		WHERE schedule_title LIKE '%${value}%' 
+		WHERE schedule_title LIKE '%${value}%'
 	</select>
 	
 	<select id="getSearchLog" parameterType="string" resultType="string">

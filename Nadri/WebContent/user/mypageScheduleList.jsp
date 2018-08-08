@@ -297,41 +297,50 @@ $(function(){
          }
       })
    })
-   
-   // 버튼이면서 updateScheduleReview로 시작하는거 클릭했을때!!
-   $("button[id^='updateReview']").on("click", function(e){
-      e.stopPropagation();
-   
-      var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
-      $("#modalscheduleNo").val(scheduleNo);
-      $("#review").modal();
-   });
-   
-   // modal전송 버튼을 눌렀을때
-   $("#modalinsert").on("click", function(){
-       $.ajax({
-         method : "POST",
-         url : "/restschedule/updateReview",
-         headers : {
-            "Content-Type" : "application/json",
-            "X-HTTP-Method-Override" : "POST"
-         },
-         data : JSON.stringify({ // 서버로 보낼 데이터 명시 
-            scheduleNo : $("#modalscheduleNo").val(),
-            scheduleReview : $("#modalscheduleReview").val()
-         }),
-         success : function(){
-         }
-      });
-      swal("리뷰가 등록되었어요!");
-      // 모달을 닫습니다.
-      $("#review").modal('hide');
-   });
-   
+    
 });
+
+$(function(){
+	
+	// 버튼이면서 updateScheduleReview로 시작하는거 클릭했을때!!
+	$("button[id^='updateReview']").on("click", function(e){
+		e.stopPropagation();
+	
+		var scheduleNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+		$("#modalscheduleNo").val(scheduleNo);
+		$("#review").modal();
+	});
+	
+	// modal전송 버튼을 눌렀을때
+	$("#reviewmodalinsert").on("click", function(){
+ 		$.ajax({
+			method : "POST",
+			url : "/restschedule/updateReview",
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+				scheduleNo : $("#modalscheduleNo").val(),
+				scheduleReview : $("#modalscheduleReview").val()
+			}),
+			success : function(){
+			}
+		});
+		swal("리뷰가 등록되었어요!");
+		// 모달을 닫습니다.
+		$("#review").modal('hide');
+	});
+	   
+});
+
 </script>
 
 <style>
+
+.fc {
+	padding : 20px;
+}
 
 .user-profile-section {
 	padding-top: 20px;
@@ -472,14 +481,14 @@ article:hover .links, article:hover .linksIcon {
 					<h4>
 						<a href="/user/listUser">마이 페이지</a>
 					</h4>
-					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
-						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
-						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
-						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
-						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
-						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
-					<br /> <br /> <br /> <br /> <br /> <br /> <a
-						href="/user/logout">로그아웃</a><br /> <br />
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
+						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
+						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
+						<a href="/board/getMyBoardList">작성한 글</a><br /> <br /> 
+						<a href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> 
+						<a href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
 			</div>
 
@@ -558,7 +567,7 @@ article:hover .links, article:hover .linksIcon {
 									<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
 									<span id="scheduleDetail">${schedule.scheduleDetail}<br>
 										<br></span> <span id="scheduleHashTag">${schedule.hashTag}<br>
-										<br></span>
+										<br></span>	
 									<button type="button" class="btn btn-primary btn-xs"
 										id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
 									<button type="button" class="btn btn-primary btn-xs"
@@ -616,5 +625,32 @@ article:hover .links, article:hover .linksIcon {
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	<!-- 리뷰를 등록하는 모달창! --> 
+	<form id="reviewform">
+            <div class="modal" id="review" role="dialog"> 
+                <div class="modal-dialog modal-sm"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                            <h4 class="modal-title">나들이 어떠셨어요??</h4> 
+                        </div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="scheduleTitle">후기작성</label> 
+							<input type="text" class="form-control" id="modalscheduleReview" name="scheduleReview" placeholder="나들이 후기를 작성해주세요!">
+							<input type="hidden" id="modalscheduleNo" name="scheduleNo">
+					</div>
+						<div class="modal-footer"> 
+                            <button type="button" class="btn btn-danger modalModBtn" id="reviewmodalinsert">입력!</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+       </form>
+       
+       
 </body>
 </html>

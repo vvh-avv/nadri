@@ -116,12 +116,16 @@ public class ScheduleController {
 			//Business Logic
 			schedule.setScheduleImg(fileName);
 		} else {
-			fileName = format+multipartFile.getOriginalFilename();
+			
+			// 확장자 구하기
+			int pos = multipartFile.getOriginalFilename().lastIndexOf( "." );
+			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
+
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
-			new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
 			
 			// 파일 객체 생성
-			File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 			multipartFile.transferTo(file);
 			
 			//Business Logic
@@ -318,25 +322,33 @@ public class ScheduleController {
 		
 		// 이전 스케쥴을 삭제합니다.
 		scheduleService.deleteSchedule(schedule.getScheduleNo());
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");
+			
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmss");
 		Calendar now = Calendar.getInstance();
 		String format = formatter.format(now.getTime());
-		long fileSize = multipartFile.getSize();
+		//long fileSize = multipartFile.getSize();
+
+		String fileName="";
 		
-		String fileName = "";
-		
-		if ( fileSize <= 0) {
+		if ( multipartFile.isEmpty()) {
 			//Business Logic
-			schedule.setScheduleImg(null);
+	    	 // new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+schedule.getScheduleImg()).delete();
+	    	  //File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+schedule.getScheduleImg());
+	    	  //multipartFile.transferTo(file);
+			fileName = schedule.getScheduleImg();
 		} else {
-			fileName = format+multipartFile.getOriginalFilename();
+			//fileName = format+multipartFile.getOriginalFilename();
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
-			new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			
+			// 확장자 구하기
+			int pos = multipartFile.getOriginalFilename().lastIndexOf( "." );
+			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
 			
 			// 파일 객체 생성
-			File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 			multipartFile.transferTo(file);
+			
 			
 			//Business Logic
 			schedule.setScheduleImg(fileName);

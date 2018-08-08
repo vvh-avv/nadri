@@ -283,6 +283,30 @@ var options = {
     };
        
 	$(function() {
+		
+		$(document).on("click", "#modalinsert", function(){
+			// 모달에서 적은 제목의 value을 가져옵니다.
+			var modalscheduleTitle = $("#modalscheduleTitle").val();
+			// 일정 제목값에 넣습니다.
+			$("#scheduleTitle").val(modalscheduleTitle);
+			$("#scheduleTitle2").text(modalscheduleTitle);
+			// 모달에서 적은 상세정보 value을 가져옵니다.
+			var modalscheduleDetail = $("#modalscheduleDetail").val();
+			// 일정 상세정보 넣습니다.
+			$("#scheduleDetail").val(modalscheduleDetail);
+			$("#scheduleDetail2").text(modalscheduleDetail);
+			// 모달에서 적은 날짜 value을 가져옵니다.
+			var datepicker = $("#datepicker").val();
+			// 일정 날짜 넣습니다.
+			$("#scheduleDate").val(datepicker);
+			// 모달에서 적은 img을 가져옵니다.
+			var modalscheduleImg = $("#modalscheduleImg").val();
+			// 일정 img 넣습니다.
+			$("#scheduleImg").val(modalscheduleImg);
+			// 모달을 닫습니다.
+			$("#myModal").modal('hide');
+		});
+				
 			
 		$(window).scroll(function(){
 	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -327,29 +351,6 @@ var options = {
 			  }); //end of datepicker
 		  
 		$('#timepicker').wickedpicker(options);
-		
-		$("#modalinsert").on("click", function(){
-			// 모달에서 적은 제목의 value을 가져옵니다.
-			var modalscheduleTitle = $("#modalscheduleTitle").val();
-			// 일정 제목값에 넣습니다.
-			$("#scheduleTitle").val(modalscheduleTitle);
-			$("#scheduleTitle2").text(modalscheduleTitle);
-			// 모달에서 적은 상세정보 value을 가져옵니다.
-			var modalscheduleDetail = $("#modalscheduleDetail").val();
-			// 일정 상세정보 넣습니다.
-			$("#scheduleDetail").val(modalscheduleDetail);
-			$("#scheduleDetail2").text(modalscheduleDetail);
-			// 모달에서 적은 날짜 value을 가져옵니다.
-			var datepicker = $("#datepicker").val();
-			// 일정 날짜 넣습니다.
-			$("#scheduleDate").val(datepicker);
-			// 모달에서 적은 img을 가져옵니다.
-			var modalscheduleImg = $("#modalscheduleImg").val();
-			// 일정 img 넣습니다.
-			$("#scheduleImg").val(modalscheduleImg);
-			// 모달을 닫습니다.
-			$("#myModal").modal('hide');
-		});
 		
 		$(document).on("click", "#modal", function(){
 			$('#myModal').modal();
@@ -561,7 +562,7 @@ $(function(){
                    cartImg : e.target.result
                 }),
                 success : function(data){
-                   alert(data);
+                   //alert(data);
                    //$("."+updateCartImgNo).find("img").attr('src',data);
                    //$("#cartImg"+i+"").attr('src');
                 }
@@ -691,8 +692,8 @@ $(function(){
 	</div>
 
 </div>
-	<form enctype="multipart/form-data" >
-      <%@include file="/layout/new_toolbar.jsp"%>
+	<form enctype="multipart/form-data" name="updateForm">
+      <%@ include file="/layout/toolbar.jsp"%>
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  
            <div id="scheduleTitle2">일정수정페이지 입니다!</div>
@@ -734,7 +735,7 @@ $(function(){
                 </div> 
             </div>
             
-     <div class="container container-pedU">
+     <div class="container">
      	<hr/>	
 		
 		<div id="map"></div>

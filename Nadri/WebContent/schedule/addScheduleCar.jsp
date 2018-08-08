@@ -24,10 +24,6 @@
 <!-- DatePicker CDN -->
 <script src="/javascript/wickedpicker.min.js?ver=1"></script>
 <link rel="stylesheet" href="/css/wickedpicker.min.css">
-<!-- layout css -->
-<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
-<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
-<script src="/javascript/indexReal_nonIndex.js"></script>
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- T-map 지도를 쓰기위한 선언 -->
@@ -43,7 +39,6 @@
 <style>
 
 .maincon{
-	color : #404548;
 	z-index:15;
 }
 
@@ -190,6 +185,14 @@ body, html {
   height: 80%;
 }
 
+#Tmap_Control_ZoomBar_46{
+	z-index : 998;
+}
+
+#Tmap_Control_ScaleLine_47{
+	z-index : 998;
+}
+
 #News {background-color: #f5f5f5;}
 #Contact {background-color: #f5f5f5;}
 
@@ -227,7 +230,6 @@ body, html {
 </style>
 
 <script>
-alert('${user}');
 //오늘 날짜 구하기
 var today = new Date();
 var dd = today.getDate();
@@ -296,6 +298,29 @@ var options = {
     };
        
 	$(function() {
+		
+		$(document).on("click", "#modalinsert",function(){
+			// 모달에서 적은 제목의 value을 가져옵니다.
+			var modalscheduleTitle = $("#modalscheduleTitle").val();
+			// 일정 제목값에 넣습니다.
+			$("#scheduleTitle").val(modalscheduleTitle);
+			$("#scheduleTitle2").text(modalscheduleTitle);
+			// 모달에서 적은 상세정보 value을 가져옵니다.
+			var modalscheduleDetail = $("#modalscheduleDetail").val();
+			// 일정 상세정보 넣습니다.
+			$("#scheduleDetail").val(modalscheduleDetail);
+			$("#scheduleDetail2").text(modalscheduleDetail);
+			// 모달에서 적은 날짜 value을 가져옵니다.
+			var datepicker = $("#datepicker").val();
+			// 일정 날짜 넣습니다.
+			$("#scheduleDate").val(datepicker);
+			// 모달에서 적은 img을 가져옵니다.
+			var modalscheduleImg = $("#modalscheduleImg").val();
+			// 일정 img 넣습니다.
+			$("#scheduleImg").val(modalscheduleImg);
+			// 모달을 닫습니다.
+			$("#myModal").modal('hide');
+		});
 			
 		$(window).scroll(function(){
 	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
@@ -341,28 +366,6 @@ var options = {
 	  
 		$('#timepicker').wickedpicker(options);
 		
-		$("#modalinsert").on("click", function(){
-			// 모달에서 적은 제목의 value을 가져옵니다.
-			var modalscheduleTitle = $("#modalscheduleTitle").val();
-			// 일정 제목값에 넣습니다.
-			$("#scheduleTitle").val(modalscheduleTitle);
-			$("#scheduleTitle2").text(modalscheduleTitle);
-			// 모달에서 적은 상세정보 value을 가져옵니다.
-			var modalscheduleDetail = $("#modalscheduleDetail").val();
-			// 일정 상세정보 넣습니다.
-			$("#scheduleDetail").val(modalscheduleDetail);
-			$("#scheduleDetail2").text(modalscheduleDetail);
-			// 모달에서 적은 날짜 value을 가져옵니다.
-			var datepicker = $("#datepicker").val();
-			// 일정 날짜 넣습니다.
-			$("#scheduleDate").val(datepicker);
-			// 모달에서 적은 img을 가져옵니다.
-			var modalscheduleImg = $("#modalscheduleImg").val();
-			// 일정 img 넣습니다.
-			$("#scheduleImg").val(modalscheduleImg);
-			// 모달을 닫습니다.
-			$("#myModal").modal('hide');
-		});
 		
 		$(document).on("click", "#modal", function(){
 			$('#myModal').modal();
@@ -587,7 +590,11 @@ $(function(){
     }
 })
 </script> 
-    
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
+
 </head>
 <body>
 

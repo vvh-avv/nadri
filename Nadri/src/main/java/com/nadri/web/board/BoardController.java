@@ -73,7 +73,7 @@ public class BoardController {
 									RedirectAttributes redirectAttributes) throws Exception{
 		System.out.println("/board/addBoard : POST");
 		
-		String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
+		String uploadPath = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
 		
 		String fileOriginName=""; //각 원본파일명
 		String fileMultiName=""; //최종 파일명(들)

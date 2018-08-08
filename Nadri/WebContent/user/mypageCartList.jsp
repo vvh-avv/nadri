@@ -311,14 +311,14 @@ article:hover .links {
 					<h4>
 						<a href="/user/listUser">마이 페이지</a>
 					</h4>
-					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
-						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
-						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
-						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
-						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
-						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
-					<br /> <br /> <br /> <br /> <br /> <br /> <a
-						href="/user/logout">로그아웃</a><br /> <br />
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
+						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
+						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
+						<a href="/board/getMyBoardList">작성한 글</a><br /> <br /> 
+						<a href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> 
+						<a href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
 			</div> <!-- end.of.row1 -->
 

@@ -40,6 +40,7 @@
 <link rel="stylesheet" type="text/css" href="/css/totalSearchView.css" />
 <!-- <script src="/javascript/indexReal.js"></script> -->
 <script src="/javascript/indexReal_nonIndex.js"></script>
+<script src="/javascript/total_search_view.js"></script>
 
 </head>
 <body>
@@ -86,9 +87,12 @@
 		</div>
 		<div class="search-results">
 			<div class="">
-				<div class="col-md-12 col-xs-12 section-title"
+				<div class="col-md-12 col-xs-12 section-title board-section"
 					style="display: flex; justify-content: space-between; align-items: center;">
-					<h3 style="display: inline-block; font-weight: 700;">게시글</h3>
+					<div class="title-flex-box">
+						<h3 class="menu-title" style="display: inline-block; font-weight: 700;">게시글</h3>
+						<div class="mini-title">너나들이 유저들이 직접 작성한 게시물들입니다.</div>
+					</div>
 					<div class="board-more">더보기 >></div>
 				</div>
 				<hr />
@@ -114,19 +118,21 @@
 			</div>
 
 			<div>
-				<div class="col-md-12 col-xs-12 section-title"
+				<div class="col-md-12 col-xs-12 section-title schedule-section"
 					style="display: flex; justify-content: space-between; align-items: center;">
-					<h3 style="display: inline-block; font-weight: 700;">일정</h3>
-					<div>더보기 >></div>
+					<div class="title-flex-box">
+						<h3 class="menu-title" style="display: inline-block; font-weight: 700;">일정</h3>
+						<div class="mini-title">너나들이 유저들이 직접 생성한 일정들입니다.</div>
+					</div>
+					<div class="see-more">더보기 >></div>
 				</div>
 				<hr />
-
 				<c:if test="${!empty list_schedule}">
 					<c:set var="i" value="0" />
 					<c:forEach var="schedule" items="${list_schedule}" end="3">
 						<c:set var="i" value="${i+1}" />
 						<div class="col-md-6 col-xs-12 board-box">
-							<img src="/images/schedule/${schedule.img}" class="boardImg"
+							<img src="/images/schedule/${schedule.schedule_img}" class="boardImg"
 								style="width: 100%; height: 200px;">
 							<div class="boardBox">
 								<h3>${schedule.title}</h3>
@@ -136,11 +142,8 @@
 					</c:forEach>
 				</c:if>
 				<c:if test="${empty list_schedule}">
-					<div class="col-md-12 col-xs-12 board-box">
-						<img
-							src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg"
-							class="boardImg"
-							style="width: 100%; height: 200px; opacity: 0.5;">
+					<div class="col-md-12 col-xs-12 board-box no-boards">
+						<div>검색된 게시물이 없습니다.</div>
 					</div>
 				</c:if>
 			</div>
@@ -168,11 +171,15 @@
 	</div>
 
 	<script>
+	
+		
 		// Initialize and add the map
 		function initMap() {
 			var locations;
-			var size = ${spot_location.size()}
-			;
+			var size = ${spot_location.size()};
+			
+			console.log(size);
+			
 			if (size == 0) {
 				locations = [ '검색결과가 없습니다.', 37.581095, 126.977156 ];
 				var map = new google.maps.Map(document.getElementById('map'), {
@@ -228,15 +235,18 @@
 
 				$('.placeTitle').text(locations[0][1]);
 				$('.placeTitle').attr('name', locations[0][6]);
-				$('.placeContent').text("information of selected place");
+				$('.placeContent').text(locations[0][4]);
 				$('.placeImg').attr("src", "/images/spot/" + locations[0][5]);
 			}
 
 		}
-	</script>
-	<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap">
 		
+		$(document).ready(function(){
+			// 맵을 시작하는 메서드입니다.
+			initMap();
+		}); // 처음 시작될때 클릭버튼 세팅
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap">
 	</script>
 </body>
 </html>

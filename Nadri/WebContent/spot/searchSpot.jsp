@@ -61,25 +61,45 @@ body {
 /* 	font-family : seoul; */
 }
 
+.expander-box{
+	position : absolute;
+	top : 70px;
+	padding : 17.5px;
+	background: #748ea98a;
+	color : white;
+	z-index : 1;
+	right : 100%;
+	transition : all 1s;
+	border-radius : 50px 0px 0px 50px;
+}
+
+#expander-spots:hover{
+	cursor : pointer;
+}
+
 .spot-top-box{
-	width : 65%;
+	width : 100%;
 	margin-left:auto;
 	margin-right:auto;
+	position : absolute;
+	top : 70px;
+	z-index : 1;
+	transition : all 1s;
+	left : 0%;
 }
 
 @media only screen and (max-width : 600px){
 	.spot-top-box{
-		width : 100%;
-		margin-left:auto;
-		margin-right:auto;
+		top : 50px;
+	}
+	
+	.expander-box{
+		top : 50px;
 	}
 }
 
 .nav-wrapper{
-	border-radius: 0px 0px 60px 60px;
 	background: #6d91af94;
-	margin: 0px 15px 15px 15px;
-	box-shadow : 1px 2px 10px 0px #a7a7a7;
 }
 
 #nav-mobile{
@@ -527,7 +547,7 @@ $(function(){
 				          
 				  	        // 마커를 클릭했을때 이벤트 발생 시키기
 				  	        google.maps.event.addListener(markers[i], 'click', function() {
-				  	        	map.setZoom(15);
+				  	        	//map.setZoom(15);
 				  	       		// 일단 마커를 모두 닫고
 				  	        	 infowindows[this.index].open(map, markers[this.index]);
 				  	        	map.panTo(markers[this.index].getPosition());
@@ -574,7 +594,7 @@ $(function(){
     				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
     				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
     					spotNo : $("#spotNo").val(),
-    					userId : $("#userId").val(),
+    					userId : $("#cartUserId").val(),
     					cartDetail : $("#cartDetail").val(),
     					cartTitle : $("#cartTitle").val(),
     					cartAddress :$("#cartAddress").val(),
@@ -594,17 +614,22 @@ $(function(){
 
 	<%@include file="/layout/new_toolbar.jsp"%>
 		
-	<nav class="spot-top-box">
-	    <div class="nav-wrapper">
-	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	        <li><span id="park">공원</span></li>
-	        <li><span id="restaurant">맛집</span></li>
-	        <li><span id="festival">축제/전시</span></li>
-			<li><span id="river">한강</span></li>
-	        <li><span id="search">검색</span></li>
-	      </ul>
-	    </div>
-  </nav>
+<nav class="spot-top-box">
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><span class="glyphicon glyphicon-triangle-right" id="unexpanded"></span></li>
+        <li><span id="park">공원</span></li>
+        <li><span id="restaurant">맛집</span></li>
+        <li><span id="festival">축제/전시</span></li>
+		<li><span id="river">한강</span></li>
+        <li><span id="search">검색</span></li>
+      </ul>
+    </div>
+</nav>
+<div class="expander-box">
+	<span class="glyphicon glyphicon-triangle-left" id="expander-spots"></span>
+</div>
+
   		<div class="jumbotron">
   				<h1>검색</h1>
   					<p>찾으시는 장소가 없으세요? 직접 검색해보세요!</p>
@@ -641,7 +666,7 @@ $(function(){
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
 									</div>
-										<input type="hidden"  id="userId" name="userId" value="${sessionScope.user.userId}" readonly>
+										<input type="hidden"  id="cartUserId" name="userId" value="${sessionScope.user.userId}" readonly>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>

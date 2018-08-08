@@ -36,12 +36,6 @@ public class User {
 	}
 	
 	///Method
-	public void setToken(String token) {
-		this.token = token;
-	}
-	public String getToken() {
-		return token;
-	}
 	public String getUserId() {
 		return userId;
 	}
@@ -244,6 +238,15 @@ public class User {
 		this.quitReason = quitReason;
 	}
 
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
@@ -251,7 +254,9 @@ public class User {
 				+ ", phone2=" + phone2 + ", phone3=" + phone3 + ", age=" + age + ", introduce=" + introduce
 				+ ", regDate=" + regDate + ", role=" + role + ", lastLogin=" + lastLogin + ", status=" + status
 				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
-				+ ", token="+token+"]";
+				+ ", token=" + token + "]";
 	}
+	
+	
 	
 }

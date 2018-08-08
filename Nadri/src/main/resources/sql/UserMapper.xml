@@ -41,23 +41,24 @@
 
    <!-- SQL: SELECT ONE -->
    <select id="getUser" parameterType="string" resultMap="userMap">
-      SELECT *
+      SELECT user_id, user_name, password, email, profile_img, sex, phone, age, introduce, role, reg_date, last_login, status, ip, info_option, quit_date, quit_reason
       FROM user
       WHERE user_id = #{value}
    </select>
-
+   
    <!-- SQL: UPDATE -->
    <update id="updateUser" parameterType="user">
       UPDATE user
-      SET user_name = #{userName}, email = #{email}, password = #{password}, phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}, token=#{token}
+      SET user_name = #{userName}, email = #{email}, password = #{password},  sex=#{sex}, 
+      phone = #{phone}, age = #{age}, profile_img = #{profileImg}, introduce=#{introduce}, token=#{token}
       WHERE user_id = #{userId}
    </update>
-   
+		   
    <!-- SQL: SELECT LIST -->
-	<select id="getUserList" parameterType="search" resultMap="userMap"> 
-	SELECT profile_img, user_id, user_name, email, status, reg_date, token
-	FROM user
-	</select>
+   <select id="getUserList" parameterType="search" resultMap="userMap"> 
+   SELECT profile_img, user_id, user_name, email, status, reg_date, token
+   FROM user
+   </select>
    
    <!-- SQL: SELECT ROW COUNT -->
    <select id="getTotalCount" parameterType="search" resultType="int">
@@ -179,4 +180,6 @@
          </if>
         </if>
    </select>
+
+   
 </mapper>
