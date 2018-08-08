@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,15 @@ public class FriendServiceImpl implements FriendService{
 		System.out.println("-------------------------------------ServiceImpl-------------------------------------");
 		System.out.println("serviceImpl-listFriend-userId: "+ userId);
 		return friendDao.listFriend(userId);
+	}
+	
+	@Override
+	public List<Friend> listFriend2(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("-------------------------------------ServiceImpl2-------------------------------------");
+		System.out.println("serviceImpl-listFriend2-userId: "+ userId);
+		System.out.println("serviceImpl-listFriend2-dao로 넘길 유저 아이디 값: "+friendDao.listFriend2(userId));
+		return friendDao.listFriend2(userId);
 	}
 	
 
@@ -65,6 +76,7 @@ public class FriendServiceImpl implements FriendService{
 	@Override
 	public int deleteFriend(String userId, String friendId) throws Exception {
 		// TODO Auto-generated method stub
+
 		System.out.println("---------------ServiceImpl - deleteFriend------------");
 		System.out.println(friendId);
 		System.out.println(userId);
@@ -124,9 +136,6 @@ public class FriendServiceImpl implements FriendService{
 		System.out.println("----------------------------------------------------");
 		return friendDao.getFriend(friendId);
 	}
-	
-
-	
 
 	
 	//하지수 테스트
@@ -153,6 +162,8 @@ public class FriendServiceImpl implements FriendService{
 		
 		return friendDao.searchFriend(map);
 	}
+
+	
 
 	
 

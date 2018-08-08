@@ -481,14 +481,14 @@ article:hover .links, article:hover .linksIcon {
 					<h4>
 						<a href="/user/listUser">마이 페이지</a>
 					</h4>
-					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
-						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
-						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
-						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
-						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
-						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
-					<br /> <br /> <br /> <br /> <br /> <br /> <a
-						href="/user/logout">로그아웃</a><br /> <br />
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
+						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
+						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
+						<a href="/board/getMyBoardList">작성한 글</a><br /> <br /> 
+						<a href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> 
+						<a href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
 			</div>
 
@@ -567,7 +567,7 @@ article:hover .links, article:hover .linksIcon {
 									<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
 									<span id="scheduleDetail">${schedule.scheduleDetail}<br>
 										<br></span> <span id="scheduleHashTag">${schedule.hashTag}<br>
-										<br></span>
+										<br></span>	
 									<button type="button" class="btn btn-primary btn-xs"
 										id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
 									<button type="button" class="btn btn-primary btn-xs"

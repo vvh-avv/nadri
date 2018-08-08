@@ -91,5 +91,10 @@ public class ScheduleServiceImpl implements ScheduleService{
    public void updateScheduleReview(Schedule schedule) throws Exception {
 	   scheduleDao.updateScheduleReview(schedule);
    }
+   
+   // 11. 안드로이드로 일정을 뿌려줍니다.
+   public List<Schedule> getMyScheduleListRest(String userId) throws Exception{
+	   return scheduleDao.getMyScheduleListRest(userId);
+   };
 
 }

@@ -1,6 +1,9 @@
 package com.nadri.service.friend;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nadri.service.domain.Friend;
@@ -14,7 +17,7 @@ public interface FriendService {
 	
 	//模备 昏力
 	public int deleteFriend(String userId, String friendId) throws Exception;
-		
+	
 	//模备 夸没矫
 	public void addFriend(String userId, String friendId) throws Exception;
 	
@@ -28,6 +31,8 @@ public interface FriendService {
 	public List<Friend> searchFriend(String userId, String searchUserId)throws Exception;	
 
 	public List<Friend> listFriend(String userId) throws Exception;
+	
+	public List<Friend> listFriend2(String userId) throws Exception;
 
 	//模备 沥焊 炼雀
 	public Friend getFriend(String friendId) throws Exception;
@@ -38,6 +43,10 @@ public interface FriendService {
    public String listFriendFromBoard(@PathVariable String userId) throws Exception;
    
    public int checkFriend(String userId, String friendId, int friendCode) throws Exception;
+
+
+
+
 
    
    

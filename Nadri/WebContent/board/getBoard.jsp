@@ -428,7 +428,7 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
-	   //alert("아이디 : " + $(this).attr("id")) ;
+	  // alert("아이디 : " + $(this).attr("id")) ;
 	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
@@ -440,6 +440,7 @@ $(function(){
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
             method : "POST",
             success : function(map, status){
+            	
             	//보상 (좋아요)
             	if( map.myLikeCnt==5 ){
             		swal({
@@ -739,6 +740,7 @@ $(function(){
    var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    var modalMyself = false; //본인이 본인프로필을 열었는지 체크하기 위함 //본인은 신고하지 못하도록
    $('.userModal').on('show.bs.modal', function (event) {
+	   
 		var button = $(event.relatedTarget);
   		var modal = $(this);
   		
@@ -781,12 +783,12 @@ $(function(){
 		   url : "/friend/json/chkFriend/"+modalFriendId+"/0",
 		   success : function(data){
 			   if(data==1){ //친구요청이 이미 된 경우
-				   swal ( "친구추가 실패!" ,  "이미 상대방에게 친구요청이 갔습니다!" ,  "error" );
+				   swal ( "친구추가 실패!" ,  "이미 상대방과 친구예요!" ,  "error" );
 			   }else{ //친구요청이 안 된 경우
 				   $.ajax({
 					   url : "/friend/json/addFriend/"+modalFriendId,
 					   success : function(){
-						   swal("친구추가 완료!", "상대방의 친구수락을 기다려보세요!", "success");
+						   swal("친구추가 완료!", "상대방을 친구로 추가했습니다!", "success");
 					   }
 				   }) //e.o.ajax
 			   }

@@ -331,7 +331,7 @@ function addCartSpot(){
 				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
 				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
 					spotNo : $("#spotNo").val(),
-					userId : $("#userId").val(),
+					userId : $("#cartUserId").val(),
 					cartDetail : $("#cartDetail").val(),
 					cartTitle : $("#cartTitle").val(),
 					cartAddress :$("#cartAddress").val(),
@@ -428,9 +428,112 @@ function addCartSpot(){
 									<img class="materialboxed" src="/images/spot/${spot.spotImg}"
 										width="30%" height="20%" />
 								</c:if>
+<<<<<<< HEAD
+=======
+								<c:if test="${sessionScope.user.userId == null}">
+								<div class="pull-right">
+									<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
+									<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
+								</div>
+								</c:if>	
+							</div>
+
+				<form id=cart>
+					<input type="hidden" name="spotNo" value="${spot.spotNo}" />
+					<div class="modal fade" id="cartModal" role="dialog">
+						<div class="modal-dialog" id="cartModal">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">장바구니 추가</h4>
+								</div>
+								<div class="modal-body">
+										<input type="hidden"id="spotNo" name="spotNo" value="${spot.spotNo}" >
+									<div class="form-group">
+										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
+										<input class="form-control" id="cartTitle" name="cartTitle" value="${spot.spotTitle}" >
+									</div>
+										<input type="hidden" id="cartX" name="cartX" value="${spot.spotX}" >
+                                        <input type="hidden"  id="cartY" name="cartY" value="${spot.spotY}" >
+										<input type="hidden" id="cartAddress" name="cartAddress" value="${spot.spotAddress}">
+									<div class="form-group">
+										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
+										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
+									</div>
+									<input type="hidden" id="cartUserId" name="userId" value="${sessionScope.user.userId}">
+									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
+							</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
+									
+									<%-- *** : <%= session.getAttribute("user") %> --%>
+								</div>
+>>>>>>> refs/remotes/origin/master
 							</div>
 						</div>
 					</div>
+<<<<<<< HEAD
+=======
+				</form>
+				
+			</div>
+			
+			<!-- 신고 Modal content 시작 -->
+	   <div class="modal fade" id="inquireModal" role="dialog">
+	      <div class="modal-dialog">
+	         <div class="modal-content">
+	            <div class="modal-header">
+	               <button type="button" class="close" data-dismiss="modal">&times;</button>
+	               <h4 class="modal-title">
+	                  	신고하기<br>
+	                  <h6 style="color:lightgrey">신고내용은 창을 닫아도 유지됩니다</h6>
+	               </h4>
+	            </div>
+	            <div class="modal-body">
+	               <form class="inquire_form">
+		              	 신 고 종 류
+		              <select class="inquireCode" name="inquireCode" style="height: 30px;">
+	                     <option value="9">선택하세요</option>
+	                     <option value="0">유저신고</option>
+	                     <option value="1">게시글신고</option>
+	                     <option value="2">댓글신고</option>
+	                     <option value="3">정정신청</option>
+	                     <option value="4">기타문의</option>
+	                  </select>
+	                  <span class="reportUser">신고유저아이디<input type="text" name="reportUserId" class="reportedUserId" value="">
+	                  </span>
+	                  <span class="reportLink">신 고 링 크<input type="text" name="inquireLink" class="inquireLink" value="${spot.spotNo}">
+	                  </span>
+	                  <hr />
+	                  <div class="count1">
+	                     <p class="fonted">제목</p>
+	                     <div>/30</div>
+	                     <div class="textCounter1">0</div>
+	                  </div>
+	                  <input type="text" class="inquireTitle" name="inquireTitle" value="" placeholder="제목을 입력해주세요." maxlength="30"><br>
+	                  <div class="count2">
+	                     <p>신 고 내 용</p>
+	                     <div>/100</div>
+	                     <div class="textCounter2">0</div>
+	                  </div>
+	                  <textarea class="inquireWrite" name="inquireWrite" value="" placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
+	                  <br>
+	                  <p class="fonted">
+	                     <input type="file" name="inquire_file" multiple="multiple">
+	                  </p>
+	                  <br>
+	               </form>
+	            </div>
+	            <div class="modal-footer">
+	               <button type="button" class="btn btn-primary inquireSend">보내기</button>
+	               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	            </div>
+	         </div>
+	      </div>
+	   </div>
+	   <!-- 신고 Modal content 끝 --> 
+>>>>>>> refs/remotes/origin/master
 
 					<hr />
 				</c:if>

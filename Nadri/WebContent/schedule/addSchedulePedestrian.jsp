@@ -348,8 +348,7 @@ var options = {
 		});
 			
 		$(window).scroll(function(){
-	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-	        
+	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값     
 	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
 	        	$("body > div.sidenav").fadeIn();
 	        	$("body > div.sidenav").css("display", "block");

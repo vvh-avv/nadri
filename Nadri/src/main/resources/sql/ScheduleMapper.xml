@@ -220,4 +220,13 @@
 				</where>
 			</if> ) countTable			
 	 </select>
+	 
+	  <!-- 12. 마이페이지 내 일정보기(안드로이드용) -->
+   <select id="getMyScheduleListRest" parameterType="String" resultMap="scheduleSelectMap">
+		SELECT  *
+		FROM schedule
+		WHERE user_id = #{keyword}
+		AND schedule_date > now()
+		ORDER BY schedule_date
+	</select>
 </mapper>

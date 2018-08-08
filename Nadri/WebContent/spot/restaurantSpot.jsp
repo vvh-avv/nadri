@@ -213,7 +213,7 @@ $(function(){
 	var markers = [];
 	
 	//마커 담는 곳
-	var spot = ${a};
+	/* var spot = ${a};
 	for (var i = 0 ; i < spot.length; i++){
 		if(spot[i].spotCode=='10'){
 			obj = {
@@ -240,10 +240,10 @@ $(function(){
 			};
 			locations.push(obj);	
 		}
-	};
+	}; */
 
 	function initMap() {
-
+		
 		// 맵 스타일 속성에 필요한 배열 생성 
 		var styles = [];
 
@@ -300,7 +300,16 @@ $(function(){
 			map.data.revertStyle();
 		});
 		
-		for (var i = 0; i < locations.length; i++) {
+		//드래그 할때마다 현재 위치를 가져옵니다.
+		map.addListener('dragend', function(event) {
+			deleteMarkers();
+			var a = map.getCenter();
+			var lat = ""+a.lat();
+			var lon = ""+a.lng();
+			searchAroundRestaurant(lat, lon);
+		});
+		
+		/* for (var i = 0; i < locations.length; i++) {
 			markers[i] = new google.maps.Marker({
 				position : locations[i],
 				map : map,
@@ -336,7 +345,71 @@ $(function(){
 								infowindows[this.index].open(map,markers[this.index]);
 								map.panTo(markers[this.index].getPosition());
 							});
+		} */
+		
+		
+		//HJA 현재 위치를 기준으로 맛집을 찍습니다!
+		// 나의 위치를 찍어주는 부분입니다!
+		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+	 	if (navigator.geolocation) {
+
+			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
+			navigator.geolocation.getCurrentPosition(function(position) {
+
+				var lat = position.coords.latitude, // 위도
+				lon = position.coords.longitude; // 경도
+
+				var nowposition = new google.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+				message = '<div style="font-family : seoul"><div>당신은 지금 여기!!</div></div>'; // 인포윈도우에 표시될 내용입니다
+
+				// 마커와 인포윈도우를 표시합니다
+				displayMarker(nowposition, message);
+				
+				searchAroundRestaurant(lat, lon);
+				
+			});
+
+		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+			var nowposition = new google.maps.LatLng(37.495460, 127.027304), message = '<div style="font-family : seoul"><div>당신은 지금 여기!!</div></div>'
+
+			displayMarker(nowposition, message);
+			deleteMarkers();
+			searchAroundRestaurant(37.495460, 127.027304);
 		}
+		
+		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+		function displayMarker(nowposition, message) {
+			// 마커를 생성합니다
+			var marker = new google.maps.Marker({
+				map : map,
+				position : nowposition,
+				icon : icons['myplace'].icon
+			});
+
+			var iwContent = message, // 인포윈도우에 표시할 내용
+			iwRemoveable = false;
+			// 인포윈도우를 생성합니다
+			var infowindow = new google.maps.InfoWindow({
+				content : iwContent,
+				removable : iwRemoveable
+			});
+
+			// 인포윈도우를 마커위에 표시합니다 
+			infowindow.open(map, marker);
+
+			// 지도 중심좌표를 접속위치로 변경합니다
+			map.setCenter(nowposition);
+					
+		}
+		/////////////////////////////////////////////현재위치 찍는 부분 끝!///////////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		
+		
+		
 	}//end of initmap();	
 	
 	
@@ -455,6 +528,130 @@ $(function(){
 			}// success
 		);// ajax
 }
+	
+	function searchAroundRestaurant(lat,lng) { 
+		// 앞서 만들어진 마커를 초기화 시킵니다.
+		deleteMarkers();
+		// 앞서 검색한 부분을 초기화시킵니다.
+		 $('.spotImg').empty();
+		//1. ajax를 통해서 리스트를 뽑아옵니다.
+		$.ajax({
+				type : 'POST', // 요청 Method 방식
+				url : '/restspot/searchAroundRestaurant', // 요청할 서버의 url
+				headers : {
+					 "Content-Type" : "application/json",
+					 "X-HTTP-Method-Override" : "POST"
+				},
+				dataType : 'json', // 서버로 부터 되돌려 받는 데이터의 타입을 명시
+				data : JSON.stringify({
+					spotY : lat,
+					spotX : lng
+				}),
+				success : function(result){ // ajax 가 성공했을시에 수행될 function
+			          var spot = result;
+			          for ( var i = 0 ; i<spot.length ; i++){ 
+			        	  if(parseInt(spot[i].spotCode) == 10){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'samdae' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo, img : spot[i].spotImg};
+				  			    locations.push(obj);
+				  	        }else if (parseInt(spot[i].spotCode) == 11){
+				  	        	obj = {position : new google.maps.LatLng(parseFloat(spot[i].spotY), parseFloat(spot[i].spotX)), type : 'suyo' , addr : spot[i].spotAddress, title : spot[i].spotTitle, no : spot[i].spotNo, img : spot[i].spotImg};
+				  			    locations.push(obj)
+				  	        };
+			        	  
+			        	// 이부분은 마커를 추가해주는 부분입니다.
+				  		 	for ( var i = 0 ; i < locations.length; i++) { 
+				  	          	markers[i] = new google.maps.Marker({
+				  	            position: locations[i].position,
+				  	          	icon: icons[locations[i].type].icon,
+				  	            map: map
+				  	          });  
+				  	          	
+				  	          markers.push(markers[i]);
+				  	          //인덱스를 꺼내오기.. 중요!!
+				  	          markers[i].index = i
+
+				  	        contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+								+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+								+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+								+ '<li class="list-group-item">'
+								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '</div>';
+
+								// 이벤트 정보 넣기
+								infowindows[i] = new google.maps.InfoWindow(
+										{
+											content : contents[i],
+											removeable : true
+										});
+				          
+								// 마커를 클릭했을때 이벤트 발생 시키기
+								google.maps.event.addListener(markers[i],'click',function() {
+									//map.setZoom(15);
+									// 일단 마커를 모두 닫고
+									//for (var i = 0; i < markers.length; i++) {
+											//infowindows[i].close();
+										//}
+									infowindows[this.index].open(map,markers[this.index]);
+									map.panTo(markers[this.index].getPosition());
+								});
+							}
+						}
+								
+							$(".spotImg").empty();
+							var output = '';
+							$(result).each(
+											function() {
+												output += '<div class="col-sm-3 col-md-3">';
+												output += '<div class="thumbnail">';
+												output += ' <div class="caption">';
+												output += '<h4>'+ this.spotTitle+ '</h4>';
+												output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
+												output += '<p> '+ this.spotAddress+ '</p>';
+												output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
+												output += '<p> '+ this.spotCreateTime+ ' / '+ this.spotModifyTime+ '</p>';
+												output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
+												output += ' <p>';
+												output += ' <span class="label label-success">백과</span>';
+												output += ' <span class="label label-warning">맛집</span>';
+												output += ' </p>';
+												output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+												output += '</div>';
+												output += '</div>';
+												output += '</div>';
+											});// each
+							// 8. 이전까지 뿌려졌던 데이터를 비워주고, <th>헤더 바로 밑에 위에서 만든 str을  뿌려준다.   
+							$(".spotImg").append(output);
+						}// else
+					}// success
+				);// ajax
+		}
+
+	 // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+	
+	// Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+      setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+      setMapOnAll(map);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+      clearMarkers();
+      markers = [];
+      locations = [];
+    }
     
 </script>
 

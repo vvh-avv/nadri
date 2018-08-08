@@ -29,10 +29,8 @@
 <link rel="stylesheet" href="/css/timelinestyle.css?ver=1">
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
-
+<!-- -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 <script src="/javascript/printThis.js"></script>
 
@@ -245,7 +243,7 @@ $(function(){
 		<div class="container container-get">
 		<br/>
 		<div>
-			<span id="SKY"></span>
+			날씨 : <span id="SKY"></span>
 			미세먼지 : <span id="finedust"></span>
 		</div>	
 		<img src="/images/spot/icon/pop.png"><span id="POP" ></span> %
@@ -299,6 +297,7 @@ $(function(){
 					<c:if test="${waypoint.wayPointNav != ''}">
 					<span>
 					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel" begin="1">
+					<c:if test="${fn:length(sel) >= 20}">
 				      <c:if test="${schedule.transportationCode=='0'}">
 					<i class="Tiny material-icons">directions_car</i>
 					</c:if>
@@ -307,8 +306,11 @@ $(function(){
 					</c:if>
 					<c:if test="${schedule.transportationCode=='2'}">
 					<i class="Tiny material-icons">directions_transit</i>
-					</c:if>${sel}<br>
+					</c:if>
+					${sel}<br>
+					</c:if>
 				   </c:forTokens>
+				   도착!!
 				</span>
 					<hr/>
 						<p><i class="Small material-icons">access_alarm</i>약 ${waypoint.moveTime} 걸릴 예정입니다.</p>					

@@ -217,22 +217,11 @@
 }
 
 .user-detail-section {
-	display : flex;
-	justify-content : center;
-	align-items : center;
-	flex-direction : column;
-	padding-bottom : 30px;
 	background: white;
 	margin: 15px 0px 15px 0px;
 	border-radius: 10px;
 	box-shadow: 1px 2px 10px 0px #c7c7c7;
 }
-
-<div class="boards-list">
-						<div class="empty-boards">
-							<div>인기 게시물이 없습니다.</div>
-						</div>
-					</div>
 
 @media only screen and (max-width : 600px) {
 	.user-profile-section {
@@ -287,7 +276,6 @@ article:hover .links {
 }
 
 .map-row {
-	width : 100%;
 	padding: 20px;
 	border-radius: 5px;
 }
@@ -298,21 +286,6 @@ article:hover .links {
 	border: 1px solid lightgrey;
 	border-radius:5px;
 }
-
-.con-cart{
-	display : flex;
-	justify-content: center;
-	align-items: center;
-	height : 100%;
-	position : relative;
-}
-
-.img-thumnail{
-	box-shadow : none;
-	border: none;
-	background-color : transparent;
-}
-
 </style>
 
 </head>
@@ -335,16 +308,19 @@ article:hover .links {
 						<img src="/images/profile/default.png" width="133" height="133"
 							class="img-circle">
 					</c:if>
-					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> <a
-						href="/user/updateUser">내 정보 수정</a><br /> <br /> <a
-						href="/friend/listFriend">친구 목록</a><br /> <br /> <a
-						href="/board/getMyBoardList">작성한 글</a><br /> <br /> <a
-						href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> <a
-						href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
-					<br /> <br /> <br /> <br /> <br /> <br /> <a
-						href="/user/logout">로그아웃</a><br /> <br />
+					<h4>
+						<a href="/user/listUser">마이 페이지</a>
+					</h4>
+					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
+						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
+						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
+						<a href="/board/getMyBoardList">작성한 글</a><br /> <br /> 
+						<a href="/schedule/getMyScheduleList">내 일정</a><br /> <br /> 
+						<a href="/cart/getMyCartList">장소 바구니</a><br /> <br /> <br /> <br />
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
-			</div>
+			</div> <!-- end.of.row1 -->
 
 			<div class="col-xs-12 col-md-9">
 
@@ -356,7 +332,7 @@ article:hover .links {
 					</div>
 					<br>
 					<!-- 바구니에 담은 장소리스트 보여주는 부분 -->
-					<div class="row contents con-cart">
+					<div class="row contents">
 						<c:set var="i" value="0" />
 						<c:forEach var="cart" items="${list}">
 							<article class="${cart.cartNo}">

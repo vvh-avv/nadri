@@ -39,17 +39,20 @@ public class UserDaoImpl implements UserDao{
 	public User getUser(String userId) throws Exception {
 		System.out.println("userDaoImpl - getUser(userId): "+userId);
 		
-		if(sqlSession.selectOne("UserMapper.getUser", userId) != null) {
+		/*if(sqlSession.selectOne("UserMapper.getUser", userId) != null) {
 			return sqlSession.selectOne("UserMapper.getUser", userId);
 		}else {
 			return new User();
-		}
+		}*/
+		
+		return sqlSession.selectOne("UserMapper.getUser", userId);
 		
 	}
 	
 	public void updateUser(User user) throws Exception {
 		System.out.println("////////////////////////////////////////////////////");
 		System.out.println("userDaoImpl - updateUser: "+sqlSession.update("UserMapper.updateUser", user));
+		System.out.println("userDaoImpl - 업데이트 전 유저 정보:"+user);
 		System.out.println("////////////////////////////////////////////////////");
 		sqlSession.update("UserMapper.updateUser", user);
 	}
@@ -71,6 +74,12 @@ public class UserDaoImpl implements UserDao{
 	public void quitUser(String userId) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.update("UserMapper.quitUser", userId);
+	}
+	
+	@Override
+	public void quitUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("UserMapper.quitUser", user);
 	}
 	
 	//회원 아이디 찾기
@@ -150,4 +159,6 @@ public class UserDaoImpl implements UserDao{
 		map.put("누적신고", report_list.size());
 		return map;
 	}
+
+	
 }

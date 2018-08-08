@@ -116,15 +116,13 @@ public class UserController {
 		user.setProfileImg(fileMultiName);
 			
 		userService.addUser(user);
-		
-
-		
+				
 		return "redirect:/user/loginView.jsp";
 	}
 	
 	//유저 정보 조회
 	@RequestMapping(value="getUser", method=RequestMethod.GET)
-	public String getUser( HttpSession session, Model model ) throws Exception {
+	public String getUser(HttpSession session, Model model ) throws Exception {
 		System.out.println("/user/getUser : GET");
 		
 		User user = (User) session.getAttribute("user");
@@ -143,7 +141,7 @@ public class UserController {
 	
 	//유저 정보 수정: get방식
 	@RequestMapping(value="updateUser", method= RequestMethod.GET)
-	public String updateUser( HttpSession session, Model model, User user ) throws Exception{
+	public String updateUser( HttpSession session, Model model, User user) throws Exception{
 		System.out.println("/user/updateUser : GET");
 		
 		//business logic
@@ -157,46 +155,50 @@ public class UserController {
 	}
 	
 	//유저 정보 수정: post방식
-	@RequestMapping(value="updateUser", method= RequestMethod.POST)
-	public String updateUser( @ModelAttribute("user") User user , HttpSession session, Model model , HttpServletResponse response ) throws Exception{
-		System.out.println("/user/updateUser : POST");
-		
-		/*//파일 업로드(수정시)
-		String uploadPath = request.getRealPath("/images/profile");
-		
-		String fileOriginName = "";
-		String fileMultiName = "";
-		for(int i=0; i<file.length; i++) {
-			fileOriginName = file[i].getOriginalFilename();
+		@RequestMapping(value="updateUser", method= RequestMethod.POST)
+		public String updateUser( @ModelAttribute("user") User user, Model model , HttpServletResponse response, @RequestParam(value="file", required=false) MultipartFile file	 ) throws Exception{
+			System.out.println("/user/updateUser : POST");
 			
-			if(fileOriginName=="") {
-				break;
+			user.setProfileImg("");
+			if(file != null && !file.isEmpty()){
+				user.setProfileImg(file.getOriginalFilename());
 			}
-
-			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+(i+1));
-			Calendar now = Calendar.getInstance();
 			
-			//확장자명
-			String extension = fileOriginName.split("\\.")[1];
+			/*//파일 업로드(수정시)
+			String uploadPath = request.getRealPath("/images/profile");
 			
-			//fileOriginName에 날짜+.+확장자명으로 저장시킴.
-			fileOriginName = formatter.format(now.getTime())+"."+extension;
-			System.out.println("변경된 파일명 : "+fileOriginName);
+			String fileOriginName = "";
+			String fileMultiName = "";
+			for(int i=0; i<file.length; i++) {
+				fileOriginName = file[i].getOriginalFilename();
+				
+				if(fileOriginName=="") {
+					break;
+				}
+				SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss_"+(i+1));
+				Calendar now = Calendar.getInstance();
+				
+				//확장자명
+				String extension = fileOriginName.split("\\.")[1];
+				
+				//fileOriginName에 날짜+.+확장자명으로 저장시킴.
+				fileOriginName = formatter.format(now.getTime())+"."+extension;
+				System.out.println("변경된 파일명 : "+fileOriginName);
+				
+				File f = new File(uploadPath+"\\"+fileOriginName); //file[i].getOriginalFilename());
+				file[i].transferTo(f);
+				if(i==0) { fileMultiName += fileOriginName; }
+				else{ fileMultiName += ","+fileOriginName; }
+			}
+			System.out.println("*"+fileMultiName);
+			user.setProfileImg(fileMultiName);*/
+						
+			//비즈니스 로직
+			userService.updateUser(user);
+			user = userService.getUser(user.getUserId());
 			
-			File f = new File(uploadPath+"\\"+fileOriginName); //file[i].getOriginalFilename());
-			file[i].transferTo(f);
-			if(i==0) { fileMultiName += fileOriginName; }
-			else{ fileMultiName += ","+fileOriginName; }
+			return "forward:/user/getUser.jsp";
 		}
-		System.out.println("*"+fileMultiName);
-		user.setProfileImg(fileMultiName);*/
-		
-		userService.updateUser(user);
-		
-		user = userService.getUser(user.getUserId());
-		
-		return "forward:/user/getUser.jsp";
-	}
 
 	
 	//로그인: get방식
@@ -216,7 +218,7 @@ public class UserController {
 		
 		//입력한 회원정보가 없을 때
 		if(dbUser==null) {
-			return "redirect:/user/loginView.jsp";
+			return "redirect:/";
 		}
 		
 		if( user.getPassword().equals(dbUser.getPassword()) ){
@@ -294,8 +296,8 @@ public class UserController {
 	public String quitUser(@RequestParam("userId")String userId, HttpSession session) throws Exception{
 		
 		System.out.println("/user/quitUser : POST");
-		
-		userService.quitUser(userId);
+		User user = (User) session.getAttribute(userId);
+		userService.quitUser(user);
 		session.invalidate();
 		
 		return "redirect:/index.jsp";
@@ -308,6 +310,15 @@ public class UserController {
 		System.out.println("/user/findUser: GET");
 		
 		return "forward:/user/findUser.jsp";
+	}
+	
+	//비밀번호 찾기 화면 소환
+	@RequestMapping(value="findPassword", method=RequestMethod.GET)
+	public String findPassword() throws Exception{
+		
+		System.out.println("/user/findPassword: GET");
+		
+		return "forward:/user/findPassword.jsp";
 	}
 	
 

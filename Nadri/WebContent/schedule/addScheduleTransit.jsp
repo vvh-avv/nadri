@@ -342,10 +342,9 @@ var options = {
 			// 모달을 닫습니다.
 			$("#myModal").modal('hide');
 		});
-			
+
 		$(window).scroll(function(){
 	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
-	        
 	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
 	        	$("body > div.sidenav").fadeIn();
 	        	$("body > div.sidenav").css("display", "block");
@@ -386,7 +385,7 @@ var options = {
 		  }); //end of datepicker
 		  
 		$('#timepicker').wickedpicker(options);
-		
+
 		$(document).on("click", "#modal", function(){
 			$('#myModal').modal();
 		});
