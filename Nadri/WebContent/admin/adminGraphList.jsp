@@ -79,30 +79,6 @@ html, body {
 }
 </style>
 
-<script>
-	$(function() {
-
-		/* index page animation start */
-
-		$('.admin-sub-navbar > div').on('click', function() {
-			var way = $(this).attr('class');
-			if (way == "inquire") {
-				self.location = '/admin/listInquire';
-			} else if (way == "spot") {
-				self.location = '/admin/listSpot';
-			} else if (way == "graph") {
-				self.location = '/admin/listGraph?duration=day';
-			} else if (way == "userList") {
-				self.location = '/admin/listUser';
-			} else if (way == "userLog") {
-				self.location = '/admin/listLog';
-			}
-		})
-
-		/* index page animation end */
-
-	});
-</script>
 <body>
 
 	<nav class="admin-navbar">

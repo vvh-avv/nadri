@@ -248,9 +248,16 @@ p {
 	/* margin: 0 0 10px; */
 	font-weight: bold;
 }
+
+.openrange-box{
+	margin-top : 5px;
+	display : flex;
+	justify-content: space-evenly;
+}
 </style>
 
 <script>
+
 //오늘 날짜 구하기
 var today = new Date();
 var dd = today.getDate();
@@ -270,6 +277,10 @@ today = mm+'-'+dd+'-'+yyyy;
 
 //네비게이션 해주는 곳 입니다!
 $(function(){
+	
+	$('.clockpicker').clockpicker({
+		donetext : '입력!'
+	});
 	
 	$("#cart").on("click", function(){
 		location.href = "/cart/getMyCartList";
@@ -790,26 +801,31 @@ $(function(){
 			<hr />
 
 			<div class="form-group row">
-				<div class="col-xs-3">
+				<div class="col-md-3 col-xs-12">
 					<p>출발시간은 언제인가요?</p>
-					<input type="text" class="form-control" id="timepicker"
-						name="startHour" readonly />
+					<div class="input-group clockpicker">
+					    <input type="text" class="form-control" value="09:00" readonly>
+					    <span class="input-group-addon">
+					    	<span class="glyphicon glyphicon-time">
+					    	</span>
+				   		</span>
+					</div>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-md-3 col-xs-12">
 					<p>공개범위를 설정해주세요!</p>
-					<select class="form-control" name="openRange">
-						<option value="0">모두공개</option>
-						<option value="1">친구만공개</option>
-						<option value="2">비공개</option>
-					</select>
+					<div class="openrange-box">
+						<input type="radio" name="openRange" value="0" checked>모두공개
+						<input type="radio" name="openRange" value="1">친구공개
+						<input type="radio" name="openRange" value="2">나만보기
+					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-md-4 col-xs-12">
 					<p>경유지를 추가할까요?</p>
 					<span class="waves-light btn col s5" type="button"
-						style="background-color: rgba(250, 170, 50, 0.5);"
+						style="background-color: rgb(59, 128, 187); color : white;"
 						onclick="addWayPoint()">+ 경유지 추가</span> <span
 						class="waves-light btn col s5" type="button"
-						style="background-color: rgba(250, 170, 50, 0.5);"
+						style="background-color: rgba(163, 172, 179, 0.5); color : white;"
 						onclick="deleteWayPoint()">- 경유지 제거</span>
 				</div>
 			</div>

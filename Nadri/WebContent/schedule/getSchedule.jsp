@@ -30,6 +30,8 @@
 <!-- D-day를 넣기위한 라인입니다. -->
 <script type="text/javascript" src="/javascript/downCount.js"></script>
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 <script src="/javascript/printThis.js"></script>
@@ -64,7 +66,7 @@ ul.countdown {
 }
 
 .maincon {
-	color : #404548;
+	color : #9fadb9;
 }
 
 ul.countdown li {

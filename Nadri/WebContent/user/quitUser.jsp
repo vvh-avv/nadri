@@ -20,12 +20,13 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	<script src="/javascript/toolbar.js"></script>
-	<link rel="stylesheet" href="/css/toolbar.css">
+	<!-- layout css -->
+	<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+	<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+	<script src="/javascript/indexReal_nonIndex.js"></script>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<%-- <jsp:include page="/layout/toolbar.jsp" />  --%>
-	<%@ include file="/layout/toolbar.jsp"%>
+	<%@include file="/layout/new_toolbar.jsp"%>
    	<!-- ToolBar End /////////////////////////////////////-->
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->

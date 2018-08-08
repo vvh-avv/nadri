@@ -24,6 +24,15 @@ body{
 .table{
 	font-size : 12px;
 	margin-top : 20px;
+	text-align: center;
+}
+
+.firstLine{
+	background : #c9dbe6;
+}
+
+.firstLine > th{
+	text-align: center;
 }
 
 .admin-sub-navbar div:last-child{
@@ -34,6 +43,7 @@ body{
 }
 
 .body-box{
+	text-align : left;
 	padding : 15px;
 }
 
@@ -194,6 +204,60 @@ body{
 .option-icons:hover{
 	cursor : pointer;
 	color : #33AEF7;
+}
+
+.inquire-search-form{
+	width : 100%;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+}
+
+p.text-primary{
+	margin : 0px;
+}
+
+.text-right{
+	float:right;
+}
+
+.user-modal{
+	background : white;
+	margin-top : 25%;
+	border-radius : 15px;
+	box-shadow : 1px 1px 10px 0px grey;
+}
+
+.inquired-user-header{
+	font-size : 15px;
+}
+
+.chart-body{
+	display : flex;
+	justify-content: center;
+}
+
+.userIdLog{
+	font-weight: 800;
+}
+
+.chart-duration {
+	display : flex;
+}
+
+.duration{
+	height : 10%;
+	font-size : 12px;
+}
+
+.user-log-buttons{
+	font-size : 15px;
+	display : flex;
+	justify-content: space-between;
+}
+
+.block-user{
+	padding : 10px;
 }
 
 /* slider */
