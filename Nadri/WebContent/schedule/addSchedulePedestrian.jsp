@@ -176,18 +176,18 @@
 	top: 400px;
  	left: 350px; 
 	background: #eee;
-	overflow-x: hidden;
 	/*max-height : 60%;*/
 /* 	border: 0.3px solid black; */
 	transition : all 1s;
 }
 
 .sidenav-sliders{
+	content:"";
 	position : absolute;
 	top : 400px;
 	width : 56px;
 	height : 56px;
-	background : #aee485;
+	background : #2d5477;
 	left : 300px;
 	transition : all 1s;
 }
@@ -206,7 +206,6 @@
 	top: 180px;
 	left: 10px;
 	background: #eee;
-	overflow-x: hidden;
 	/* max-height : 60%;*/
 	border: 0.3px solid black;
 }
@@ -242,7 +241,7 @@
 /*링크별로이쁘게 펼쳐주기(장바구니)*/
 /* Style tab links */
 .tablink {
-	background-color: #a1d878;
+	background-color: #4279a9;
 	color: white;
 	float: left;
 	border: none;
@@ -254,7 +253,7 @@
 }
 
 .tablink:hover {
-	background-color: #45ba31;
+	background-color: #2d5477;
 }
 
 /* Style the tab content (and add height:100% for full page content) */
@@ -268,6 +267,10 @@ body, html {
 	display: none;
 	padding: 10px;
 	height: 80%;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background : #2d5477;
 }
 
 #Tmap_Control_ZoomBar_46 {
@@ -449,6 +452,12 @@ body > div#ui-datepicker-div{
 	height : 100px;
 	width : 150px;
 	margin-bottom : 5px;
+	padding : 5px;
+	border : 1px solid #80808042;
+}
+
+.way-imgs:hover{
+	cursor : pointer;
 }
 
 .waypoint-append-title{
@@ -480,6 +489,39 @@ body > div#ui-datepicker-div{
 .waypoint-modal-dialog{
 	width : 50%;
 	top : 25%;
+}
+
+.cart-element{
+	margin-bottom : 5px;
+	padding : 5px;
+	background : white;
+	border-radius : 5px;
+	width : 100%;
+	box-shadow : 2px 2px 10px 0px #272424;
+}
+
+.cart-title{
+	display : flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.cart-titles-box{
+	display : flex;
+	align-items: baseline;
+	justify-content: center;
+	flex-direction: column;
+	margin-left : 5px;
+}
+
+.first-cart-textlines{
+	font-size : 13px;
+	font-weight: 900;
+}
+
+.second-cart-textlines{
+	font-size : 10px;
+	font-weight: 100;
 }
 
 </style>
@@ -581,6 +623,10 @@ var options = {
 			// 모달을 닫습니다.
 			$("#myModal").modal('hide');
 		}); */
+		
+		$('.way-imgs').on('click',function(){
+			swal('이미지를 바꿀거에요~');
+		});
 		
 		$('.edit-label').tooltip();
 		
@@ -687,6 +733,24 @@ var options = {
 
 			}
 		})
+		
+		$(document).on('click','#edit-navigation',function(){
+			var id = $(this).attr('class');
+			var idNo = id.charAt(id.length-1);
+			new daum.Postcode({
+	              oncomplete: function(data) {
+	            	$('.pre-waypoints'+idNo).css('display','none');
+	  				$('.after-waypoints'+idNo).css('display','flex');
+	  				$('#wayPointAddress'+idNo).text(data.address);
+	  				if(data.buldingName != null){
+	  					$('#wayPointTitle'+idNo).text(data.buildingName);		  					
+	  				}else{
+	  					$('#wayPointTitle'+idNo).text('주소명을 입력해주세요.');
+	  				}
+/* 		                $("#addr").val(data.address); */
+	              }
+	          }).open();
+		})
 
 			
  		$(window).scroll(function(){
@@ -719,7 +783,7 @@ var options = {
  			
  			if(cartchk){
  				$(this).css('left','0px');
- 				$('body > div.sidenav').css('left','56px');
+ 				$('body > div.sidenav').css('left','50px');
  				setTimeout(function() {
 					$('body > div.sidenav').css('z-index','1010');
 				}, 1000);
@@ -727,8 +791,9 @@ var options = {
  			}else{
  				$('body > div.sidenav').css('z-index','-1');
  				setTimeout(function() {
- 					$('body > div.sidenav-sliders').css('left','300px');
+ 					$('body > div.sidenav-sliders').css('left','294px');
  	 				$('body > div.sidenav').css('left','350px');
+ 	 				$('.tabcontent').css('display','none');
 				}, 800);
  				cartchk = true;
  			}
@@ -1028,7 +1093,59 @@ $(function(){
 
     }
 })
+
+
+// 드래그 일정추가
+
+$(function(){
+	
+ 	$('.cart-element').draggable({ opacity: 0.7, helper: "clone" });
+ 	
+ 	$('.waypoints-row').droppable({
+ 		drop: function( event, ui ) {
+ 			
+ 			console.log(ui);
+ 			
+ 			var id = $(this).attr('id');
+			var idNo = id.charAt(id.length-1);
+ 			
+ 			var address = $(ui).find('.second-cart-textlines').text();
+ 			alert(address);
+ 			
+ 			var id = $(this).attr('id');
+			var idNo = id.charAt(id.length-1);
+ 			console.log('hey');
+ 			$('.pre-waypoints'+idNo).css('display','none');
+			$('.after-waypoints'+idNo).css('display','flex');
+ 			$('#wayPointAddress'+idNo).text(address); 
+/*  			$('#wayPointTitle'+idNo).text(title); */
+/* 			if(data.buldingName != null){
+				$('#wayPointTitle'+idNo).text();		  					
+			}else{
+				$('#wayPointTitle'+idNo).text('주소명을 입력해주세요.');
+			} */
+			
+ 		}
+ 	});
+	
+/*	$('.waypoints-row').droppable({
+	    onDragEnter:function(e,source){
+	    	console.log('enter!');
+	        $(source).draggable('options').cursor='auto';
+	    },
+	    onDragLeave:function(e,source){
+	        $(source).draggable('options').cursor='not-allowed';
+	    },
+	    onDrop:function(e,source){
+	       alert("drapped");
+	    }
+	}); */
+	
+});
+
+
 </script>
+
 <!-- layout css -->
 <link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
 <link rel="stylesheet" type="text/css" media="(max-width: 600px)"
@@ -1041,18 +1158,17 @@ $(function(){
 	<div class="sidenav-sliders"></div>
 	<div class="sidenav">
 		<div style="display :flex;">
-			<button class="tablink" onclick="openPage('Home', this, '#45ba31')"
+			<button class="tablink" onclick="openPage('Home', this, '#2d5477')"
 				id="defaultOpen">장소바구니</button>
-			<button class="tablink" onclick="openPage('Contact', this, '#45ba31')">추천바구니</button>
+			<button class="tablink" onclick="openPage('Contact', this, '#2d5477')">추천바구니</button>
 	
 			<input class="form-control" type="file" id="fileImg" name="fileImg"
 				style="display: none">
 		</div>
 		<div id="Home" class="tabcontent">
-			<br />
 			<c:set var="i" value="0" />
 			<c:forEach var="cart" items="${cart}">
-				<c:set var="i" value="${i+1}" />
+			<c:set var="i" value="${i+1}" />
 <%-- 				<div>
 					<table class="${cart.cartNo}" style="margin-buttom: 15px">
 						<tr class="ct_list_pop">
@@ -1100,8 +1216,8 @@ $(function(){
 						</span>
 					</table>
 				</div> --%>
-				<div class="${cart.cartNo}">
-					<div class="cart-title${i}">
+				<div class="cart-element ${cart.cartNo}">
+					<div class="cart-title">
 						<i class="material-icons">place</i>
 						<!-- 이미지 미리보기를 위한 img 태그 --> 
 						<c:if test="${cart.cartImg.contains('http://')}">
@@ -1115,6 +1231,10 @@ $(function(){
 						<img style="display: none;"
 						src="/images/spot/${cart.cartImg}" width="50" height="50"
 						id="cartImg${i}" class="${cart.cartNo}">
+						<div class="cart-titles-box">
+							<div class="first-cart-textlines cart-name${i}">${cart.cartTitle}</div>
+							<div class="second-cart-textlines cart-address${i}">${cart.cartAddress}</div>
+						</div>
 					</div>
 				</div>
 			</c:forEach>
@@ -1363,7 +1483,7 @@ $(function(){
 						</div>
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
-								<div class="col-md-6"><img src="" alt="출발지 이미지" class="way-imgs" id="wayPointImg0"></div>
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg0"></div>
 								<div class="col-md-6" id="wayPointTitle0">장소명</div>				
 							</div>
 						</div>
@@ -1372,9 +1492,8 @@ $(function(){
 						</div>
 						<div class="col-md-4 col-xs-2">
 							<div>
-								<input class="waves-effect waves-light btn col s5" 
-								type="button" style="background-color: rgba(250, 170, 50, 0.5);" 
-								id="navigation'" value="출발지" onclick="search('#wayPointAddress0')">
+								<input class="btn btn-default navi-btn0" type="button" id="navigation" value="출발지" onclick="search('#wayPointAddress0')">
+								<input class="btn btn-default edit-btn0" type="button" id="edit-navigation" value="수  정">
 							</div>
 						</div> 
 					</div>
@@ -1429,8 +1548,8 @@ $(function(){
 				</div>
 				<div class="form-group">
 					<label for="scheduleDetail">주소를 정확히 입력해주세요!</label> <input
-						type="text" class="form-control" id="modal-schedule-detail"
-						placeholder="장소를 간단히 설명해주세요!">
+						type="text" class="form-control" id="modal-schedule-address"
+						placeholder="장소의 주소를 정확히 입력해주세요!">
 				</div>
 				
 			</div>
