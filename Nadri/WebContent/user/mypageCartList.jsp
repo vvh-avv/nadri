@@ -8,6 +8,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/images/common/favicon.ico">
@@ -54,10 +55,7 @@
 	var markers = [];
 
 	//마커 담는 곳
-	var spot = $
-	{
-		cart
-	};
+	var spot = ${cart};
 	for (var i = 0; i < spot.length; i++) {
 		obj = {
 			lat : parseFloat(spot[i].spotY),
@@ -163,7 +161,8 @@
 			});
 			//인덱스를 꺼내오기.. 중요!!
 			markers[i].index = i
-
+		
+			if( locations[i].img.length <= 20){
 			contents[i] = '<div class="grid">'
 					+ '<div class="box box-primary" style="font-family : seoul">'
 					+ '<h4 class="profile-username text-center">'
@@ -181,6 +180,26 @@
 					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
 					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 장소바구니</span></li>'
 					+ '</div>' + '</div>';
+			} else {
+				contents[i] = '<div class="grid">'
+					+ '<div class="box box-primary" style="font-family : seoul">'
+					+ '<h4 class="profile-username text-center">'
+					+ locations[i].title
+					+ '</h4>'
+					+ '<img src="'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'
+					+ locations[i].addr
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-book"></i><b>상세내용  </b>'
+					+ locations[i].detail
+					+ '</li>'
+					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 장소바구니</span></li>'
+					+ '</div>' + '</div>';
+				
+			}
 
 			// 이벤트 정보 넣기
 			infowindows[i] = new google.maps.InfoWindow({
@@ -296,7 +315,6 @@ article:hover .links {
 
 .cart-contentes{
 	position : relative;
-	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
@@ -351,24 +369,26 @@ article:hover .links {
 								<!-- 썸네일 형식의 장소 이미지 -->
 								<div class="thumbImg" style="width: auto; height: 250px;">
 									<c:if test="${cart.cartImg==null}">
-										<img src="/images/board/posts/no_image.jpg"
+										<img src="/images/spot/no_image.jpg"
 											class="img-thumbnail">
 									</c:if>
-									<c:if test="${cart.cartImg!=null}">
+									
+									<c:if test="${cart.cartImg!=null && fn:length(cart.cartImg)>=20 }">
 										<img src="${cart.cartImg}" class="img-thumbnail">
+									</c:if>
+									<c:if test="${cart.cartImg!=null && fn:length(cart.cartImg)<20 }">
+										<img src="/images/spot/${cart.cartImg}" class="img-thumbnail">
 									</c:if>
 								</div>
 								<!-- 방문도장 이미지 -->
 								<c:if test="${cart.stampCode==1}">
 									<div class="linksIcon">
-										<img id="stamp${schedule.scheduleNo}"
-											src="/images/cart/common/stamp.png">
+										<img id="stamp${schedule.scheduleNo}" src="/images/cart/common/stamp.png">
 									</div>
 								</c:if>
 								<!-- 마우스 오버시 보여지는 부분 -->
 								<div class="links" style="text-align: center;">
-									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> <span
-										id="cartAddress">${cart.cartAddress}<br> <br></span>
+									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> <span id="cartAddress">${cart.cartAddress}<br> <br></span>
 									<span id="cartDetail">${cart.cartDetail}</span>
 								</div>
 							</article>
@@ -384,27 +404,6 @@ article:hover .links {
 
 				</div>
 
-			</div>
-		</div>
-		<!-- HJA 일정등록 transportation navigation -->
-		<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-		<div class="modal" id="transportationModal" role="dialog">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
-					</div>
-					<div class="modal-body">
-						<button type="button" class="btn btn-primary" id="car">자동차</button>
-						<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
-						<button type="button" class="btn btn-primary" id="transit">대중교통</button>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="waves-effect waves-light btn"
-							id="modalinsert">입력!</button>
-					</div>
-				</div>
 			</div>
 		</div>
 </body>

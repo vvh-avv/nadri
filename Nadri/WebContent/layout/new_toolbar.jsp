@@ -28,8 +28,7 @@
 				<c:if test="${!empty user}">
 					<span class="glyphicon glyphicon-bell top-icons"
 						id="noticeRoomList"></span>
-					<span class="glyphicon glyphicon-comment top-icons"
-						id="chatRoomList"></span>
+					<span class="glyphicon glyphicon-comment top-icons" id="chatRoomList"></span>
 
 					<span class="glyphicon glyphicon-pencil top-icons" id="pencil"></span>
 					<span class="glyphicon glyphicon-user top-icons" id="join-open"></span>

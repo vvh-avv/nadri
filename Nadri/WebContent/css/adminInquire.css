@@ -21,6 +21,10 @@ body{
 	overflow:hidden;
 }
 
+.disabled{
+	pointer-events: none;
+}
+
 .table{
 	font-size : 12px;
 	margin-top : 20px;

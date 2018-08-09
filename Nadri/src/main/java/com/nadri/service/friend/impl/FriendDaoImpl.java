@@ -50,7 +50,7 @@ public class FriendDaoImpl implements FriendDao{
 		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", friend));
 		//return sqlSession.insert("FriendMapper.acceptFriend", friend);
 		if(sqlSession.insert("FriendMapper.acceptFriend", friend) == 0) {
-			return sqlSession.insert("FriendMapper.acceptFriend", friend);
+			return sqlSession.update("FriendMapper.acceptFriend", friend);
 		}
 		return 1;
 	}

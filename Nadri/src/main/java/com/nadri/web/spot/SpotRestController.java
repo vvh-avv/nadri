@@ -120,6 +120,21 @@ public class SpotRestController {
 		return spotService.searchAround(spot);
 	}//end of searchArround
 	
+   //안드로이드 추가용
+   @RequestMapping(value="/searchAroundAndroid/{spotX}/{spotY}/{spotCode}" , method=RequestMethod.GET)
+   public @ResponseBody List<Spot> searchAroundAndroid( @PathVariable BigDecimal spotX, @PathVariable BigDecimal spotY, @PathVariable String spotCode ) throws Exception{
+      System.out.println("/searchAroundAndroid : GET / POST");
+      
+      Spot spot = new Spot();
+      spot.setSpotX(spotX);
+      spot.setSpotY(spotY);
+      spot.setSpotCode(spotCode);
+      
+      System.out.println("////// "+spot);
+      
+      return spotService.searchAroundRest(spot);
+   }//end of searchAroundAndroid
+
 	@RequestMapping(value="/getSpotListRest", method=RequestMethod.GET)
 	public List<Spot> getSpotListRest(HttpServletRequest request )throws Exception{
 		
@@ -208,23 +223,6 @@ public class SpotRestController {
                 
         return (JSONObject) ((JSONObject) ((JSONObject) ((JSONObject) a.get("response")).get("body")).get("items")).get("item")	;
 	}
-	
-	
-	//안드로이드 추가용
-	@RequestMapping(value="/searchAroundAndroid/{spotX}/{spotY}/{spotCode}" , method=RequestMethod.GET)
-	public @ResponseBody List<Spot> searchAroundAndroid( @PathVariable BigDecimal spotX, @PathVariable BigDecimal spotY, @PathVariable String spotCode ) throws Exception{
-		System.out.println("/searchAroundAndroid : GET / POST");
-		
-		Spot spot = new Spot();
-		spot.setSpotX(spotX);
-		spot.setSpotY(spotY);
-		spot.setSpotCode(spotCode);
-		
-		System.out.println("////// "+spot);
-		
-		return spotService.searchAroundRest(spot);
-	}//end of searchAroundAndroid
-	
 	
 	
 	

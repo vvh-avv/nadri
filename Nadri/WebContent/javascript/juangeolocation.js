@@ -213,7 +213,7 @@ function removeMarker(value) {
 
 function setXY(value, x, y) {
     if(value == "w0") {
-    	swal("Ãâ¹ßÁö¸¦ ¼³Á¤ÇÕ´Ï´Ù.");
+    	swal("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
     	start_x = x;
     	start_y = y;
         searchAdress("#wayPointAddress0", y, x);
@@ -259,7 +259,7 @@ function reset () {
 
 function search(input) {
     if($(input).val()=="") {
-    	swal("°ªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+    	swal("ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
     } else {
         if($(input).val() != null) {
             $.ajax({
@@ -281,9 +281,9 @@ function search(input) {
                        }
                     } else {
                         if (input == "#waypoint0") {
-                            alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+                            alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
                         } else {
-                        	 alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+                        	 alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
                         }
                     }
                 },
@@ -301,9 +301,9 @@ function go() {
     }  else if(input_e == 1) {
     	distance();
     } else if(input_s == 0){
-        alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+        alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
     } else {
-        alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+        alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½!");
     }
 }
 
@@ -325,8 +325,8 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-        		startName : "½ÃÀÛÁöÁ¡",
-        		endName : "µµÂøÁöÁ¡"
+        		startName : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+        		endName : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
@@ -335,9 +335,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "½Ã°£ " + Math.floor(total.totalTime%3600/60) + "ºÐ";
+                    time = Math.floor(total.totalTime/3600) + "ì‹œê°„" + Math.floor(total.totalTime%3600/60) + "ë¶„";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "ºÐ ";
+                    time = Math.floor(total.totalTime%3600/60) + "ë¶„";
                 }
 
                 map.addLayer(routeLayer);
@@ -368,7 +368,7 @@ function distance() {
             },
 
             error:function(request,status,error){
-                swal("Àå¼Ò°Ë»ö½ÇÆÐÇß½À´Ï´Ù!");
+                swal("ï¿½ï¿½Ò°Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½!");
                 reset();
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
