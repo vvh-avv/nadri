@@ -78,17 +78,21 @@
 		}
 
 		var value = "";
-		if ($("input[name='phone2']").val() != ""
-				&& $("input[name='phone3']").val() != "") {
+		if ($("input[name='phone2']").val() != "" && $("input[name='phone3']").val() != "") {
 			var value = $("option:selected").val() + "-"
 					+ $("input[name='phone2']").val() + "-"
 					+ $("input[name='phone3']").val();
 		}
-
-		//Debug...
-		//alert("phone : "+value);
 		$("input:hidden[name='phone']").val(value);
 
+		//프로필 이미지 변경 시 제약조건을 걸어서 값이 없는 경우는 새로 값을 부여하지만 그렇지 않은 경우는 기존의 값을 그대로 유지
+		if( $('#profileImg2').val() != null && $('#profileImg2').val() != '') {
+			var profileImg = $('#profileImg2').val() ;
+			profileImg = profileImg.substring( profileImg.lastIndexOf('\\') + 1 , profileImg.length ) ;
+			$('#profileImg').val( profileImg ) ;					//기존 프로필 이미지에서 새로운 프로필 이미지로
+			//alert( profileImg ) ;
+			//alert($('#profileImg').val());	
+		}
 		$("form").attr("method", "POST").attr("action", "/user/updateUser").submit();
 	}
 </script>
@@ -141,9 +145,7 @@
 						<img src="/images/profile/default.png" width="133" height="133"
 							class="img-circle">
 					</c:if>
-					<h4>
-						<a href="/user/listUser">마이 페이지</a>
-					</h4>
+		
 					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
 						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
 						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
@@ -219,16 +221,10 @@
 								</select>
 							</div>
 							<div class="col-xs-4 col-md-2">
-								<input type="text" class="form-control" id="phone2"
-									name="phone2"
-									value="${ ! empty user.phone2 ? user.phone2 : ''}"
-									placeholder="변경번호">
+								<input type="text" class="form-control" id="phone2" name="phone2" value="${ ! empty user.phone2 ? user.phone2 : ''}" placeholder="변경번호">
 							</div>
 							<div class="col-xs-2 col-md-2">
-								<input type="text" class="form-control" id="phone3"
-									name="phone3"
-									value="${ ! empty user.phone3 ? user.phone3 : ''}"
-									placeholder="변경번호">
+								<input type="text" class="form-control" id="phone3" name="phone3" value="${ ! empty user.phone3 ? user.phone3 : ''}" placeholder="변경번호">
 							</div>
 							<input type="hidden" name="phone" />
 						</div>
@@ -261,7 +257,7 @@
 							<div class="col-xs-4 md-4">
 								<!-- <input type="file" class="form-control" id="profileImg" name="file"> -->
 								<input type="hidden" class="form-control" id="profileImg" name = "profileImg" value="${user.profileImg }"> 
-								<input multiple="multiple" type="file" class="form-control" id="profileImg" name="file">
+								<input multiple="multiple" type="file" class="form-control" id="profileImg2" name="file">
 							</div>
 							<span class="col-sm-3"></span>
 						</div>

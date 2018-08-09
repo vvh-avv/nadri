@@ -44,38 +44,17 @@ function fncFindPassword(){
 	//alert("id:: "+id);
 	//alert("mail:: "+mail);
 	
-	if(name == ""){
+	if(name == "" || id == "" || mail=="" ){
 		//alert("이름을 입력해야 비밀번호를 찾을 수 있습니다");
 		swal({
 			   title: "확인하세요!",
-			   text: "이름을 입력해야 비밀번호를 찾을 수 있습니다!",
+			   text: "해당 정보를 입력해야 비밀번호를 찾을 수 있습니다!",
 			   icon: "error",
 			   buttons: false,
 			 });
 		return;
 	}
 	
-	if(id == ""){
-		//alert("아이디를 입력해야 비밀번호를 찾을 수 있습니다");
-		swal({
-			   title: "확인하세요!",
-			   text: "아이디를 입력해야 비밀번호를 찾을 수 있습니다!",
-			   icon: "error",
-			   buttons: false,
-			 });
-		return;
-	}
-	
-	if(mail == ""){
-		//alert("이메일을 입력해야 비밀번호를 찾을 수 있습니다");
-		swal({
-			   title: "확인하세요!",
-			   text: "이메일을 입력해야 비밀번호를 찾을 수 있습니다!",
-			   icon: "error",
-			   buttons: false,
-			 });
-		return;
-	}
 }
 
 //비밀번호 찾기 버튼 클릭 시 행위 발생
@@ -112,7 +91,7 @@ $(function(){
 		    	console.log(JSON.stringify(JSONData)); 	//json string 형식으로 변환
 				var check = JSONData;
 		    	//JSONData에서 유저 아이디 추출 
-		    	if(check == null) {
+		    	if(check == "") {
 		    		//$("span.col-password-check").html("해당하는 정보가 존재하지 않습니다").css("color","red");
 		    		swal({
 		    			   title: "실패!",

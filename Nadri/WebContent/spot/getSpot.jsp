@@ -428,8 +428,6 @@ function addCartSpot(){
 									<img class="materialboxed" src="/images/spot/${spot.spotImg}"
 										width="30%" height="20%" />
 								</c:if>
-<<<<<<< HEAD
-=======
 								<c:if test="${sessionScope.user.userId == null}">
 								<div class="pull-right">
 									<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
@@ -464,17 +462,14 @@ function addCartSpot(){
 									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
 							</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">추가</button>
+									<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-primary modalModBtn" data-dismiss="modal">추가</button>
 									
 									<%-- *** : <%= session.getAttribute("user") %> --%>
 								</div>
->>>>>>> refs/remotes/origin/master
 							</div>
 						</div>
 					</div>
-<<<<<<< HEAD
-=======
 				</form>
 				
 			</div>
@@ -533,7 +528,6 @@ function addCartSpot(){
 	      </div>
 	   </div>
 	   <!-- 신고 Modal content 끝 --> 
->>>>>>> refs/remotes/origin/master
 
 					<hr />
 				</c:if>

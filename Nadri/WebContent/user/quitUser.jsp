@@ -81,7 +81,7 @@
  			 });
 			return;
 		}
-		$("form").attr("method" , "POST").attr("action" , "/user/quitUser").submit();
+		$("form").attr("method" , "POST").attr("action" , "/user/quitUser/"+userId).submit();
 	}
 	</script>
 	

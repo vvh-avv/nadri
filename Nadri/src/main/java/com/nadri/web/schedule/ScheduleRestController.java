@@ -265,6 +265,7 @@ public class ScheduleRestController {
 			  WayPoint waypoint = list.get(i);
 			  jsonObject = new JSONObject();
 			  //json객체 .put ("변수명", 값)
+			  jsonObject.put("wayPointNo", waypoint.getWayPointNo());
 			  jsonObject.put("wayPointTitle", waypoint.getWayPointTitle());
 			  jsonObject.put("wayPointImg", waypoint.getWayPointImg());
 			  jsonObject.put("wayPointAddress", waypoint.getWayPointAddress());

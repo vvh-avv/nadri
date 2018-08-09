@@ -75,12 +75,7 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		sqlSession.update("UserMapper.quitUser", userId);
 	}
-	
-	@Override
-	public void quitUser(User user) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.update("UserMapper.quitUser", user);
-	}
+
 	
 	//회원 아이디 찾기
 	@Override

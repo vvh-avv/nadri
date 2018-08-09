@@ -61,10 +61,10 @@
 }
 
 .container-add-schedule {
-   padding	: 10px;
-   background : white;
-   box-shadow : 1px 1px 10px 0px #8080804d;
-} 
+	padding: 10px;
+	background: white;
+	box-shadow: 1px 1px 10px 0px #8080804d;
+}
 
 /* @font-face {
 		font-family: 'seoul';
@@ -98,11 +98,17 @@
 }
 
 #img-cover {
+	background: url('/images/common/picnicback.jpg');
+	background-size: 350px;
+	opacity: .1;
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 1;
+}
+
+#img-cover:hover {
+	opacity: .3;
 }
 
 #img .content {
@@ -118,20 +124,37 @@
 
 /*고정 바를 만들어주는 css*/
 .sidenav {
-	width: 25%;
-	position: fixed;
-	z-index: 1010;
-	top: 120px;
-	left: 10px;
+	width: 15%;
+	position: absolute;
+	z-index: -1;
+	top: 400px;
+ 	left: 350px; 
 	background: #eee;
 	overflow-x: hidden;
 	/*max-height : 60%;*/
-	border: 0.3px solid black;
+/* 	border: 0.3px solid black; */
+	transition : all 1s;
 }
+
+.sidenav-sliders{
+	position : absolute;
+	top : 400px;
+	width : 56px;
+	height : 56px;
+	background : #aee485;
+	left : 300px;
+	transition : all 1s;
+}
+
+.sidenav-sliders:hover{
+	cursor : pointer;
+	left : 294px;
+}
+
 
 /*고정 바 탑일때 css*/
 .sidenav1 {
-	width: 25%;
+	width: 15%;
 	position: fixed;
 	z-index: 1;
 	top: 180px;
@@ -249,10 +272,28 @@ p {
 	font-weight: bold;
 }
 
-.openrange-box{
-	margin-top : 5px;
-	display : flex;
+.openrange-box {
+	margin-top: 5px;
+	display: flex;
 	justify-content: space-evenly;
+}
+
+.schedule-headers-box {
+	display: flex;
+	margin: 0px;
+}
+
+.header-side-lines {
+	border-left: 1px solid #dcdcdca1;
+	border-right: 1px solid #dcdcdca1;
+}
+
+.first-side-line {
+	border-right: 1px solid #dcdcdca1;
+}
+
+.schedule-headers {
+	flex: 1;
 }
 </style>
 
@@ -354,19 +395,46 @@ var options = {
 			$("#myModal").modal('hide');
 		});
 			
-		$(window).scroll(function(){
+ 		$(window).scroll(function(){
 	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
 	        
-	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
-	        	$("body > div.sidenav").fadeIn();
-	        	$("body > div.sidenav").css("display", "block");
+	        if(scrollLocation > 200){ //화면을 내리면 장바구니 뜨게하고
+	        	$("body > div.sidenav").css("position", "fixed");
+	        	$("body > div.sidenav").css("top", "120px");
+	        	$("body > div.sidenav-sliders").css("position", "fixed");
+	        	$("body > div.sidenav-sliders").css("top", "120px");
 	        }else{ //화면을 내리면 장바구니 나가게합니다.
-	            $("body > div.sidenav").css("display", "none");
-	            $("body > div.sidenav").fadeOut();
+	        	$("body > div.sidenav").css("position", "absolute");
+	        	$("body > div.sidenav").css("top", "400px");
+	        	$("body > div.sidenav-sliders").css("position", "absolute");
+	        	$("body > div.sidenav-sliders").css("top", "400px");
 	        }
+	    }) 
+	    
+/* 	     $('body > div.sidenav-sliders').on('mouseover',function(){
+	    	$('.sidenav').css('left','330px');
 	    })
-		$("body > div.sidenav").css("display", "none");
-				
+	    
+	    $('body > div.sidenav-sliders').on('mouseleave',function(){
+	    	$('.sidenav').css('left','350px');
+	    })  */
+			
+	    var cartchk = true;
+ 		
+ 		$('.sidenav-sliders').on('click',function(){
+ 			
+ 			if(cartchk){
+ 				$(this).css('left','0px');
+ 				$('body > div.sidenav').css('left','56px');
+ 				cartchk = false;
+ 			}else{
+ 				$(this).css('left','300px');
+ 				$('body > div.sidenav').css('left','350px');
+ 				cartchk = true;
+ 			}
+ 			
+ 		})
+	    
 		$('#myModal').modal();
 		
 		 $("#modalButton").on("click", function(){
@@ -421,12 +489,13 @@ function readURL(input){
 		reader.onload = function (e) { 
 			$("#img").empty();
 			$("#img").css('background-image','url('+e.target.result+')');
+			$('#img-cover').css('background','none');
 			var c = '';
 			c += '<div class="content">'; 
 			c += '  <div id="scheduleTitle2">'+$("#modalscheduleTitle").val()+'</div>';
 			c += ' <div id="scheduleDetail2">'+$("#modalscheduleDetail").val()+'</div>';
-			c += '<button type="button" class="btn btn-success" id="modal">나들이추가</button>';
-			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>';
+/* 			c += '<button type="button" class="btn btn-success" id="modal">나들이추가</button>';
+			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>'; */
 			c += ' <input  style="display:none;" type="file" id="files" name="files" onchange="readURL(this)">'; 
 			c += '</div>';
 			c += ' <div id="img-cover"></div>';
@@ -474,8 +543,8 @@ $(function () {
 			c += '<div class="content">'; 
 			c += '  <div id="scheduleTitle2">환영합니다 일정등록입니다!</div>';
 			c += ' <div id="scheduleDetail2"></div>';
-			c += '<button type="button" class="btn btn-success" id="modalButton">나들이추가</button>';
-			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>';
+			/* c += '<button type="button" class="btn btn-success" id="modalButton">나들이추가</button>';
+			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>'; */
 			c += ' <input  style="display:block;" type="file" id="files" name="files" onchange="readURL(this)">'; 
 			c += '</div>';
 			c += ' <div id="img-cover"></div>';
@@ -630,7 +699,7 @@ $(function(){
 <body>
 
 	<%@include file="/layout/new_toolbar.jsp"%>
-
+	<div class="sidenav-sliders"></div>
 	<div class="sidenav">
 		<button class="tablink" onclick="openPage('Home', this, '#45ba31')"
 			id="defaultOpen">장소바구니</button>
@@ -750,13 +819,12 @@ $(function(){
 	</div>
 	<form enctype="multipart/form-data">
 
-		<div id="img"
-			style='background-image: url(/images/spot/421.jpg); background-position-y: -100px'>
+		<div id="img" style="background: #abb6bb">
 			<div class="content">
 				<div id="scheduleTitle2">환영합니다 일정등록입니다!</div>
 				<div id="scheduleDetail2"></div>
-				<button type="button" class="btn btn-primary" id="modalButton">타이틀변경</button>
-				<button type="button" class="btn btn-default" id="uploadButton">섬네일변경</button>
+				<!-- <button type="button" class="btn btn-primary" id="modalButton">타이틀변경</button>
+				<button type="button" class="btn btn-default" id="uploadButton">섬네일변경</button> -->
 			</div>
 			<div id="img-cover"></div>
 		</div>
@@ -765,7 +833,7 @@ $(function(){
 			style="display: none;">
 
 		<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-		<div class="modal" id="myModal" role="dialog">
+		<%-- 		<div class="modal" id="myModal" role="dialog">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -783,11 +851,7 @@ $(function(){
 								type="text" class="form-control" id="modalscheduleDetail"
 								placeholder="장소를 간단히 설명해주세요!">
 						</div>
-						<div class="form-group">
-							<label for="scheduleDate">언제 나들이 가세요?</label> <input type="text"
-								class="form-control" id="datepicker"
-								placeholder="클릭하여 날짜를 선택해주세요!" value="${date}" readOnly>
-						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="waves-effect waves-light btn"
@@ -795,38 +859,44 @@ $(function(){
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 
 		<div class="container container-add-schedule">
 			<hr />
 
-			<div class="form-group row">
-				<div class="col-md-3 col-xs-12">
+			<div class="form-group row schedule-headers-box">
+				<div class="col-md-3 col-xs-12 schedule-headers first-side-line">
+					<label for="scheduleDate">언제 나들이 가세요?</label> <input type="text"
+						class="form-control" id="datepicker"
+						placeholder="클릭하여 날짜를 선택해주세요!" value="${date}" readOnly>
+				</div>
+				<div class="col-md-3 col-xs-12 schedule-headers">
 					<p>출발시간은 언제인가요?</p>
 					<div class="input-group clockpicker">
-					    <input type="text" class="form-control" value="09:00" readonly>
-					    <span class="input-group-addon">
-					    	<span class="glyphicon glyphicon-time">
-					    	</span>
-				   		</span>
+						<input type="text" class="form-control" value="09:00" readonly>
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-time"> </span>
+						</span>
 					</div>
 				</div>
-				<div class="col-md-3 col-xs-12">
+				<div class="col-md-3 col-xs-12 header-side-lines schedule-headers">
 					<p>공개범위를 설정해주세요!</p>
 					<div class="openrange-box">
 						<input type="radio" name="openRange" value="0" checked>모두공개
-						<input type="radio" name="openRange" value="1">친구공개
-						<input type="radio" name="openRange" value="2">나만보기
+						<input type="radio" name="openRange" value="1">친구공개 <input
+							type="radio" name="openRange" value="2">나만보기
 					</div>
 				</div>
-				<div class="col-md-4 col-xs-12">
+				<div class="col-md-4 col-xs-12 schedule-headers">
 					<p>경유지를 추가할까요?</p>
-					<span class="waves-light btn col s5" type="button"
-						style="background-color: rgb(59, 128, 187); color : white;"
-						onclick="addWayPoint()">+ 경유지 추가</span> <span
-						class="waves-light btn col s5" type="button"
-						style="background-color: rgba(163, 172, 179, 0.5); color : white;"
-						onclick="deleteWayPoint()">- 경유지 제거</span>
+					<div class="waypoint-buttons-box">
+						<span class="waves-light btn col s5" type="button"
+							style="background-color: rgb(59, 128, 187); color: white;"
+							onclick="addWayPoint()">+ 경유지 추가</span> <span
+							class="waves-light btn col s5" type="button"
+							style="background-color: rgba(163, 172, 179, 0.5); color: white;"
+							onclick="deleteWayPoint()">- 경유지 제거</span>
+					</div>
 				</div>
 			</div>
 
@@ -908,7 +978,7 @@ $(function(){
 			<button class="waves-light btn col s5" type="button"
 				style="background-color: rgba(250, 170, 50, 0.5); float: right;"
 				id="addSchedule">등록</button>
-			</div>
+		</div>
 	</form>
 
 </body>

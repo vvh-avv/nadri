@@ -43,6 +43,8 @@
 <script src="/javascript/clockpicker.js"></script>
 <link rel="stylesheet" href="/css/clockpicker.css">
 
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
 <html>
 <head>
 <title>Insert title here</title>
@@ -61,10 +63,10 @@
 }
 
 .container-add-schedule {
-   padding	: 10px;
-   background : white;
-   box-shadow : 1px 1px 10px 0px #8080804d;
-} 
+	padding: 10px;
+	background: white;
+	box-shadow: 1px 1px 10px 0px #8080804d;
+}
 
 /* @font-face {
 		font-family: 'seoul';
@@ -84,11 +86,54 @@
 		font-family : 'seoul';
 		} */
 #scheduleTitle2 {
+	width : 80%;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+	margin-left : auto;
+	margin-right : auto;
 	font-size: 60px;
 }
 
 #scheduleDetail2 {
-	font-size: 35px;
+	font-size: 25px;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.details-schedule{
+	position : relative;
+	display : flex;
+	justify-content: center;
+	visibility: visible;
+}
+
+#scheduleDetail{
+	width : 100%;
+	position : absolute;
+	visibility: hidden;
+}
+
+#scheduleDetail > input {
+	text-align: center;
+}
+
+#scheduleTitle{
+	visibility : hidden;
+	position : absolute;
+	width : 100%;
+}
+
+#modalscheduleTitle{
+	text-align: center;
+}
+
+.titles-schedule{
+	position : relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #img {
@@ -98,16 +143,23 @@
 }
 
 #img-cover {
+	background: url('/images/common/picnicback.jpg');
+	background-size: 350px;
+	opacity: .1;
 	position: absolute;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 1;
 }
 
+#img-cover:hover {
+	opacity: .3;
+}
+
 #img .content {
+	width : 100%;
 	position: absolute;
-	top: 55%;
+	top: 48%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	font-size: 5rem;
@@ -118,20 +170,37 @@
 
 /*고정 바를 만들어주는 css*/
 .sidenav {
-	width: 25%;
-	position: fixed;
-	z-index: 1010;
-	top: 120px;
-	left: 10px;
+	width: 15%;
+	position: absolute;
+	z-index: -1;
+	top: 400px;
+ 	left: 350px; 
 	background: #eee;
 	overflow-x: hidden;
 	/*max-height : 60%;*/
-	border: 0.3px solid black;
+/* 	border: 0.3px solid black; */
+	transition : all 1s;
 }
+
+.sidenav-sliders{
+	position : absolute;
+	top : 400px;
+	width : 56px;
+	height : 56px;
+	background : #aee485;
+	left : 300px;
+	transition : all 1s;
+}
+
+.sidenav-sliders:hover{
+	cursor : pointer;
+	left : 294px;
+}
+
 
 /*고정 바 탑일때 css*/
 .sidenav1 {
-	width: 25%;
+	width: 15%;
 	position: fixed;
 	z-index: 1;
 	top: 180px;
@@ -248,9 +317,175 @@ p {
 	/* margin: 0 0 10px; */
 	font-weight: bold;
 }
+
+.openrange-box {
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.schedule-headers-box {
+	display: flex;
+	margin: 0px;
+}
+
+.header-side-lines {
+	border-left: 1px solid #dcdcdca1;
+	border-right: 1px solid #dcdcdca1;
+}
+
+.first-side-line {
+	border-right: 1px solid #dcdcdca1;
+}
+
+.schedule-headers {
+	flex: 1;
+}
+
+body > div#ui-datepicker-div{
+	z-index:1009;
+}
+
+.edit-label, .submit-label{
+	font-size : 12px;
+	font-weight : 100;
+	letter-spacing: 1px;
+	margin-left : 10px;
+	line-height: 13px;
+	transition : all 1s;
+}
+
+.edit-label{
+	background : white;
+	color : grey;
+}
+
+.submit-label{
+	display : none;
+}
+
+.submit-label:hover{
+	cursor : pointer;
+	color : grey;
+	background : white; 
+}
+
+.edit-label:hover{
+	background : #30445F;
+	color : white;
+	cursor : pointer;
+}
+
+#scheduleTitle-show{
+	visibility : visible;
+	font-size : 45px;
+}
+
+.edit-detail-label, .submit-detail-label{
+	font-size : 12px;
+	font-weight : 100;
+	letter-spacing: 1px;
+	margin-left : 10px;
+	line-height: 13px;
+	transition : all 1s;
+}
+
+.edit-detail-label{
+	background : white;
+	color : grey;
+}
+
+.submit-detail-label{
+	display : none;
+}
+
+.submit-detail-label:hover{
+	cursor : pointer;
+	color : grey;
+	background : white; 
+}
+
+.edit-detail-label:hover{
+	background : #30445F;
+	color : white;
+	cursor : pointer;
+}
+
+.wayPoints-row{
+	height : 150px;
+	background : #eaecef;
+	padding : 5px 0px;
+	font-weight : 100;
+	border-radius : 5px;
+	text-align: center;
+	display : flex;
+	justify-content: space-between;
+	align-items : center;
+	font-size : 12px;
+	letter-spacing: 3px;
+	color : #6f7380;
+	margin : 0px 0px 5px 0px;
+	position : relative;
+}
+
+.prep:hover{
+	cursor : pointer;
+	opacity : 1;
+}
+
+.waypoint-image-box{
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin : 0px;
+}
+
+.waypoint-image-box > div{
+	width : 100%;
+}
+
+.way-imgs{
+	height : 100px;
+	width : 150px;
+	margin-bottom : 5px;
+}
+
+.waypoint-append-title{
+	z-index : 1;
+	opacity : 0;
+	transition : all .5s;
+}
+
+.append-sign{
+	position : absolute;
+	width : 50%;
+	height : 50%;
+	font-size : 75px;
+	justify-content: center;
+	align-items: center;
+	top : 25%;
+	left : 25%;
+	color : #b5b5b53d;
+	pointer-events:none;
+}
+
+.afterw{
+	display : none;
+	justify-content: center;
+	align-items: center;
+	width : 100%;
+}
+
+.waypoint-modal-dialog{
+	width : 50%;
+	top : 25%;
+}
+
 </style>
 
 <script>
+
 //오늘 날짜 구하기
 var today = new Date();
 var dd = today.getDate();
@@ -302,7 +537,7 @@ var wayPointDetail='';
 var wayPointTitle='';
 
 // 증가시키기 위한 flag
-var w=2;
+var w=1;
 
 var options = {
 		now: "00:00", //hh:mm 24 hour format only, defaults to current time
@@ -324,7 +559,7 @@ var options = {
        
 	$(function() {
 		
-		$(document).on("click", "#modalinsert",function(){
+/* 		$(document).on("click", "#modalinsert",function(){
 			// 모달에서 적은 제목의 value을 가져옵니다.
 			var modalscheduleTitle = $("#modalscheduleTitle").val();
 			// 일정 제목값에 넣습니다.
@@ -345,20 +580,161 @@ var options = {
 			$("#scheduleImg").val(modalscheduleImg);
 			// 모달을 닫습니다.
 			$("#myModal").modal('hide');
-		});
+		}); */
+		
+		$('.edit-label').tooltip();
+		
+		$(document).on('click','.edit-label',function(){
+			console.log('heyaheya');
+			var title = $('#scheduleTitle-show').text();
+			$('.submit-label').css('display','inline-block');
+			$('#scheduleTitle > input').prop('placeholder',title);
+			$('#scheduleTitle-show').css('visibility','hidden');
+			$('#scheduleTitle').css('visibility','visible');
+		})
+		
+		$(document).on('click','.submit-label',function(){
+			console.log('heyaheya');
+			var title = $('#modalscheduleTitle').val();
+			if(title == ""){
+				swal({
+					title:'변경할 일정 제목을 입력해주세요!',
+					icon: "warning"
+				}).then((value) => {
+					$('#modalscheduleTitle').focus();
+				});
+			}else{
+				$('.submit-label').css('display','none');
+				$('#scheduleTitle-show').text(title);
+				$('#scheduleTitle').css('visibility','hidden');
+				$('#scheduleTitle-show').css('visibility','visible');
+			}
 			
-		$(window).scroll(function(){
-	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값     
-	        if(scrollLocation > 110){ //화면을 내리면 장바구니 뜨게하고
-	        	$("body > div.sidenav").fadeIn();
-	        	$("body > div.sidenav").css("display", "block");
+		})
+		
+		$(document).on('click','.edit-detail-label',function(){
+			console.log('heyaheya');
+			var title = $('#scheduleDetail-show').text();
+			$('.submit-detail-label').css('display','inline-block');
+			$('#scheduleDetail > input').prop('placeholder',title);
+			$('#scheduleDetail-show').css('visibility','hidden');
+			$('#scheduleDetail').css('visibility','visible');
+		})
+		
+		$(document).on('click','.submit-detail-label',function(){
+			console.log('heyaheya');
+			var title = $('#modalscheduleDetail').val();
+			if(title == ""){
+				swal({
+					title:'변경할 일정 상세설명을 입력해주세요!',
+					icon: "warning"
+				}).then((value) => {
+					$('#modalscheduleDetail').focus();
+				});
+			}else{
+				$('.submit-detail-label').css('display','none');
+				$('#scheduleDetail-show').text(title);
+				$('#scheduleDetail').css('visibility','hidden');
+				$('#scheduleDetail-show').css('visibility','visible');
+			}
+			
+		})
+		
+/* 		$(document).on('click','#navigation',function(){
+			var add = $('#wayPointAddress0').text();
+			console.log(add);
+			search('#wayPointAddress0');
+		}) */
+		
+		$(document).on ('mouseover','.prep',function(){
+			var id = $(this).attr('class');
+			console.log(id);
+			var idNo = id.charAt(id.length-1);
+			console.log(idNo);
+			$('.wat'+idNo).css('opacity','1');
+		})
+		
+		$(document).on ('mouseleave','.prep',function(){
+			var id = $(this).attr('class');
+			console.log(id);
+			var idNo = id.charAt(id.length-1);
+			console.log(idNo);
+			$('.wat'+idNo).css('opacity','0');
+		})
+		
+		$(document).on('click','.prep',function(){
+			var id = $(this).attr('class');
+			var idNo = id.charAt(id.length-1);
+			var dp = $('.pre-waypoints'+idNo).css('display');
+			console.log($('.pre-waypoints'+idNo).css('display'));
+			if(dp == 'block'){
+				new daum.Postcode({
+		              oncomplete: function(data) {
+		            	$('.pre-waypoints'+idNo).css('display','none');
+		  				$('.after-waypoints'+idNo).css('display','flex');
+		  				$('#wayPointAddress'+idNo).text(data.address);
+		  				if(data.buldingName != null){
+		  					$('#wayPointTitle'+idNo).text(data.buildingName);		  					
+		  				}else{
+		  					$('#wayPointTitle'+idNo).text('주소명을 입력해주세요.');
+		  				}
+/* 		                $("#addr").val(data.address); */
+		              }
+		          }).open();
+/* 				$('#waypoint-modal').modal('show'); */
+			}else{
+				swal('이미 추가 되었어요!');
+
+			}
+		})
+
+			
+ 		$(window).scroll(function(){
+	        var scrollLocation = $(window).scrollTop(); //브라우저의 스크롤 값
+	        
+	        if(scrollLocation > 250){ //화면을 내리면 장바구니 뜨게하고
+	        	$("body > div.sidenav").css("position", "fixed");
+	        	$("body > div.sidenav").css("top", "150px");
+	        	$("body > div.sidenav-sliders").css("position", "fixed");
+	        	$("body > div.sidenav-sliders").css("top", "150px");
 	        }else{ //화면을 내리면 장바구니 나가게합니다.
-	            $("body > div.sidenav").css("display", "none");
-	            $("body > div.sidenav").fadeOut();
+	        	$("body > div.sidenav").css("position", "absolute");
+	        	$("body > div.sidenav").css("top", "400px");
+	        	$("body > div.sidenav-sliders").css("position", "absolute");
+	        	$("body > div.sidenav-sliders").css("top", "400px");
 	        }
+	    }) 
+	    
+/* 	     $('body > div.sidenav-sliders').on('mouseover',function(){
+	    	$('.sidenav').css('left','330px');
 	    })
-		$("body > div.sidenav").css("display", "none");
-				
+	    
+	    $('body > div.sidenav-sliders').on('mouseleave',function(){
+	    	$('.sidenav').css('left','350px');
+	    })  */
+			
+	    var cartchk = true;
+ 		
+ 		$('.sidenav-sliders').on('click',function(){
+ 			
+ 			if(cartchk){
+ 				$(this).css('left','0px');
+ 				$('body > div.sidenav').css('left','56px');
+ 				setTimeout(function() {
+					$('body > div.sidenav').css('z-index','1010');
+				}, 1000);
+ 				cartchk = false;
+ 			}else{
+ 				$('body > div.sidenav').css('z-index','-1');
+ 				setTimeout(function() {
+ 					$('body > div.sidenav-sliders').css('left','300px');
+ 	 				$('body > div.sidenav').css('left','350px');
+				}, 800);
+ 				cartchk = true;
+ 			}
+ 			
+ 		})
+	    
 		$('#myModal').modal();
 		
 		 $("#modalButton").on("click", function(){
@@ -373,6 +749,11 @@ var options = {
 		}); //end of click
 		
 		  $( "#datepicker" ).datepicker({
+		 	beforeShow: function() {
+		        setTimeout(function(){
+		            $('.ui-datepicker').css('z-index', 1009);
+		        }, 0);
+		    },
 		    dateFormat: 'yy-mm-dd',
 		    prevText: '이전 달',
 		    nextText: '다음 달',
@@ -399,7 +780,7 @@ var options = {
 		});
 		
 		// 배경화면 눌러서 업로드
-		$('#img-cover').click(function (e) {
+		$(document).on('click','#img-cover',function (e) {
 			e.preventDefault();
 			$('#file').click();
 		});
@@ -410,19 +791,54 @@ var options = {
 function readURL(input){
 	if (input.files && input.files[0]) { 
 		var reader = new FileReader(); 
+		var title = $("#modalscheduleTitle").val();
+		var detail = $("#modalscheduleDetail").val();
+		console.log(title,detail);
 		reader.onload = function (e) { 
 			$("#img").empty();
 			$("#img").css('background-image','url('+e.target.result+')');
 			var c = '';
 			c += '<div class="content">'; 
-			c += '  <div id="scheduleTitle2">'+$("#modalscheduleTitle").val()+'</div>';
-			c += ' <div id="scheduleDetail2">'+$("#modalscheduleDetail").val()+'</div>';
-			c += '<button type="button" class="btn btn-success" id="modal">나들이추가</button>';
-			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>';
-			c += ' <input  style="display:none;" type="file" id="files" name="files" onchange="readURL(this)">'; 
+			c += '	<div id="scheduleTitle2">';
+			c += '		<div class="titles-schedule">';
+			if(title == ''){
+				c += '		<div id="scheduleTitle-show">'+'환영합니다 일정등록입니다!'+'</div>';
+			}else{
+				c += ' 	<div id="scheduleTitle-show">'+title+'</div>';
+			}
+			c += '		<div id="scheduleTitle">';
+			if(title == ''){
+				c += '		<input type="text" class="form-control" id="modalscheduleTitle" placeholder="제목을 입력해주세요!" value="">';
+			}else{
+				c += '		<input type="text" class="form-control" id="modalscheduleTitle" placeholder="제목을 입력해주세요!" value="'+title+'">';
+			}
+			c += '		</div>';
+			c += '	</div>';
+			c += '	<span class="label label-primary submit-label">submit</span>';
+			c += '	<span class="label label-default edit-label">edit</span>';
+			c += '</div>';
+			c += '<div id="scheduleDetail2">';
+			c += '	<div class="details-schedule">';
+			if(detail == ''){
+				c += ' 	<div id="scheduleDetail-show">'+'일정의 상세설명을 적어주세요!'+'</div>';
+			}else{
+				c += ' 	<div id="scheduleDetail-show">'+detail+'</div>';
+			}
+			c += '	<div id="scheduleDetail">';
+			if(detail == ''){
+				c += ' 	<input type="text" class="form-control" id="modalscheduleDetail" placeholder="상세설명을 입력해주세요!" value="">';
+			}else{
+				c += ' 	<input type="text" class="form-control" id="modalscheduleDetail" placeholder="상세설명을 입력해주세요!" value="'+detail+'">';				
+			}
+			c += '	</div>';
+			c += '</div>';
+			c += '	<span class="label label-primary submit-detail-label">submit</span>';
+			c += '	<span class="label label-default edit-detail-label">edit</span>';
+			c += '  <input style="display:none;" type="file" id="files" name="files" onchange="readURL(this)">'; 
 			c += '</div>';
 			c += ' <div id="img-cover"></div>';
 		    $("#img").append(c);
+		    $('#img-cover').css('background','transparent');
 			} 
 		reader.readAsDataURL(input.files[0]); 
 		}
@@ -466,8 +882,8 @@ $(function () {
 			c += '<div class="content">'; 
 			c += '  <div id="scheduleTitle2">환영합니다 일정등록입니다!</div>';
 			c += ' <div id="scheduleDetail2"></div>';
-			c += '<button type="button" class="btn btn-success" id="modalButton">나들이추가</button>';
-			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>';
+			/* c += '<button type="button" class="btn btn-success" id="modalButton">나들이추가</button>';
+			c += ' <button type="button" class="btn btn-success" id="uploadButton">섬네일변경</button>'; */
 			c += ' <input  style="display:block;" type="file" id="files" name="files" onchange="readURL(this)">'; 
 			c += '</div>';
 			c += ' <div id="img-cover"></div>';
@@ -503,7 +919,7 @@ function openPage(pageName, elmnt, color) {
     }
 
     // Show the specific tab content
-    document.getElementById(pageName).style.display = "block";
+    document.getElementById(pageName).style.display = "flex";
 
     // Add the specific color to the button used to open the tab content
     elmnt.style.backgroundColor = color;
@@ -622,28 +1038,29 @@ $(function(){
 <body>
 
 	<%@include file="/layout/new_toolbar.jsp"%>
-
+	<div class="sidenav-sliders"></div>
 	<div class="sidenav">
-		<button class="tablink" onclick="openPage('Home', this, '#45ba31')"
-			id="defaultOpen">장소바구니</button>
-		<button class="tablink" onclick="openPage('Contact', this, '#45ba31')">추천바구니</button>
-
-		<input class="form-control" type="file" id="fileImg" name="fileImg"
-			style="display: none">
-
+		<div style="display :flex;">
+			<button class="tablink" onclick="openPage('Home', this, '#45ba31')"
+				id="defaultOpen">장소바구니</button>
+			<button class="tablink" onclick="openPage('Contact', this, '#45ba31')">추천바구니</button>
+	
+			<input class="form-control" type="file" id="fileImg" name="fileImg"
+				style="display: none">
+		</div>
 		<div id="Home" class="tabcontent">
 			<br />
 			<c:set var="i" value="0" />
 			<c:forEach var="cart" items="${cart}">
 				<c:set var="i" value="${i+1}" />
-				<div>
+<%-- 				<div>
 					<table class="${cart.cartNo}" style="margin-buttom: 15px">
 						<tr class="ct_list_pop">
 						<tr>
 							<td rowspan="3"><i class="material-icons">place</i></td>
 							<td rowspan="3">
-								<!-- 이미지 미리보기를 위한 img 태그 --> <c:if
-									test="${cart.cartImg.contains('http://')}">
+								<!-- 이미지 미리보기를 위한 img 태그 --> 
+								<c:if test="${cart.cartImg.contains('http://')}">
 									<img src="${cart.cartImg}" class="${cart.cartNo}" width="50"
 										height="50" id="fakeCartImg${i}">
 								</c:if> <c:if test="${!cart.cartImg.contains('http://')}">
@@ -682,6 +1099,23 @@ $(function(){
 							<input type="hidden" id="cartY${i}" value="${cart.cartY}">
 						</span>
 					</table>
+				</div> --%>
+				<div class="${cart.cartNo}">
+					<div class="cart-title${i}">
+						<i class="material-icons">place</i>
+						<!-- 이미지 미리보기를 위한 img 태그 --> 
+						<c:if test="${cart.cartImg.contains('http://')}">
+							<img src="${cart.cartImg}" class="${cart.cartNo}" width="50"
+								height="50" id="fakeCartImg${i}">
+						</c:if> <c:if test="${!cart.cartImg.contains('http://')}">
+							<img src="/images/spot/${cart.cartImg}" class="${cart.cartNo}"
+								width="50" height="50" id="fakeCartImg${i}">
+						</c:if> 
+						<!-- 실제 데이터가 넘어가는 img 태그 --> 
+						<img style="display: none;"
+						src="/images/spot/${cart.cartImg}" width="50" height="50"
+						id="cartImg${i}" class="${cart.cartNo}">
+					</div>
 				</div>
 			</c:forEach>
 			<button class="btn success" id="cartNavi">장바구니..</button>
@@ -742,22 +1176,39 @@ $(function(){
 	</div>
 	<form enctype="multipart/form-data">
 
-		<div id="img"
-			style='background-image: url(/images/spot/421.jpg); background-position-y: -100px'>
+		<div id="img" style="background: #abb6bb">
 			<div class="content">
-				<div id="scheduleTitle2">환영합니다 일정등록입니다!</div>
-				<div id="scheduleDetail2"></div>
-				<button type="button" class="btn btn-primary" id="modalButton">타이틀변경</button>
-				<button type="button" class="btn btn-default" id="uploadButton">섬네일변경</button>
+				<div id="scheduleTitle2">
+					<div class="titles-schedule">
+					<div id="scheduleTitle-show">환영합니다 일정등록입니다!</div>
+					<div id="scheduleTitle"><input
+								type="text" class="form-control" id="modalscheduleTitle"
+								placeholder="제목을 입력해주세요!" value=""></div>
+					</div>
+					<span class="label label-primary submit-label">submit</span>
+					<span class="label label-default edit-label" title="이것은 툴팁이다.">edit</span>
+				</div>
+				<div id="scheduleDetail2">
+					<div class="details-schedule">
+					<div id="scheduleDetail-show">일정의 상세설명을 적어주세요!</div>
+					<div id="scheduleDetail"><input
+								type="text" class="form-control" id="modalscheduleDetail"
+								placeholder="상세설명을 입력해주세요!" value=""></div>
+					</div>
+					<span class="label label-primary submit-detail-label">submit</span>
+					<span class="label label-default edit-detail-label">edit</span>
+				</div>
+				<!-- <button type="button" class="btn btn-primary" id="modalButton">타이틀변경</button>
+				<button type="button" class="btn btn-default" id="uploadButton">섬네일변경</button> -->
 			</div>
 			<div id="img-cover"></div>
 		</div>
+		
 		<!-- input파일 숨겨서 처리하기 -->
-		<input type="file" id="file" name="file" onchange="readURL(this)"
-			style="display: none;">
+		<input type="file" id="file" name="file" onchange="readURL(this)" style="display: none;">
 
 		<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-		<div class="modal" id="myModal" role="dialog">
+		<%-- 		<div class="modal" id="myModal" role="dialog">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -775,11 +1226,7 @@ $(function(){
 								type="text" class="form-control" id="modalscheduleDetail"
 								placeholder="장소를 간단히 설명해주세요!">
 						</div>
-						<div class="form-group">
-							<label for="scheduleDate">언제 나들이 가세요?</label> <input type="text"
-								class="form-control" id="datepicker"
-								placeholder="클릭하여 날짜를 선택해주세요!" value="${date}" readOnly>
-						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="waves-effect waves-light btn"
@@ -787,38 +1234,44 @@ $(function(){
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 
 		<div class="container container-add-schedule">
 			<hr />
 
-			<div class="form-group row">
-				<div class="col-xs-3">
+			<div class="form-group row schedule-headers-box">
+				<div class="col-md-3 col-xs-12 schedule-headers first-side-line">
+					<label for="scheduleDate">언제 나들이 가세요?</label> <input type="text"
+						class="form-control" id="datepicker"
+						placeholder="클릭하여 날짜를 선택해주세요!" value="${date}" readOnly style="z-index:1009;">
+				</div>
+				<div class="col-md-3 col-xs-12 schedule-headers">
 					<p>출발시간은 언제인가요?</p>
 					<div class="input-group clockpicker">
-					    <input type="text" class="form-control" name="startHour" value="09:00">
-					    <span class="input-group-addon">
-					    	<span class="glyphicon glyphicon-time">
-					    	</span>
-				   		</span>
+						<input type="text" class="form-control" value="09:00" readonly>
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-time"> </span>
+						</span>
 					</div>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-md-3 col-xs-12 header-side-lines schedule-headers">
 					<p>공개범위를 설정해주세요!</p>
-					<select class="form-control" name="openRange">
-						<option value="0">모두공개</option>
-						<option value="1">친구만공개</option>
-						<option value="2">비공개</option>
-					</select>
+					<div class="openrange-box">
+						<input type="radio" name="openRange" value="0" checked>모두공개
+						<input type="radio" name="openRange" value="1">친구공개 <input
+							type="radio" name="openRange" value="2">나만보기
+					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-md-4 col-xs-12 schedule-headers">
 					<p>경유지를 추가할까요?</p>
-					<span class="waves-light btn col s5" type="button"
-						style="background-color: rgba(250, 170, 50, 0.5);"
-						onclick="addWayPoint()">+ 경유지 추가</span> <span
-						class="waves-light btn col s5" type="button"
-						style="background-color: rgba(250, 170, 50, 0.5);"
-						onclick="deleteWayPoint()">- 경유지 제거</span>
+					<div class="waypoint-buttons-box">
+						<span class="waves-light btn col s5" type="button"
+							style="background-color: rgb(59, 128, 187); color: white;"
+							onclick="addWayPoint()">+ 경유지 추가</span> <span
+							class="waves-light btn col s5" type="button"
+							style="background-color: rgba(163, 172, 179, 0.5); color: white;"
+							onclick="deleteWayPoint()">- 경유지 제거</span>
+					</div>
 				</div>
 			</div>
 
@@ -828,18 +1281,14 @@ $(function(){
 
 			<hr />
 
+			<input type="hidden" name="userId" value="${sessionScope.user.userId}"> 
+			<input type="hidden" id="scheduleTitle" name="scheduleTitle"> 
+			<input type="hidden" id="scheduleDetail" name="scheduleDetail"> 
+			<input type="hidden" id="scheduleDate" name="scheduleDate"> 
+			<input type="hidden" id="scheduleImg" name="scheduleImg"> 
+			<input type="hidden" id="transportationCode" name="transportationCode" value="1">
 
-
-			<input type="hidden" name="userId"
-				value="${sessionScope.user.userId}"> <input type="hidden"
-				id="scheduleTitle" name="scheduleTitle"> <input
-				type="hidden" id="scheduleDetail" name="scheduleDetail"> <input
-				type="hidden" id="scheduleDate" name="scheduleDate"> <input
-				type="hidden" id="scheduleImg" name="scheduleImg"> <input
-				type="hidden" id="transportationCode" name="transportationCode"
-				value="1">
-
-			<table class="table">
+			<!-- <table class="table">
 				<thead>
 					<tr>
 						<th width="15%">제목</th>
@@ -894,14 +1343,104 @@ $(function(){
 						<input type="hidden" name="wayPoints[1].wayPointY" id="wayPointY1" />
 					</tr>
 				</tbody>
-			</table>
-
-			<hr />
-			<button class="waves-light btn col s5" type="button"
-				style="background-color: rgba(250, 170, 50, 0.5); float: right;"
-				id="addSchedule">등록</button>
+			</table> -->
+			<div id="wayPoint">
+			
+				<div class="row wayPoints-row" id="waypoint0">
+				
+					<div class="prep pre-waypoints0">
+					
+						<div class="waypoint-append-title wat0">
+							출발지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+						
+					</div>
+					
+	 				<div class="afterw after-waypoints0">
+						<div class="col-md-1 col-xs-2">
+							<div>출발지점</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="" alt="출발지 이미지" class="way-imgs" id="wayPointImg0"></div>
+								<div class="col-md-6" id="wayPointTitle0">장소명</div>				
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress0">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="waves-effect waves-light btn col s5" 
+								type="button" style="background-color: rgba(250, 170, 50, 0.5);" 
+								id="navigation'" value="출발지" onclick="search('#wayPointAddress0')">
+							</div>
+						</div> 
+					</div>
+					
+				</div>
+				
 			</div>
+			
+			<hr />
+			
+			<button class="waves-light btn col s5" type="button"
+					style="background-color: rgba(250, 170, 50, 0.5); float: right;"
+					id="addSchedule">등록</button>
+					
+		</div>
 	</form>
+	
+	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
+<!-- <div class="modal" id="waypoint-modal" role="dialog">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">직접 내용을 입력하시려면 확인을눌러주세요</h4>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="waves-effect waves-light btn"
+					id="modalinsert">입 력</button>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+<div class="modal" id="waypoint-modal" role="dialog">
+	<div class="modal-dialog modal-sm waypoint-modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">일정에 등록하려는 장소의 정보를 입력해주세요!</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="scheduleTitle">장소명이나 별칭을 적어주세요!</label> <input
+						type="text" class="form-control" id="modal-schedule-title"
+						placeholder="제목을 입력해주세요!">
+				</div>
+				<div class="form-group">
+					<label for="scheduleDetail">주소를 정확히 입력해주세요!</label> <input
+						type="text" class="form-control" id="modal-schedule-detail"
+						placeholder="장소를 간단히 설명해주세요!">
+				</div>
+				<div class="form-group">
+					<label for="scheduleDetail">주소를 정확히 입력해주세요!</label> <input
+						type="text" class="form-control" id="modal-schedule-detail"
+						placeholder="장소를 간단히 설명해주세요!">
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="waves-effect waves-light btn"
+					id="waypoint-insert"> 입 력 </button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </body>
 </html>

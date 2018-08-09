@@ -104,6 +104,8 @@ public class UserRestController {
 		return userService.getUser(user.getUserId());
 	}
 	
+	
+	
 
 	
 	@RequestMapping(value="json/updateUser", method=RequestMethod.POST)
@@ -182,7 +184,7 @@ public class UserRestController {
 			
 			multiPart.addBodyPart(multBodyPart);
 			
-			message.setContent(multiPart, "text/html;charset=euc-kr");
+			message.setContent(multiPart, "text/html; charset=EUC-KR");
 			///////////////////////////////////////////////////////////////////
 			
 			Transport.send(message); 
@@ -242,7 +244,11 @@ public class UserRestController {
 		
 		//유저 서비스에서 유저 정보 가져오기 + 이메일 정보 가져오기
 		user = userService.getUser(user.getUserId());
+		if(user == null) {
+			return false;
+		}
 		String email2 = user.getEmail();
+		
 		
 		if(email.equals(email2)) {
 			int passwordNo = createNo();
@@ -308,7 +314,7 @@ public class UserRestController {
 			// Subject
 		   message.setSubject("너, 나들이에서 임시 비밀번호를 알려드립니다");
 		  
-		   message.setContent(emailHtml	, "text/html; charset=euc-kr");  
+		   message.setContent(emailHtml	, "text/html; charset=EUC-KR");  
 		
 		// send the message
 		   Transport.send(message);

@@ -60,7 +60,9 @@ $(function(){
          gotoAddSchedule: {
             text: '일정 생성하기',
             click: function() {
-              window.open("/schedule/addSchedule");
+            	//HJA addschedule
+            	$("#transportationModal").modal();
+            	//HJA addschedule
             }
           }
       },
@@ -478,9 +480,7 @@ article:hover .links, article:hover .linksIcon {
 						<img src="/images/profile/default.png" width="133" height="133"
 							class="img-circle">
 					</c:if>
-					<h4>
-						<a href="/user/listUser">마이 페이지</a>
-					</h4>
+		
 					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
 						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
 						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
@@ -605,26 +605,22 @@ article:hover .links, article:hover .linksIcon {
 		</div>
 	</div>
 	<!-- HJA 일정등록 transportation navigation -->
-	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-	<div class="modal" id="transportationModal" role="dialog">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
-				</div>
-				<div class="modal-body">
-					<button type="button" class="btn btn-primary" id="car">자동차</button>
-					<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
-					<button type="button" class="btn btn-primary" id="transit">대중교통</button>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="waves-effect waves-light btn"
-						id="modalinsert">입력!</button>
-				</div>
+<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
+<div class="modal" id="transportationModal" role="dialog">
+	<div class="modal-dialog modal-sm dialogue-schedule" data-dismiss="modal">
+		<div class="modal-content modal-schedule">
+			<div class="modal-header schedule-header">
+				<h4 class="modal-title schedule-title"> 이동수단을 선택해주세요. </h4>
+				<button type="button" class="close closer-schedule" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body schedules-icons">
+				<div class="walk"><img src="/images/common/walk.png" class="schedule-trans"></div>
+				<div class="car"><img src="/images/common/car.png" class="schedule-trans"></div>
+				<div class="public"><img src="/images/common/public.png" class="schedule-trans"></div>
 			</div>
 		</div>
 	</div>
+</div>
 	
 	
 	

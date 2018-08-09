@@ -151,7 +151,7 @@ public class NoticeRestController {
 						con.setDoOutput(true);
 						con.setDoInput(true);
 
-						String input = "{\"notification\" : {\"title\" : \"너,나들이~알림도착~★\", \"body\" : \"계획하신 "+schedule.getScheduleTitle()+"일정이 드디어 내일이에요!\"}, \"to\":\""+user.getToken()+"\"}";
+						String input = "{\"notification\" : {\"title\" : \"너,나들이~알림도착~★\", \"body\" : \"계획하신 "+schedule.getScheduleTitle()+"일정이\n드디어 내일이에요!\"}, \"to\":\""+user.getToken()+"\"}";
 						
 				        OutputStream os = con.getOutputStream();
 				        
