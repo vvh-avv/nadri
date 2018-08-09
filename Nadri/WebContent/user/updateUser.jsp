@@ -245,7 +245,15 @@
 							<label for="age"
 								class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">己喊</label>
 							<div class="col-xs-4 col-md-4">
-								<input type="text" class="form-control" id="sex" name = "sex" value= ${ user.sex == '0' ? "巢己" : "咯己" } readonly>
+							<c:if test= "${ user.sex eq '0'}" >
+								<input type="text" class="form-control" id="sex" name = "sex" value= '巢己'  readonly>
+							</c:if>							
+							</div>
+							
+							<div class="col-xs-4 col-md-4">
+							<c:if test= "${ user.sex eq '1'}" >
+								<input type="text" class="form-control" id="sex" name = "sex" value= '咯己'  readonly>
+							</c:if>
 							</div>
 						</div>
 
