@@ -122,7 +122,7 @@ public class FriendRestController {
  	 		
  		//Friend friend = ((Friend) session.getAttribute("friend"));		
  		
- 		System.out.println("/friend/acceptFriend: GET/POST");
+ 		System.out.println("json/friend/acceptFriend: GET/POST");
  		System.out.println("friendId : "+friend.getFriendId());
  		System.out.println("userId : "+friend.getUserId());
  		 		
