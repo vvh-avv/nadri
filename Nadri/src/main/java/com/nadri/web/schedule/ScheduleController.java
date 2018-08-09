@@ -122,10 +122,10 @@ public class ScheduleController {
 			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
 
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
-			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
 			
 			// 파일 객체 생성
-			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+			File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 			multipartFile.transferTo(file);
 			
 			//Business Logic
@@ -161,7 +161,7 @@ public class ScheduleController {
 		return "forward:/schedule/getSchedule.jsp";
 	}
 	
-	//마이페이지 내 일정을 보기 위한 메서드 입니다.
+		//마이페이지 내 일정을 보기 위한 메서드 입니다.
 	   @RequestMapping(value="getMyScheduleList")
 	   public String getMyScheduleList(Model model, HttpSession session, @ModelAttribute("search") Search search) throws Exception{
 	      System.out.println("/schedule/getMyScheduleList : GET / POST");
@@ -339,14 +339,14 @@ public class ScheduleController {
 		} else {
 			//fileName = format+multipartFile.getOriginalFilename();
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
-			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
 			
 			// 확장자 구하기
 			int pos = multipartFile.getOriginalFilename().lastIndexOf( "." );
 			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
 			
 			// 파일 객체 생성
-			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+			File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 			multipartFile.transferTo(file);
 			
 			

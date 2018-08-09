@@ -106,14 +106,15 @@ html, body {
       float: left;
       margin-bottom: 10px;
    }
+   
 </style>
 
 
 <script type="text/javascript">
 
-$(document).ready(function(){
-    $('.materialboxed').materialbox();
-  });
+//$(document).ready(function(){
+//    $('.materialboxed').materialbox();
+//  });
   
 //맨위로 올라가게 만들어 주는 script
 $(function(){

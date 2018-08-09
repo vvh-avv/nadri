@@ -171,8 +171,6 @@ padding : 5px;
 <script>
 
 $(document).ready(function(){
-	// materialboxed
-	$('.materialboxed').materialbox();
 	$("#searchbutton").on("click", function(){
 
 			$.ajax({
@@ -195,7 +193,7 @@ $(document).ready(function(){
 										output += '<div class="col-sm-3 col-md-3">';
 										output += '<div class="thumbnail">';
 										output += ' <div class="caption">';
-										output += '<h5>'+ this.spotTitle+ '</h5>';
+										output += '<h4>'+ this.spotTitle+ '</h4>';
 										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
 										output += '<p> '+ this.spotAddress+ '</p>';
 										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
@@ -205,7 +203,7 @@ $(document).ready(function(){
 										output += ' <span class="label label-success">백과</span>';
 										output += ' <span class="label label-primary">한강</span>';
 										output += ' </p>';
-										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 										output += '</div>';
 										output += '</div>';
 										output += '</div>';
@@ -400,16 +398,27 @@ $(document).ready(function(){
 			});
 			//인덱스를 꺼내오기.. 중요!!
 			markers[i].index = i
-
-			contents[i] = '<div class="box box-primary" style="font-family : seoul">'
-					+ '<h5 class="profile-username text-center">'+ locations[i].title+ '</h5>'
-					+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
-					+ '<li class="list-group-item">'
-					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
-					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span> <span class="label label-primary"> 한강</span></li>'
-					+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
-					+ '</div>';
+			
+				if(locations[i].img == '' || locations[i].img == null){ 
+					contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+							+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+							+ '<li class="list-group-item">'
+							+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+							+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+							+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+							+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
+							+ '</div>';
+				} else {
+					contents[i] = '<div class="box box-primary" style="font-family : seoul">'
+						+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
+						+ '<img class="img-rounded" src="/images/spot/'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+						+ '<li class="list-group-item">'
+						+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
+						+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+						+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+						+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
+						+ '</div>';	
+				}
 
 			// 이벤트 정보 넣기
 			infowindows[i] = new google.maps.InfoWindow(
@@ -525,7 +534,7 @@ $(document).ready(function(){
 					    			title : spot[i].spotTitle,
 					    			img : spot[i].spotImg,
 					    			no : spot[i].spotNo,
-					    			type : 'store'
+					    			type : 'delivery'
 					    	};           
 					      	locations.push(obj);    
 					      };
@@ -540,14 +549,15 @@ $(document).ready(function(){
 						});
 						//인덱스를 꺼내오기.. 중요!!
 						markers[i].index = i
-						if(locations[i].img === ''){ 
+						//alert(locations[i].img);
+						if(locations[i].img == '' || locations[i].img == null){ 
 							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
 									+ '<h4 class="profile-username text-center">'+ locations[i].title+ '</h4>'
 									+ '<li class="list-group-item">'
 									+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 									+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
-									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
 									+ '</div>';
 						} else {
 							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
@@ -556,8 +566,8 @@ $(document).ready(function(){
 								+ '<li class="list-group-item">'
 								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
-								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
 								+ '</div>';	
 						}
 
@@ -588,7 +598,7 @@ $(document).ready(function(){
 										output += '<div class="col-sm-3 col-md-3">';
 										output += '<div class="thumbnail">';
 										output += ' <div class="caption">';
-										output += '<h5>'+ this.spotTitle+ '</h5>';
+										output += '<h4>'+ this.spotTitle+ '</h4>';
 										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
 										output += '<p> '+ this.spotAddress+ '</p>';
 										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
@@ -596,9 +606,9 @@ $(document).ready(function(){
 										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 										output += ' <p>';
 										output += ' <span class="label label-success">백과</span>';
-										output += ' <span class="label label-warning">맛집</span>';
+										output += ' <span class="label label-primary">한강</span>';
 										output += ' </p>';
-										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 										output += '</div>';
 										output += '</div>';
 										output += '</div>';
@@ -703,7 +713,7 @@ $(document).ready(function(){
 					    			title : spot[i].spotTitle,
 					    			img : spot[i].spotImg,
 					    			no : spot[i].spotNo,
-					    			type : 'store'
+					    			type : 'delivery'
 					    	};           
 					      	locations.push(obj);    
 					      };
@@ -724,8 +734,8 @@ $(document).ready(function(){
 									+ '<li class="list-group-item">'
 									+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 									+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
-									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+									+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+									+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
 									+ '</div>';
 						} else {
 							contents[i] = '<div class="box box-primary" style="font-family : seoul">'
@@ -734,8 +744,8 @@ $(document).ready(function(){
 								+ '<li class="list-group-item">'
 								+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'+ locations[i].addr+ '</li>'
 								+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
-								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-warning">맛집</span></li>'
-								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="waves-effect waves-light btn" style="width:100%" ><b>상세보기</b></a>'
+								+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 백과</span><span class="label label-primary">한강</span></li>'
+								+ '<a href="/spot/getSpot?spotNo='+ locations[i].no+ '"" class="btn btn-secondary" style="width:100%" ><b>상세보기</b></a>'
 								+ '</div>';	
 						}
 
@@ -766,7 +776,7 @@ $(document).ready(function(){
 										output += '<div class="col-sm-3 col-md-3">';
 										output += '<div class="thumbnail">';
 										output += ' <div class="caption">';
-										output += '<h5>'+ this.spotTitle+ '</h5>';
+										output += '<h4>'+ this.spotTitle+ '</h4>';
 										output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
 										output += '<p> '+ this.spotAddress+ '</p>';
 										output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
@@ -774,9 +784,9 @@ $(document).ready(function(){
 										output += '  <strong><i class="glyphicon glyphicon-ok-circle"></i> Tag</strong>';
 										output += ' <p>';
 										output += ' <span class="label label-success">백과</span>';
-										output += ' <span class="label label-warning">맛집</span>';
+										output += ' <span class="label label-primary">한강</span>';
 										output += ' </p>';
-										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 										output += '</div>';
 										output += '</div>';
 										output += '</div>';
@@ -823,26 +833,25 @@ $(document).ready(function(){
 			<div class="jumbotron">
 				<h1>한강</h1>
 					<p>한강의 나들이를 즐겨보세요!</p>
-						<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(1)">광나루</a></span>
-					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(2)">잠실</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(3)">뚝섬</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(4)">잠원</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(5)">반포</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(6)">이촌</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(7)">여의도</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(8)">망원</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(9)">난지</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(10)">강서</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchRiver(11)">양화</a></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(1)">광나루</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(2)">잠실</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(3)">뚝섬</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(4)">잠원</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(5)">반포</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(6)">이촌</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(7)">여의도</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(8)" >망원</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(9)">난지</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(10)">강서</button></span>
+						<span><button type="button" class="btn btn-secondary" align="center" onclick="searchRiver(11)">양화</button></span>
 	  					<p></p>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(4)">전체</a></span>
-					  	<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(41)">한강공원</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(42)">주차장</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(43)">안내소</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(44)">자전거</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(45)">편의점</a></span>
-	  					<span><a class="waves-effect waves-light btn" role="button" onclick="searchkeyword(46)">배달존</a></span>
-					 	
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(4)">전체</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(41)">한강공원</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(42)">주차장</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(43)" >안내소</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(44)">자전거</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(45)" >편의점</button></span>
+	  					<span><button type="button" class="btn btn-secondary" align="center" onclick="searchkeyword(46)">배달존</button></span>			 	
 			</div>
 	
 				<div class="spotImg">
@@ -878,7 +887,7 @@ $(document).ready(function(){
 																output += '<div class="col-sm-3 col-md-3">';
 																output += '<div class="thumbnail">';
 																output += ' <div class="caption">';
-																output += '<h5>'+ this.spotTitle+ '</h5>';
+																output += '<h4>'+ this.spotTitle+ '</h4>';
 																output += '  <strong><i class="glyphicon glyphicon-tree-deciduous"></i> 위치 </strong>';
 																output += '<p> '+ this.spotAddress+ '</p>';
 																output += '  <strong><i class="glyphicon glyphicon-pencil"></i> 등록날짜 / 수정날짜 </strong>';
@@ -888,7 +897,7 @@ $(document).ready(function(){
 																output += ' <span class="label label-success">백과</span>';
 																output += ' <span class="label label-primary">한강</span>';
 																output += ' </p>';
-																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+																output += '<p><button type="button" class="btn btn-secondary" align="center"><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 																output += '</div>';
 																output += '</div>';
 																output += '</div>';
