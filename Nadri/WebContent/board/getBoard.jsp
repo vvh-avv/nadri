@@ -428,7 +428,7 @@ $(function(){
    
    //*하트 클릭
    $("#likeIcon>.icon").on("click", function(){
-	   //alert("아이디 : " + $(this).attr("id")) ;
+	  // alert("아이디 : " + $(this).attr("id")) ;
 	   
 	  if( ${empty sessionScope.user} ){
 		  swal ( "좋아요 실패" ,  "회원가입 후 이용해주시길 바랍니다." ,  "error" );
@@ -440,6 +440,7 @@ $(function(){
             url : "/board/json/addLike/"+$("#boardNo").val().trim(),
             method : "POST",
             success : function(map, status){
+            	
             	//보상 (좋아요)
             	if( map.myLikeCnt==5 ){
             		swal({
@@ -739,6 +740,7 @@ $(function(){
    var modalFriendId; //모달창 내에서 상대방 ID를 가져오기 위함
    var modalMyself = false; //본인이 본인프로필을 열었는지 체크하기 위함 //본인은 신고하지 못하도록
    $('.userModal').on('show.bs.modal', function (event) {
+	   
 		var button = $(event.relatedTarget);
   		var modal = $(this);
   		

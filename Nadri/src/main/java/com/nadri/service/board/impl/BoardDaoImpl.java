@@ -52,7 +52,12 @@ public class BoardDaoImpl implements BoardDao{
 			List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);
 			List<String> friendId = new ArrayList<String>();
 			for( int i=0; i<friend.size(); i++ ) {
-				friendId.add( friend.get(i).getUserId() );
+				//Friend VO 에 userId 에 들어가있는지, friendId 에 들어가있는지 확인
+				if( friend.get(i).getUserId()==null ) {
+					friendId.add( friend.get(i).getFriendId() );
+				}else {
+					friendId.add( friend.get(i).getUserId() );
+				}				
 			}
 			map.put("list", friendId);
 		}

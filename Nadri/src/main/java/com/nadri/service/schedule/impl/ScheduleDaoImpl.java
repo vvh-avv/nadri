@@ -99,5 +99,10 @@ public class ScheduleDaoImpl implements ScheduleDao{
    public void updateScheduleReview(Schedule schedule) throws Exception {
 	   sqlSession.update("ScheduleMapper.updateScheduleReview", schedule);
    }
+   
+   // 11. 안드로이드로 일정을 뿌려줍니다.
+   public List<Schedule> getMyScheduleListRest(String userId) throws Exception{
+	   return sqlSession.selectList("ScheduleMapper.getMyScheduleListRest", userId);
+   };
 	
 }

@@ -38,4 +38,7 @@ public interface ScheduleService {
    
    // 10. 일정의 review를 업데이트 합니다.
    public void updateScheduleReview(Schedule schedule) throws Exception;
+   
+   // 11. 안드로이드로 일정을 뿌려줍니다.
+   public List<Schedule> getMyScheduleListRest(String userId) throws Exception;
 }

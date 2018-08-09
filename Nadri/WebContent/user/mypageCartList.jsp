@@ -318,7 +318,7 @@ article:hover .links {
 					<br /> <br /> <br /> <br /> <br /> <br /> 
 						<a href="/user/logout">·Î±×¾Æ¿ô</a><br /> <br />
 				</div>
-			</div>
+			</div> <!-- end.of.row1 -->
 
 			<div class="col-xs-12 col-md-9">
 

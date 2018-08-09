@@ -286,7 +286,6 @@ var options = {
 	$(function() {
 		
 		$(document).on("click", "#modalinsert", function(){
-			alert("hello!");
 			// 모달에서 적은 제목의 value을 가져옵니다.
 			var modalscheduleTitle = $("#modalscheduleTitle").val();
 			// 일정 제목값에 넣습니다.
@@ -564,7 +563,7 @@ $(function(){
                    cartImg : e.target.result
                 }),
                 success : function(data){
-                   alert(data);
+                   //alert(data);
                    //$("."+updateCartImgNo).find("img").attr('src',data);
                    //$("#cartImg"+i+"").attr('src');
                 }

@@ -565,7 +565,7 @@ article:hover .links, article:hover .linksIcon {
 									<span id="scheduleTitle"><b>${schedule.scheduleTitle}</b><br></span>
 									<span id="scheduleDetail">${schedule.scheduleDetail}<br>
 										<br></span> <span id="scheduleHashTag">${schedule.hashTag}<br>
-										<br></span>
+										<br></span>	
 									<button type="button" class="btn btn-primary btn-xs"
 										id="shortURL${schedule.scheduleNo}">URL 복사하기</button>
 									<button type="button" class="btn btn-primary btn-xs"

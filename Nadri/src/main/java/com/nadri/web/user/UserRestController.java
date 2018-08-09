@@ -23,10 +23,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.common.Page;
@@ -195,7 +197,7 @@ public class UserRestController {
 	}
 	
 
-	//회원 아이디 찾기
+	//*회원 아이디 찾기
 	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
 		
@@ -203,6 +205,7 @@ public class UserRestController {
 		
 		//User user = new User();
 		user = userService.findUserId(user);
+		
 		System.out.println("user rest controller - userid찾기 - 아이: "+user);
 		
 		String userId = user.getUserId();
@@ -378,6 +381,5 @@ public class UserRestController {
       
       userService.quitUser(userId);
    }
-	
 	
 }

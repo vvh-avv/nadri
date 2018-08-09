@@ -58,6 +58,7 @@
 	margin-right: 5%;
 }
 
+
 /* 	@font-face {
 		font-family: 'seoul';
 		src: url('/css/fonts/seoulhangangjangm.eot');
@@ -569,7 +570,7 @@ $(function(){
                    cartImg : e.target.result
                 }),
                 success : function(data){
-                   alert(data);
+                   //alert(data);
                    //$("."+updateCartImgNo).find("img").attr('src',data);
                    //$("#cartImg"+i+"").attr('src');
                 }
@@ -703,7 +704,7 @@ $(function(){
 
 	</div>
 	<%@ include file="/layout/new_toolbar.jsp"%>
-	<form enctype="multipart/form-data">
+	<form enctype="multipart/form-data" name="updateForm">
 		<div id="img"
 			style='background-image: url(/images/spot/421.jpg); background-position-y: -100px'>
 			<div class="content">
@@ -761,7 +762,6 @@ $(function(){
 			<div id="map"></div>
 
 			<hr />
-
 			<div class="form-group row">
 				<div class="col-xs-3">
 					<p>출발시간은 언제인가요?</p>
@@ -817,41 +817,22 @@ $(function(){
 					<c:forEach var="waypoint" items="${waypoint}">
 						<c:set var="i" value="${i+1}" />
 						<tr>
-							<td align="center"><input class="form-control" type="text"
-								name="wayPoints[${i}].wayPointTitle" id="wayPointTitle${i}"
-								value="${waypoint.wayPointTitle}" /></td>
-							<td align="center"><input class="form-control" type="text"
-								name="wayPoints[${i}].wayPointAddress" id="wayPointAddress${i}"
-								value="${waypoint.wayPointAddress}"
-								onchange="JavaScript:deleteImg(${i})"></td>
-							<td align="center"><input class="form-control" type="text"
-								name="wayPoints[${i}].wayPointDetail" id="wayPointDetail${i}"
-								value="${waypoint.wayPointDetail}" /></td>
-							<td align="center"><input class="form-control" type="text"
-								name="wayPoints[${i}].moveTime" id="wayPointMoveTime${i}"
-								readonly /></td>
-							<td align='center'><input
-								class='waves-effect waves-light btn col s5' type='button'
-								style='background-color: rgba(250, 170, 50, 0.5);'
-								id='navigation' value='길찾기'
-								onclick="search('#wayPointAddress${i}')"></td>
-							<input type="hidden" name="wayPoints[${i}].wayPointImg"
-								id="wayPointImg${i}" value="${waypoint.wayPointImg}" />
-							<input type="hidden" name="wayPoints[${i}].wayPointNav"
-								id="wayPointNav${i}" value="${waypoint.wayPointNav}" />
-							<input type="hidden" name="wayPoints[${i}].wayPointX"
-								id="wayPointX${i}" value="${waypoint.wayPointX}">
-							<input type="hidden" name="wayPoints[${i}].wayPointY"
-								id="wayPointY${i}" value="${waypoint.wayPointY}">
+							<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointTitle" id="wayPointTitle${i}" value="${waypoint.wayPointTitle}" /></td>
+							<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointAddress" id="wayPointAddress${i}" value="${waypoint.wayPointAddress}" onchange="JavaScript:deleteImg(${i})"></td>
+							<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].wayPointDetail" id="wayPointDetail${i}" value="${waypoint.wayPointDetail}" /></td>
+							<td align="center"><input class="form-control" type="text" name="wayPoints[${i}].moveTime" id="wayPointMoveTime${i}" readonly /></td>
+							<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);' id='navigation' value='길찾기' onclick="search('#wayPointAddress${i}')"></td>
+							<input type="hidden" name="wayPoints[${i}].wayPointImg" id="wayPointImg${i}" value="${waypoint.wayPointImg}" />
+							<input type="hidden" name="wayPoints[${i}].wayPointNav" id="wayPointNav${i}" value="${waypoint.wayPointNav}" />
+							<input type="hidden" name="wayPoints[${i}].wayPointX" id="wayPointX${i}" value="${waypoint.wayPointX}">
+							<input type="hidden" name="wayPoints[${i}].wayPointY" id="wayPointY${i}" value="${waypoint.wayPointY}">
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 
 			<hr />
-			<button class="waves-light btn col s5" type="button"
-				style="background-color: rgba(250, 170, 50, 0.5); float: right;"
-				id="updateSchedule">수정</button>
+			<button class="waves-light btn col s5" type="button" style="background-color: rgba(250, 170, 50, 0.5); float: right;" id="updateSchedule">수정</button>
 		</div>
 	</form>
 
