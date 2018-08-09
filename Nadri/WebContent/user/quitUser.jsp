@@ -9,6 +9,19 @@
 <html>
 	
 <head>
+<!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+
+<!-- layout css -->
+<link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
+<link rel="stylesheet" type="text/css" media="(max-width: 600px)" href="/css/indexRealSmall.css" />
+<script src="/javascript/indexReal_nonIndex.js"></script>
 
 <!-- ÂüÁ¶ : http://getbootstrap.com/css/   ÂüÁ¶ -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,6 +39,7 @@
 
 <!-- sweet alert CDN -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -145,7 +159,7 @@
 	  <div class="form-group">
 	  		 <div class="col-xs-3 control-label col-md-3 control-label"></div>
 		    <div class="col-xs-12 control-label col-md-4 control-label">
-		      <button type="button" class="btn btn-danger"  >Å»Åð</button>
+		      <button type="button" class="btn btn-danger">Å»Åð</button>
 			  <a class="btn btn-default" href="#" role="button">Ãë¼Ò</a>
 		    </div>
 	  </div>

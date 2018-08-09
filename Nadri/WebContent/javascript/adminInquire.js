@@ -2,8 +2,6 @@
  * 
  */
 
-
-	//
 	google.charts.load('current', {'packages' : [ 'corechart' ]});
 		
 	function fncGetList(currentPage) {
@@ -13,24 +11,12 @@
 
 	$(function() {
 		
-		/* index page animation start */
-
-		$('.admin-sub-navbar > div').on('click', function() {
-			var way = $(this).attr('class');
-			if (way == "inquire") {
-				self.location = '/admin/listInquire';
-			} else if (way == "spot") {
-				self.location = '/admin/listSpot';
-			} else if (way == "graph") {
-				self.location = '/admin/listGraph?duration=day';
-			} else if (way == "userList") {
-				self.location = '/admin/listUser';
-			} else if (way == "userLog") {
-				self.location = '/admin/listLog';
+		$('.inquireKeyword').on('keydown',function(e){
+			if(e.which == 13){
+				console.log('검색어 = '+$(this).val());
+				fncGetList(0);
 			}
 		})
-		
-		/* index page animation end */
 
 		$('.texts').on('mouseover', function() {
 			if ($(this).text() == '??') {
@@ -112,6 +98,7 @@
 
 			var duration = "all";
 			$('.userIdLog').text(id);
+			$('.duration').val('전체');
 
 			$.get("/restAdmin/userLog/" + id + "/" + duration,function(jdata, status) {
 				console.log(status);
@@ -136,7 +123,7 @@
 							left : 10,
 							top : 10,
 							width : "100%",
-							height : "75%"
+							height : "90%"
 						}
 					};
 
@@ -154,6 +141,8 @@
 		$('.userReportLog').on('click',function() {
 							
 			$('.block-user').css('visibility','visible');
+			
+			$('.duration').val('전체');
 							
 			var id = $(this).attr('name');
 			console.log(id);
@@ -175,18 +164,61 @@
 					var data = new google.visualization.DataTable();
 					data.addColumn("string","activity");
 					data.addColumn("number","count");
+					
+					var checker = 0;
 
 					$.each(jdata.rows,function(key,value) {
 						console.log('key:'+ key+ ' / '+ 'value:'+ value);
+						checker++;
 						data.addRow([key,value ]);
 					});
+					
+					if (checker > 0) {
+						
+						var data = new google.visualization.DataTable();
+						data.addColumn("string","activity");
+						data.addColumn("number","count");
+	
+						$.each(jdata.rows,function(key,value) {
+							console.log('key:'+ key+ ' / '+ 'value:'+ value);
+							data.addRow([key,value ]);
+						});
+	
+						var options = {
+							chartArea : {
+								left : 10,
+								top : 10,
+								width : "100%",
+								height : "90%"
+							}
+						};
+	
+					} else {
+	
+						var data = new google.visualization.DataTable();
+						data.addColumn("string","NoData");
+						data.addColumn("number","capacity");
+	
+						data.addRow(['what.',100 ]);
+	
+						var options = {
+							colors : [ '#ccc','grey' ],
+							chartArea : {
+								left : 10,
+								top : 10,
+								width : "100%",
+								height : "90%"
+							}
+						};
+	
+					}
 
 					var options = {
 						chartArea : {
 							left : 10,
 							top : 10,
 							width : "100%",
-							height : "75%"
+							height : "90%"
 						}
 					};
 
@@ -201,7 +233,7 @@
 
 		});
 
-/*		$('.duration').on('change',function() {
+		$('.duration').on('change',function() {
 
 			var id = $('.userIdLog').text();
 			console.log(id);
@@ -246,7 +278,7 @@
 								left : 10,
 								top : 10,
 								width : "100%",
-								height : "75%"
+								height : "90%"
 							}
 						};
 	
@@ -264,7 +296,7 @@
 								left : 10,
 								top : 10,
 								width : "100%",
-								height : "75%"
+								height : "90%"
 							}
 						};
 	
@@ -279,7 +311,7 @@
 
 			})
 
-		});*/
+		});
 
 		$('.modal-close').on('click',function() {
 			var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -317,6 +349,8 @@
 		var chk = true;
 		var male;
 		$('.switch').on('change',function(){
+			
+			$('.')
 			
 			if(chk){
 				console.log("hihi");

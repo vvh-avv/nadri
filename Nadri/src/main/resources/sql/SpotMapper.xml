@@ -3,127 +3,127 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="SpotMapper">
-	<resultMap id="spotSelectMap" type="spot">
-		<result property="spotNo" 			   		column="spot_no" 					jdbcType="NUMERIC"/>
-		<result property="spotCode"	     		column="spot_code" 			    jdbcType="VARCHAR" />
-		<result property="spotTitle"	     			column="spot_title" 		        jdbcType="VARCHAR" />
-		<result property="spotPhone" 			 	column="spot_phone" 		    jdbcType="VARCHAR"/>
-		<result property="spotAddress" 	        column="spot_address" 		jdbcType="VARCHAR" />
-		<result property="spotDetail" 	            column="spot_detail" 		    jdbcType="VARCHAR" />
-		<result property="spotX" 						column="spot_x" 					jdbcType="DECIMAL"  />
-		<result property="spotY" 						column="spot_y" 					jdbcType="DECIMAL"/>
-		<result property="spotImg" 					column="spot_img" 			    jdbcType="VARCHAR" />
-		<result property="spotCreateTime" 	column="spot_createtime"    jdbcType="DATE" />
-		<result property="spotModifyTime" 	column="spot_modifytime" 	jdbcType="DATE" />
-		<result property="spotProvince" 			column="spot_province" 		jdbcType="VARCHAR" />
-		<result property="spotDetailURL" 		column="spot_detailurl" 		jdbcType="VARCHAR" />
-		<result property="spotReadCnt" 		column="spot_readcnt" 			jdbcType="NUMERIC"/>
-	</resultMap>
-	
-	 <select id="getSpotList" parameterType="Int" resultMap="spotSelectMap">
-	 <![CDATA[
-		SELECT *
-		FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
-		ORDER BY spot_readcnt
-		]]>
-	</select>
-	
-	 <select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
-		 <if test="_parameter==1">
-		 	SELECT *
-			FROM spot WHERE spot_code LIKE '4%01'
-			ORDER BY spot_readcnt
-		 </if>
-		 <if test="_parameter!=1">
-			SELECT *
-			FROM spot WHERE spot_code LIKE CONCAT('4%',#{keyword})
-			ORDER BY spot_readcnt
-		</if>
-	</select>
+   <resultMap id="spotSelectMap" type="spot">
+      <result property="spotNo"                   column="spot_no"                jdbcType="NUMERIC"/>
+      <result property="spotCode"              column="spot_code"              jdbcType="VARCHAR" />
+      <result property="spotTitle"                 column="spot_title"               jdbcType="VARCHAR" />
+      <result property="spotPhone"              column="spot_phone"           jdbcType="VARCHAR"/>
+      <result property="spotAddress"            column="spot_address"       jdbcType="VARCHAR" />
+      <result property="spotDetail"                column="spot_detail"           jdbcType="VARCHAR" />
+      <result property="spotX"                   column="spot_x"                jdbcType="DECIMAL"  />
+      <result property="spotY"                   column="spot_y"                jdbcType="DECIMAL"/>
+      <result property="spotImg"                column="spot_img"              jdbcType="VARCHAR" />
+      <result property="spotCreateTime"    column="spot_createtime"    jdbcType="DATE" />
+      <result property="spotModifyTime"    column="spot_modifytime"    jdbcType="DATE" />
+      <result property="spotProvince"          column="spot_province"       jdbcType="VARCHAR" />
+      <result property="spotDetailURL"       column="spot_detailurl"       jdbcType="VARCHAR" />
+      <result property="spotReadCnt"       column="spot_readcnt"          jdbcType="NUMERIC"/>
+   </resultMap>
+   
+    <select id="getSpotList" parameterType="Int" resultMap="spotSelectMap">
+    <![CDATA[
+      SELECT *
+      FROM spot WHERE spot_code LIKE CONCAT(#{keyword},'%')
+      ORDER BY spot_readcnt
+      ]]>
+   </select>
+   
+    <select id="getRiverList" parameterType="Int" resultMap="spotSelectMap">
+       <if test="_parameter==1">
+          SELECT *
+         FROM spot WHERE spot_code LIKE '4%01'
+         ORDER BY spot_readcnt
+       </if>
+       <if test="_parameter!=1">
+         SELECT *
+         FROM spot WHERE spot_code LIKE CONCAT('4%',#{keyword})
+         ORDER BY spot_readcnt
+      </if>
+   </select>
 
-	<select id="getAllSpotList" parameterType="Int" resultMap="spotSelectMap">
-		SELECT *
-		FROM spot 
-		WHERE spot_code LIKE CONCAT(#{keyword},'%')
-		ORDER BY spot_readcnt
-	</select>
-	
-	<select id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
-	  	<![CDATA[
-	  	SELECT * 
-	  	FROM spot 
-	  	WHERE spot_code LIKE #{keyword}
-	  	limit 0, 10;
-	  	]]>
-	</select>
+   <select id="getAllSpotList" parameterType="Int" resultMap="spotSelectMap">
+      SELECT *
+      FROM spot 
+      WHERE spot_code LIKE CONCAT(#{keyword},'%')
+      ORDER BY spot_readcnt
+   </select>
+   
+   <select id="getRestaurantList" parameterType="Int" resultMap="spotSelectMap">
+        <![CDATA[
+        SELECT * 
+        FROM spot 
+        WHERE spot_code LIKE #{keyword}
+        limit 0, 10;
+        ]]>
+   </select>
 
-	<select id="infiniteScrollDown" resultMap="spotSelectMap">
-	 	<![CDATA[
-	  	SELECT * 
-	  	FROM spot 
-	  	WHERE spot_code LIKE CONCAT(#{spotCode},'%')
-	  	limit #{spotNo}, 1;
-	  	]]>
-	</select>
+   <select id="infiniteScrollDown" resultMap="spotSelectMap">
+       <![CDATA[
+        SELECT * 
+        FROM spot 
+        WHERE spot_code LIKE CONCAT(#{spotCode},'%')
+        limit #{spotNo}, 1;
+        ]]>
+   </select>
 
-	<select id="getSpot" parameterType="Int" resultMap="spotSelectMap">
-		SELECT * FROM
-		spot
-		WHERE spot_no = #{value}
-	</select>
+   <select id="getSpot" parameterType="Int" resultMap="spotSelectMap">
+      SELECT * FROM
+      spot
+      WHERE spot_no = #{value}
+   </select>
 
-	<select id="searchAround" parameterType="spot" resultMap="spotSelectMap">
-	    <![CDATA[
-		    SELECT 
-			*,
-			( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
-			+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
-			FROM
-			spot
-			HAVING 
-			distance < 2
-			ORDER BY  distance
-		]]>
-	</select>
-	
-	<select id="searchAroundRestaurant" parameterType="spot" resultMap="spotSelectMap">
-	    <![CDATA[
-		    SELECT 
-			*,
-			( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
-			+ sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
-			FROM
-			spot
-			WHERE spot_code LIKE '1%'
-			HAVING 
-			distance < 2
-			ORDER BY  distance
-		]]>
-	</select>
-	
-	<!-- 예지누나 추가!!(20180712) -->
-	<select id="listSpot" resultMap="spotSelectMap">
-		SELECT * FROM spot
-	</select>
+   <select id="searchAround" parameterType="spot" resultMap="spotSelectMap">
+       <![CDATA[
+          SELECT 
+         *,
+         ( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+         + sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+         FROM
+         spot
+         HAVING 
+         distance < 2
+         ORDER BY  distance
+      ]]>
+   </select>
+   
+   <select id="searchAroundRestaurant" parameterType="spot" resultMap="spotSelectMap">
+       <![CDATA[
+          SELECT 
+         *,
+         ( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+         + sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+         FROM
+         spot
+         WHERE spot_code LIKE '1%'
+         HAVING 
+         distance < 2
+         ORDER BY  distance
+      ]]>
+   </select>
+   
+   <!-- 예지누나 추가!!(20180712) -->
+   <select id="listSpot" resultMap="spotSelectMap">
+      SELECT * FROM spot
+   </select>
 
-	<delete id="deleteSpot" parameterType="Int">
-		DELETE FROM spot WHERE
-		spot_no = #{value}
-	</delete>
+   <delete id="deleteSpot" parameterType="Int">
+      DELETE FROM spot WHERE
+      spot_no = #{value}
+   </delete>
 
-	<insert id="addSpot" parameterType="Spot">
-		INSERT INTO spot (spot_code,
-		spot_title, spot_phone, spot_address,
-		spot_detail, spot_x, spot_y,
-		spot_img, spot_createtime,
-		spot_modifytime, spot_province,
-		spot_detailurl)
-		VALUES
-		(#{spotCode},#{spotTitle},#{spotPhone},#{spotAddress},#{spotDetail},#{spotX},#{spotY},#{spotImg},NOW(),NOW(),#{spotProvince},#{spotDetailURL})
-	</insert>
-	
-	<update id="updateSpot" parameterType="spot" >
-	  UPDATE spot 
+   <insert id="addSpot" parameterType="Spot">
+      INSERT INTO spot (spot_code,
+      spot_title, spot_phone, spot_address,
+      spot_detail, spot_x, spot_y,
+      spot_img, spot_createtime,
+      spot_modifytime, spot_province,
+      spot_detailurl)
+      VALUES
+      (#{spotCode},#{spotTitle},#{spotPhone},#{spotAddress},#{spotDetail},#{spotX},#{spotY},#{spotImg},NOW(),NOW(),#{spotProvince},#{spotDetailURL})
+   </insert>
+   
+   <update id="updateSpot" parameterType="spot" >
+     UPDATE spot 
       SET spot_title = #{spotTitle},
           spot_code = #{spotCode},
           spot_phone = #{spotPhone},
@@ -136,38 +136,38 @@
           spot_province = #{spotProvince},
           spot_detailurl = #{spotDetailURL}
       WHERE spot_no = #{spotNo}
-	</update>
-	<!-- 예지누나 추가!!(20180712) -->
-	
-	<!-- 조회수 카운트 하는 메서드-->
-	<update	id="updateSpotReadCnt"	parameterType="spot" >
-	   	UPDATE spot
-	   	<set>
-	   		spot_readcnt 	= #{spotReadCnt}+1
-	   	</set>
-	  	 	WHERE spot_no = #{spotNo}
-	 </update>
-	 
-	 <!-- 전체 장소개수 카운트하는 메서드 -->
-	 <select id="getTotalSpot" resultType="int">
-	 	SELECT COUNT(spot_no) AS totalspot FROM spot;
-	 </select>
-	 
-	 <!-- 장소 찾는 이벤트 입니다! -->
- 	<select id="getSearchSpotList" parameterType="search" resultMap="spotSelectMap">
-		SELECT *
-		FROM spot 
-		WHERE (spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+   </update>
+   <!-- 예지누나 추가!!(20180712) -->
+   
+   <!-- 조회수 카운트 하는 메서드-->
+   <update   id="updateSpotReadCnt"   parameterType="spot" >
+         UPDATE spot
+         <set>
+            spot_readcnt    = #{spotReadCnt}+1
+         </set>
+            WHERE spot_no = #{spotNo}
+    </update>
+    
+    <!-- 전체 장소개수 카운트하는 메서드 -->
+    <select id="getTotalSpot" resultType="int">
+       SELECT COUNT(spot_no) AS totalspot FROM spot;
+    </select>
+    
+    <!-- 장소 찾는 이벤트 입니다! -->
+    <select id="getSearchSpotList" parameterType="search" resultMap="spotSelectMap">
+      SELECT *
+      FROM spot 
+      WHERE (spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
         OR spot_title LIKE CONCAT('%',#{searchKeyword},'%')
         OR spot_address LIKE CONCAT('%',#{searchKeyword},'%'))
         and spot_code LIKE CONCAT(#{searchSpot},'%')
-	</select>
-	
-	<select id="getRecommandSpotList" resultMap="spotSelectMap" >
+   </select>
+   
+   <select id="getRecommandSpotList" resultMap="spotSelectMap" >
        SELECT *
        FROM spot
        WHERE spot_code not like '3%'
-	   ORDER BY spot_readcnt
+      ORDER BY spot_readcnt
        limit 0, 9
    </select>
    
@@ -177,18 +177,22 @@
        FROM spot
        <if test="searchCondition == '' and searchKeyword != '' ">
               WHERE spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+              AND spot_code NOT IN ('30', '31' ,'32')
        </if>
        <if test="searchCondition =='제목' and searchKeyword != '' ">
             WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
-       		AND spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_code NOT IN ('30', '31' ,'32')
        </if>
        <if test="searchCondition =='주소' and searchKeyword != '' ">
             WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
-       		AND spot_address LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_address LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_code NOT IN ('30', '31' ,'32')
        </if>
        <if test="searchCondition =='상세내용' and searchKeyword != '' ">
             WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
-       		AND spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+             AND spot_code NOT IN ('30', '31' ,'32')
        </if>
         ORDER BY spot_readcnt
         limit 0, 30

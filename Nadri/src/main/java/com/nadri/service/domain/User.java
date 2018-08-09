@@ -247,16 +247,16 @@ public class User {
       this.token = token;
    }
 
-   @Override
-   public String toString() {
-      return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
-            + ", profileImg=" + profileImg + ", sex=" + sex + ", phone=" + phone + ", phone1=" + phone1
-            + ", phone2=" + phone2 + ", phone3=" + phone3 + ", age=" + age + ", introduce=" + introduce
-            + ", regDate=" + regDate + ", role=" + role + ", lastLogin=" + lastLogin + ", status=" + status
-            + ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
-            + ", token=" + token + "]";
-   }
-   
-   
-   
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
+				+ ", profileImg=" + profileImg + ", sex=" + sex + ", phone=" + phone + ", phone1=" + phone1
+				+ ", phone2=" + phone2 + ", phone3=" + phone3 + ", age=" + age + ", introduce=" + introduce
+				+ ", regDate=" + regDate + ", role=" + role + ", lastLogin=" + lastLogin + ", status=" + status
+				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
+				+ ", token=" + token + "]";
+	}
+	
+	
+	
 }

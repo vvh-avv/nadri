@@ -146,6 +146,29 @@ public class FriendDaoImpl implements FriendDao{
                   
          return sqlSession.selectOne("FriendMapper.checkFriend", map);
       }
+
+
+	public int cancelFriend(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public int refuseFriend(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public Friend getFriend(String friendId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public List<Friend> selectFriendList(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	      
 	      
 

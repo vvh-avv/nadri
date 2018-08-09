@@ -64,7 +64,7 @@ ul.countdown {
 }
 
 .maincon {
-	color : #404548;
+	color : #9fadb9;
 }
 
 ul.countdown li {
@@ -203,6 +203,36 @@ $(function(){
 			$("#schedule").printThis();
 		});
 	});
+	
+	
+	//HJA 추가 클릭시 원본 이미지로 보여주는 곳 입니다!
+	// 이미지 클릭시 원본 크기로 팝업 보기
+	function doImgPop(img){ 
+	 img1= new Image(); 
+	 img1.src=(img); 
+	 imgControll(img); 
+	} 
+	  
+	function imgControll(img){ 
+	 if((img1.width!=0)&&(img1.height!=0)){ 
+	    viewImage(img); 
+	  } 
+	  else{ 
+	     controller="imgControll('"+img+"')"; 
+	     intervalID=setTimeout(controller,20); 
+	  } 
+	}
+	
+	function viewImage(img){ 
+	 W=img1.width; 
+	 H=img1.height; 
+	 O="width="+W+",height="+H+",scrollbars=yes"; 
+	 imgWin=window.open("","",O); 
+	 imgWin.document.write("<html><head><title>너,나들이</title></head>");
+	 imgWin.document.write("<body topmargin=0 leftmargin=0>");
+	 imgWin.document.write("<img src="+img+" onclick='self.close()' style='cursor:pointer;' title ='클릭하시면 창이 닫힙니다.'>");
+	 imgWin.document.close();
+	}
 </script>
 </head>
 <!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
@@ -297,7 +327,7 @@ $(function(){
 					<c:if test="${waypoint.wayPointNav != ''}">
 					<span>
 					<c:forTokens items="${waypoint.wayPointNav}" delims="#" var="sel" begin="1">
-					<c:if test="${fn:length(sel) >= 20}">
+					<c:if test="${fn:length(sel) >= 10}">
 				      <c:if test="${schedule.transportationCode=='0'}">
 					<i class="Tiny material-icons">directions_car</i>
 					</c:if>
@@ -310,7 +340,6 @@ $(function(){
 					${sel}<br>
 					</c:if>
 				   </c:forTokens>
-				   도착!!
 				</span>
 					<hr/>
 						<p><i class="Small material-icons">access_alarm</i>약 ${waypoint.moveTime} 걸릴 예정입니다.</p>					
@@ -322,10 +351,10 @@ $(function(){
 			
 			<div class="cd-timeline__block js-cd-block">
 			<c:if test="${fn:length(waypoint.wayPointImg) <= 10}">
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg}); width:100px ; height:100px"/>
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg}); width:100px ; height:100px" onclick="doImgPop('/images/spot/${waypoint.wayPointImg}')" />
 			</c:if>
  			<c:if test="${fn:length(waypoint.wayPointImg) > 10}"> 
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px"/>
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px" onclick="doImgPop('/images/spot/${waypoint.wayPointImg}')"/>
 			</c:if>
 				<img src="/images/spot/icon/cd-icon-picture.svg" alt="Movie">
 			</div>

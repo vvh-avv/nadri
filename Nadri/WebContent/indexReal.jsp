@@ -705,7 +705,7 @@
 		<!-- 霸矫拱格废 场 -->
 
 
-	<!-- 格废 -->
+	<!-- 格废
 	<div class="container contents-wrapper">
 		<div class="second-line">
 			<div class="popular-spot">
@@ -794,9 +794,9 @@
 				</c:if>
 			</div>
 		</div>
-		<!-- 格废场 -->
-
 	</div>
+	<!-- 格废场 -->
+	
 	<div class="bottom-section">
 		<div class="section-backgrounds"></div>
 		<div class="container bottom-contents">
