@@ -228,7 +228,7 @@ $(function(){
 	 H=img1.height; 
 	 O="width="+W+",height="+H+",scrollbars=yes"; 
 	 imgWin=window.open("","",O); 
-	 imgWin.document.write("<html><head><title>너,나들이</title></head>");
+	 imgWin.document.write("<html><head><title>너, 나들이</title></head>");
 	 imgWin.document.write("<body topmargin=0 leftmargin=0>");
 	 imgWin.document.write("<img src="+img+" onclick='self.close()' style='cursor:pointer;' title ='클릭하시면 창이 닫힙니다.'>");
 	 imgWin.document.close();

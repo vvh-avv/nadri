@@ -123,8 +123,8 @@ public class UserController {
 	@RequestMapping(value="getUser", method=RequestMethod.GET)
 	public String getUser(HttpSession session, Model model ) throws Exception {
 		System.out.println("/user/getUser : GET");
-		
 		User user = (User) session.getAttribute("user");
+		if(user != null) {
 		String userId = user.getUserId();
 		
 		//business logic
@@ -134,7 +134,9 @@ public class UserController {
 		model.addAttribute("user", user);
 		System.out.println("--------------getUser---------------");
 		System.out.println("개인정보조회 : "+user);
-					
+		}else {
+			return"forward:/";
+		}
 		return "forward:/user/getUser.jsp";
 	}
 	
@@ -145,10 +147,15 @@ public class UserController {
 		
 		//business logic
 		user = (User)session.getAttribute("user");
+		
+		if(user != null) {
 		user = userService.getUser(user.getUserId());
 		
 		//model과 view 연결	
 		model.addAttribute("user", user);
+		}else {
+			return"forward:/";
+		}
 		
 		return "forward:/user/updateUser.jsp";
 	}
@@ -194,7 +201,12 @@ public class UserController {
 		}
 		System.out.println("*"+fileMultiName);
 //		user.setProfileImg(fileMultiName);					//set을 해주면 새로 값이 들어가는 셈 - 업데이트에는 필요없음
-					
+		
+		if(user.getSex().equals("남성")) {
+			user.setSex("0");
+		} else {
+			user.setSex("1");
+		}
 		//비즈니스 로직
 		userService.updateUser(user);
 		user = userService.getUser(user.getUserId());
@@ -208,12 +220,12 @@ public class UserController {
 	public String login() throws Exception{
 		System.out.println("/user/login : GET");
 
-		return "redirect:/user/loginView.jsp";
+		return "redirect:/";
 	}
 	
 	//로그인: post방식
 	@RequestMapping(value="login", method=RequestMethod.POST)
-	public String login( @ModelAttribute("user") User user , HttpSession session ) throws Exception{
+	public String login( @ModelAttribute("user") User user , HttpSession session, HttpServletRequest request ) throws Exception{
 		System.out.println("/user/login : POST");
 		
 		User dbUser=userService.getUser(user.getUserId());
@@ -258,10 +270,11 @@ public class UserController {
 	//유저 목록
 	@RequestMapping(value="listUser")
 	public String listUser( @ModelAttribute("search") Search search, @RequestParam(value="sort", required=false, defaultValue="asc") String sort,
-								Model model , HttpServletRequest request) throws Exception{
+								Model model , HttpServletRequest request, HttpSession session) throws Exception{
 		
 		System.out.println("/user/listUser : GET / POST");
-		
+		User user = (User) session.getAttribute("user");
+		if(user != null){
 		if(search.getCurrentPage()==0 ){
 			search.setCurrentPage(1);
 		}
@@ -278,6 +291,9 @@ public class UserController {
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		model.addAttribute("sort", sort);
+	}else {
+		return "forward:/";
+	}
 		
 		return "forward:/user/listUser.jsp";
 	}

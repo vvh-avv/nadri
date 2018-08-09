@@ -23,8 +23,7 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <!-- 구글 로그인 -->
-<script src="https://apis.google.com/js/api:client.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
 <meta name="google-signin-client_id" content="910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com"></meta>
 
 <!-- 네이버 로그인 -->
@@ -90,7 +89,6 @@
 				}else{
 					$("#userId").val("").focus();
 					$("#password").val("");
-					믿ㄳ
 					$("#message").text("아이디, 패스워드를 다시 확인하세요").css("color", "red");
 				}
 			}
@@ -209,7 +207,7 @@
  		function onSuccess(googleUser) {
 		    var profile = googleUser.getBasicProfile();
 		    console.log(profile);
-	}
+		}
 		
 		$(".g-signin2").on("click", function(){
 		    gapi.client.load('plus', 'v1', function () {
@@ -217,6 +215,7 @@
 		            'userId': 'me'
 		        }).execute(function (res) {
 		        	console.log(JSON.stringify(res));
+		        	
 		        	res.id += "@google";
 			        
 		            $.ajax({
@@ -226,8 +225,9 @@
 		  					"Content-Type" : "application/json"
 		  				},
 		  				success : function(idChk){
-		  					  if(idChk==true){ 
-		  						  console.log("회원가입 절차가 진행중입니다");
+		  					//DB에 아이디가 없으면 회원가입창으로  
+		  					if(idChk==true){ 
+		  						console.log("회원가입 절차가 진행중입니다");
 		  						  $.ajax({
 		  							  url : "/user/json/addUser",
 		  							  method : "POST",
@@ -241,13 +241,14 @@
 		  								password : "google",
 		  							  }),
 		  							  success : function(JSONData){
-		  								 alert("회원가입이 완료되었습니다");
+		  								alert("회원가입이 완료되었습니다");
 		  								 $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  							  }
 		  						  })
 		  					  }
+		  					//DB에 아이디 있으면 로그인
 		  					  if(idChk==false){ 
-		  						  console.log("로그인이 진행중입니다");
+		  						console.log("로그인이 진행중입니다");
 		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  					  }
 		  				  }
@@ -255,18 +256,6 @@
 		        	})
 	        })
 		})
-		
-		function onFailure(error) {
-		    console("error : "+error);
-		}
-		
-		function signOut() {
-		    var auth2 = gapi.auth2.getAuthInstance();
-		    auth2.signOut().then(function () {
-		    	self.location="/user/logout";
-		    });
-		}
-	}) 
 
 		  
 	//네이버 로그인

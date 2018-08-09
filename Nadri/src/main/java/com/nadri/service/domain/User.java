@@ -27,8 +27,8 @@ public class User {
    private String infoOption;               //검색시 정보 공개 여부(0: 공개, 1: 비공개)
    private Date quitDate;                     //탈퇴일
    private String quitReason;               //탈퇴 사유
-   
    private String token;                     //알림받기 위해 토큰값 추가 //안드로이드
+   
    
    
    ///Constructor method
@@ -247,6 +247,7 @@ public class User {
       this.token = token;
    }
 
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
@@ -256,7 +257,5 @@ public class User {
 				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
 				+ ", token=" + token + "]";
 	}
-	
-	
 	
 }
