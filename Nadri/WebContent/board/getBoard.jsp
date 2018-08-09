@@ -240,7 +240,7 @@
    }
    #commContent{
      width: 100%;
-     height: 18px;
+     height: 28px;
      max-height: 80px;
      border: 0;
      outline: 0;
@@ -548,7 +548,6 @@ $(function(){
 				   $.ajax({
 					   url : "/board/json/addComment/${sessionScope.user.userId}", //¼¼¼Ç
 					   method : "POST",
-					   dataType : "json",
 						headers : {
 							"Accept" : "application/json",
 							"Content-Type" : "application/json"
