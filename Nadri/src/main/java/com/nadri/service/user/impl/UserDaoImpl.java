@@ -155,7 +155,7 @@ public class UserDaoImpl implements UserDao{
 		return map;
 	}
 
-	@Override
+
 	public void quitUser(User user) throws Exception {
 		// TODO Auto-generated method stub
 		
