@@ -97,11 +97,7 @@ html, body {
 	</nav>
 
 	<div class="container">
-		<ul class="nav nav-tabs">
-			<li role="presentation" class="active"><a href="#">Home</a></li>
-			<li role="presentation"><a href="#">Profile</a></li>
-			<li role="presentation"><a href="#">Messages</a></li>
-		</ul>
+
 		<div class="row graph-top-box">
 			<div class="col-md-8 graph-title">
 				<span>일간</span> 유저 활동 기록
