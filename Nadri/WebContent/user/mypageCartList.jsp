@@ -375,7 +375,7 @@ article:hover .links {
 						</c:forEach>
 
 						<c:if test="${empty list}">
-							<span id="defaultText" style="margin-left: 40%;">바구니가
+							<span id="defaultText">바구니가
 								비었습니다. ㅠㅠ</span>
 						</c:if>
 
