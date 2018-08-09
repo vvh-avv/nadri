@@ -691,7 +691,7 @@ $(function(){
 							      <li><a onclick="addToSchedule2('${i}',3)">네번째</a></li>
 							      <li ><a onclick="addToSchedule2('${i}',4)">다섯번째</a></li>
 							      <li ><a onclick="addToSchedule2('${i}',5)">여섯번째</a></li>
-							       <li ><a onclick="addToSchedule2('${i}',6)">일곱번째</a></li>
+							      <li ><a onclick="addToSchedule2('${i}',6)">일곱번째</a></li>
 							    </ul>
 							 </div>
                             </td>

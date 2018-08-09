@@ -81,9 +81,13 @@ $(function(){
 		
  $("#addSchedule").on("click", function() {
 	 
-		var scheduleTitle = $("#scheduleTitle").val();
-		var scheduleDate= $("#datepicker").val();
-		var scheduleDetail= $("#scheduleDetail").val();
+	 console.log($('.clockpicker > input').val());
+	 console.log($('#datepicker').val());
+	 console.log($('#img-cover').attr('src'));
+	 
+		var scheduleTitle = $("input#scheduleTitle").val();
+		var scheduleDate= $("input#scheduleDate").val($('#datepicker').val());
+		var scheduleDetail= $("input#scheduleDetail").val();
 		
 		if(scheduleTitle == null || scheduleTitle.length <1){
 			swal("나들이 제목을 붙여주세요.");
@@ -97,7 +101,6 @@ $(function(){
 			swal("나들이의 간단한 설명을 분여주세요!");
 			return;
 		}
-	 
 		$("form").attr("method", "POST").attr("action","/schedule/addSchedule").submit();
 		swal("등록에 성공했습니다!", "마이페이지에서 확인해주세요", "success");
 	});

@@ -261,6 +261,7 @@ function search(input) {
     if($(input).text()=="") {
     	/*swal("출발지를 설정합니다!");*/
     } else {
+    	
         if($(input).val() != null) {
             $.ajax({
                 method: "GET",
@@ -312,6 +313,7 @@ var headers = {};
 headers["appKey"]="81d71b60-e7b0-4a49-8eff-e265fd5a44d1";//
 
 function distance() {
+	
     if (start_x != null && end_x != null) {
         $.ajax({
             method:"POST",
@@ -335,9 +337,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "�ð� " + Math.floor(total.totalTime%3600/60) + "��";
+                    time = Math.floor(total.totalTime/3600) + "시간" + Math.floor(total.totalTime%3600/60) + "분";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "�� ";
+                    time = Math.floor(total.totalTime%3600/60) + "분 ";
                 }
 
                 map.addLayer(routeLayer);
