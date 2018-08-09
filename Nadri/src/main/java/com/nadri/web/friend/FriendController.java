@@ -56,7 +56,7 @@ public class FriendController {
 	//method
 	@RequestMapping(value = "listFriend", method= {RequestMethod.GET, RequestMethod.POST})
 	public String listFriend(HttpSession session, Model model)throws Exception{
-
+		
 		String userId = ((User)session.getAttribute("user")).getUserId();
 		
 		System.out.println("/friend/listFriend start: "+userId);
@@ -66,6 +66,7 @@ public class FriendController {
 		System.out.println("controller fList: "+fList);
 		model.addAttribute("fList", fList);
 		System.out.println("friend controller - after fList: "+fList);
+
 		
 		return "forward:/friend/listFriend.jsp";
 	}
@@ -75,6 +76,7 @@ public class FriendController {
 		public String listFriend2(HttpSession session, Model model)throws Exception{
 
 			String userId = ((User)session.getAttribute("user")).getUserId();
+			if(userId != null) {
 			
 			System.out.println("/friend/listFriend2 start: "+userId);
 			List<Friend> fList2 = friendService.listFriend2(userId);
@@ -84,7 +86,9 @@ public class FriendController {
 			System.out.println("controller fList2: "+fList2);
 			model.addAttribute("fList2", fList2);
 			System.out.println("friend controller - after fList2: "+fList2);
-			
+			}else {
+				return "forward:/";
+			}
 			return "forward:/friend/listFriend.jsp";
 		}
 

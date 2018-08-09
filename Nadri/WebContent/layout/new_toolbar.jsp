@@ -9,7 +9,7 @@
 		<div class="container header-box">
 			<span class="glyphicon glyphicon-sunglasses maincon"></span>
 			<div class="title-section">
-				<div class="title-text">너,나들이</div>
+				<div class="title-text">너, 나들이</div>
 				<span class="glyphicon glyphicon-ice-lolly" style="color: white;"
 					id="jolly-icon"></span>
 			</div>
