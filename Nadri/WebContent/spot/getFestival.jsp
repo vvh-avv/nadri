@@ -342,7 +342,7 @@ $(function(){
 		history.go(-1);
 	});
 	
-	$("button.btn.btn-primary.modalModBtn").on("click", function() {
+	$("button.btn.btn-secondary.modalModBtn").on("click", function() {
 		swal("Good job!", "장소바구니에 추가했습니다!!", "success")
 		addCartSpot();
 		//$("#cartModal").modal('hide');

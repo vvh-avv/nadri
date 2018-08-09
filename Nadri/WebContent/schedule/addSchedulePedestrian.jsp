@@ -38,7 +38,7 @@
 	rel="stylesheet">
 <!-- <link rel="stylesheet" href="/css/materialize.css"> -->
 <!-- juanMap.js CDN -->
-<script src="/javascript/juanMap.js"></script>
+<script src="/javascript/juanMap.js?ver=2"></script>
 <!--  clock picker  -->
 <script src="/javascript/clockpicker.js"></script>
 <link rel="stylesheet" href="/css/clockpicker.css">
@@ -1267,7 +1267,7 @@ $(function(){
 <script src="/javascript/indexReal_nonIndex.js"></script>
 </head>
 <body>
-
+<form enctype="multipart/form-data" >
 	<%@include file="/layout/new_toolbar.jsp"%>
 	<div class="sidenav-sliders"></div>
 	<div class="sidenav">
@@ -1435,7 +1435,6 @@ $(function(){
 		</div>
 
 	</div>
-	<form enctype="multipart/form-data" id="cart-form">
 
 		<div id="img" style="background: #abb6bb">
 			<div class="content">
