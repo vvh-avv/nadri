@@ -253,7 +253,7 @@
    }
    #commContent{
      width: 100%;
-     height: 100%;
+     height: 28px; /* 100% */
      max-height: 80px;
      border: 0;
      outline: 0;

@@ -240,7 +240,7 @@
    }
    #commContent{
      width: 100%;
-     height: 18px;
+     height: 28px;
      max-height: 80px;
      border: 0;
      outline: 0;
