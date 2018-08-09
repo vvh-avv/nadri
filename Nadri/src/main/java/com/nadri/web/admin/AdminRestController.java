@@ -62,7 +62,8 @@ public class AdminRestController {
 		inquire.setInquireWrite(inquireWrite);
 		inquire.setReportUserId(reportUser);
 		inquire.setInquireLink(inquireLink);
-		String path = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\inquire\\";
+		//String path = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\inquire\\";
+		String path = "C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\inquire\\";
 		if(!file.isEmpty()) {
 		      
 		     String fileOriginName=""; //각 원본파일명
