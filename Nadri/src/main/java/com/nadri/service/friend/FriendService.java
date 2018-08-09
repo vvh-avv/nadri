@@ -22,10 +22,10 @@ public interface FriendService {
 	public void addFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没 秒家
-	public int cancelFriend(String userId, String friendId) throws Exception;
+	//public int cancelFriend(String userId, String friendId) throws Exception;
 	
 	//模备 夸没 芭例
-	public int refuseFriend(String userId, String friendId) throws Exception;
+	//public int refuseFriend(String userId, String friendId) throws Exception;
 
 	//糕滚狼 模备 格废
 	public List<Friend> searchFriend(String userId, String searchUserId)throws Exception;	
@@ -35,7 +35,7 @@ public interface FriendService {
 	public List<Friend> listFriend2(String userId) throws Exception;
 
 	//模备 沥焊 炼雀
-	public Friend getFriend(String friendId) throws Exception;
+	//public Friend getFriend(String friendId) throws Exception;
 	
 	
 	

@@ -28,6 +28,7 @@ public class User {
 	private Date quitDate;							//Å»ÅðÀÏ
 	private String quitReason;					//Å»Åð »çÀ¯
 	private String token;
+	private String snsGoogleId;					//±¸±Û ·Î±×ÀÎ
 
 	
 	
@@ -246,7 +247,15 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	
+	public String getSnsGoogleId() {
+		return snsGoogleId;
+	}
 
+	public void setSnsGoogleId(String snsGoogleId) {
+		this.snsGoogleId = snsGoogleId;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
@@ -256,6 +265,7 @@ public class User {
 				+ ", ip=" + ip + ", infoOption=" + infoOption + ", quitDate=" + quitDate + ", quitReason=" + quitReason
 				+ ", token=" + token + "]";
 	}
+
 	
 	
 	

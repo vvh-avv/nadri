@@ -23,8 +23,7 @@ public interface UserDao {
 	
 	// È¸¿ø Å»Åð
 	public void quitUser(String userId) throws Exception;
-	
-	public void quitUser(User user) throws Exception;
+
 	
 	//¾ÆÀÌµð Ã£±â
 	public User findUserId(User user) throws Exception;
