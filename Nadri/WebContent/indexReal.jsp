@@ -21,7 +21,8 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <!-- 구글 로그인 -->
-<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com"></meta>
 
 <!-- 네이버 로그인 -->

@@ -100,45 +100,7 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	
-	//친구 요청 취소
-	@Override
-	public int cancelFriend(String userId, String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		int result = 0;
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		result = friendDao.cancelFriend(map);
-		
-		return result;
-	}
-	
-
-	//친구 요청 거절
-	@Override
-	public int refuseFriend(String userId, String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		int result = 0;
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
-		map.put("friendId", friendId);
-		result = friendDao.refuseFriend(map);
-		
-		return result; 
-	}
-
-	//친구 정보 조회
-	@Override
-	public Friend getFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("----------------------------------------------------");
-		System.out.println("serviceimpl - getFriend: "+friendDao.getFriend(friendId));
-		System.out.println("----------------------------------------------------");
-		return friendDao.getFriend(friendId);
-	}
-
-	
-	//하지수 테스트
+	//하지수 테스트 - 보드에서 친구 목록 소환
 		@Override
 		public String listFriendFromBoard(String userId) throws Exception {
 			// TODO Auto-generated method stub
