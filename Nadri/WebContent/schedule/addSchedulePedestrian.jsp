@@ -285,10 +285,6 @@ body, html {
 	background-color: #f5f5f5;
 }
 
-#Contact {
-	background-color: #f5f5f5;
-}
-
 /*cartcontents만 글씨 작게해서 이쁘게 하는 부분*/
 td {
 	font-size: 12px;
@@ -524,6 +520,10 @@ body > div#ui-datepicker-div{
 	font-weight: 100;
 }
 
+.sortable-way{
+	display : none;
+}
+
 </style>
 
 <script>
@@ -581,6 +581,8 @@ var wayPointTitle='';
 // 증가시키기 위한 flag
 var w=1;
 
+
+
 var options = {
 		now: "00:00", //hh:mm 24 hour format only, defaults to current time
         twentyFour: true,  //Display 24 hour format, defaults to false
@@ -598,6 +600,21 @@ var options = {
         show: null, //A function to be called when the Wickedpicker is shown
         clearable: false, //Make the picker's input clearable (has clickable "x")
     };
+    
+function findName(fileName,number) {
+	console.log(number);
+   	if(fileName.files && fileName.files[0]) {
+	   	var cla = $(this).attr('class');
+	   	console.log(cla);
+	    var reader = new FileReader();
+	    reader.onload = function (e) {
+	    	$('#wayPointImg'+number).attr('src', e.target.result);
+	           
+	    };
+	
+	    reader.readAsDataURL(fileName.files[0]);
+    }
+}
        
 	$(function() {
 		
@@ -624,9 +641,39 @@ var options = {
 			$("#myModal").modal('hide');
 		}); */
 		
-		$('.way-imgs').on('click',function(){
-			swal('이미지를 바꿀거에요~');
+		$('.plus-waypoint').on('click',function(){
+ 			var chk = $('#waypoint1').css('display');
+			console.log(chk);
+			
+			if(w == 0){
+				w++;
+			}
+			
+			if(w < 6){
+				$('#waypoint'+w).css('display','flex');
+				w++;
+			}else{
+				swal('경유지는 6개까지만 추가할 수 있어요!');
+			}
+			
 		});
+		
+		$('.minus-waypoint').on('click',function(){
+			if(w < 1){
+				swal('더이상 제거할 경유지가 없습니다!');
+				w++;
+			}else{
+				$('#waypoint'+w).css('display','none');
+				w--;
+			}
+		});
+		
+		<!-- 각 일정당 이미지 변경을 위한 부분! -->
+ 		$('.way-imgs').on('click',function(){
+ 			var id = $(this).attr('id');
+ 			var idnum = id.charAt(id.length-1);
+			$('.wayPointImg'+idnum).click();
+		}); 
 		
 		$('.edit-label').tooltip();
 		
@@ -652,6 +699,7 @@ var options = {
 			}else{
 				$('.submit-label').css('display','none');
 				$('#scheduleTitle-show').text(title);
+				$('#scheduleTitle').val(title);
 				$('#scheduleTitle').css('visibility','hidden');
 				$('#scheduleTitle-show').css('visibility','visible');
 			}
@@ -680,6 +728,7 @@ var options = {
 			}else{
 				$('.submit-detail-label').css('display','none');
 				$('#scheduleDetail-show').text(title);
+				$('#scheduleDetail').val(title);
 				$('#scheduleDetail').css('visibility','hidden');
 				$('#scheduleDetail-show').css('visibility','visible');
 			}
@@ -722,7 +771,7 @@ var options = {
 		  				if(data.buldingName != null){
 		  					$('#wayPointTitle'+idNo).text(data.buildingName);		  					
 		  				}else{
-		  					$('#wayPointTitle'+idNo).text('주소명을 입력해주세요.');
+		  					$('#wayPointTitle'+idNo).text('출발지');
 		  				}
 /* 		                $("#addr").val(data.address); */
 		              }
@@ -747,9 +796,9 @@ var options = {
 	  				}else{
 	  					$('#wayPointTitle'+idNo).text('주소명을 입력해주세요.');
 	  				}
-/* 		                $("#addr").val(data.address); */
-	              }
-	          }).open();
+/* 		               $("#addr").val(data.address); */
+	             }
+	         }).open();
 		})
 
 			
@@ -858,10 +907,12 @@ function readURL(input){
 		var reader = new FileReader(); 
 		var title = $("#modalscheduleTitle").val();
 		var detail = $("#modalscheduleDetail").val();
+		var img = $("#modalscheduleImg").val();
 		console.log(title,detail);
 		reader.onload = function (e) { 
 			$("#img").empty();
 			$("#img").css('background-image','url('+e.target.result+')');
+			$('#scheduleImg').val(img);
 			var c = '';
 			c += '<div class="content">'; 
 			c += '	<div id="scheduleTitle2">';
@@ -1097,28 +1148,91 @@ $(function(){
 
 // 드래그 일정추가
 
+function setItem(item){
+	
+}
+
 $(function(){
 	
+
  	$('.cart-element').draggable({ opacity: 0.7, helper: "clone" });
+ 	
+ 	$('#wayPoint').sortable({
+ 		scroll: false,
+    	items: ".sortable-way",
+    	start: function(e, ui) {
+            // creates a temporary attribute on the element with the old index
+            $(this).attr('data-previndex', ui.item.index());
+        },
+        update: function(e, ui) {
+            // gets the new and old index then removes the temporary attribute
+            var newIndex = ui.item.index();
+            var oldIndex = $(this).attr('data-previndex');
+            var element_id = ui.item.attr('id');
+            $(this).removeAttr('data-previndex');
+            
+            var oldId = ui.item.attr('id');
+            var newId = 'wayPoint'+newIndex;
+            
+            ui.item.removeAttr('id');
+            
+            console.log(oldId,newId);
+        }
+    });
+ 	$("#wayPoint").disableSelection();
  	
  	$('.waypoints-row').droppable({
  		drop: function( event, ui ) {
  			
- 			console.log(ui);
+ 			var num = $(ui.draggable).attr('class')[0];
+ 			var num2 = $(ui.draggable).attr('class')[1];
+ 			var num3 = $(ui.draggable).attr('class')[2];
+ 			var number = '';
  			
- 			var id = $(this).attr('id');
-			var idNo = id.charAt(id.length-1);
+ 			console.log(num3);
  			
- 			var address = $(ui).find('.second-cart-textlines').text();
- 			alert(address);
+ 			if(num3 == ' '){
+ 				console.log('두자릿수네요');
+ 				number += num;
+ 	 			number += num2;
+ 			}else{
+ 				number += num;
+ 	 			number += num2;
+ 	 			number += num3;
+ 			}
  			
- 			var id = $(this).attr('id');
-			var idNo = id.charAt(id.length-1);
- 			console.log('hey');
- 			$('.pre-waypoints'+idNo).css('display','none');
-			$('.after-waypoints'+idNo).css('display','flex');
- 			$('#wayPointAddress'+idNo).text(address); 
-/*  			$('#wayPointTitle'+idNo).text(title); */
+ 			
+ 			
+ 			
+ 			console.log(number);
+ 			
+ 			if(number == 'ro'){
+ 				console.log('sorting~');
+ 			}else{
+ 				
+ 				if(num3 == ' '){
+ 	 				console.log('두자릿수네요');
+ 	 				var img = $(ui.draggable).find('img.'+number).prop('src');
+ 	 			}else{
+ 	 				var img = $(ui.draggable).find('img.'+number).prop('src'); 	 				
+ 	 			}
+ 				
+ 				console.log(img);
+ 				
+ 	 			var title = $(ui.draggable).find('.first-cart-textlines').text();
+ 	 			var address = $(ui.draggable).find('.second-cart-textlines').text();
+ 	 			
+ 	 			var id = $(this).attr('id');
+ 				var idNo = id.charAt(id.length-1);
+
+ 	 			$('.pre-waypoints'+idNo).css('display','none');
+ 				$('.after-waypoints'+idNo).css('display','flex');
+ 				$('#wayPointAddress'+idNo).text(address);
+ 				$('#wayPointTitle'+idNo).text(title);
+ 				$('#wayPointImg'+idNo).prop('src',img);
+ 			}
+ 			
+ 			
 /* 			if(data.buldingName != null){
 				$('#wayPointTitle'+idNo).text();		  					
 			}else{
@@ -1141,7 +1255,7 @@ $(function(){
 	    }
 	}); */
 	
-});
+})
 
 
 </script>
@@ -1216,7 +1330,7 @@ $(function(){
 						</span>
 					</table>
 				</div> --%>
-				<div class="cart-element ${cart.cartNo}">
+				<div class="${cart.cartNo} cart-element">
 					<div class="cart-title">
 						<i class="material-icons">place</i>
 						<!-- 이미지 미리보기를 위한 img 태그 --> 
@@ -1246,7 +1360,7 @@ $(function(){
 			<c:set var="i" value="0" />
 			<c:forEach var="recommand" items="${recommand}">
 				<c:set var="i" value="${i+1}" />
-				<div>
+				<%-- <div>
 					<table class="${recommand.spotNo}" style="margin-buttom: 15px">
 						<tr class="ct_list_pop">
 						<tr>
@@ -1288,13 +1402,40 @@ $(function(){
 							id="recommandY${i}" value="${recommand.spotY}">
 						</span>
 					</table>
+				</div> --%>
+				
+				<div class="${recommand.spotNo} cart-element">
+					<div class="cart-title">
+						<i class="material-icons">place</i>
+						<!-- 이미지 미리보기를 위한 img 태그 --> 						
+						<c:if test="${fn:length(recommand.spotImg) >= 30 }">
+							<img src="${recommand.spotImg}" class="${recommand.spotNo}" width="50"
+								height="50" id="fakeCartImg${i}">
+							<!-- 실제 데이터가 넘어가는 img 태그 --> 
+							<img style="display: none;" src="/images/spot/${cart.cartImg}" width="50" height="50"
+							id="cartImg${i}" class="${cart.cartNo}">
+							<div class="cart-titles-box">
+						</c:if> 
+						<c:if test="${fn:length(recommand.spotImg) < 30 }">
+							<img src="/images/spot/${recommand.spotImg}" class="${recommand.spotNo}" width="50" 
+								height="50" id="fakeCartImg${i}">
+						</c:if>
+						<!-- 실제 데이터가 넘어가는 img 태그 --> 
+						<div class="cart-titles-box">
+							<div class="first-cart-textlines cart-name${i}">${recommand.spotTitle}</div>
+							<div class="second-cart-textlines cart-address${i}">${recommand.spotAddress}</div>
+							<input type="hidden" id="recommandX${i}" value="${recommand.spotX}"> 
+							<input type="hidden" id="recommandY${i}" value="${recommand.spotY}">
+						</div>
+					</div>
 				</div>
+				
 			</c:forEach>
 			<button class="btn success" id="spot">장소검색..</button>
 		</div>
 
 	</div>
-	<form enctype="multipart/form-data">
+	<form enctype="multipart/form-data" id="cart-form">
 
 		<div id="img" style="background: #abb6bb">
 			<div class="content">
@@ -1385,12 +1526,10 @@ $(function(){
 				<div class="col-md-4 col-xs-12 schedule-headers">
 					<p>경유지를 추가할까요?</p>
 					<div class="waypoint-buttons-box">
-						<span class="waves-light btn col s5" type="button"
-							style="background-color: rgb(59, 128, 187); color: white;"
-							onclick="addWayPoint()">+ 경유지 추가</span> <span
-							class="waves-light btn col s5" type="button"
-							style="background-color: rgba(163, 172, 179, 0.5); color: white;"
-							onclick="deleteWayPoint()">- 경유지 제거</span>
+						<span class="waves-light btn col s5 plus-waypoint" type="button"
+							style="background-color: rgb(59, 128, 187); color: white;">+ 경유지 추가</span> 
+						<span class="waves-light btn col s5 minus-waypoint" type="button" 
+							style="background-color: rgba(163, 172, 179, 0.5); color: white;">- 경유지 제거</span>
 					</div>
 				</div>
 			</div>
@@ -1402,10 +1541,10 @@ $(function(){
 			<hr />
 
 			<input type="hidden" name="userId" value="${sessionScope.user.userId}"> 
-			<input type="hidden" id="scheduleTitle" name="scheduleTitle"> 
-			<input type="hidden" id="scheduleDetail" name="scheduleDetail"> 
-			<input type="hidden" id="scheduleDate" name="scheduleDate"> 
-			<input type="hidden" id="scheduleImg" name="scheduleImg"> 
+			<input type="hidden" id="scheduleTitle" name="scheduleTitle" value=""> 
+			<input type="hidden" id="scheduleDetail" name="scheduleDetail" value=""> 
+			<input type="hidden" id="scheduleDate" name="scheduleDate" value=""> 
+			<input type="hidden" id="scheduleImg" name="scheduleImg" value=""> 
 			<input type="hidden" id="transportationCode" name="transportationCode" value="1">
 
 			<!-- <table class="table">
@@ -1479,12 +1618,14 @@ $(function(){
 					
 	 				<div class="afterw after-waypoints0">
 						<div class="col-md-1 col-xs-2">
-							<div>출발지점</div>
+							<div class="col-md-6" id="wayPointTitle0" style="width:100%;padding:0px;">장소명</div>
 						</div>
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
-								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg0"></div>
-								<div class="col-md-6" id="wayPointTitle0">장소명</div>				
+								<div class="col-md-6">
+									<img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg0">
+									<input type="file" class="wayPointImg0" id="wayPoint-temp-img" style="display:none;" onchange="findName(this,'0')"/>
+								</div>				
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1498,6 +1639,182 @@ $(function(){
 						</div> 
 					</div>
 					
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint1">
+					<div class="pre-waypoints1">
+						<div class="prep waypoint-append-title wat1">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints1">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle1" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6">
+									<img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg1">
+									<input type="file" class="wayPointImg1" style="display:none;" onchange="findName(this,'1')"/>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress1">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn1" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress1')">
+								<input class="btn btn-default edit-btn1" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint2">
+					<div class="pre-waypoints2">
+						<div class="prep waypoint-append-title wat2">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints2">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle2" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg2"></div>
+								<input type="file" class="wayPointImg2" style="display:none;" onchange="findName(this,'2')"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress2">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn2" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress2')">
+								<input class="btn btn-default edit-btn2" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint3">
+					<div class="pre-waypoints3">
+						<div class="prep waypoint-append-title wat3">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints3">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle3" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg3"></div>
+								<input type="file" class="wayPointImg3" style="display:none;" onchange="findName(this,'3')"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress3">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn3" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress3')">
+								<input class="btn btn-default edit-btn3" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint4">
+					<div class="pre-waypoints4">
+						<div class="prep waypoint-append-title wat4">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints4">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle4" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg4"></div>
+								<input type="file" class="wayPointImg4" style="display:none;" onchange="findName(this,'4')"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress4">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn4" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress4')">
+								<input class="btn btn-default edit-btn4" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint5">
+					<div class="pre-waypoints5">
+						<div class="prep waypoint-append-title wat5">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints5">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle5" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg5"></div>
+								<input type="file" class="wayPointImg5" style="display:none;" onchange="findName(this,'5')"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress5">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn5" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress5')">
+								<input class="btn btn-default edit-btn5" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row wayPoints-row sortable-way" id="waypoint6">
+					<div class="pre-waypoints6">
+						<div class="prep waypoint-append-title wat6">
+							경유지를 직접 등록하시려면 클릭해주세요!
+						</div>
+						<div class="glyphicon glyphicon-plus-sign append-sign"></div>
+					</div>
+					<div class="afterw after-waypoints6">
+						<div class="col-md-1 col-xs-2">
+							<div class="col-md-6" id="wayPointTitle6" style="width:100%;padding:0px;">장소명</div>
+						</div>
+						<div class="col-md-3 col-xs-4">
+							<div class="row waypoint-image-box">
+								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg6"></div>
+								<input type="file" class="wayPointImg6" style="display:none;" onchange="findName(this,'6')"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div id="wayPointAddress6">주소</div>
+						</div>
+						<div class="col-md-4 col-xs-2">
+							<div>
+								<input class="btn btn-default edit-btn6" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress6')">
+								<input class="btn btn-default edit-btn6" type="button" id="edit-navigation" value="수  정">
+							</div>
+						</div>
+					</div>
 				</div>
 				
 			</div>
