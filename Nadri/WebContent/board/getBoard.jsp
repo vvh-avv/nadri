@@ -548,7 +548,6 @@ $(function(){
 				   $.ajax({
 					   url : "/board/json/addComment/${sessionScope.user.userId}", //¼¼¼Ç
 					   method : "POST",
-					   dataType : "json",
 						headers : {
 							"Accept" : "application/json",
 							"Content-Type" : "application/json"

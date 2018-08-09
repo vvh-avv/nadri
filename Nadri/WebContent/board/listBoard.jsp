@@ -403,6 +403,7 @@ $(function(){
 		            	$("#currentPage").val( Number($("#currentPage").val())+1 ); //현재페이지 증가 +1
 		            	
 		            	var tag = "";
+		            	var sliderTag = "";
 		            	$(data).each(function(){
 		            		var boardNo = this.boardNo;
 		            		tag += "<span id='moreContent"+boardNo+"'>"
@@ -441,10 +442,12 @@ $(function(){
 			            		if(this.boardImg!=null){ //이미지가 존재할 경우
 			            			if((this.boardImg).indexOf(',')==-1){ //하나일 경우
 			            				tag += "<li><img src='/images/board/posts/"+this.boardImg+"'/></li>";
+			            				sliderTag += "<li><img src='/images/board/posts/"+this.boardImg+"'/></li>";
 			            			}else{ //여러개일 경우
 			            				var imgArray = this.boardImg.split(',');
 			            				for( i=0; i<imgArray.length; i++ ){
 				            				tag += "<li><img src='/images/board/posts/"+imgArray[i]+"'/></li>";	
+				            				sliderTag += "<li><img src='/images/board/posts/"+imgArray[i]+"'/></li>";
 			            				}
 			            			}
 			            		}
@@ -486,6 +489,7 @@ $(function(){
 			            		tag += "></textarea></form></section></div></article><br>";
 		            	})
 		            	$(".ListBody").append(tag);
+		            	$("div[class^='flexslider']").data('flexslider').addSlide($(sliderTag));
 		            	refreshDate();
 	            	}
 	            }

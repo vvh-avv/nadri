@@ -1,5 +1,6 @@
 package com.nadri.web.nadri;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,18 @@ public class NadriRestController {
 		map.put("boardList",board_list);
 		
 		return map;
+	}
+	
+	@RequestMapping( value="/json/getNadriCounter", method=RequestMethod.GET )
+	public String getNadriCounter() throws Exception{
+		System.out.println("/nadriRest/json/getNadriCounter : GET / POST");
+		
+		int returnData1 = adminService.getTotalCount();
+		
+		DecimalFormat Commas = new DecimalFormat("#,###");
+		String returnData2 = (String)Commas.format(returnData1);
+		
+		return returnData2;
 	}
 	
 	
