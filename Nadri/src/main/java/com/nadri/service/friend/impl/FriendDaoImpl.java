@@ -49,7 +49,7 @@ public class FriendDaoImpl implements FriendDao{
 		System.out.println("DaoImpl - acceptFriend start"+friend);
 		System.out.println("acceptFriend processing: "+sqlSession.insert("FriendMapper.acceptFriend", friend));
 		//return sqlSession.insert("FriendMapper.acceptFriend", friend);
-		if(sqlSession.update("FriendMapper.acceptFriend", friend) == 0) {
+		if(sqlSession.insert("FriendMapper.acceptFriend", friend) == 0) {
 			return sqlSession.insert("FriendMapper.acceptFriend", friend);
 		}
 		return 1;
@@ -69,13 +69,6 @@ public class FriendDaoImpl implements FriendDao{
 		return sqlSession.delete("FriendMapper.deleteFriend", map);
 	}
 
-	//친구 요청 취소
-	@Override
-	public int cancelFriend(Map<String, String> map) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.delete("FriendMapper.cancelFriend", map);
-	}
-
 	//친구 요청
 	@Override
 	public void addFriend(Map<String, String> map) throws Exception {
@@ -84,14 +77,7 @@ public class FriendDaoImpl implements FriendDao{
 		sqlSession.insert("FriendMapper.addFriend", map);
 	}
 	
-	
 
-	//친구 요청 거절
-	@Override
-	public int refuseFriend(Map<String, String> map) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.delete("FriendMapper.refuseFriend", map);
-	}
 	
 	//친구 리스트
 	@Override
@@ -126,13 +112,6 @@ public class FriendDaoImpl implements FriendDao{
 	}
 	
 
-	//친구 정보 조회
-	@Override
-	public Friend getFriend(String friendId) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("FriendMapper.getFriend", friendId);
-	}	
-
 	
 	@Override
 	public List<Friend> searchFriend(Map<String, String> map) throws Exception {
@@ -140,13 +119,8 @@ public class FriendDaoImpl implements FriendDao{
 		return sqlSession.selectList("FriendMapper.searchFriend", map);
 	}
 	
-	 @Override
-	   public List<Friend> selectFriendList(User user) throws Exception {
-	      // TODO Auto-generated method stub
-	      return sqlSession.selectList("FriendMapper.selectFriendList", user);
-	   }
 
-	//하지수 테스트
+	//하지수 테스트 - 보드에서 친구 목록 소환
 	   @Override
 	   public String listFriendFromBoard(@PathVariable String userId) throws Exception{
 	      List<Friend> friend = sqlSession.selectList("FriendMapper.listFriendFromBoard", userId);

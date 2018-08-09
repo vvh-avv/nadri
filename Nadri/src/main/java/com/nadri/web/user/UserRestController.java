@@ -23,10 +23,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nadri.common.Page;
@@ -101,6 +103,8 @@ public class UserRestController {
 		System.out.println("/////////////////////////");
 		return userService.getUser(user.getUserId());
 	}
+	
+	
 	
 
 	
@@ -180,7 +184,7 @@ public class UserRestController {
 			
 			multiPart.addBodyPart(multBodyPart);
 			
-			message.setContent(multiPart, "text/html;charset=euc-kr");
+			message.setContent(multiPart, "text/html; charset=EUC-KR");
 			///////////////////////////////////////////////////////////////////
 			
 			Transport.send(message); 
@@ -193,7 +197,7 @@ public class UserRestController {
 	}
 	
 
-	//회원 아이디 찾기
+	//*회원 아이디 찾기
 	@RequestMapping(value="json/findUserId", method=RequestMethod.POST)
 	public Map<String, String> findUserId(@RequestBody User user) throws Exception{
 		
@@ -201,6 +205,7 @@ public class UserRestController {
 		
 		//User user = new User();
 		user = userService.findUserId(user);
+		
 		System.out.println("user rest controller - userid찾기 - 아이: "+user);
 		
 		String userId = user.getUserId();
@@ -239,7 +244,11 @@ public class UserRestController {
 		
 		//유저 서비스에서 유저 정보 가져오기 + 이메일 정보 가져오기
 		user = userService.getUser(user.getUserId());
+		if(user == null) {
+			return false;
+		}
 		String email2 = user.getEmail();
+		
 		
 		if(email.equals(email2)) {
 			int passwordNo = createNo();
@@ -305,7 +314,7 @@ public class UserRestController {
 			// Subject
 		   message.setSubject("너, 나들이에서 임시 비밀번호를 알려드립니다");
 		  
-		   message.setContent(emailHtml	, "text/html; charset=euc-kr");  
+		   message.setContent(emailHtml	, "text/html; charset=EUC-KR");  
 		
 		// send the message
 		   Transport.send(message);
@@ -372,6 +381,5 @@ public class UserRestController {
       
       userService.quitUser(userId);
    }
-	
 	
 }

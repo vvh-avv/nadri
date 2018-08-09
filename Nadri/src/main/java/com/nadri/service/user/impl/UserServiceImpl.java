@@ -114,12 +114,7 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		userDao.quitUser(userId);
 	}
-	
-	@Override
-	public void quitUser(User user) throws Exception {
-		// TODO Auto-generated method stub
-		userDao.quitUser(user);
-	}
+
 	
 
 	//회원 아이디 찾기

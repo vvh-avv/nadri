@@ -128,11 +128,13 @@ public class BoardRestController {
 		search.setStartRowNum( (currentPage+1)*pageSize );
 		search.setPageSize(pageSize);
 
+		String userId="";
 		if(session.getAttribute("user")!=null) { //비회원0, 회원1
 			search.setMemberFlag(1);
+			userId = ((User)session.getAttribute("user")).getUserId();
 		}
 		
-		List<Board> list = boardService.getBoardList(search, ((User)session.getAttribute("user")).getUserId());
+		List<Board> list = boardService.getBoardList(search, userId);
 		for( int i=0; i<list.size(); i++) {
 			list.get(i).setUser( userService.getUser( (list.get(i).getUser().getUserId()) ) );
 			//회원일 경우 session 으로 좋아요 여부 가져오기

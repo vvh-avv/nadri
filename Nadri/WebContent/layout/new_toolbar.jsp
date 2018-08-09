@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 
 <input type="hidden" name="session" id="session-checker"
 	value="${empty user.userId ? 'no_user' : user.userId}" />
@@ -87,9 +86,8 @@
 		<div>
 			<div class="login-sub-box">
 				<form name="login-form" class="login-form">
-					<input type="text" name="userId" id="userId"
-						placeholder="아이디를 입력해주세요."> <input type="password"
-						name="password" id="password" placeholder="비밀번호를 입력해주세요.">
+					<input type="text" name="userId" id="userId" placeholder="아이디를 입력해주세요."> 
+					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요.">
 				</form>
 				<div class="login-button-box">
 					<div class="login-submit">로 그 인</div>

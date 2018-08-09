@@ -308,9 +308,7 @@ article:hover .links {
 						<img src="/images/profile/default.png" width="133" height="133"
 							class="img-circle">
 					</c:if>
-					<h4>
-						<a href="/user/listUser">마이 페이지</a>
-					</h4>
+		
 					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
 						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
 						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
@@ -320,7 +318,7 @@ article:hover .links {
 					<br /> <br /> <br /> <br /> <br /> <br /> 
 						<a href="/user/logout">로그아웃</a><br /> <br />
 				</div>
-			</div>
+			</div> <!-- end.of.row1 -->
 
 			<div class="col-xs-12 col-md-9">
 

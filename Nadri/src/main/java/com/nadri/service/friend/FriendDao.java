@@ -19,13 +19,13 @@ public interface FriendDao {
 	public  int deleteFriend(Map<String, String> map)throws Exception;
 	
 	//模备 夸没 秒家
-	public int cancelFriend(Map<String, String> map)throws Exception;
+	//public int cancelFriend(Map<String, String> map)throws Exception;
 	
 	//模备 夸没
 	public void addFriend(Map<String, String> map) throws Exception;
 	
 	//模备 夸没 芭例
-	public int refuseFriend(Map<String, String> map) throws Exception;
+	//public int refuseFriend(Map<String, String> map) throws Exception;
 	
 	//模备 府胶飘
 	public List<Friend> listFriend(String userId) throws Exception;
@@ -34,7 +34,7 @@ public interface FriendDao {
 
 	
 	//模备 沥焊 炼雀
-	public Friend getFriend(String friendId)throws Exception;
+	//public Friend getFriend(String friendId)throws Exception;
 	
 	public List<Friend> searchFriend(Map<String, String> map)throws Exception;
 
@@ -45,18 +45,7 @@ public interface FriendDao {
 	//模备 咯何 犬牢
 	public int checkFriend(String userId, String friendId, int status) throws Exception;
 
-
-	
-		
-	
-	public List<Friend> selectFriendList(User user) throws Exception;
-
-	
-
-	
-
-
-
+	//public List<Friend> selectFriendList(User user) throws Exception;
 
 
 }

@@ -1,6 +1,4 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR" %>
-
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -29,8 +27,8 @@
 	<script type="text/javascript">		
 		function fncAddUser() {
 			// Form 유효성 검증
-			var userId=$('#addUserId').val();
-			var password=$('#addUserPw').val();
+			var userId=$('#usercheckId').val();
+			var password=$('#addPassword').val();
 			var pw_confirm=$('#passwordChk').val();
 			var name=$('#userName').val();
 			
@@ -45,11 +43,12 @@
 			}
 			
 			if(password == null || password.length <1){
-				alert("패스워드는 반드시 입력해야 합니다.");
+				alert("비밀번호는 반드시 입력해야 합니다.");
 				return;
 			}
+			
 			if(pw_confirm == null || pw_confirm.length <1){
-				alert("패스워드 확인 입력창이 비어있습니다.");
+				alert("비밀번호 확인 입력창이 비어있습니다.");
 				return;
 			}
 			if(name == null || name.length <1){
@@ -78,8 +77,8 @@
 			} 
 			
 			//회원가입 클릭시 진행
-			$('form').attr('method', 'POST').attr('action', 'addUser').submit();
-			}
+			$('#addUserCycle').attr('method', 'POST').attr('action', 'addUser').submit();
+		}
 		
 		//회원가입 버튼 클릭시 행위 발생
 		$(function(){
@@ -91,18 +90,6 @@
 			});
 		});
 		
-		//이메일 형식 확인
-		 /* $(function(){
-			$('#email').on('change', function(){
-				var email=$('input[name="email"]').val();
-				if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1)){
-					alert("이메일 형식이 올바르지 않습니다.");
-					returm false;
-				}
-				$("#email").val(email) ;
-			    return true;
-			});
-		});  */
 		
 		//이메일 창에 쓰여진 메일 형식 확인
 		function check_email(email) {
@@ -125,7 +112,7 @@
 		
 		<%-- 아이디 중복 확인: ajax 이용 --%>
 		$(function(){
-			$('#addUserId').on('keyup', function(){
+			$('#usercheckId').on('keyup', function(){
 				var userId = $(this).val().trim();
 				
 				$.ajax({
@@ -155,7 +142,7 @@
 		<%-- 비밀번호 중복 확인: ajax 이용 --%>
 		$(function(){
 			$('#passwordChk').on('keyup',function(){
-				if( $('#addUserPw').val() != $(this).val()){
+				if( $('#addPassword').val() != $(this).val()){
 					$('#helpBlock2').text("비밀번호 불일치").css('color','red');
 				}else{
 					$('#helpBlock2').text("비밀번호 일치").css('color','green');
@@ -168,10 +155,8 @@
 
 <body>
 
-	<%-- <jsp:include page="/layout/toolbar.jsp"> 
-		<jsp:param name="uri" value="../"/>
-	</jsp:include> --%>
-	<%@include file="/layout/new_toolbar.jsp"%>
+
+	<%@include file="/layout/new_toolbar.jsp"%> 
 
 <div class="container">
 
@@ -179,7 +164,7 @@
 		<h1>회원 가입</h1>
 	</div>
 	
-	<form class="form-horizontal" enctype="multipart/form-data">
+	<form class="form-horizontal" id = "addUserCycle" name="addUserCycle" enctype="multipart/form-data">
 		<div class="form-group" >
 			<div class="row">
 				<label for="userName" class="col-sm-3 control-label">이름</label>
@@ -193,7 +178,7 @@
 			<div class="row">
 				<label for="userId" class="col-sm-3 control-label">아이디</label>
 				<div class="col-sm-3">
-					<input type="text" class="form-control" id="addUserId" name = "addUserId" placeholder="ID" aria-describedby="helpBlock">
+					<input type="text" class="form-control" id="usercheckId" name = "userId" placeholder="ID" aria-describedby="helpBlock">
 				</div>
 				<span id="helpBlock" class="help-block col-sm-6"></span>
 			</div>
@@ -215,7 +200,7 @@
 			<div class="row">
 				<label for="password" class="col-sm-3 control-label">비밀번호</label>
 				<div class="col-sm-3">
-					<input type="password" class="form-control" id="addUserPw" name="password" placeholder="비밀번호를 입력하세요">
+					<input type="password" class="form-control" id="addPassword" name="password" placeholder="비밀번호를 입력하세요">
 				</div>
 				<span class="col-sm-6"></span>
 			</div>
@@ -243,10 +228,10 @@
 			<div class="form-group">
 		     <label for="sex" class="col-sm-3 control-label">성별</label>
 			   <span class="col-sm-2">
-		         <label><input type="radio" id="addUserSex"  value="0">남자</label>
+		         <label><input type="radio" name="sex"  value="0">남자</label>
 		       </span>
 		      <span class="col-sm-2">
-		         <label><input type="radio" id="addUserSex" value="1">여자</label>
+		         <label><input type="radio" name="sex" value="1">여자</label>
 		        </span>
 			</div>
 			<br/>
