@@ -5,6 +5,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/images/common/favicon.ico">
+
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -131,7 +134,7 @@ li>span:hover {
 }
 
 /*모달 위치 비교 css */
-.modal {
+#cartModal {
 	top: 20%;
 }
 
@@ -199,7 +202,7 @@ body.waiting * {
 //맨위로 올라가게 만들어 주는 script
 $(function(){
 	
-<!-- 신고(정정신청)을 위한부분 -->
+<!-- 신고(정정신청)을 위한부분-->
 	
 	$('button#inquirebutton').on('click',function(){
 		var counter = $(this).attr('name');
@@ -429,8 +432,8 @@ function addCartSpot(){
 
 <head>
 
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<body class="hold-transition skin-blue sidebar-mini layout-boxed">
+
+<body>
 
 	<!-- 상단에 둥둥 떠있는 아이콘 (상단으로 이동) -->
 	<img class="gotoTop" src="/images/board/gotoTop.png" alt="맨위로!">
@@ -465,43 +468,10 @@ function addCartSpot(){
 						<div class="col-xs-4 col-md-2 ">
 							<strong>장소이미지</strong>
 						</div>
-<<<<<<< HEAD
 						<div class="col-xs-8 col-md-10">
 							<img class="materialboxed"
 								src='${a.response.body.items.item.firstimage}' width="300"
 								height="200" />
-=======
-									
-				<form id=cart>
-					<div class="modal fade" id="cartModal" role="dialog">
-						<div class="modal-dialog" id="cartModal">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">장소바구니 추가</h4>
-								</div>
-								<div class="modal-body">
-										<input type="hidden"id="spotNo" name="spotNo" value="${a.response.body.items.item.contentid}" >
-									<div class="form-group">
-										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
-										<input class="form-control" id="cartTitle" name="cartTitle" value="${a.response.body.items.item.title}" >
-									</div>
-										<input type="hidden" id="cartX" name="cartX" value="${a.response.body.items.item.mapx}" >
-                                        <input type="hidden"  id="cartY" name="cartY" value="${a.response.body.items.item.mapy}" >
-										<input type="hidden" id="cartAddress" name="cartAddress" value="${a.response.body.items.item.addr1}">
-									<div class="form-group">
-										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
-										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
-									</div>
-									<input type="hidden" id="userId-cart" name="userId-cart" value="${sessionScope.user.userId}">
-									<input type="hidden" id="cartImg" name="cartImg" value="${a.response.body.items.item.firstimage}" >
-							</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default pull-left" data-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary modalModBtn" data-dismiss="modal" style="margin-left:0px;">추가</button>
-								</div>
-							</div>
->>>>>>> refs/remotes/origin/master
 						</div>
 					</div>
 				</div>
