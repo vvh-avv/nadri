@@ -39,12 +39,12 @@
    
    
    <!-- 친구 수락 -->
-    <update id="acceptFriend" parameterType = "java.util.Map">
+    <update id="acceptFriend" parameterType = "friend">
        UPDATE friend 
       <set>
          friend_code='1'
       </set>
-      WHERE user_id = #{userId} AND friend_id= #{friendId}
+      WHERE (user_id = #{userId} AND friend_id = #{friendId}) OR (user_id = #{friendId} AND friend_id = #{userId})
    </update> 
    <!-- <insert id="acceptFriend" parameterType="java.util.Map">
       INSERT INTO friend (user_id, friend_id, user_name, friend_code)
