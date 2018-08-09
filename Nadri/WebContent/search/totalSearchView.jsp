@@ -54,13 +54,13 @@
 					' <span style="font-weight: 700">${searchKeyword}</span> '의
 					검색결과입니다.
 				</h2>
-				<div class="option-on-off on">검색옵션켜기</div>
+				<!-- <div class="option-on-off on">검색옵션켜기</div>
 				<div class="option-on-off off">검색옵션끄기</div>
 				<div class="open-searcher">
 					<label class="switch"> <input type="checkbox"> <span
 						class="slider round"></span>
 					</label>
-				</div>
+				</div> -->
 			</div>
 			<div class="map-wrapper">
 				<div class="row search-results">
