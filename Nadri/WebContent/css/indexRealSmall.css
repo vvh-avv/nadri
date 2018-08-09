@@ -13,6 +13,10 @@
 	    100% {opacity : 1; left:25%; top:35%;}
 	}
 	
+	.disabled{
+	pointer-events: none;
+	}
+		
 	.head-section {
 		display:none;
 	}
