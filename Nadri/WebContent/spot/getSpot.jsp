@@ -90,6 +90,10 @@ html, body {
 	text-align : center;
 } */
 
+.container {
+    text-align: center;
+}  
+
 /*  신고기능을 위한 admin css  */
 .inquireTitle {
 	margin-bottom: 10px;
@@ -139,20 +143,10 @@ body.waiting * {
 	margin-bottom: 10px;
 }
 
-.modalModBtn{
-	width : 100%;
-	margin : 5px 0px 0px 0px;
-}
-
 </style>
 
 
 <script type="text/javascript">
-
-$(document).ready(function(){
-    $('.materialboxed').materialbox();
-  });
-  
 //맨위로 올라가게 만들어 주는 script
 $(function(){
 	
@@ -201,85 +195,86 @@ $(function(){
     $(".inquireSend").on(
           "click",
           function(e) {
-             var inquireFile = $('.inquire_file').val();
-           
-           if(inquireFile==""){
-              console.log("파일없음");
-              var formData = $(".inquire_form");
-              var requestMapping = 'addInquireNoFile';
-           }else{
-              console.log("파일있음");
-              $('.inquire_form').attr('enctype','multipart/form-data');
-              var requestMapping = 'addInquire';
-              var form = $(".inquire_form");
-              // you can't pass Jquery form it has to be javascript form object
-              var formData = new FormData(form[0]);
-           }
-
-           //if you only need to upload files then 
-           //Grab the File upload control and append each file manually to FormData
-           //var files = form.find("#fileupload")[0].files;
-
-           //$.each(files, function() {
-           //  var file = $(this);
-           //  formData.append(file[0].name, file[0]);
-           //});
-
-           if ($('.inquireTitle').val() == '') {
-              alert("제목을 입력해주세요!");
-              $('.inquireTitle').focusin();
-              return;
-           } else if ($('.inquireWrite').val() == '') {
-              alert("내용을 입력해주세요!");
-              $('.inquireTitle').focusin();
-           } else {
-
-              $('body').addClass('waiting');
+        	  var inquireFile = $('.inquire_file').val();
               
-              var reportUser = $('.reportedUserId').val();
-              
-              if(reportUser==''){
-                 console.log("유저신고가 아닙니다~");
-                 reportUser = 'null';
+              if(inquireFile==""){
+                 console.log("파일없음");
+                 var formData = $(".inquire_form");
+                 var requestMapping = 'addInquireNoFile';
+              }else{
+                 console.log("파일있음");
+                 $('.inquire_form').attr('enctype','multipart/form-data');
+                 var requestMapping = 'addInquire';
+                 var form = $(".inquire_form");
+                 // you can't pass Jquery form it has to be javascript form object
+                 var formData = new FormData(form[0]);
               }
-              
-              var inquireCode = $('.inquireCode').val();
-              
-              var title = $('.inquireTitle').val();
-              var title_enc = encodeURI(encodeURIComponent(title));
-              
-              var write = $('.inquireWrite').val();
-              var write_enc = encodeURI(encodeURIComponent(write));
-              
-              var inquireLink = $('.inquireLink').val();
-              
-              if(inquireLink == ''){
+
+              //if you only need to upload files then 
+              //Grab the File upload control and append each file manually to FormData
+              //var files = form.find("#fileupload")[0].files;
+
+              //$.each(files, function() {
+              //  var file = $(this);
+              //  formData.append(file[0].name, file[0]);
+              //});
+
+              if ($('.inquireTitle').val() == '') {
+                 swal("제목을 입력해주세요!");
+                 $('.inquireTitle').focusin();
+                 return;
+              } else if ($('.inquireWrite').val() == '') {
+            	  swal("내용을 입력해주세요!");
+                 $('.inquireTitle').focusin();
+              } else {
+
+                 $('body').addClass('waiting');
                  
-                 console.log("링크가 없어요~");
-                 inquireLink = "null";
+                 var reportUser = $('.reportedUserId').val();
                  
-              }
-              
-              $.ajax({
-                 type : "POST",
-                 url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
-                 //dataType: 'json', //not sure but works for me without this
-                 data : formData,
-                 contentType: false,//this is requireded please see answers above
-                 processData : false, //this is requireded please see answers above
-                 //cache: false, //not sure but works for me without this
-                 success : function(data, status) {
-                    if (status == "success") {
-                       $('body').removeClass('waiting');
-                       $('.inquire_form')[0].reset();
-                       $('#inquireModal').modal('hide');
-                       console.log(data);
-                    }
+                 if(reportUser==''){
+                    console.log("유저신고가 아닙니다~");
+                    reportUser = "null";
                  }
-              });
-           }
+                 
+                 var inquireCode = $('.inquireCode').val();
+                 
+                 var title = $('.inquireTitle').val();
+                 var title_enc = encodeURI(encodeURIComponent(title));
+                 
+                 var write = $('.inquireWrite').val();
+                 var write_enc = encodeURI(encodeURIComponent(write));
+                 
+                 var inquireLink = $('.inquireLink').val();
+                 
+                 if(inquireLink == ''){
+                    
+                    console.log("링크가 없어요~");
+                    inquireLink = "null";
+                    
+                 }
+                 
+                 $.ajax({
+                    type : "POST",
+                    url : "/restAdmin/"+requestMapping+"/"+reportUser+"/"+inquireCode+"/"+write_enc+"/"+title_enc+"/"+inquireLink,
+                    //dataType: 'json', //not sure but works for me without this
+                    data : formData,
+                    contentType: false,//this is requireded please see answers above
+                    processData : false, //this is requireded please see answers above
+                    //cache: false, //not sure but works for me without this
+                    success : function(data, status) {
+                       if (status == "success") {
+                          $('body').removeClass('waiting');
+                          $('.inquire_form')[0].reset();
+                          $('#inquireModal').modal('hide');
+                          console.log(data);
+                          swal("신고가 완료되었습니다.");
+                       }
+                    }
+                 });
+              }
 
-          });
+             });
 	
 	
 	$("#nologininquire").on("click", function(){
@@ -312,7 +307,7 @@ $(function(){
 		history.go(-1);
 	});
 	
-	$("button.btn.btn-primary.modalModBtn").on("click", function() {
+	$("button.btn.btn-secondary.modalModBtn").on("click", function() {
 		swal("Good job!", "장소바구니에 추가했습니다!!", "success")
 		addCartSpot();
 		//$("#cartModal").modal('hide');
@@ -428,107 +423,9 @@ function addCartSpot(){
 									<img class="materialboxed" src="/images/spot/${spot.spotImg}"
 										width="30%" height="20%" />
 								</c:if>
-								<c:if test="${sessionScope.user.userId == null}">
-								<div class="pull-right">
-									<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i> 신고하기</button>
-									<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
-								</div>
-								</c:if>	
-							</div>
-
-				<form id=cart>
-					<input type="hidden" name="spotNo" value="${spot.spotNo}" />
-					<div class="modal fade" id="cartModal" role="dialog">
-						<div class="modal-dialog" id="cartModal">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">장바구니 추가</h4>
-								</div>
-								<div class="modal-body">
-										<input type="hidden"id="spotNo" name="spotNo" value="${spot.spotNo}" >
-									<div class="form-group">
-										<label for="cartTitle">어떤 이름으로 추가하시겠어요?</label> 
-										<input class="form-control" id="cartTitle" name="cartTitle" value="${spot.spotTitle}" >
-									</div>
-										<input type="hidden" id="cartX" name="cartX" value="${spot.spotX}" >
-                                        <input type="hidden"  id="cartY" name="cartY" value="${spot.spotY}" >
-										<input type="hidden" id="cartAddress" name="cartAddress" value="${spot.spotAddress}">
-									<div class="form-group">
-										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
-										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />
-									</div>
-									<input type="hidden" id="cartUserId" name="userId" value="${sessionScope.user.userId}">
-									<input type="hidden" id="cartImg" name="cartImg" value="${spot.spotImg}" >
-							</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary modalModBtn" data-dismiss="modal">추가</button>
-									
-									<%-- *** : <%= session.getAttribute("user") %> --%>
-								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-				
-			</div>
-			
-			<!-- 신고 Modal content 시작 -->
-	   <div class="modal fade" id="inquireModal" role="dialog">
-	      <div class="modal-dialog">
-	         <div class="modal-content">
-	            <div class="modal-header">
-	               <button type="button" class="close" data-dismiss="modal">&times;</button>
-	               <h4 class="modal-title">
-	                  	신고하기<br>
-	                  <h6 style="color:lightgrey">신고내용은 창을 닫아도 유지됩니다</h6>
-	               </h4>
-	            </div>
-	            <div class="modal-body">
-	               <form class="inquire_form">
-		              	 신 고 종 류
-		              <select class="inquireCode" name="inquireCode" style="height: 30px;">
-	                     <option value="9">선택하세요</option>
-	                     <option value="0">유저신고</option>
-	                     <option value="1">게시글신고</option>
-	                     <option value="2">댓글신고</option>
-	                     <option value="3">정정신청</option>
-	                     <option value="4">기타문의</option>
-	                  </select>
-	                  <span class="reportUser">신고유저아이디<input type="text" name="reportUserId" class="reportedUserId" value="">
-	                  </span>
-	                  <span class="reportLink">신 고 링 크<input type="text" name="inquireLink" class="inquireLink" value="${spot.spotNo}">
-	                  </span>
-	                  <hr />
-	                  <div class="count1">
-	                     <p class="fonted">제목</p>
-	                     <div>/30</div>
-	                     <div class="textCounter1">0</div>
-	                  </div>
-	                  <input type="text" class="inquireTitle" name="inquireTitle" value="" placeholder="제목을 입력해주세요." maxlength="30"><br>
-	                  <div class="count2">
-	                     <p>신 고 내 용</p>
-	                     <div>/100</div>
-	                     <div class="textCounter2">0</div>
-	                  </div>
-	                  <textarea class="inquireWrite" name="inquireWrite" value="" placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
-	                  <br>
-	                  <p class="fonted">
-	                     <input type="file" name="inquire_file" multiple="multiple">
-	                  </p>
-	                  <br>
-	               </form>
-	            </div>
-	            <div class="modal-footer">
-	               <button type="button" class="btn btn-primary inquireSend">보내기</button>
-	               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-	            </div>
-	         </div>
-	      </div>
-	   </div>
-	   <!-- 신고 Modal content 끝 --> 
-
+					</div>	
 					<hr />
 				</c:if>
 
@@ -687,28 +584,28 @@ function addCartSpot(){
 
 			<div class="box-footer">
 				<div class="pull-left">
-					<button type="button" class="btn btn-default" id="listbutton">
+					<button type="button" class="btn btn-secondary" id="listbutton">
 						<i class="fa fa-list"></i> 목록으로
 					</button>
 				</div>
 	
 				<c:if test="${!empty sessionScope.user.userId}">
 					<div class="pull-right">
-						<button type="button" class="btn btn-danger" id="inquirebutton"
+						<button type="button" class="btn btn-secondary" id="inquirebutton"
 							name="${spot.spotNo}" data-toggle="modal"
 							data-target="#inquireModal">
 							<i class="fa fa-save"></i> 신고하기
 						</button>
-						<button type="button" class="btn btn-primary" data-toggle='modal'
+						<button type="button" class="btn btn-secondary" data-toggle='modal'
 							data-target='#cartModal'>장소바구니 추가</button>
 					</div>
 				</c:if>
 				<c:if test="${empty sessionScope.user.userId}">
 					<div class="pull-right">
-						<button type="button" class="btn btn-danger" id="nologininquire">
+						<button type="button" class="btn btn-secondary" id="nologininquire">
 							<i class="fa fa-save"></i> 신고하기
 						</button>
-						<button type="button" class="btn btn-primary" id="nologincart">장소바구니
+						<button type="button" class="btn btn-secondary" id="nologincart">장소바구니
 							추가</button>
 					</div>
 				</c:if>
@@ -743,25 +640,21 @@ function addCartSpot(){
 								<label for="cartDetail">어떤일로 추가하셨나요?</label> <input type="text"
 									class="form-control" name="cartDetail" id="cartDetail" value="" />
 							</div>
-							<input type="hidden" id="userId" name="userId"
+							<input type="hidden" id="cartUserId" name="userId"
 								value="${sessionScope.user.userId}"> <input
 								type="hidden" id="cartImg" name="cartImg"
 								value="${spot.spotImg}">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal" style="width:100%;">닫기</button>
-							<button type="button" class="btn btn-primary modalModBtn"
-								data-dismiss="modal" style="margin-left:0px;">추가</button>
-
-							<%-- *** : <%= session.getAttribute("user") %> --%>
+							<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">장소바구니 추가</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" >닫기</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</form>
-
-	<!-- 신고 Modal content 시작 -->
+		
+		<!-- 신고 Modal content 시작 -->
 	<div class="modal fade" id="inquireModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -770,7 +663,7 @@ function addCartSpot(){
 						<h4 class="modal-title" style="margin:0px;">
 							신고하기<br>
 						</h4>
-						<h6 style="color: lightgrey; margin:0px;">신고내용은 창을 닫아도 유지됩니다</h6>
+						<h6 style="color: lightgrey; margin : 0px;">신고내용은 창을 닫아도 유지됩니다</h6>
 					</div>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
@@ -787,7 +680,8 @@ function addCartSpot(){
 						</select> <span class="reportUser">신고유저아이디<input type="text"
 							name="reportUserId" class="reportedUserId" value="">
 						</span> <span class="reportLink">신 고 링 크<input type="text"
-							name="inquireLink" class="inquireLink" value="${spot.spotNo}">
+							name="inquireLink" class="inquireLink"
+							value="${a.response.body.items.item.contentid}">
 						</span>
 						<hr />
 						<div class="count1">
@@ -812,8 +706,8 @@ function addCartSpot(){
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary inquireSend">보내기</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary inquireSend">보내기</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>

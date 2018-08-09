@@ -133,19 +133,8 @@ li>span:hover {
 	z-index: 999;
 }
 
-/*모달 위치 비교 css */
-#cartModal {
-	top: 20%;
-}
-
 .container {
 	text-align: center;
-}
-
-.modalModBtn {
-	width: 100%;
-	margin-top: 5px;
-	margin-left: 0px;
 }
 
 /*  신고기능을 위한 admin css  */
@@ -198,12 +187,7 @@ body.waiting * {
 }
 </style>
 <script type="text/javascript">
-
-//맨위로 올라가게 만들어 주는 script
-$(function(){
-	
-<!-- 신고(정정신청)을 위한부분-->
-	
+$(function(){	
 	$('button#inquirebutton').on('click',function(){
 		var counter = $(this).attr('name');
 		console.log(counter);
@@ -274,11 +258,11 @@ $(function(){
            //});
 
            if ($('.inquireTitle').val() == '') {
-              alert("제목을 입력해주세요!");
+              swal("제목을 입력해주세요!");
               $('.inquireTitle').focusin();
               return;
            } else if ($('.inquireWrite').val() == '') {
-              alert("내용을 입력해주세요!");
+        	   swal("내용을 입력해주세요!");
               $('.inquireTitle').focusin();
            } else {
 
@@ -322,6 +306,7 @@ $(function(){
                        $('.inquire_form')[0].reset();
                        $('#inquireModal').modal('hide');
                        console.log(data);
+                       swal("신고가 완료되었습니다.");
                     }
                  }
               });
@@ -578,27 +563,18 @@ function addCartSpot(){
 
 		<div class="box-footer">
 			<div class="pull-left">
-				<button type="button" class="btn btn-default" id="listbutton">
-					<i class="fa fa-list"></i> 목록으로
-				</button>
+				<button type="button" class="btn btn-secondary" id="listbutton"><i class="fa fa-list"></i> 목록으로</button>
 				<c:if test="${sessionScope.user.userId != null}">
 					<div>
-						<button type="button" class="btn btn-danger" id="inquirebutton"
-							name="${a.response.body.items.item.contentid}"
-							data-toggle="modal" data-target="#inquireModal">
-							<i class="fa fa-save"></i>신고하기
-						</button>
-						<button type="button" class="btn btn-primary" data-toggle='modal'
-							data-target='#cartModal'>장소바구니 추가</button>
+						<button type="button" class="btn btn-secondary" id="inquirebutton" name="${a.response.body.items.item.contentid}" data-toggle="modal" data-target="#inquireModal">
+							<i class="fa fa-save"></i>신고하기</button>
+						<button type="button" class="btn btn-secondary" data-toggle='modal' data-target='#cartModal'>장소바구니 추가</button>
 					</div>
 				</c:if>
 				<c:if test="${sessionScope.user.userId == null}">
 					<div>
-						<button type="button" class="btn btn-danger" id="nologininquire">
-							<i class="fa fa-save"></i>신고하기
-						</button>
-						<button type="button" class="btn btn-primary" id="nologincart">장소바구니
-							추가</button>
+						<button type="button" class="btn btn-secondary" id="nologininquire"><i class="fa fa-save"></i>신고하기</button>
+						<button type="button" class="btn btn-secondary" id="nologincart">장소바구니 추가</button>
 					</div>
 				</c:if>
 			</div>
@@ -638,38 +614,15 @@ function addCartSpot(){
 							value="${a.response.body.items.item.firstimage}">
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-							data-dismiss="modal" style="width:100%;">닫기</button>
-						<button type="button" class="btn btn-primary modalModBtn"
-							data-dismiss="modal" style="margin-left: 0px;">추가</button>
+						<button type="button" class="btn btn-secondary modalModBtn" data-dismiss="modal">장소바구니 추가</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</form>
-	<!-- HJA 일정등록 transportation navigation -->
-	<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-	<div class="modal" id="transportationModal" role="dialog">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
-				</div>
-				<div class="modal-body">
-					<button type="button" class="btn btn-primary" id="car">자동차</button>
-					<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
-					<button type="button" class="btn btn-primary" id="transit">대중교통</button>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="waves-effect waves-light btn"
-						id="modalinsert">입력!</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- 신고 Modal content 시작 -->
+	
+<!-- 신고 Modal content 시작 -->
 	<div class="modal fade" id="inquireModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -704,15 +657,13 @@ function addCartSpot(){
 							<div>/30</div>
 							<div class="textCounter1">0</div>
 						</div>
-						<input type="text" class="inquireTitle" name="inquireTitle"
-							value="" placeholder="제목을 입력해주세요." maxlength="30"><br>
+						<input type="text" class="inquireTitle" name="inquireTitle" value="" placeholder="제목을 입력해주세요." maxlength="30"><br>
 						<div class="count2">
 							<p>신 고 내 용</p>
 							<div>/100</div>
 							<div class="textCounter2">0</div>
 						</div>
-						<textarea class="inquireWrite" name="inquireWrite" value=""
-							placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
+						<textarea class="inquireWrite" name="inquireWrite" value="" placeholder="내용을 입력해 주세요." maxlength="100"></textarea>
 						<br>
 						<p class="fonted">
 							<input type="file" name="inquire_file" multiple="multiple">
@@ -721,8 +672,8 @@ function addCartSpot(){
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary inquireSend">보내기</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary inquireSend">보내기</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -730,8 +681,7 @@ function addCartSpot(){
 	<!-- 신고 Modal content 끝 -->
 
 	<!-- 구글맵을 불러쓰기위한 CDN -->
-	<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLmpiP9iv7Bf7XzkdB28SsOkNvgzxxvFs&callback=initMap"></script>
 
 </body>
 </html>
