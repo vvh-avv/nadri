@@ -126,8 +126,8 @@ public class SpotRestController {
       System.out.println("/searchAroundAndroid : GET / POST");
       
       Spot spot = new Spot();
-      spot.setSpotX(spotX);
-      spot.setSpotY(spotY);
+      spot.setSpotX(spotY);
+      spot.setSpotY(spotX);
       spot.setSpotCode(spotCode);
       
       System.out.println("////// "+spot);

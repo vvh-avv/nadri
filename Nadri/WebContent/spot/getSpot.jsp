@@ -323,7 +323,7 @@ function addCartSpot(){
 					"Content-Type" : "application/json",
 					"X-HTTP-Method-Override" : "POST"
 				},
-				dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
+				//dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
 				data : JSON.stringify({ // 서버로 보낼 데이터 명시 
 					spotNo : $("#spotNo").val(),
 					userId : $("#cartUserId").val(),
