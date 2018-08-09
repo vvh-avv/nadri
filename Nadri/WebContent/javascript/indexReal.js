@@ -2,6 +2,7 @@
  * 
  */
 
+
 $(function() {
 
 	/*
@@ -478,15 +479,28 @@ $(function() {
 	function fncLogin(){
 		var id = $("#userId").val();
 		var pw = $("#password").val();
+				
 		//아이디, 비번 입력해야 : 유효성 검사
 		if(id==null || id.length<1){
-			alert('아이디를 입력하지 않으셨습니다.');
+			//alert('아이디를 입력하지 않으셨습니다.');
+			swal({
+				title:"잠깐만요!",
+				text:"아이디를 입력하셔야죠!?",
+				icon: "warning",
+				buttons: false,
+			});
 			$("input:text").focus();
 			return;
 		}
 			
 		if(pw==null || pw.length<1){
-			alert('패스워드를 입력하지 않으셨습니다.');
+			//alert('패스워드를 입력하지 않으셨습니다.');
+			swal({
+				title:"잠깐만요!",
+				text:"비밀번호를 입력하지 않으셨네요!!",
+				icon: "warning",
+				buttons: false,
+			});
 			$("input:password").focus();
 			return;
 		}
@@ -510,22 +524,41 @@ $(function() {
 					if( JSONData.password == $("#password").val() ){
 						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
 					}else if(userStatus == '1'){
-						alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						//alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						swal({
+							title:"잠깐만요!",
+							text:"차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
+							icon: "warning",
+							buttons: false,
+						});
 						self.location = "/index.jsp";
 					}else if(userStatus == '2'){
-						alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
-						self.location = "/index.jsp";
+						//alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
+						swal({
+							title:"잠깐만요!",
+							text:"해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
+							icon: "warning",
+							buttons: false,
+						});
+						//self.location = "/index.jsp";
 					}else if(userStatus == '0'){
 						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
-					}else{
+					}
+					/*if( JSONData.userId == $("#userId").val() && JSONData.password != $("#password").val() ){
 						alert("비밀번호를 다시 확인하세요!");
 						$("#password").val("").focus();
 					}
-					
+					return;*/
 				}else{
 					$("#userId").val("").focus();
 					$("#password").val("");
-					alert("아이디 / 패스워드를 다시 확인하세요.");
+					//alert("아이디 / 패스워드를 다시 확인하세요.");
+					swal({
+						title:"잠깐만요!",
+						text:"아이디와 비밀번호를 다시 확인하세요.",
+						icon: "warning",
+						buttons: false,
+					});
 				}
 			}
 		});
@@ -580,14 +613,14 @@ $(function() {
 			//로그인 시도
 			Kakao.Auth.login({
 		        success: function(authObj) {
-		       	alert(authObj);
+		       	//alert(authObj);
 		          //로그인 성공시에 api호출
 		          Kakao.API.request({
 		            url: '/v1/user/me',
 		            success: function(res) {
 		              res.id += "@kakao";
-		              alert(res.id);
-		              alert("넘어온 데이터 확인");
+		              //alert(res.id);
+		              //alert("넘어온 데이터 확인");
 		              $.ajax({
 		            	  url : "/user/json/checkDuplication/"+res.id,
 		            	  headers : {
@@ -642,11 +675,39 @@ $(function() {
 	
 	
 	 //구글 로그인	
+    /*$(function googleLogin() {
+	    gapi.load('auth2', function(){
+	    	// GoogleAuth 라이브러리에 대한 싱글 톤을 가져 와서 클라이언트를 설정합니다.
+	      auth2 = gapi.auth2.init({
+	        client_id: '910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com',
+	        //클라이언트 ID
+	        cookiepolicy: 'single_host_origin'
+	        // Request scopes in addition to 'profile' and 'email'
+//	         scope: 'profile email',
+//	         fetch_basic_profile: 'false',
+	    
+	      });
+      attachSignin(document.getElementById("google"));
+    });
+  });
+	    
+    function attachSignin(element) {
+	  
+	    console.log(element.id);
+	    auth2.attachClickHandler(element, {},
+	       function(googleUser) {
+	    	 var userId ="g"+googleUser.getBasicProfile().getId();
+	    	 var snsType =2;
+	    	 checkUserId(userId,snsType);
+	        })
+	      
+	  };*/
+			  
 	$(function(){
  		function onSuccess(googleUser) {
 		    var profile = googleUser.getBasicProfile();
 		    console.log(profile);
-	}
+ 		}
 		
 		$(".google").on("click", function(){
 		    gapi.client.load('plus', 'v1', function () {

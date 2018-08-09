@@ -204,11 +204,11 @@ padding : 5px;
 
 <head>
 <script>
-
 $(document).ready(function(){
 	// 맵을 시작하는 메서드입니다.
 	initMap();
 }); // 처음 시작될때 클릭버튼 세팅
+
 
 $(function(){
 	// search button을 누를때..
@@ -237,10 +237,14 @@ $(function(){
 	});
 	
 	$("button.btn.btn-secondary.modalModBtn").on("click", function() {
-		swal("Good job!", "장소바구니에 추가했습니다!!", "success")
-		addCartSpot();
-		//$("#cartModal").modal('hide');
-		//sweetalert쓰기위한 javascript
+		if($("#cartUserId").val() == null || $("#cartUserId").val() =='' ){
+			swal("엥? 로그인 후 이용해주세요!");
+		}else {
+			addCartSpot();
+			swal("Good job!", "장소바구니에 추가했습니다!!", "success");
+			//$("#cartModal").modal('hide');
+			//sweetalert쓰기위한 javascript
+		}
 	});
     
     $(document).on('click','#cartbutton', function(){ 
@@ -636,7 +640,7 @@ $(function(){
   					 <div class="form-group">
 					    <label class="sr-only" for="searchKeyword">검색어</label>
 					    <div>
-					   	 <input type="text" class="form-control" id="searchKeyword" placeholder="주소나 건물명 위치 장소명등등 적어주세요!" ><a class="waves-effect waves-light btn" id="searchbutton">검색</a></input>					  
+					   	 <input type="text" class="form-control" id="searchKeyword" placeholder="주소나 건물명 위치 장소명등등 적어주세요!" ><button type="button" class="btn btn-secondary" id="searchbutton" align="center">검색</button></input>					  
 					    </div>
 					  </div>
 		</div>
@@ -662,6 +666,7 @@ $(function(){
 										<input type="hidden" id="cartX" name="cartX" value="${spot.spotX}" readonly>
 										<input type="hidden" id="cartY" name="cartY" value="${spot.spotY}" readonly>
 										<input type="hidden"  id="cartAddress" name="cartAddress" value="${spot.spotAddress}" readonly>
+										<input type="hidden"  id="cartImg" name="cartImg" value="no_image.jpg" readonly>
 									<div class="form-group">
 										<label for="cartDetail">어떤일로 추가하셨나요?</label> 
 										 <input type="text" class="form-control" name="cartDetail" id="cartDetail" value="" />

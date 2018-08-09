@@ -517,7 +517,7 @@ $(function(){
 										output += ' <span class="label label-success">백과</span>';
 										output += ' <span class="label label-warning">맛집</span>';
 										output += ' </p>';
-										output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+										output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 										output += '</div>';
 										output += '</div>';
 										output += '</div>';
@@ -589,7 +589,7 @@ $(function(){
 				          
 								// 마커를 클릭했을때 이벤트 발생 시키기
 								google.maps.event.addListener(markers[i],'click',function() {
-									//map.setZoom(15);
+									map.setZoom(15);
 									// 일단 마커를 모두 닫고
 									//for (var i = 0; i < markers.length; i++) {
 											//infowindows[i].close();
@@ -617,7 +617,7 @@ $(function(){
 												output += ' <span class="label label-success">백과</span>';
 												output += ' <span class="label label-warning">맛집</span>';
 												output += ' </p>';
-												output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+												output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 												output += '</div>';
 												output += '</div>';
 												output += '</div>';
@@ -688,7 +688,7 @@ $(function(){
 					  <div class="form-group">
 					    <label class="sr-only" for="searchKeyword">검색어</label>
 					    <div>
-					   	 <input type="text" class="form-control" id="searchKeyword" placeholder="검색어" ><a class="waves-effect waves-light btn" id="searchbutton">검색</a></input>					  
+					   	 <input type="text" class="form-control" id="searchKeyword" placeholder="검색어" ><button type="button" class="btn btn-secondary" id="searchbutton" align="center">검색</button></input>					  
 					    </div>
 					  </div>
 			</div>
@@ -737,7 +737,7 @@ $(function(){
 																output += ' <span class="label label-success">백과</span>';
 																output += ' <span class="label label-warning">맛집</span>';
 																output += ' </p>';
-																output += '<p><a href="/spot/getSpot?spotNo='+ this.spotNo+ '" class="waves-effect waves-light btn" role="button"><i class="tiny material-icons">search</i>상세보기</a></p>';
+																output += '<p><button type="button" class="btn btn-secondary" align="center" ><a href="/spot/getSpot?spotNo='+ this.spotNo+ '">상세보기</a></button></p>';
 																output += '</div>';
 																output += '</div>';
 																output += '</div>';

@@ -119,17 +119,15 @@ public class FriendRestController {
  	//Ä£±¸ ½ÂÀÎ
  	@RequestMapping(value="json/acceptFriend")
  	public int acceptFriend(@ModelAttribute Friend friend, HttpSession session)throws Exception{
+ 	 		
+ 		//Friend friend = ((Friend) session.getAttribute("friend"));		
  		
  		System.out.println("/friend/acceptFriend: GET/POST");
  		System.out.println("friendId : "+friend.getFriendId());
  		System.out.println("userId : "+friend.getUserId());
- 		System.out.println("restController - acceptFriend: "+friendService.acceptFriend(friend));
  		 		
  		return friendService.acceptFriend(friend);
 
  	}
- 	
- 	
- 
-   
+
 }

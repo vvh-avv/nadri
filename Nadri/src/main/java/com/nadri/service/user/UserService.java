@@ -27,7 +27,6 @@ public interface UserService {
 	//È¸¿øÅ»Åð
 	public void quitUser(String userId) throws Exception;
 	
-	public void quitUser(User user) throws Exception;
 	
 	//¾ÆÀÌµð Ã£±â
 	public User findUserId(User user) throws Exception;

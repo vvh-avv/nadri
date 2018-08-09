@@ -231,21 +231,48 @@ function addToSchedule2(i, j){
 }
 
 function addWayPoint(){
-	var lasttd = $("#wayPoint > tr").length-1;
+	var lasttd = $("#wayPoint > div").length-1;
 	if(lasttd < 6 ){
 		swal("경유지가 추가되었어요");
 		var waypoint = '';
-		waypoint += '<tr>';
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointTitle" id="wayPointTitle'+w+'"/></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointAddress" id="wayPointAddress'+w+'"></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].wayPointDetail"   id="wayPointDetail'+w+'" /></td>' ;
-		waypoint += '	<td align="center"><input class="form-control" type="text" name="wayPoints['+w+'].moveTime" id="wayPointMoveTime'+w+'" readonly/></td>' ;
-		waypoint += "	<td align='center'><input class='waves-effect waves-light btn col s5' type='button' style='background-color: rgba(250, 170, 50, 0.5);'  id='navigation' value='길찾기' onclick=search('#wayPointAddress"+w+"')></td> " ; 
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointImg" id="wayPointImg'+w+'"/>' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointNav" id="wayPointNav'+w+'" />' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointX"  id="wayPointX'+w+'" >' ;
-		waypoint += '	<input type="hidden" name="wayPoints['+w+'].wayPointY"  id="wayPointY'+w+'" >   ' ;
-		waypoint += '	</tr>';
+		waypoint += '<div class="row wayPoints-row" id="waypoint'+w+'">';
+		waypoint += '	<div class="pre-waypoints'+w+'">';
+		waypoint += '		<div class="waypoint-append-title wat'+w+'">';
+		waypoint += '			경유지를 직접 등록하시려면 클릭해주세요!';
+		waypoint += '		</div>';
+		waypoint += '		<div class="glyphicon glyphicon-plus-sign append-sign"></div>';
+		waypoint += '	</div>';
+		waypoint += '	<div class="afterw after-waypoints'+w+'">';
+		waypoint += '		<div class="col-md-1 col-xs-2">';
+		waypoint += '			<div>경유지'+w+'</div>';
+		waypoint += '		</div>';
+		waypoint += '		<div class="col-md-3 col-xs-4">';
+		waypoint += '			<div class="row waypoint-image-box">';
+		waypoint += '				<div class="col-md-6"><img src="" alt="출발지 이미지" class="way-imgs" id="wayPointImg'+w+'"></div>';
+		waypoint += '				<div class="col-md-6" id="wayPointTitle'+w+'">장소명</div>';
+		waypoint += '			</div>';
+		waypoint += '		</div>';
+		waypoint += '		<div class="col-md-4 col-xs-4">';
+		waypoint += '			<div id="wayPointAddress'+w+'">주소</div>';
+		waypoint += '		</div>';
+		waypoint += '		<div class="col-md-4 col-xs-2">';
+		waypoint += '			<div>';
+		waypoint += '				길찾기';
+		waypoint += '			</div>';
+		waypoint += '		</div>';
+		waypoint += '	</div>';
+		waypoint += '</div>';
+/*		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';
+		waypoint += '';    just in case */
 	$('#wayPoint').append(waypoint);
 	w++;
 	} else {

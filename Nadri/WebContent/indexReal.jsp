@@ -21,7 +21,8 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <!-- 구글 로그인 -->
-<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com"></meta>
 
 <!-- 네이버 로그인 -->
@@ -704,7 +705,7 @@
 		<!-- 게시물목록 끝 -->
 
 
-	<!-- 목록 -->
+	<!-- 목록
 	<div class="container contents-wrapper">
 		<div class="second-line">
 			<div class="popular-spot">
@@ -793,9 +794,9 @@
 				</c:if>
 			</div>
 		</div>
-		<!-- 목록끝 -->
-
 	</div>
+	<!-- 목록끝 -->
+	
 	<div class="bottom-section">
 		<div class="section-backgrounds"></div>
 		<div class="container bottom-contents">

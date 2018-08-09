@@ -41,7 +41,8 @@
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">
 			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
-			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
+			<div class="profile-photo"
+				style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
 			</div>
 		</div>
 	</nav>
@@ -62,50 +63,54 @@
 					</label>
 				</div>
 				<div class="row options">
-					<div class="col-md-10 col-xs-12">
-						<div class="glyphicon glyphicon-search"></div>
-						<input type="text" class="inquireKeyword" name="searchKeyword"
-							placeholder="검색어를 입력해주세요"
-							value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-						<div class="row check-boxes">
+					<form name="inquire-search-form" class="inquire-search-form">
+						<div class="col-md-10 col-xs-12">
+							<div class="glyphicon glyphicon-search"></div>
+							<input type="text" class="inquireKeyword" name="searchKeyword"
+								placeholder="검색어를 입력해주세요"
+								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+							<div class="row check-boxes">
 
-							<div class="col-md-3 col-xs-3">
-								<input type="checkbox" name="inclCon" class="conditions"
-									value="이름"><label class="cons-label" id="inclCon">
-									검색어를 포함한 검색 </label>
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="inclCon"><label class="cons-label" id="inclCon">
+										검색어를 포함한 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="beginCon"><label class="cons-label" id="beginCon">
+										검색어로 시작하는 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="endCon"><label class="cons-label" id="endCon">
+										검색어로 끝나는 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="checkbox" name="noChecked" class="conditions"
+										value="이름"><label class="cons-label" id="noChecked">
+										처리완료문의제외 </label>
+								</div>
 							</div>
-
-							<div class="col-md-3 col-xs-3">
-								<input type="checkbox" name="beginCon" class="conditions"
-									value="이름"><label class="cons-label" id="beginCon">
-									검색어로 시작하는 검색 </label>
-							</div>
-
-							<div class="col-md-3 col-xs-3">
-								<input type="checkbox" name="endCon" class="conditions"
-									value="이름"><label class="cons-label" id="endCon">
-									검색어로 끝나는 검색 </label>
-							</div>
-
-							<div class="col-md-3 col-xs-3">
-								<input type="checkbox" name="noChecked" class="conditions"
-									value="이름"><label class="cons-label" id="noChecked">
-									처리완료문의제외 </label>
+							<div class="row order-option">
+								<div class="col-md-6 option-align">
+									<div>최신순</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+								<div class="col-md-6 option-align">
+									<div>종류별</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
 							</div>
 						</div>
-						<div class="row order-option">
-							<div class="col-md-6 option-align">
-								<div>최신순</div>
-								<div class="glyphicon glyphicon-arrow-up option-icons"></div>
-								<div class="glyphicon glyphicon-arrow-down option-icons"></div>
-							</div>
-							<div class="col-md-6 option-align">
-								<div>종류별</div>
-								<div class="glyphicon glyphicon-arrow-up option-icons"></div>
-								<div class="glyphicon glyphicon-arrow-down option-icons"></div>
-							</div>
-						</div>
-					</div>
+						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
+						<input type="hidden" id="currentPage" name="currentPage" value="" />
+					</form>
 				</div>
 			</div>
 		</div>
@@ -116,44 +121,13 @@
 						<div>조회된 문의 내역이 없습니다.</div>
 					</div>
 				</c:if>
-
 				<c:if test="${list.size() > 0}">
 					<div class="tableset">
 						<div class="row">
-
-							<div class="col-md-6 text-left">
+							<div class="col-md-6 text-right">
 								<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
 									${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
 							</div>
-
-							<div class="col-md-6 text-right">
-								<form class="form-inline" name="detailForm">
-
-									<div class="form-group">
-										<select class="form-control" name="searchCondition">
-											<option value="0"
-												${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>문의회원ID</option>
-											<option value="1"
-												${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>문의명</option>
-										</select>
-									</div>
-
-									<div class="form-group">
-										<label class="sr-only" for="searchKeyword">검색어</label> <input
-											type="text" class="form-control" id="searchKeyword"
-											name="searchKeyword" placeholder="검색어"
-											value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-									</div>
-
-									<button type="button" class="btn btn-default">검색</button>
-
-									<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-									<input type="hidden" id="currentPage" name="currentPage"
-										value="" />
-
-								</form>
-							</div>
-
 						</div>
 						<table class="table">
 							<tr class="firstLine">
@@ -182,7 +156,6 @@
 										<div class="inquireBody">
 											<div class="inquire-detail-title">${inquire.inquireNo}번
 												문의내용 상세보기</div>
-
 											<ul>
 
 												<li class="ele-inquire">문의글 작성 유저 아이디 :
@@ -242,7 +215,38 @@
 	</div>
 
 	<!-- modal start (do not mess with below) -->
-	<!-- <div class="modal fade" id="inquire-taken" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+	<div class="modal fade" id="modal2" role="dialog">
+
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					<span class="userIdLog"></span> 회원님의 활동 정보입니다.
+				</div>
+				<div class="modal-body chart-body">
+					<div id="chart_div"></div>
+					<div class="chart-duration">
+						<select name="duration" class="duration">
+							<option value="all">전체</option>
+							<option value="week">주간</option>
+							<option value="month">월간</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-user">차단하기</button>
+						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- 
+<div class="modal fade" id="inquire-taken" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -408,9 +412,8 @@
     </div>
   </div>
 </div> -->
-	<!-- Modal: modalQuickView -->
 
-	</div>
+	<!-- Modal: modalQuickView -->
 
 	<script src="/javascript/adminInquire.js"></script>
 </body>

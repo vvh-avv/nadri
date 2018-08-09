@@ -693,7 +693,7 @@ $(function(){
 
 </div>
 	<form enctype="multipart/form-data" name="updateForm">
-      <%@ include file="/layout/toolbar.jsp"%>
+      <%@ include file="/layout/new_toolbar.jsp"%>
      <div id="img" style='background-image: url(/images/spot/421.jpg); background-position-y :-100px '>  
         <div class="content">  
            <div id="scheduleTitle2">일정수정페이지 입니다!</div>

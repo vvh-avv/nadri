@@ -10,13 +10,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!--  Bootstrap, jQuery CDN  -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!-- layout css -->
 <link rel="stylesheet" type="text/css" href="/css/indexReal.css" />
@@ -61,16 +58,19 @@
 				})
 	})
 
-	 /* //친구 추가
+	//친구 추가
 	 $(function() {
 	 $( "button[id^='acceptFriend']" ).on("click" , function() {
 
 		 var friendNo = $(this).attr("id").replace(/[^0-9]/g,"");
 		 var friendId = $("#"+friendNo).attr('class'); 
-		 //var userId = ${sessionScope.user.userId};
+		 var userId = "<c:out value="${user.userId}"/>"
 		 
 		 console.log(userId);
 		 console.log(friendId);
+		 
+		 alert("userId: "+userId);
+		 alert("friendId: "+friendId);
 		 
 		$.ajax({
 			url:"/friend/json/acceptFriend?userId="+userId+"&friendId="+friendId,
@@ -78,13 +78,18 @@
 	 		data:"json",
 			success:function(data){
 			
-					swal("친구가 되었습니다","success");
+				swal({
+	    			   title: "친구 추가 완료!",
+	    			   text: "회원님이 \""+friendId+"\"를 친구로 추가했습니다!",
+	    			   icon: "success",
+	    			   buttons: false,
+	    			 });
 					
 					//$("#"+friendNo).remove(); 
 			}
 		})	
 	})	 
-	})    */
+	})
 </script>
 
 <style>
@@ -133,9 +138,7 @@
 					<c:if test="${ empty user.profileImg} ">
 						<img src="/images/profile/default.png" width="133" height="133" class="img-circle">
 					</c:if>
-					<h4>
-						<a href="/user/listUser">마이 페이지</a>
-					</h4>
+
 					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
 						<a href="/user/updateUser">내 정보 수정</a><br /> <br /> 
 						<a href="/friend/listFriend2">친구 목록</a><br /> <br /> 
@@ -163,6 +166,7 @@
 										<th class="text-center">No</th>
 										<th class="text-center">ID</th>
 										<th class="text-center">프로필사진</th>
+										<th class="text-center">친구추가</th>
 										<th class="text-center">친구삭제</th>
 									</tr>
 								</thead>
@@ -177,9 +181,18 @@
 											<td align="center"><img src="/images/profile/${friend.friendId }.png" width="73" height="73" ></td>
 
 
-											<td class="text-center"><c:if test="${friend.friendCode == '1' }">
+											<td class="text-center">
+												<c:if test="${friend.friendCode == '0' }">
+													<button type="button" class="btn btn-primary" id="acceptFriend${friend.friendNo}">친구추가</button>
+												</c:if>
+											</td>
+
+
+											<td class="text-center">
+												<c:if test="${friend.friendCode == '1' }">
 													<button type="button" class="btn btn-danger" id="deleteFriend${friend.friendNo}">삭제</button>
-												</c:if></td>
+												</c:if>
+											</td>
 
 										</tr>
 									</c:forEach>

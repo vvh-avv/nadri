@@ -407,7 +407,7 @@ body {
 }
 
 .first-line {
-	margin-top: 10px;
+	margin-top: 25px;
 }
 
 .spots-list{
@@ -965,4 +965,5 @@ body {
 .schedules-icons{
 	display : flex;
 	justify-content: space-evenly;
+	padding : 25px;
 }

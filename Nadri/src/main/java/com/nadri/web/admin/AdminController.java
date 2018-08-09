@@ -104,6 +104,8 @@ public class AdminController {
 	public String getInquireList(Model model,Search search) {
 		
 		System.out.println("listInquire -> controller 들어옴");
+		
+		System.out.println("들어온 검색어 : "+search.getSearchKeyword());
 
 		if(search.getCurruntPage() <= 1 ){
 			search.setCurruntPage(0);
