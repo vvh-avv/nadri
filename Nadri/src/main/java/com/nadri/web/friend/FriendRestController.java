@@ -67,9 +67,10 @@ public class FriendRestController {
 	   System.out.println("/friend/json/addFriend : GET / POST");
 	   
 	   User user = (User)session.getAttribute("user");
-	   
+	  
 	   friendService.addFriend(user.getUserId(), friendId);
 	   System.out.println("friendRestController - addFriend: "+friendId);
+	   
    }
    
    

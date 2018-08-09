@@ -304,7 +304,7 @@ $(function() {
 		var id = $(this).attr('id');
 		
 		if (id == 'login-open') {
-			self.location = '/user/login';
+			self.location = '/';
 		} else if (id == 'chat-open') {
 
 			self.location = '/board/listBoard';
@@ -523,6 +523,13 @@ $(function() {
 					var userStatus = JSONData.userStatus;
 					if( JSONData.password == $("#password").val() ){
 						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+					}else if( JSONData.password != $("#password").val() ){
+						swal({
+							title:"잠깐만요!",
+							text:"아이디 혹은 비밀번호를 다시 확인하세요.",
+							icon: "warning",
+							buttons: false,
+						});
 					}else if(userStatus == '1'){
 						//alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						swal({
@@ -543,19 +550,18 @@ $(function() {
 						//self.location = "/index.jsp";
 					}else if(userStatus == '0'){
 						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
-					}
-					/*if( JSONData.userId == $("#userId").val() && JSONData.password != $("#password").val() ){
-						alert("비밀번호를 다시 확인하세요!");
+					}/*else{
+						alert("아이디와 비밀번호를 다시 확인하세요!");
 						$("#password").val("").focus();
-					}
-					return;*/
+					}*/
+					
 				}else{
 					$("#userId").val("").focus();
 					$("#password").val("");
 					//alert("아이디 / 패스워드를 다시 확인하세요.");
 					swal({
 						title:"잠깐만요!",
-						text:"아이디와 비밀번호를 다시 확인하세요.",
+						text:"아이디 혹은 비밀번호를 다시 확인하세요.",
 						icon: "warning",
 						buttons: false,
 					});
@@ -674,40 +680,12 @@ $(function() {
 	})
 	
 	
-	 //구글 로그인	
-    /*$(function googleLogin() {
-	    gapi.load('auth2', function(){
-	    	// GoogleAuth 라이브러리에 대한 싱글 톤을 가져 와서 클라이언트를 설정합니다.
-	      auth2 = gapi.auth2.init({
-	        client_id: '910664542117-lg40vo2j2bbmhggujbe81n9p50kih7pi.apps.googleusercontent.com',
-	        //클라이언트 ID
-	        cookiepolicy: 'single_host_origin'
-	        // Request scopes in addition to 'profile' and 'email'
-//	         scope: 'profile email',
-//	         fetch_basic_profile: 'false',
-	    
-	      });
-      attachSignin(document.getElementById("google"));
-    });
-  });
-	    
-    function attachSignin(element) {
-	  
-	    console.log(element.id);
-	    auth2.attachClickHandler(element, {},
-	       function(googleUser) {
-	    	 var userId ="g"+googleUser.getBasicProfile().getId();
-	    	 var snsType =2;
-	    	 checkUserId(userId,snsType);
-	        })
-	      
-	  };*/
-			  
+	 //구글 로그인		  
 	$(function(){
  		function onSuccess(googleUser) {
 		    var profile = googleUser.getBasicProfile();
 		    console.log(profile);
- 		}
+		}
 		
 		$(".google").on("click", function(){
 		    gapi.client.load('plus', 'v1', function () {
@@ -715,6 +693,7 @@ $(function() {
 		            'userId': 'me'
 		        }).execute(function (res) {
 		        	console.log(JSON.stringify(res));
+		        	
 		        	res.id += "@google";
 			        
 		            $.ajax({
@@ -724,8 +703,9 @@ $(function() {
 		  					"Content-Type" : "application/json"
 		  				},
 		  				success : function(idChk){
-		  					  if(idChk==true){ 
-		  						  console.log("회원가입 절차가 진행중입니다");
+		  					//DB에 아이디가 없으면 회원가입창으로  
+		  					if(idChk==true){ 
+		  						console.log("회원가입 절차가 진행중입니다");
 		  						  $.ajax({
 		  							  url : "/user/json/addUser",
 		  							  method : "POST",
@@ -739,13 +719,14 @@ $(function() {
 		  								password : "google",
 		  							  }),
 		  							  success : function(JSONData){
-		  								 alert("회원가입이 완료되었습니다");
+		  								alert("회원가입이 완료되었습니다");
 		  								 $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  							  }
 		  						  })
 		  					  }
+		  					//DB에 아이디 있으면 로그인
 		  					  if(idChk==false){ 
-		  						  console.log("로그인이 진행중입니다");
+		  						console.log("로그인이 진행중입니다");
 		  						  $("form").attr("method","POST").attr("action","/user/snsLogin/"+res.id).attr("target","_parent").submit();
 		  					  }
 		  				  }

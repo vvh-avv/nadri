@@ -69,8 +69,8 @@
 		 console.log(userId);
 		 console.log(friendId);
 		 
-		 alert("userId: "+userId);
-		 alert("friendId: "+friendId);
+		 //alert("userId: "+userId);
+		 //alert("friendId: "+friendId);
 		 
 		$.ajax({
 			url:"/friend/json/acceptFriend?userId="+userId+"&friendId="+friendId,

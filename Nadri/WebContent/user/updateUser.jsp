@@ -245,7 +245,7 @@
 							<label for="age"
 								class="col-xs-offset-1 col-xs-3 control-label col-md-offset-1 col-md-3 control-label">성별</label>
 							<div class="col-xs-4 col-md-4">
-								<input type="text" class="form-control" id="sex" name = "sex" value="${user.sex }" readonly>
+								<input type="text" class="form-control" id="sex" name = "sex" value= ${ user.sex == '0' ? "남성" : "여성" } readonly>
 							</div>
 						</div>
 

@@ -297,7 +297,7 @@ article:hover .links {
 			<div class="container header-box">
 				<span class="glyphicon glyphicon-apple maincon"></span>
 				<div class="title-section">
-					<div class="title-text">너,나들이</div>
+					<div class="title-text">너, 나들이</div>
 					<span class="glyphicon glyphicon-ice-lolly" style="color: #9E9E9E;"
 						id="jolly-icon"></span>
 				</div>
