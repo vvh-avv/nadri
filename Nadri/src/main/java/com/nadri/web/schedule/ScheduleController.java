@@ -140,10 +140,14 @@ public class ScheduleController {
 		
 		// 경유지 등록하는 부분
 		for(int i = 0; i < schedule.getWayPoints().size() ; i++) {
-			System.out.println("시작되는중 번호 :"+i);
-			schedule.getWayPoints().get(i).setWayPointNo(i);
-			scheduleService.addWayPoint(schedule.getWayPoints().get(i));
-			scheduleService.updateHashTag(schedule.getWayPoints().get(i).getWayPointTitle());
+			if(schedule.getWayPoints().get(i).getWayPointTitle()!=null) {
+				System.out.println("시작되는중 번호 :"+i);
+				schedule.getWayPoints().get(i).setWayPointNo(i);
+				scheduleService.addWayPoint(schedule.getWayPoints().get(i));
+				scheduleService.updateHashTag(schedule.getWayPoints().get(i).getWayPointTitle());
+			} else {
+				break;
+			}
 		}
 		return "forward:/index.jsp";
 	}

@@ -125,7 +125,7 @@ public class ScheduleRestController {
 	      
 	      User user = (User)session.getAttribute("user");
 	      String scheduleImg = "copy_"+user.getUserId()+"_schedule"+scheduleNo;
-	      System.out.println("@@@"+scheduleImg);
+	      //System.out.println("@@@"+scheduleImg);
 	      
 	      return scheduleService.checkSchedule(scheduleImg, user.getUserId());
 	   }

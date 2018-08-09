@@ -101,6 +101,21 @@
       ]]>
    </select>
    
+    <select id="searchAroundRest" parameterType="spot" resultMap="spotSelectMap">
+       <![CDATA[
+          SELECT 
+         *,
+         ( 6371 * acos( cos( radians( #{spotY} ) ) * cos( radians( spot_y ) ) * cos( radians( spot_x ) - radians( #{spotX} ) ) 
+         + sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
+         FROM
+         spot
+         WHERE spot_code  LIKE CONCAT(#{spotCode},'%')
+         HAVING 
+         distance < 2
+         ORDER BY  distance
+      ]]>
+   </select>
+   
    <!-- 예지누나 추가!!(20180712) -->
    <select id="listSpot" resultMap="spotSelectMap">
       SELECT * FROM spot
@@ -175,24 +190,34 @@
    <select id="getSpotListRest" parameterType="search" resultMap="spotSelectMap" >
        SELECT spot_no, spot_title, spot_img, spot_address, spot_phone
        FROM spot
-       <if test="searchCondition == '' and searchKeyword != '' ">
-              WHERE spot_title LIKE CONCAT('%',#{searchKeyword},'%')
-              AND spot_code NOT IN ('30', '31' ,'32')
+       <if test="searchKeyword == '' and searchSpot == '' " >
+             WHERE spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
+       </if>
+       <if test="searchKeyword == '' and searchSpot != '' " >
+              WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
+              AND spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
+       </if>
+       <if test="searchCondition == '전체' and searchKeyword != '' ">
+              WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
+              AND (spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
+              OR spot_title LIKE CONCAT('%',#{searchKeyword},'%')
+            OR spot_address LIKE CONCAT('%',#{searchKeyword},'%'))
+              AND spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
        </if>
        <if test="searchCondition =='제목' and searchKeyword != '' ">
-            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+            WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
              AND spot_title LIKE CONCAT('%',#{searchKeyword},'%')
-             AND spot_code NOT IN ('30', '31' ,'32')
+             AND spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
        </if>
        <if test="searchCondition =='주소' and searchKeyword != '' ">
-            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+            WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
              AND spot_address LIKE CONCAT('%',#{searchKeyword},'%')
-             AND spot_code NOT IN ('30', '31' ,'32')
+             AND spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
        </if>
        <if test="searchCondition =='상세내용' and searchKeyword != '' ">
-            WHERE spot_code  LIKE CONCAT('%',#{searchSpot},'%')
+            WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
              AND spot_detail LIKE CONCAT('%',#{searchKeyword},'%')
-             AND spot_code NOT IN ('30', '31' ,'32')
+             AND spot_code NOT IN ('30', '31' ,'32','42%', '44%', '45%')
        </if>
         ORDER BY spot_readcnt
         limit 0, 30

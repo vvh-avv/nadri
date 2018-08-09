@@ -81,9 +81,13 @@ $(function(){
 		
  $("#addSchedule").on("click", function() {
 	 
-		var scheduleTitle =$("#scheduleTitle").val();
-		var scheduleDate=$("#scheduleDate").val();
-		var scheduleDetail=$("#scheduleDetail").val();
+	 console.log($('.clockpicker > input').val());
+	 console.log($('#datepicker').val());
+	 console.log($('#img-cover').attr('src'));
+	 
+		var scheduleTitle = $("input#scheduleTitle").val();
+		var scheduleDate= $("input#scheduleDate").val($('#datepicker').val());
+		var scheduleDetail= $("input#scheduleDetail").val();
 		
 		if(scheduleTitle == null || scheduleTitle.length <1){
 			swal("나들이 제목을 붙여주세요.");
@@ -97,7 +101,6 @@ $(function(){
 			swal("나들이의 간단한 설명을 분여주세요!");
 			return;
 		}
-	 
 		$("form").attr("method", "POST").attr("action","/schedule/addSchedule").submit();
 		swal("등록에 성공했습니다!", "마이페이지에서 확인해주세요", "success");
 	});
@@ -237,7 +240,7 @@ function addWayPoint(){
 		var waypoint = '';
 		waypoint += '<div class="row wayPoints-row" id="waypoint'+w+'">';
 		waypoint += '	<div class="pre-waypoints'+w+'">';
-		waypoint += '		<div class="waypoint-append-title wat'+w+'">';
+		waypoint += '		<div class="prep waypoint-append-title wat'+w+'">';
 		waypoint += '			경유지를 직접 등록하시려면 클릭해주세요!';
 		waypoint += '		</div>';
 		waypoint += '		<div class="glyphicon glyphicon-plus-sign append-sign"></div>';
@@ -248,7 +251,7 @@ function addWayPoint(){
 		waypoint += '		</div>';
 		waypoint += '		<div class="col-md-3 col-xs-4">';
 		waypoint += '			<div class="row waypoint-image-box">';
-		waypoint += '				<div class="col-md-6"><img src="" alt="출발지 이미지" class="way-imgs" id="wayPointImg'+w+'"></div>';
+		waypoint += '				<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg'+w+'"></div>';
 		waypoint += '				<div class="col-md-6" id="wayPointTitle'+w+'">장소명</div>';
 		waypoint += '			</div>';
 		waypoint += '		</div>';
@@ -257,7 +260,7 @@ function addWayPoint(){
 		waypoint += '		</div>';
 		waypoint += '		<div class="col-md-4 col-xs-2">';
 		waypoint += '			<div>';
-		waypoint += '				길찾기';
+		waypoint += '				<input class="btn btn-default edit-btn'+w+'" type="button" id="edit-navigation" value="수  정">';
 		waypoint += '			</div>';
 		waypoint += '		</div>';
 		waypoint += '	</div>';
