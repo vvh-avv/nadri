@@ -523,13 +523,6 @@ $(function() {
 					var userStatus = JSONData.userStatus;
 					if( JSONData.password == $("#password").val() ){
 						$(".login-form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
-					}else if( JSONData.password != $("#password").val() ){
-						swal({
-							title:"잠깐만요!",
-							text:"아이디 혹은 비밀번호를 다시 확인하세요.",
-							icon: "warning",
-							buttons: false,
-						});
 					}else if(userStatus == '1'){
 						//alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						swal({
@@ -554,6 +547,7 @@ $(function() {
 						alert("아이디와 비밀번호를 다시 확인하세요!");
 						$("#password").val("").focus();
 					}*/
+					
 					
 				}else{
 					$("#userId").val("").focus();
