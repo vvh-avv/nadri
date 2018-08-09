@@ -1189,8 +1189,10 @@ $(function(){
  			var num2 = $(ui.draggable).attr('class')[1];
  			var num3 = $(ui.draggable).attr('class')[2];
  			var number = '';
+ 			var parent = $(ui.draggable).parent('div').attr('id');
  			
  			console.log(num3);
+ 			console.log(parent);
  			
  			if(num3 == ' '){
  				console.log('두자릿수네요');
@@ -1233,21 +1235,42 @@ $(function(){
  				$('#wayPointImg'+idNo).prop('src',img);
 /*  				$('input[name=wayPoint['+idNo+'].wayPointImg]').val(img); */
 				
- 				console.log( number+"번 카트 이미지 가져오는 중..." );
- 			    $.ajax({
- 			       url : "/restcart/getCart/"+number,
- 			       method : "POST",
- 			       success : function(data){
-					console.log('input#wayPointAddress'+idNo);
- 			        $('input#wayPointAddress'+idNo).attr('value',data.cartAddress);
- 			        console.log($('input#wayPointAddress'+idNo).val());
- 			        $('input#wayPointTitle'+idNo).attr('value',data.cartTitle);
- 			      	$('input#wayPointImg'+idNo).attr('value',data.cartImg);
- 			      	$('input#wayPointDetail'+idNo).attr('value',data.cartDetail);
- 			      	$('input#wayPointY'+idNo).attr('value',data.cartY);
- 			      	$('input#wayPointX'+idNo).attr('value',data.cartX);
- 			       }
- 			    })
+				if(parent != 'Contact'){
+					console.log( number+"번 카트 이미지 가져오는 중...카트!" );
+	 			    $.ajax({
+	 			       url : "/restcart/getCart/"+number,
+	 			       method : "POST",
+	 			       success : function(data){
+						console.log('input#wayPointAddress'+idNo);
+	 			        $('input#wayPointAddress'+idNo).attr('value',data.cartAddress);
+	 			        console.log($('input#wayPointAddress'+idNo).val());
+	 			        $('input#wayPointTitle'+idNo).attr('value',data.cartTitle);
+	 			      	$('input#wayPointImg'+idNo).attr('value',data.cartImg);
+	 			      	$('input#wayPointDetail'+idNo).attr('value',data.cartDetail);
+	 			      	$('input#wayPointY'+idNo).attr('value',data.cartY);
+	 			      	$('input#wayPointX'+idNo).attr('value',data.cartX);
+	 			       }
+	 			    })
+				}else{
+					console.log( number+"번 카트 이미지 가져오는 중...추천!" );
+	 			    $.ajax({
+	 			       url : "/restspot/getSpotRest/"+number,
+	 			       method : "GET",
+	 			       success : function(data){
+	 			    	console.log(data);
+						console.log('input#wayPointAddress'+idNo);
+		 			    $('input#wayPointAddress'+idNo).attr('value',data.spotAddress);
+		 			    console.log($('input#wayPointAddress'+idNo).val());
+		 			    $('input#wayPointTitle'+idNo).attr('value',data.spotTitle);
+		 			    $('input#wayPointImg'+idNo).attr('value',data.spotImg);
+		 			    $('input#wayPointDetail'+idNo).attr('value',data.spotDetail);
+		 			    $('input#wayPointY'+idNo).attr('value',data.spotY);
+		 			    $('input#wayPointX'+idNo).attr('value',data.spotX);
+	 			       }
+	 			    })
+				}
+				
+ 				
 
  			}
  			
@@ -1374,7 +1397,6 @@ $(function(){
 		</div>
 
 		<div id="Contact" class="tabcontent">
-			<br />
 			<c:set var="i" value="0" />
 			<c:forEach var="recommand" items="${recommand}">
 				<c:set var="i" value="${i+1}" />
