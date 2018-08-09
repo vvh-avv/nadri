@@ -30,7 +30,6 @@ var icon_4 = icon("4");
 var icon_5 = icon("5");
 var icon_6 = icon("6");
 
-
 var start_x;
 var start_y;
 var end_x;
@@ -335,9 +334,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "시간" + Math.floor(total.totalTime%3600/60) + "분";
+                    time = Math.floor(total.totalTime/3600) + "시간" + Math.floor(total.totalTime%3600/60) + "시간";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "시간";
+                    time = Math.floor(total.totalTime%3600/60) + "분";
                 }
 
                 map.addLayer(routeLayer);

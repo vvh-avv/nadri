@@ -1166,7 +1166,7 @@ $(function(){
         },
         update: function(e, ui) {
             // gets the new and old index then removes the temporary attribute
-            var newIndex = ui.item.index();
+/*             var newIndex = ui.item.index();
             var oldIndex = $(this).attr('data-previndex');
             var element_id = ui.item.attr('id');
             $(this).removeAttr('data-previndex');
@@ -1176,9 +1176,10 @@ $(function(){
             
             ui.item.removeAttr('id');
             
-            console.log(oldId,newId);
+            console.log(oldId,newId); */
         }
     });
+ 	
  	$("#wayPoint").disableSelection();
  	
  	$('.waypoints-row').droppable({
@@ -1188,8 +1189,10 @@ $(function(){
  			var num2 = $(ui.draggable).attr('class')[1];
  			var num3 = $(ui.draggable).attr('class')[2];
  			var number = '';
+ 			var parent = $(ui.draggable).parent('div').attr('id');
  			
  			console.log(num3);
+ 			console.log(parent);
  			
  			if(num3 == ' '){
  				console.log('두자릿수네요');
@@ -1203,7 +1206,7 @@ $(function(){
  				
  			console.log(number);
  			
- 			if(number == 'ro'){
+ 			if(number == 'ro' || number == 'row'){
  				console.log('sorting~');
  			}else{
  				
@@ -1232,21 +1235,42 @@ $(function(){
  				$('#wayPointImg'+idNo).prop('src',img);
 /*  				$('input[name=wayPoint['+idNo+'].wayPointImg]').val(img); */
 				
- 				console.log( number+"번 카트 이미지 가져오는 중..." );
- 			    $.ajax({
- 			       url : "/restcart/getCart/"+number,
- 			       method : "POST",
- 			       success : function(data){
-					console.log('input#wayPointAddress'+idNo);
- 			        $('input#wayPointAddress'+idNo).attr('value',data.cartAddress);
- 			        console.log($('input#wayPointAddress'+idNo).val());
- 			        $('input#wayPointTitle'+idNo).attr('value',data.cartTitle);
- 			      	$('input#wayPointImg'+idNo).attr('value',data.cartImg);
- 			      	$('input#wayPointDetail'+idNo).attr('value',data.cartDetail);
- 			      	$('input#wayPointY'+idNo).attr('value',data.cartY);
- 			      	$('input#wayPointX'+idNo).attr('value',data.cartX);
- 			       }
- 			    })
+				if(parent != 'Contact'){
+					console.log( number+"번 카트 이미지 가져오는 중...카트!" );
+	 			    $.ajax({
+	 			       url : "/restcart/getCart/"+number,
+	 			       method : "POST",
+	 			       success : function(data){
+						console.log('input#wayPointAddress'+idNo);
+	 			        $('input#wayPointAddress'+idNo).attr('value',data.cartAddress);
+	 			        console.log($('input#wayPointAddress'+idNo).val());
+	 			        $('input#wayPointTitle'+idNo).attr('value',data.cartTitle);
+	 			      	$('input#wayPointImg'+idNo).attr('value',data.cartImg);
+	 			      	$('input#wayPointDetail'+idNo).attr('value',data.cartDetail);
+	 			      	$('input#wayPointY'+idNo).attr('value',data.cartY);
+	 			      	$('input#wayPointX'+idNo).attr('value',data.cartX);
+	 			       }
+	 			    })
+				}else{
+					console.log( number+"번 카트 이미지 가져오는 중...추천!" );
+	 			    $.ajax({
+	 			       url : "/restspot/getSpotRest/"+number,
+	 			       method : "GET",
+	 			       success : function(data){
+	 			    	console.log(data);
+						console.log('input#wayPointAddress'+idNo);
+		 			    $('input#wayPointAddress'+idNo).attr('value',data.spotAddress);
+		 			    console.log($('input#wayPointAddress'+idNo).val());
+		 			    $('input#wayPointTitle'+idNo).attr('value',data.spotTitle);
+		 			    $('input#wayPointImg'+idNo).attr('value',data.spotImg);
+		 			    $('input#wayPointDetail'+idNo).attr('value',data.spotDetail);
+		 			    $('input#wayPointY'+idNo).attr('value',data.spotY);
+		 			    $('input#wayPointX'+idNo).attr('value',data.spotX);
+	 			       }
+	 			    })
+				}
+				
+ 				
 
  			}
  			
@@ -1373,7 +1397,6 @@ $(function(){
 		</div>
 
 		<div id="Contact" class="tabcontent">
-			<br />
 			<c:set var="i" value="0" />
 			<c:forEach var="recommand" items="${recommand}">
 				<c:set var="i" value="${i+1}" />
@@ -1495,7 +1518,7 @@ $(function(){
 				<div class="col-md-3 col-xs-12 schedule-headers">
 					<p>출발시간은 언제인가요?</p>
 					<div class="input-group clockpicker">
-						<input type="text" class="form-control" value="09:00" readonly>
+						<input type="text" class="form-control" name="startHour" value="09:00" readonly>
 						<span class="input-group-addon"> <span
 							class="glyphicon glyphicon-time"> </span>
 						</span>
@@ -1617,7 +1640,7 @@ $(function(){
 					</div>
 				</div>
 				
-<!-- 				<div class="row wayPoints-row sortable-way" id="waypoint2">
+				<div class="row wayPoints-row sortable-way" id="waypoint2">
 					<div class="pre-waypoints2">
 						<div class="prep waypoint-append-title wat2">
 							경유지를 직접 등록하시려면 클릭해주세요!
@@ -1633,7 +1656,7 @@ $(function(){
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
 								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg2"></div>
-								<input type="file" class="wayPointImg2" style="display:none;"  id="wayPointImg2"value="" onchange="findName(this,'2')"/>
+								<input type="hidden" class="wayPointImg2" style="display:none;"  id="wayPointImg2"value="" onchange="findName(this,'2')"/>
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1645,7 +1668,6 @@ $(function(){
 								<input class="btn btn-default edit-btn2" type="button" id="navigation" value="길찾기" onclick="search('#wayPointAddress2')">
 								<input class="btn btn-default edit-btn2" type="button" id="edit-navigation" value="수  정">
 								<input class="form-control" type="hidden" name="wayPoints[2].moveTime" value="" id="wayPointMoveTime2"/>
-								<input type="hidden" name="wayPoints[2].wayPointImg" id="wayPointImg2" value=""/>
 								<input type="hidden" name="wayPoints[2].wayPointNav" id="wayPointNav2" value=""/>
 								<input type="hidden" name="wayPoints[2].wayPointX" id="wayPointX2" value=""/>
 								<input type="hidden" name="wayPoints[2].wayPointY" id="wayPointY2" value=""/>
@@ -1670,7 +1692,7 @@ $(function(){
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
 								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg3"></div>
-								<input type="file" class="wayPointImg3" id="wayPointImg3" value="" style="display:none;" onchange="findName(this,'3')"/>
+								<input type="hidden" class="wayPointImg3" id="wayPointImg3" value="" style="display:none;" onchange="findName(this,'3')"/>
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1707,7 +1729,7 @@ $(function(){
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
 								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg4"></div>
-								<input type="file" class="wayPointImg4" id="wayPointImg4" value="" style="display:none;" onchange="findName(this,'4')"/>
+								<input type="hidden" class="wayPointImg4" id="wayPointImg4" value="" style="display:none;" onchange="findName(this,'4')"/>
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1726,9 +1748,9 @@ $(function(){
 							</div>
 						</div>
 					</div>
-				</div> -->
+				</div> 
 				
-<!-- 				<div class="row wayPoints-row sortable-way" id="waypoint5">
+				<div class="row wayPoints-row sortable-way" id="waypoint5">
 					<div class="pre-waypoints5">
 						<div class="prep waypoint-append-title wat5">
 							경유지를 직접 등록하시려면 클릭해주세요!
@@ -1744,7 +1766,7 @@ $(function(){
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
 								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg5"></div>
-								<input type="file" class="wayPointImg5" id="wayPointImg5" value="" style="display:none;" onchange="findName(this,'5')"/>
+								<input type="hidden" class="wayPointImg5" id="wayPointImg5" value="" style="display:none;" onchange="findName(this,'5')"/>
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1781,7 +1803,7 @@ $(function(){
 						<div class="col-md-3 col-xs-4">
 							<div class="row waypoint-image-box">
 								<div class="col-md-6"><img src="http://via.placeholder.com/100x150" alt="출발지 이미지" class="way-imgs" id="wayPointImg6"></div>
-								<input type="file" class="wayPointImg6" id="wayPointImg6" value="" style="display:none;" onchange="findName(this,'6')"/>
+								<input type="hidden" class="wayPointImg6" id="wayPointImg6" value="" style="display:none;" onchange="findName(this,'6')"/>
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4">
@@ -1800,7 +1822,7 @@ $(function(){
 							</div>
 						</div>
 					</div>
-				</div> -->
+				</div> 
 				
 			</div>
 			
