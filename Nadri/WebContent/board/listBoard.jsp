@@ -323,6 +323,9 @@
    /*,.swal-overlay*/{
    	  background-image: url("/images/board/reward.gif");
    	}
+   	
+   	/* placeholder 공통에 빠져있는건 흰색이라 검은색으로 바꾸고 싶어서 */
+   	::placeholder { color: #333; }
 </style>
 
 <script>
@@ -397,8 +400,8 @@ $(function(){
 	            success : function(data, status){
 	            	if(data==""){
 	    				$('#boardLoading').remove();
-	            		swal ( "확인" ,  "더 불러올 데이터가 존재하지 않습니다." ,  "error" )
-	            	}else{;
+	            		swal ( "확인" ,  "더 불러올 데이터가 존재하지 않습니다." ,  "error" );
+	            	}else{
 	    				$('#boardLoading').css('display','none');
 		            	$("#currentPage").val( Number($("#currentPage").val())+1 ); //현재페이지 증가 +1
 		            	
@@ -477,7 +480,7 @@ $(function(){
 			            			for( i=0; i<this.comment.length; i++ ){
 			            				tag += "<div id='commList'> <span id='commListUser' data-toggle='modal' data-target='.userModal' data-whatever='"+this.comment[i].user.profileImg+","+this.comment[i].user.userName+","+this.comment[i].user.userId+","+this.comment[i].user.introduce+"'> "
 			            				+ "<img src='/images/profile/"+this.comment[i].user.profileImg+"' class='img-circle'/> "+this.comment[i].user.userId+"</span>"
-			            				+ "<span id='commListContent'>"+this.comment[i].commentContent+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
+			            				+ "<span id='commListContent'>"+ccTag(this.comment[i].commentContent)+"</span><span id='commListDelete' class='"+this.comment[i].commentNo+"' style='display:none;'><img src='/images/board/delete2.png'></span>"
 			            				+ "<span id='commListInquire' id='inquireUser' name='"+this.comment[i].commentNo+"' style='display:none;' data-toggle='modal' data-target='#inquireModal'><img src='/images/board/inquire.png'></span></div>"	
 			            			}
 			            			tag += "<div id='commLastTime"+boardNo+"' class='"+this.commLastTime+"'></div>";
@@ -789,7 +792,7 @@ $(function(){
 	})
 	//*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-		swal($(this).text()+" 님과 친구가 되어보세요~"); 
+		//swal($(this).text()+" 님과 친구가 되어보세요~"); 
 	})
 	
 	//*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
@@ -1281,7 +1284,7 @@ $(function(){
 				<br>
 				<div class="modalUserId"><b>아&nbsp;&nbsp;이&nbsp;&nbsp;디 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br>
-				<div class="modalUserIntroduce"><b>자 기 소 개 </b><input class="myFormControl" type="text" value="" readonly></div>
+				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
 				<c:if test="${!empty sessionScope.user}">
 					<div class="modalUserButton">

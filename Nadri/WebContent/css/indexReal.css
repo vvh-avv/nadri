@@ -41,6 +41,10 @@ body {
     padding-right: 0 !important
 }
 
+.swal-text{
+	text-align: center;
+}
+   
 .disabled{
 	pointer-events: none;
 }
