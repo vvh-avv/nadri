@@ -201,7 +201,12 @@ public class UserController {
 		}
 		System.out.println("*"+fileMultiName);
 //		user.setProfileImg(fileMultiName);					//set을 해주면 새로 값이 들어가는 셈 - 업데이트에는 필요없음
-					
+		
+		if(user.getSex().equals("남성")) {
+			user.setSex("0");
+		} else {
+			user.setSex("1");
+		}
 		//비즈니스 로직
 		userService.updateUser(user);
 		user = userService.getUser(user.getUserId());
