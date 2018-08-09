@@ -30,7 +30,6 @@ var icon_4 = icon("4");
 var icon_5 = icon("5");
 var icon_6 = icon("6");
 
-
 var start_x;
 var start_y;
 var end_x;
@@ -213,7 +212,6 @@ function removeMarker(value) {
 
 function setXY(value, x, y) {
     if(value == "w0") {
-    	/*swal("출발지를 설정합니다!.");*/
     	start_x = x;
     	start_y = y;
         searchAdress("#wayPointAddress0", y, x);
@@ -259,7 +257,6 @@ function reset () {
 
 function search(input) {
     if($(input).text()=="") {
-    	/*swal("출발지를 설정합니다!");*/
     } else {
     	
         if($(input).val() != null) {
@@ -337,9 +334,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "시간" + Math.floor(total.totalTime%3600/60) + "분";
+                    time = Math.floor(total.totalTime/3600) + "�ð�" + Math.floor(total.totalTime%3600/60) + "�ð�";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "분 ";
+                    time = Math.floor(total.totalTime%3600/60) + "��";
                 }
 
                 map.addLayer(routeLayer);
@@ -370,7 +367,6 @@ function distance() {
             },
 
             error:function(request,status,error){
-                /*swal("에러");*/
                 reset();
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
