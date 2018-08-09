@@ -213,7 +213,6 @@ function removeMarker(value) {
 
 function setXY(value, x, y) {
     if(value == "w0") {
-    	/*swal("출발지를 설정합니다!.");*/
     	start_x = x;
     	start_y = y;
         searchAdress("#wayPointAddress0", y, x);
@@ -259,7 +258,6 @@ function reset () {
 
 function search(input) {
     if($(input).text()=="") {
-    	/*swal("출발지를 설정합니다!");*/
     } else {
     	
         if($(input).val() != null) {
@@ -282,9 +280,9 @@ function search(input) {
                        }
                     } else {
                         if (input == "#waypoint0") {
-                            alert("�������� �߰����ּ���!");
+                            swal("wait");
                         } else {
-                        	alert("�������� �߰����ּ���!");
+                        	swal("wait");
                         }
                     }
                 },
@@ -302,9 +300,9 @@ function go() {
     }  else if(input_e == 1) {
     	distance();
     } else if(input_s == 0){
-        alert("�������� �߰����ּ���!");
+    	swal("wait");
     } else {
-        alert("�������� �߰����ּ���!");
+    	swal("wait");
     }
 }
 
@@ -327,8 +325,8 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-        		startName : "��������",
-        		endName : "��������"
+        		startName : "startName",
+        		endName : "endName"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
@@ -337,9 +335,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "시간" + Math.floor(total.totalTime%3600/60) + "분";
+                    time = Math.floor(total.totalTime/3600) + "�ð�" + Math.floor(total.totalTime%3600/60) + "��";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "분 ";
+                    time = Math.floor(total.totalTime%3600/60) + "�ð�";
                 }
 
                 map.addLayer(routeLayer);
@@ -370,7 +368,6 @@ function distance() {
             },
 
             error:function(request,status,error){
-                /*swal("에러");*/
                 reset();
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
