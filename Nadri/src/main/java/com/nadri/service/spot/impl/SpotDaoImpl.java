@@ -68,6 +68,11 @@ public class SpotDaoImpl implements SpotDao{
 		return sqlSession.selectList("SpotMapper.searchAroundRestaurant", spot);
 	}
 	
+	// 5-2. 주변 정보를 가져오는 안드로이드 메소드
+	public List<Spot> searchAroundRest(Spot spot) throws Exception {
+		return sqlSession.selectList("SpotMapper.searchAroundRest", spot);
+	}
+	
 	/////////////////////////////////////////////////////////예지누나 추가!!(20180712)/////////////////////////////////////////////////////////////////
 	@Override
 	   public List<Spot> getSpotList() throws Exception {

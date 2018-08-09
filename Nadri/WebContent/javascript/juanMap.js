@@ -101,7 +101,6 @@ $(function(){
 			swal("나들이의 간단한 설명을 분여주세요!");
 			return;
 		}
-		
 		$("form").attr("method", "POST").attr("action","/schedule/addSchedule").submit();
 		swal("등록에 성공했습니다!", "마이페이지에서 확인해주세요", "success");
 	});

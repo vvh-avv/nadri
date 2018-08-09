@@ -279,9 +279,9 @@ function search(input) {
                        }
                     } else {
                         if (input == "#waypoint0") {
-                            alert("�������� �߰����ּ���!");
+                            swal("wait");
                         } else {
-                        	alert("�������� �߰����ּ���!");
+                        	swal("wait");
                         }
                     }
                 },
@@ -299,9 +299,9 @@ function go() {
     }  else if(input_e == 1) {
     	distance();
     } else if(input_s == 0){
-        alert("�������� �߰����ּ���!");
+    	swal("wait");
     } else {
-        alert("�������� �߰����ּ���!");
+    	swal("wait");
     }
 }
 
@@ -324,8 +324,8 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-        		startName : "��������",
-        		endName : "��������"
+        		startName : "startName",
+        		endName : "endName"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
