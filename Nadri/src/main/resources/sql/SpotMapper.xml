@@ -109,7 +109,7 @@
          + sin( radians( #{spotY} ) ) * sin( radians( spot_y ) ) ) ) AS distance
          FROM
          spot
-         WHERE spot_code  LIKE CONCAT(#{searchSpot},'%')
+         WHERE spot_code  LIKE CONCAT(#{spotCode},'%')
          HAVING 
          distance < 2
          ORDER BY  distance

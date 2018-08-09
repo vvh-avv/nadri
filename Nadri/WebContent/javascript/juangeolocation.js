@@ -30,7 +30,6 @@ var icon_4 = icon("4");
 var icon_5 = icon("5");
 var icon_6 = icon("6");
 
-
 var start_x;
 var start_y;
 var end_x;
@@ -213,7 +212,6 @@ function removeMarker(value) {
 
 function setXY(value, x, y) {
     if(value == "w0") {
-    	swal("Ãâ¹ßÁö¸¦ ¼³Á¤ÇÕ´Ï´Ù.");
     	start_x = x;
     	start_y = y;
         searchAdress("#wayPointAddress0", y, x);
@@ -258,15 +256,15 @@ function reset () {
 }
 
 function search(input) {
-    if($(input).val()=="") {
-    	swal("°ªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+    if($(input).text()=="") {
     } else {
+    	
         if($(input).val() != null) {
             $.ajax({
                 method: "GET",
                 url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo?version=1",
                 data: {
-                   fullAddr: $(input).val(),
+                   fullAddr: $(input).text(),
                    appKey: headers["appKey"]
                 },
                 success: function(data) {
@@ -281,9 +279,9 @@ function search(input) {
                        }
                     } else {
                         if (input == "#waypoint0") {
-                            alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+                            swal("wait");
                         } else {
-                        	 alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+                        	swal("wait");
                         }
                     }
                 },
@@ -301,9 +299,9 @@ function go() {
     }  else if(input_e == 1) {
     	distance();
     } else if(input_s == 0){
-        alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+    	swal("wait");
     } else {
-        alert("°æÀ¯Áö¸¦ Ãß°¡ÇØÁÖ¼¼¿ä!");
+    	swal("wait");
     }
 }
 
@@ -312,6 +310,7 @@ var headers = {};
 headers["appKey"]="81d71b60-e7b0-4a49-8eff-e265fd5a44d1";//
 
 function distance() {
+	
     if (start_x != null && end_x != null) {
         $.ajax({
             method:"POST",
@@ -325,8 +324,8 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-        		startName : "½ÃÀÛÁöÁ¡",
-        		endName : "µµÂøÁöÁ¡"
+        		startName : "startName",
+        		endName : "endName"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
@@ -335,9 +334,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "½Ã°£ " + Math.floor(total.totalTime%3600/60) + "ºÐ";
+                    time = Math.floor(total.totalTime/3600) + "ì‹œê°„" + Math.floor(total.totalTime%3600/60) + "ë¶„";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "ºÐ ";
+                    time = Math.floor(total.totalTime%3600/60) + "ë¶„";
                 }
 
                 map.addLayer(routeLayer);
@@ -368,7 +367,6 @@ function distance() {
             },
 
             error:function(request,status,error){
-                swal("Àå¼Ò°Ë»ö½ÇÆÐÇß½À´Ï´Ù!");
                 reset();
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
@@ -393,7 +391,7 @@ function searchAdress(input, lat, lon) {
             } else {
                 alertAdress(input);
             }
-            $(input).val(obj.addressInfo.fullAddress);
+            $(input).text(obj.addressInfo.fullAddress);
         },
         error:function(request,status,error){
             alertAdress(input);
