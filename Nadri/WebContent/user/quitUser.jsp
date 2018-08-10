@@ -80,6 +80,14 @@
  			   buttons: false,
  			 });
 			return;
+		}else if( password != ${user.password} ){
+			swal({
+ 			   title: "잠깐만요!",
+ 			   text: "비밀번호가 일치하지 않습니다.",
+ 			   icon: "error",
+ 			   buttons: false,
+ 			 });
+			return;
 		}
 		$("form").attr("method" , "POST").attr("action" , "/user/quitUser/"+userId).submit();
 	}

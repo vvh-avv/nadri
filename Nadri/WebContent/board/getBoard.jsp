@@ -76,6 +76,8 @@
 	#boardTitle{
       height : auto;
       text-align: center;
+      padding: 16px;
+      background-color: #F8F8F8;
    }
    #boardImg{
       width : 500px;
@@ -83,6 +85,8 @@
    }
    #boardContent{
       height : auto;
+      padding: 16px;
+      background-color: #F8F8F8;
    }
    .icon{
       cursor : pointer;
@@ -98,6 +102,8 @@
      background-color: #E6F5FA;
      border: 0.5px solid #ccc;
    	 border-radius: 5px;
+   	 flex: auto;
+   	 display: inline-flex;
    }
    div[id^='hashTagLine']{
    	 padding-top: 10px;
@@ -320,6 +326,9 @@
    /*,.swal-overlay*/{
    	  background-image: url("/images/board/reward.gif");
    	}
+   	
+   	/* placeholder 공통에 빠져있는건 흰색이라 검은색으로 바꾸고 싶어서 */
+   	::placeholder { color: #333; }
 </style>
 
 <script>
@@ -610,7 +619,7 @@ $(function(){
    })
    //*댓글에 태그된 유저아이디 클릭
    $(document).on("click", "span[class^='commTag']", function(){
-	  swal($(this).text()+" 님과 친구가 되어보세요~"); 
+	  //swal($(this).text()+" 님과 친구가 되어보세요~"); 
    })
    //*댓글 마우스 오버시 삭제버튼 노출 => 회원만 가능 => 본인만 가능
    $(document).on("mouseover", "div[id^='commList']", function() {
@@ -996,14 +1005,19 @@ $(function(){
          <form id="firstForm" class="form-horizontal">
             <!-- 제목 -->
       		<input type="hidden" id="boardNo" name="boardNo" value="${board.boardNo}">
-            <div id="boardTitle">${board.boardTitle}</div>
+            <div id="boardTitle"><font size=+1>${board.boardTitle}</font></div>
             
             <!-- 이미지 -->
             <input type="hidden" id="boardImg" name="boardImg" value="${board.boardImg}">
             <div class="flexslider">
                <ul class="slides">
                   <c:forTokens var="images" items="${board.boardImg}" delims=",">
-                      <li><img src="/images/board/posts/${images}"/></li>
+                  	  <c:if test="${board.boardCode==0}">
+                  	  	<li><img src="/images/board/posts/${images}"/></li>
+                  	  </c:if>
+                  	  <c:if test="${board.boardCode!=0}">
+                  	  	<li><img src="/images/schedule/${images}"/></li>
+                  	  </c:if>
                   </c:forTokens>
                </ul>
             </div>
@@ -1011,9 +1025,18 @@ $(function(){
             <!-- 해시태그 -->
             <c:if test="${board.hashTag!=null}">
             	<div id="hashTagLine" class="${board.hashTag}">
-            	<c:forTokens var="hashtags" items="${board.hashTag}" delims="#">
-            		<span id="hashTag"><img class="iconHash" src="/images/board/hashtag.png">&nbsp;${hashtags}</span>
-            	</c:forTokens>
+            	
+            	<c:set var="i" value="0"/>
+	            <c:forTokens var="hashtags" items="${board.hashTag}" delims="#">
+	            	<c:set var="i" value="${i+1}" />
+	            	
+	            	<span id="hashTag">
+	            		<img class="iconHash" src="/images/board/hashtag.png">&nbsp;${hashtags}
+	            	</span>
+	            	
+	            	<c:if test="i%4==0"><br></c:if>
+	            </c:forTokens>
+            	
             	</div>
             </c:if>
             
@@ -1107,7 +1130,7 @@ $(function(){
 				<br>
 				<div class="modalUserId"><b>아&nbsp;&nbsp;이&nbsp;&nbsp;디 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br>
-				<div class="modalUserIntroduce"><b>자 기 소 개</b><input class="myFormControl" type="text" value="" readonly></div>
+				<div class="modalUserIntroduce"><b>자기소개 </b><input class="myFormControl" type="text" value="" readonly></div>
 				<br><br>
 				<c:if test="${!empty sessionScope.user}">
 					<div class="modalUserButton">

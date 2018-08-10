@@ -473,7 +473,7 @@ $(function() {
 						//alert("차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						swal({
 							title:"잠깐만요!",
-							text:"차단된 회원입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
+							text:"차단된 회원입니다.\n자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
 							icon: "warning",
 							buttons: false,
 						});
@@ -482,7 +482,7 @@ $(function() {
 						//alert("해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.");
 						swal({
 							title:"잠깐만요!",
-							text:"해당 계정은 탈퇴한 계정입니다. 자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
+							text:"해당 계정은 탈퇴한 계정입니다.\n자세한 사항은 관리자 메일(hanganom@gmail.com)로 문의하세요.",
 							icon: "warning",
 							buttons: false,
 						});
