@@ -668,7 +668,6 @@ function findName(fileName,number) {
 			}
 		});
 		
-		<!-- 각 일정당 이미지 변경을 위한 부분! -->
  		$('.way-imgs').on('click',function(){
  			var id = $(this).attr('id');
  			var idnum = id.charAt(id.length-1);
@@ -877,9 +876,8 @@ function findName(fileName,number) {
 		    dayNamesShort: ['일','월','화','수','목','금','토'],
 		    dayNamesMin: ['일','월','화','수','목','금','토'],
 		    showMonthAfterYear: true,
-		    changeMonth: true,
-		    changeYear: true,
-		    yearSuffix: yyyy+'년',
+		    //changeMonth: true,
+		    //changeYear: true,
 		    minDate: new Date(today)
 		  }); //end of datepicker
 		  

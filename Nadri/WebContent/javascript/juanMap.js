@@ -86,14 +86,14 @@ $(function(){
 	 console.log($('#img-cover').attr('src'));
 	 
 		var scheduleTitle = $("input#scheduleTitle").val();
-		var scheduleDate= $("input#scheduleDate").val($('#datepicker').val());
+		var scheduleDate= $('#datepicker').val();
 		var scheduleDetail= $("input#scheduleDetail").val();
 		
 		if(scheduleTitle == null || scheduleTitle.length <1){
 			swal("나들이 제목을 붙여주세요.");
 			return;
 		}
-		if(scheduleDate == null || scheduleDate.length <1){
+		if(scheduleDate == null || scheduleDate=='' || scheduleDate.length <1){
 			swal("나들이 가시는 날짜를 정해주세요");
 			return;
 		}

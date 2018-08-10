@@ -33,11 +33,9 @@
 	    // 메서드 네비게이션 장소입니다!!
 	  //값이 있나 없나 valudation check 부분일뿐!!
 	    function search(input) {
-	    	alert(input);
 		    	if( input == "#wayPointAddress0"){
 		    		if($(input).val() != "") {
 		    		start = document.getElementById('wayPointAddress0').value;
-		    		alert(input);
 		    			swal("출발지가 설정되었습니다!")
 		    		} else {
 		    			swal("출발지를 설정해주세요!!")

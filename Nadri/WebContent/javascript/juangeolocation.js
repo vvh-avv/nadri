@@ -334,9 +334,9 @@ function distance() {
                 var total = obj.features[0].properties;
                 var time = "";
                 if(total.totalTime > 3600) {
-                    time = Math.floor(total.totalTime/3600) + "ì‹œê°„" + Math.floor(total.totalTime%3600/60) + "ë¶„";
+                    time = Math.floor(total.totalTime/3600) + "½Ã°£" + Math.floor(total.totalTime%3600/60) + "ºÐ";
                 } else {
-                    time = Math.floor(total.totalTime%3600/60) + "ë¶„";
+                    time = Math.floor(total.totalTime%3600/60) + "ºÐ";
                 }
 
                 map.addLayer(routeLayer);

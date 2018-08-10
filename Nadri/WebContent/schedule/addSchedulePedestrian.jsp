@@ -877,9 +877,9 @@ function findName(fileName,number) {
 		    dayNamesShort: ['일','월','화','수','목','금','토'],
 		    dayNamesMin: ['일','월','화','수','목','금','토'],
 		    showMonthAfterYear: true,
-		    changeMonth: true,
-		    changeYear: true,
-		    yearSuffix: yyyy+'년',
+		    //changeMonth: true,
+		    //changeYear: true,
+		    //yearSuffix: yyyy+'년',
 		    minDate: new Date(today)
 		  }); //end of datepicker
 		  
