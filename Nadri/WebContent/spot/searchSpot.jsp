@@ -416,7 +416,7 @@ $(function(){
 	
 	
 	// 장소를 검색해서 나오는 란입니다!
-	function geocodeAddress(geocoder, map) {
+	function geocodeAddressgeocodeAddress(geocoder, map) {
 		deleteMarkers();
         var address = $("#searchKeyword").val();
         geocoder.geocode({'address': address}, function(results, status) {

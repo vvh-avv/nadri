@@ -104,5 +104,10 @@ public class ScheduleDaoImpl implements ScheduleDao{
    public List<Schedule> getMyScheduleListRest(String userId) throws Exception{
 	   return sqlSession.selectList("ScheduleMapper.getMyScheduleListRest", userId);
    };
+   
+   // 12. 가장 최근 데이터를 가져옵니다.
+   public int maxScheduleNo() throws Exception{
+	   return sqlSession.selectOne("ScheduleMapper.maxScheduleNo");
+   }
 	
 }

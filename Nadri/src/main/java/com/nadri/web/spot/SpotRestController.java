@@ -47,13 +47,6 @@ public class SpotRestController {
 		System.out.println(this.getClass());
 	}
 	
-	///PAGENAVIGATION을 위한 프로퍼티 받아오기!
-	@Value("#{commonProperties['pageUnit']}")
-	int pageUnit;
-	
-	@Value("#{commonProperties['pageSize']}")
-	int pageSize;
-	
 	@RequestMapping( value="getSpotList/{spotCode}",  method=RequestMethod.GET)
 	public Map getSpotList(@PathVariable int spotCode) throws Exception{
 		

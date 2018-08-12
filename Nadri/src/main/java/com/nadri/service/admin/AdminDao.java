@@ -42,5 +42,7 @@ public interface AdminDao {
 	public int getTotalCount();
 	
 	public List<String> getSearchLog(String userId);
+	
+	public String getSearchLog2(String userId);
 
 }

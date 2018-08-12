@@ -258,7 +258,7 @@ function reset () {
 function search(input) {
     if($(input).text()=="") {
     } else {
-    	
+    	console.log($(input).val());
         if($(input).val() != null) {
             $.ajax({
                 method: "GET",

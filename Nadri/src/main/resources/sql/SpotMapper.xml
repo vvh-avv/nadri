@@ -178,13 +178,44 @@
         and spot_code LIKE CONCAT(#{searchSpot},'%')
    </select>
    
-   <select id="getRecommandSpotList" resultMap="spotSelectMap" >
-       SELECT *
-       FROM spot
-       WHERE spot_code not like '3%'
-      ORDER BY spot_readcnt
-       limit 0, 9
-   </select>
+  <select id="getRecommandSpotList" resultMap="spotSelectMap" >
+	 SELECT spot3.* FROM spot spot3 , 
+	 ( SELECT spot.* FROM 
+	 ( SELECT COUNT(*) count , spot_code code , spot_title title , spot_address address , spot_detail detail FROM spot 
+	 where spot_title LIKE CONCAT ( '%' , #{keyword1}, '%') OR spot_address LIKE CONCAT ( '%' , #{keyword1} , '%') 
+	 OR spot_detail LIKE CONCAT ( '%' , #{keyword1} , '%')  GROUP BY spot_code ) spot
+	 ORDER BY spot.count DESC LIMIT 1 ) spot2
+	 <if test="size==1">
+	 WHERE ( spot2.code in ( spot3.spot_code ) AND spot3.spot_code in ( 10 , 11 , 0  ))
+	 </if>
+	 <if test="size==2">
+	 , ( SELECT spot.* FROM 
+	 ( SELECT COUNT( * ) count , spot_code code , spot_title title , spot_address address , spot_detail detail FROM spot 
+	 WHERE spot_title LIKE CONCAT( '%' , #{keyword2} , '%') OR spot_address LIKE CONCAT( '%' , #{keyword2} , '%') 
+	 OR spot_detail LIKE CONCAT ( '%' , #{keyword2} , '%') GROUP BY spot_code ) spot 
+	 ORDER BY spot.count DESC LIMIT 1 ) spot4
+	 WHERE ( (spot2.code = ( spot3.spot_code ) AND spot4.code = ( spot3.spot_code )) AND spot3.spot_code in ( 10 , 11 , 0  ))
+	 </if>
+	  AND
+	 ( spot3.spot_address LIKE CONCAT( '%' , #{keyword1} , '%')
+	 AND spot3.spot_detail LIKE CONCAT( '%' , #{keyword2} , '%' )) OR
+	 ( spot3.spot_title LIKE CONCAT( '%' , #{keyword1} , '%')
+	 AND spot3.spot_address LIKE CONCAT( '%' , #{keyword2} , '%' )) OR
+	 (spot3.spot_title LIKE CONCAT( '%' , #{keyword1} , '%')
+	 AND spot3.spot_title LIKE CONCAT( '%' , #{keyword2} , '%' )) OR
+	 (spot3.spot_address LIKE CONCAT( '%' , #{keyword1} , '%' )
+	 AND spot3.spot_address LIKE CONCAT( '%' , #{keyword2} , '%' )) OR
+	 (spot3.spot_address LIKE CONCAT( '%' , #{keyword1} , '%' ) 
+	 AND spot3.spot_address LIKE CONCAT( '%' , #{keyword2} , '%' )) OR
+	 (spot3.spot_address LIKE CONCAT( '%' , #{keyword1} , '%' ) 
+	 AND spot3.spot_address LIKE CONCAT( '%' , #{keyword2} , '%' )) 
+	 OR
+	 (spot3.spot_detail LIKE CONCAT( '%' , #{keyword1} , '%') 
+	 AND spot3.spot_detail LIKE CONCAT( '%' , #{keyword2} , '%')) OR
+	  (spot3.spot_detail LIKE CONCAT( '%' , #{keyword1} , '%') 
+	 OR spot3.spot_detail LIKE CONCAT( '%' , #{keyword2} , '%'))
+	 Limit 100
+</select>
    
   <!--  안드로이드에서 장소를 가져오기 위한 메서드입니다. -->
    <select id="getSpotListRest" parameterType="search" resultMap="spotSelectMap" >

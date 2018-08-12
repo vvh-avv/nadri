@@ -122,8 +122,12 @@ public class AdminServiceImpl implements AdminService{
 		// TODO Auto-generated method stub
 		return adminDao.getSearchLog(userId);
 	}
-	
-	
 
+	@Override
+	public String getSearchLog2(String userId) {
+		// TODO Auto-generated method stub
+		return adminDao.getSearchLog2(userId);
+	}
+	
 
 }
