@@ -341,16 +341,15 @@
 				}
 			})
 		})
-		
+/*		
 		$("button.btn.btn-default:contains('')").on("click", function() {
 			fncGetList(1);
-		});
+		});*/
 		
 		var chk = true;
 		var male;
 		$('.switch').on('change',function(){
 			
-			$('.')
 			
 			if(chk){
 				console.log("hihi");
