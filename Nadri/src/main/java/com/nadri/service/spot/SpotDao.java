@@ -1,6 +1,7 @@
 package com.nadri.service.spot;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nadri.common.Search;
 import com.nadri.service.domain.Spot;
@@ -45,14 +46,11 @@ public interface SpotDao {
 	// 6. 게시판을 클릭했을때 조회수가 1씩 증가
 	public void updateSpotReadCnt(Spot spot) throws Exception;
 	
-	// 7. 전체 장소의 갯수를 가져옵니다.
-	public int getTotalSpot() throws Exception;
-	
 	// 8. 검색한 장소를 가져옵니다.
 	public List<Spot> getSearchSpotList(Search search) throws Exception;
 	
 	// 9. getRecommandSpotList 가져오는 메서드
-	public List<Spot> getRecommandSpotList() throws Exception;
+	public List<Spot> getRecommandSpotList(Map<String, Object> keyword) throws Exception;
 	
 	// 10. 안드로이드에서 getSpot
 	public List<Spot> getSpotListRest(Search search) throws Exception;

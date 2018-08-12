@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>너, 나들이</title>
+<title>너,나들이</title>
 
 <!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
 <link rel="stylesheet"
@@ -705,7 +705,7 @@
 		<!-- 게시물목록 끝 -->
 
 
-	<!-- 목록
+	<!-- 목록 -->
 	<div class="container contents-wrapper">
 		<div class="second-line">
 			<div class="popular-spot">
@@ -794,9 +794,9 @@
 				</c:if>
 			</div>
 		</div>
+		<!-- 목록끝 -->
+
 	</div>
-	<!-- 목록끝 -->
-	
 	<div class="bottom-section">
 		<div class="section-backgrounds"></div>
 		<div class="container bottom-contents">

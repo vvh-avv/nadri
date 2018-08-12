@@ -148,8 +148,8 @@ public class BoardController {
 		System.out.println("/board/updateBoard : POST");
 		
 		//String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
-		//String uploadPath = "C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
-		String uploadPath = "C:\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Nadri\\images\\board\\posts\\"; //파일업로드 경로(바로보여주기)
+		String uploadPath = "C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
+		//String uploadPath = "C:\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Nadri\\images\\board\\posts\\"; //파일업로드 경로(바로보여주기)
 
 		String fileOriginName=""; //각 원본파일명
 		String fileMultiName=""; //최종 파일명(들)

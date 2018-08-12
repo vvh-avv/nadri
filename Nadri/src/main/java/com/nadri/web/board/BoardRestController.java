@@ -104,7 +104,8 @@ public class BoardRestController {
 		Board board = boardService.getBoard(boardNo);
 		
 		//String uploadPath = request.getRealPath(imgPath)+"\\"; //파일업로드 경로
-		String uploadPath = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
+		//String uploadPath = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
+		String uploadPath = "C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\board\\posts\\"; //파일업로드 경로
 		
 		if( board.getBoardImg()!=null ) { //이미지가 존재할 때
 			//업로드된 기존파일 삭제

@@ -229,4 +229,9 @@
 		AND schedule_date > now()
 		ORDER BY schedule_date
 	</select>
+	
+	   <!-- 가장 최근데이터를 가져옵니다. -->
+   <select id = "maxScheduleNo" resultType="int">
+   	SELECT MAX(schedule_no) FROM schedule
+   </select>
 </mapper>

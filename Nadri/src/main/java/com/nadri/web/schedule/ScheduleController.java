@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nadri.common.Page;
 import com.nadri.common.Search;
+import com.nadri.common.SuffixParsing;
+import com.nadri.service.admin.AdminService;
 import com.nadri.service.cart.CartService;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.Spot;
@@ -56,6 +60,10 @@ public class ScheduleController {
 	@Autowired
 	@Qualifier("spotServiceImpl")
 	private SpotService spotService;
+	
+	@Autowired
+	@Qualifier("adminServiceImpl")
+	private AdminService adminService;
 
 	public ScheduleController(){
 		System.out.println(this.getClass());
@@ -84,10 +92,135 @@ public class ScheduleController {
 		String userId=((User) session.getAttribute("user")).getUserId();
 		System.out.println("session id = "+userId);
 		
+	      Map<String, Object> keyword = new HashMap<String , Object>() ;
+	      String s = adminService.getSearchLog2(((User)session.getAttribute("user")).getUserId() ) ;
+	      SuffixParsing suffixParsing = new SuffixParsing() ;
+	      ArrayList<String> list = suffixParsing.parsing( s ) ;
+	      if(list.size() < 2) {
+	         keyword.put("keyword1"  , list.get( 0 ) ) ;
+	         System.out.println( "keyword값 : " + list.get( 0 ) ) ;
+	      } else {
+	         for(int i = 0 ; i < 2 ; i++) {
+	            keyword.put("keyword" + ( i + 1 )  , list.get( i ) ) ;
+	         }
+	      }
+	      
+	     keyword.put("size", keyword.size()) ;
+	     System.out.println("size : " + keyword.get("size"));
+	     
+	     List<Spot> list2 = spotService.getRecommandSpotList(keyword) ;
+//	      System.out.println("======================================");
+//	      for(Spot i : list2) {
+//	         System.out.println( i ) ;
+//	      }
+//	      System.out.println("======================================");
+	     ArrayList<Spot> result = new ArrayList<>() ;
+	      if( ((int)keyword.get("size")) == 1 ) {
+	         int flag = 0 ;
+	         for(int i = 0  ; i < list2.size()  ; i++) {
+	            if(result.size() == 9) {
+	               break ;
+	            }
+	            if( i == list2.size() -1) {
+	               i = 0 ;
+	            }
+	            if(flag <= list2.size()) {
+	               if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotTitle().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotTitle().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               }
+	               flag++ ;
+	            } else {
+	               if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword2") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               }
+	            }//End of else
+	         }
+	      } else {
+	         int flag = 0 ;
+	         for(int i = 0  ; i < list2.size()  ; i++) {
+	            if(result.size() == 9) {
+	               break ;
+	            }
+	            if( i == list2.size() -1) {
+	               i = 0 ;
+	            }
+	            if(flag <= list2.size() ) {
+	               if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotTitle().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotTitle().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword2") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword2") )) != -1 && 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               }
+	               flag++ ;
+	            }
+	            else {
+	               if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword2") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword1") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	               } else if( list2.get(i).getSpotAddress().indexOf(( (String)keyword.get("keyword1") )) != -1 || 
+	                     list2.get(i).getSpotDetail().indexOf(( (String)keyword.get("keyword2") )) != -1 ) {
+	                  result.add( list2.get(i) ) ;
+	            }
+	      }
+	         }//End of for
+	      }     
+	     
+		
 		
 		// model에 담습니다!
 		model.addAttribute("cart", cartService.getSpotCartList(userId));
-		model.addAttribute("recommand", spotService.getRecommandSpotList());
+		model.addAttribute("recommand", result);
 	    model.addAttribute("date", date);
 
 		if (transportationCode == 1) { 
@@ -150,7 +283,10 @@ public class ScheduleController {
 			}
 		}
 		
-		return "forward:/index.jsp";
+		//가장 최근 데이터 가져옵니다.
+		int maxSchedule = scheduleService.maxScheduleNo();
+		
+		return "redirect:/schedule/getSchedule?scheduleNo="+maxSchedule;
 	}
 	
 	// getSchedule을 실행하기 위한 GET 메서드 입니다.
@@ -298,11 +434,29 @@ public class ScheduleController {
 		// 세션에서 userId 를 가져옵니다!
 		String userId=((User) session.getAttribute("user")).getUserId();
 		
+		
+
+	      Map<String, Object> keyword = new HashMap<String , Object>() ;
+	      String s = adminService.getSearchLog2(((User)session.getAttribute("user")).getUserId() ) ;
+	      SuffixParsing suffixParsing = new SuffixParsing() ;
+	      ArrayList<String> list = suffixParsing.parsing( s ) ;
+	      if(list.size() < 2) {
+	         keyword.put("keyword1"  , list.get( 0 ) ) ;
+	         System.out.println( "keyword값 : " + list.get( 0 ) ) ;
+	      } else {
+	         for(int i = 0 ; i < 2 ; i++) {
+	            keyword.put("keyword" + ( i + 1 )  , list.get( i ) ) ;
+	         }
+	      }
+	      
+	     keyword.put("size", keyword.size()) ;
+	     System.out.println("size : " + keyword.get("size"));
+		
 		// Model 과 View 연결
 		model.addAttribute("schedule", scheduleService.getSchedule(scheduleNo));
 		model.addAttribute("waypoint", scheduleService.getWayPoint(scheduleNo));
 		model.addAttribute("cart", cartService.getSpotCartList(userId));
-		model.addAttribute("recommand", spotService.getRecommandSpotList());
+		model.addAttribute("recommand", spotService.getRecommandSpotList(keyword));
 
 		if (transportationCode == 0 ) {
 			return "forward:/schedule/updateScheduleCar.jsp";
@@ -362,7 +516,6 @@ public class ScheduleController {
 		// 일정 등록하는 부분
 		scheduleService.addSchedule(schedule);
 		
-		
 		// 경유지 등록하는 부분
 		for(int i = 0; i < schedule.getWayPoints().size() ; i++) {
 			System.out.println("시작되는중 번호 :"+i);
@@ -370,6 +523,10 @@ public class ScheduleController {
 			scheduleService.addWayPoint(schedule.getWayPoints().get(i));
 			scheduleService.updateHashTag(schedule.getWayPoints().get(i).getWayPointTitle());
 		}
-		return "forward:/index.jsp";
+		
+		//가장 최근 데이터 가져옵니다.
+		int maxSchedule = scheduleService.maxScheduleNo();
+		
+		return "redirect:/schedule/getSchedule?scheduleNo="+maxSchedule;
 	}
 }

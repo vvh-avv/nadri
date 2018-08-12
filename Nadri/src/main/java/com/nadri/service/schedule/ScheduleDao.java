@@ -41,4 +41,7 @@ public interface ScheduleDao {
    
    // 11. 안드로이드로 일정을 뿌려줍니다.
    public List<Schedule> getMyScheduleListRest(String userId) throws Exception;
+   
+   // 12. 가장 최근 데이터를 가져옵니다.
+   public int maxScheduleNo() throws Exception;
 }

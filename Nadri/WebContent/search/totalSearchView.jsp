@@ -77,10 +77,7 @@
 						</div>
 					</div>
 					<div class="col-md-6 col-xs-12">
-						<img
-							src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg"
-							class="placeImg"
-							style="background-color: black; width: 100%; height: 300px;">
+						<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="placeImg" style="background-color: black; width: 100%; height: 300px;">
 					</div>
 				</div>
 			</div>
@@ -207,9 +204,7 @@
 				console.log('검색결과가 없습니다.');
 				$('.placeTitle').text("검색결과가 없습니다 ㅠㅠ");
 				$('.placeContent').text("미아내오 준비하께오ㅜㅜㅜㅜㅠㅠㅠㅠㅠ");
-				$('.placeImg')
-						.attr("src",
-								"https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
+				//$('.placeImg').attr("src","https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
 			} else {
 				for (i = 0; i < locations.length; i++) {
 					marker = new google.maps.Marker({
@@ -226,8 +221,14 @@
 							infowindow.open(map, marker);
 							$('.placeTitle').text(locations[i][1]);
 							$('.placeContent').text(locations[i][4]);
+							////////////////////////////HJA 수정... 공원도 이미지를 보일 수 있도록!!////////////
+							if(locations[i][5].length <= 15){
 							$('.placeImg').attr("src",
 									"/images/spot/" + locations[i][5]);
+							} else {
+								$('.placeImg').attr("src", locations[i][5]);
+							}
+							//////////////////////////////////////////////////////////////////////////
 							$('.placeTitle').attr('name', locations[i][6]);
 						}
 					})(marker, i));
@@ -236,7 +237,15 @@
 				$('.placeTitle').text(locations[0][1]);
 				$('.placeTitle').attr('name', locations[0][6]);
 				$('.placeContent').text(locations[0][4]);
-				$('.placeImg').attr("src", "/images/spot/" + locations[0][5]);
+				//alert( locations[0][5]);
+				////////////////////////////HJA 수정... 공원도 이미지를 보일 수 있도록!!////////////
+				if(locations[i][5].length <= 15){
+					$('.placeImg').attr("src", "/images/spot/" + locations[i][5]);
+				} else {
+			        $('.placeImg').attr("src", locations[i][5]);
+				}
+				//////////////////////////////////////////////////////////////////////////
+				//$('.placeImg').attr("src", locations[0][5]);
 			}
 
 		}

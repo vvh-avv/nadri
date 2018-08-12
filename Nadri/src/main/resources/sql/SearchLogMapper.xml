@@ -137,4 +137,13 @@
 		VALUE(#{userId},#{searchKeyword},'0',NOW())
 	</insert>
 	
+	 <select id="getSearchLog2" parameterType="string" resultType="string">
+      SELECT search_keyword , search_time
+      FROM search
+      WHERE user_id = #{value}
+      group by search_keyword
+      order by search_time DESC
+      LIMIT 1
+   </select>
+	
 </mapper>

@@ -6,8 +6,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nadri.common.SuffixParsing;
+import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Schedule;
 import com.nadri.service.domain.Spot;
 import com.nadri.service.domain.User;
@@ -38,6 +43,9 @@ public class SpotController {
 	@Autowired
 	@Qualifier("spotServiceImpl")
 	private SpotService spotService;
+
+	@Qualifier("adminServiceImpl")
+	private AdminService adminService;
 
 	public SpotController(){
 		System.out.println(this.getClass());
@@ -76,16 +84,10 @@ public class SpotController {
 		
 		if(spotCode == 0) {
 			return "forward:/spot/parkSpot.jsp";
-		} else if(spotCode == 4) {
-			return "forward:/spot/riverSpot.jsp";
 		} else if(spotCode == 1) {
 			return "forward:/spot/restaurantSpot.jsp";
-		} else if(spotCode == 30) {
-			return "forward:/spot/babySpot.jsp";
-		} else if(spotCode == 31) {
-			return "forward:/spot/carSpot.jsp";
-		} else if(spotCode == 32) {
-			return "forward:/spot/bikeSpot.jsp";
+		} else if(spotCode == 4) {
+			return "forward:/spot/riverSpot.jsp";
 		} else {
 			return "forward:/spot/parkSpot.jsp";
 		}
@@ -150,17 +152,6 @@ public class SpotController {
       model.addAttribute("spot", spot);
       
       return "forward:/spot/getSpot.jsp";
-   }
-	
-	@RequestMapping( value="getSpotMain" , method=RequestMethod.GET)
-    public String getSpotMain(Model model ) throws Exception {
-      
-      System.out.println("/spot/getSpotMain : GET");
-      
-      // Model °ú View ¿¬°á
-      model.addAttribute("total", spotService.getTotalSpot());
-      
-      return "forward:/spot/mainSpot.jsp";
    }
 	
 	@RequestMapping(value="getFestival" , method=RequestMethod.GET)
