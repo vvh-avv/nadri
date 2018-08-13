@@ -17,7 +17,7 @@ routeLayer.style ={
     strokeWidth: 3,
     strokeDashstyle: "solid",
     pointRadius: 2,
-    title: "this is a red line"	
+    title: "this is a red line"   
 };
 var lonlat = new Tmap.LonLat(127.02758300000005,37.494541).transform("EPSG:4326", "EPSG:3857");
 var geolocation = navigator.geolocation;
@@ -71,18 +71,18 @@ function geoLocation(location) {
 }
 
 function zoomIn(){
-	map.zoomIn(); 
+   map.zoomIn(); 
 }
 
 function zoomOut(){
-	map.zoomOut();
+   map.zoomOut();
 }
 
 function moveCoordinate (value, x, y) {
     var PR_3857 = new Tmap.Projection("EPSG:3857");  
-														// EPSG:3857
+                                          // EPSG:3857
     var PR_4326 = new Tmap.Projection("EPSG:4326");  
-														// EPSG:4326
+                                          // EPSG:4326
 
     lonlat = new Tmap.LonLat(x, y).transform(PR_4326, PR_3857);
 
@@ -94,24 +94,24 @@ function moveCoordinate (value, x, y) {
 }
 
 /*function onClick(e){
-	alert(e.xy);
+   alert(e.xy);
     lonlat = map.getLonLatFromViewPortPx(e.xy).transform("EPSG:3857", "EPSG:4326");
     y = lonlat.lat;
     
     if(input_s == 0) {
         if(input_e == 0) {
-        	alert("111111111111111111")
+           alert("111111111111111111")
             removeMarker("e");
             resetResult();
         }
         removeMarker("s");
         setLocation("#waypoint0", x, y, lonlat);
     } else if(input_e == 0) {
-    	alert("22222222222222222")
+       alert("22222222222222222")
         removeMarker("e");
         setLocation("#waypoint1", x, y, lonlat);
     } else if(input){
-    	alert("3333333333333333")
+       alert("3333333333333333")
         removeMarker("s");
         removeMarker("e");
         reset();
@@ -127,7 +127,7 @@ function resetResult() {
 
 function setLocation(value, x, y, lonlat) {
     if (value == "#wayPointAddress1"){
-    	setXY("w0", x, y);
+       setXY("w0", x, y);
         lonlat = lonlat.transform("EPSG:4326", "EPSG:3857"); 
         setMarker("w0");
     } else if(value == "#waypoint1") {
@@ -163,7 +163,7 @@ function setMarker(value) {
         markerW0 = new Tmap.Marker(lonlat, icon_s); 
         markerLayer_w0.addMarker(markerW0);// 
     } else if(value == "w1") {
-    	//markerLayer_e.removeMarker(markerB); // 
+       //markerLayer_e.removeMarker(markerB); // 
         markerW1 = new Tmap.Marker(lonlat, icon_1); // 
         markerLayer_w1.addMarker(markerW1);// 
     } else if(value == "w2"){
@@ -212,31 +212,31 @@ function removeMarker(value) {
 
 function setXY(value, x, y) {
     if(value == "w0") {
-    	start_x = x;
-    	start_y = y;
+       start_x = x;
+       start_y = y;
         searchAdress("#wayPointAddress0", y, x);
     } else if(value == "w1") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress1", y, x);
     } else if(value == "w2") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress2", y, x);
     } else if(value == "w3") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress3", y, x);
     } else if(value == "w4") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress4", y, x);
     } else if(value == "w5") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress5", y, x);
     } else if(value == "w6") {
-    	end_x = x;
+       end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress6", y, x);
     } else {
@@ -258,7 +258,7 @@ function reset () {
 function search(input) {
     if($(input).text()=="") {
     } else {
-    	console.log($(input).val());
+       console.log($(input).val());
         if($(input).val() != null) {
             $.ajax({
                 method: "GET",
@@ -281,7 +281,7 @@ function search(input) {
                         if (input == "#waypoint0") {
                             swal("wait");
                         } else {
-                        	swal("wait");
+                           swal("wait");
                         }
                     }
                 },
@@ -297,11 +297,11 @@ function go() {
     if (input_s == 1 && input_e == 1) {
         distance();
     }  else if(input_e == 1) {
-    	distance();
+       distance();
     } else if(input_s == 0){
-    	swal("wait");
+       swal("wait");
     } else {
-    	swal("wait");
+       swal("wait");
     }
 }
 
@@ -310,7 +310,7 @@ var headers = {};
 headers["appKey"]="81d71b60-e7b0-4a49-8eff-e265fd5a44d1";//
 
 function distance() {
-	
+   
     if (start_x != null && end_x != null) {
         $.ajax({
             method:"POST",
@@ -324,8 +324,8 @@ function distance() {
                 reqCoordType : "WGS84GEO",
                 resCoordType : "EPSG3857",
                 angle:"172",
-        		startName : "startName",
-        		endName : "endName"
+              startName : "startName",
+              endName : "endName"
             },
             success:function(data) {
                 var obj = JSON.stringify(data);
@@ -352,14 +352,14 @@ function distance() {
                 a++;
                 
                 try{
-                	
+                   
                 for (var i =0 ; obj.features.length ; i+=2){
-                	var nav;
-                	nav += "#"+obj.features[i].properties.description;
-                	$("#wayPointNav"+a+"").val(nav);
+                   var nav;
+                   nav += "#"+obj.features[i].properties.description;
+                   $("#wayPointNav"+a+"").val(nav);
                 }
                 } catch(exception ) {
-                	
+                   
                 }
                         
                 start_x =end_x;
@@ -375,7 +375,7 @@ function distance() {
 }
 
 function searchAdress(input, lat, lon) {
-	//alert("searchAdress input! : " +input);
+   //alert("searchAdress input! : " +input);
     $.ajax({
         method: "GET",
         url: "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1",
@@ -404,7 +404,7 @@ function alertAdress(input) {
         if(input == "#waypoint0") {
             removeMarker("s");
         } else if(input == "#waypoint1"){
-        	removeMarker("e");
+           removeMarker("e");
         } else {
             removeMarker("p");
         }
@@ -412,8 +412,8 @@ function alertAdress(input) {
 
 function sOrE (input, x, y) {
     if(input == "#wayPointAddress0") {
-    	start_x = x; 
-    	start_y = y; 
+       start_x = x; 
+       start_y = y; 
         startInputS(); 
         moveCoordinate("w0", x,y);
     } else if(input == "#wayPointAddress1") {
@@ -422,33 +422,33 @@ function sOrE (input, x, y) {
         startInputE(); 
         moveCoordinate("w1", x,y);
     } else if(input == "#wayPointAddress2") {
-    	end_x = x;
-    	end_y = y;
+       end_x = x;
+       end_y = y;
         startInputE(); 
         moveCoordinate("w2", x,y);
     } else if(input == "#wayPointAddress3") {
-    	end_x = x;
-    	end_y = y; 
+       end_x = x;
+       end_y = y; 
         startInputE(); 
         moveCoordinate("w3", x,y);
     } else if(input == "#wayPointAddress4") {
-    	end_x = x;
-    	end_y = y; 
+       end_x = x;
+       end_y = y; 
         startInputE(); 
         moveCoordinate("w4", x,y);
     } else if(input == "#wayPointAddress4") {
-    	end_x = x; 
-    	end_y = y; 
+       end_x = x; 
+       end_y = y; 
         startInputE(); 
         moveCoordinate("w2", x,y);
     } else if(input == "#wayPointAddress5") {
-    	end_x = x; 
-    	end_y = y;
+       end_x = x; 
+       end_y = y;
         startInputE();
         moveCoordinate("w5", x,y);
     } else if(input == "#wayPointAddress6") {
-    	end_x = x; 
-    	end_y = y; 
+       end_x = x; 
+       end_y = y; 
         startInputE();
         moveCoordinate("w6", x,y);
     } else  {
@@ -470,4 +470,3 @@ function startInputE() {
 function endInputE() {
     input_e = 0;
 }
-

@@ -1206,7 +1206,7 @@ $(function(){
                   	  	<li><img src="/images/board/posts/${images}"/></li>
                   	  </c:if>
                   	  <c:if test="${board.boardCode!=0}">
-                  	  	<li><img src="/images/schedule/${images}"/></li>
+                  	  	<li><img src="/images/spot/uploadFiles/${images}"/></li>
                   	  </c:if>
                   </c:forTokens>
                </ul>
