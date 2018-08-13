@@ -335,22 +335,21 @@
 					$('.block-status').text(' .');
 					$('#modal4').modal('show');
 				}else{
-					console.log(' !');
+					console.log('!');
 					$('.block-status').text(' .');
 					$('#modal4').modal('show');
 				}
 			})
 		})
-		
+/*		
 		$("button.btn.btn-default:contains('')").on("click", function() {
 			fncGetList(1);
-		});
+		});*/
 		
 		var chk = true;
 		var male;
 		$('.switch').on('change',function(){
 			
-			$('.')
 			
 			if(chk){
 				console.log("hihi");

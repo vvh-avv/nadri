@@ -1,6 +1,7 @@
 package com.nadri.service.spot.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,8 +112,8 @@ public class SpotDaoImpl implements SpotDao{
 	
 	// 3. getRecommandSpotList 가져오는 메서드
 	@Override
-	public List<Spot> getRecommandSpotList() throws Exception {
-		return sqlSession.selectList("SpotMapper.getRecommandSpotList");
+	public List<Spot> getRecommandSpotList(Map<String, Object> keyword) throws Exception {
+		return sqlSession.selectList("SpotMapper.getRecommandSpotList", keyword);
 	}
 	
 	// 10. 안드로이드에서 getSpot

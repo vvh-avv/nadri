@@ -9,6 +9,11 @@ encoding//WebContent/javascript/index.js=euc-kr
 encoding//WebContent/javascript/indexReal.js=euc-kr
 encoding//WebContent/javascript/indexReal_nonIndex.js=euc-kr
 encoding//WebContent/javascript/juanMap.js=EUC-KR
+<<<<<<< HEAD
+=======
+encoding//WebContent/javascript/juangeolocation.js=euc-kr
+encoding//WebContent/javascript/juangeolocationPedestrian.js=EUC-KR
+>>>>>>> refs/remotes/origin/master
 encoding//WebContent/javascript/toolbar.js=euc-kr
 encoding//WebContent/javascript/total_search_view.js=euc-kr
 encoding//WebContent/layout/tool.html=euc-kr

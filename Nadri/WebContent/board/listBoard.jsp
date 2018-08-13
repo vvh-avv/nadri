@@ -1089,6 +1089,7 @@ $(function(){
                          $('.inquire_form')[0].reset();
                          $('#inquireModal').modal('hide');
                          console.log(data);
+                         swal("신고가 완료 되었습니다.");
                       }
                    }
                 });

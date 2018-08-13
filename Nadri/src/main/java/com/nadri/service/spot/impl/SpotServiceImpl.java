@@ -1,6 +1,7 @@
 package com.nadri.service.spot.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -103,11 +104,6 @@ public class SpotServiceImpl implements SpotService{
 		spotDao.updateSpotReadCnt(spot);
 	}
 	
-	// 7. 전체 장소의 갯수를 가져옵니다.
-	public int getTotalSpot() throws Exception {
-		return spotDao.getTotalSpot();
-	}
-	
 	// 8. 검색한 장소를 가져옵니다.
 	public List<Spot> getSearchSpotList(Search search) throws Exception {
 		return spotDao.getSearchSpotList(search);
@@ -115,8 +111,8 @@ public class SpotServiceImpl implements SpotService{
 	
 	// 3. getRecommandSpotList 가져오는 메서드
 	@Override
-	public List<Spot> getRecommandSpotList() throws Exception {
-		return spotDao.getRecommandSpotList();
+	public List<Spot> getRecommandSpotList(Map<String, Object> keyword) throws Exception {
+		return spotDao.getRecommandSpotList(keyword);
 	}
 	
 	// 10. 안드로이드에서 getSpot

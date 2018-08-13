@@ -22,143 +22,37 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<!-- admin index 전용 css  -->
+<!-- admin index 전용  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 <link rel="stylesheet" href="/css/adminIndexSmall.css">
+<link rel="stylesheet" href="/css/adminList.css">
+<link rel="stylesheet" href="/css/adminInquireSmall.css">
 <script src="/javascript/adminIndex.js"></script>
 
-<title>너나들이 유저 목록</title>
+<title>너나들이 어드민 회원목록 페이지</title>
+	
+<style>
 
-</head>
-<style type="text/css">
-html, body {
-	margin: 0px;
-	width: 100%;
-	height:70vh;
-	font-size: 65px;
+.admin-sub-navbar div:first-child{
+	color : #337ab7;
+	border-bottom : 3px solid #337ab7;
+	cursor: not-allowed;
+ 	pointer-events: none;
 }
 
-.text-center{
-	font-size : 12px;
-}
-
-.tableset {
-	margin: 5% 5%;
-	width: 90%;
-	text-align: left;
-	font-size: 0.2em;
-}
-
-.table{
-	margin-top:5%;
-}
-
-th {
-	font-size: 12px;
-	text-align: center;
-}
-
-.texts:hover {
-	background: rgba(163, 161, 159, 0.52);
-}
-
-td {
-	font-size: 11px;
-	text-align: center;
-}
-
-.firstLine {
-	background: #60a0b37a;
-}
-
-.inquireTransaction {
-	display: flex;
+.inquire-detail-title{
+	display :flex;
 	align-items: center;
-	font-size: 0.2em;
 }
 
-.inquireTransaction>span {
-	margin: 0px 5px;
-}
-
-.navbar {
-	font-size: 0.2em;
-}
-
-.inquireBody {
-	display: flex;
-	align-items: flex-start;
-	flex-direction: column;
-	text-align: left;
-}
-
-.inquire-detail-title {
-	display: block;
-	position: relative;
-	left: 0px;
-	font-size: 2em;
-	font-weight: 800;
-	margin-left: 10vw;
-}
-
-ul {
-	margin: 10px 10vw;
-	padding: 10px;
-}
-
-li {
-	margin: 5px 0px;
-	font-size: 1.3em;
-}
-
-.logbutton {
-	margin-left: 15px;
-}
-
-.inquirebutton {
-	margin-left: 70%;
-	width: 15%;
-	min-width: 80px;
-	margin-right: 15%;
-}
-
-#chart_div {
+.check-boxes{
 	display: flex;
 	justify-content: center;
 }
 
-.userLogList {
-	font-size: 0.2em;
-}
-
-select, option {
-	font-size: 0.2em;
-}
-
-.duration-log {
-	display: flex;
-	justify-content: flex-end;
-}
-
-.block-user {
-	visibility: hidden;
-	margin-right: 2%;
-}
-
-.row{
-	display:flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-</style>
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
+</style>	
+	
 <script type="text/javascript">
-	// 구글 챠트의 정보를 불러옵니다.
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
 	
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
@@ -166,25 +60,6 @@ select, option {
 	}
 
 	$(function() {
-
-		/* index page animation start */
-
-		$('.admin-sub-navbar > div').on('click', function() {
-			var way = $(this).attr('class');
-			if (way == "inquire") {
-				self.location = '/admin/listInquire';
-			} else if (way == "spot") {
-				self.location = '/admin/listSpot';
-			} else if (way == "graph") {
-				self.location = '/admin/listGraph?duration=day';
-			} else if (way == "userList") {
-				self.location = '/admin/listUser';
-			} else if (way == "userLog") {
-				self.location = '/admin/listLog';
-			}
-		})
-
-		/* index page animation end */
 
 		$('.inquirebutton').on(
 				'click',
@@ -224,16 +99,6 @@ select, option {
 			}
 		})
 
-		$('.sended').on(
-				'click',
-				function() {
-					var inqCode = $('.inquiredCode').text();
-					var chkCode = $('.inquireChkCode').val();
-					console.log('checked code value = ' + chkCode);
-					self.location = '/admin/updateInquire?inqCode=' + inqCode
-							+ '&chkCode=' + chkCode;
-				})
-
 		$('img').on('mouseover', function() {
 			$(this).css('cursor', 'pointer');
 			$(this).css('opacity', '0.5');
@@ -247,22 +112,64 @@ select, option {
 			$(this).css('opacity', '1');
 		})
 		
-		$("button.btn.btn-default:contains('검색')").on("click", function() {
-			fncGetList(1);
-		});
-
+		var chk = true;
+		var male;
+		$('.switch').on('change',function(){
+			
+			if(chk){
+				console.log("hihi");
+				$('.option-box > div').css('height','200px');
+				console.log($('.inquire-title').css('margin-left'));
+				male = $('.inquire-title').css('margin-left');
+				$('.inquire-title').css('margin-left','0%');
+				chk = false;
+			}else{
+				console.log("byebye");
+				$('.option-box > div').css('height','50px');
+				$('.inquire-title').css('margin-left',male);
+				
+				chk = true;
+			}
+		})
 		
+		$('.inquireKeyword').on('focusin',function(){
+			$('.inquireKeyword').attr('placeholder','');
+			$('.glyphicon-search').css('color','#1c2144');
+			$('.options > div').css('border','1px solid #1c2144');
+		})
+		
+		$('.inquireKeyword').on('focusout',function(){
+			$('.inquireKeyword').attr('placeholder','검색어를 입력해주세요');
+			$('.glyphicon-search').css('color','#adadad');
+			$('.options > div').css('border','1px solid #c1c1c154');
+		})
+
+		$('.inquireKeyword').on('keydown',function(e){
+			console.log($('input:radio[name=searchCondition]').is(':checked'));
+			var radio = $('input:radio[name=searchCondition]').is(':checked');
+			if(e.which == 13){
+				if(radio){
+					fncGetList(0);	
+				}else{
+					alert('검색조건을 하나이상 선택해주세요!');
+				}
+			}
+		})
 		
 
 	});
 </script>
+
+</head>
+
 <body>
 
 	<nav class="admin-navbar">
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">
 			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
-			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
+			<div class="profile-photo"
+				style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
 			</div>
 		</div>
 	</nav>
@@ -273,192 +180,209 @@ select, option {
 		<div class="inquire">문의관리</div>
 	</nav>
 
-	<c:if test="${list.size()==0}">
-		<div class="container">
-			<div>회원 목록이 하나도 없어요.</div>
-		</div>
-	</c:if>
-
-	<c:if test="${list.size() > 0}">
-		<div class="tableset">
-			<div class="row">
-
-				<div class="col-md-6 text-left">
-					<p class="text-primary" style="margin:0px;">전체 ${resultPage.totalCount } 건수, 현재
-						${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
+	<div class="container">
+		<div class="row option-box">
+			<div class="col-md-12 col-xs-12">
+				<div class="inquire-title">회원목록 조회하기</div>
+				<div class="open-searcher">
+					<label class="switch"> <input type="checkbox"> <span
+						class="slider round"></span>
+					</label>
 				</div>
-
-				<div class="col-md-6 text-right">
-					<form class="form-inline" name="detailForm">
-
-						<div class="form-group">
-							<select class="form-control" name="searchCondition">
-								<option value="0"
-									${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
-								<option value="1"
-									${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label class="sr-only" for="searchKeyword">검색어</label> <input
-								type="text" class="form-control" id="searchKeyword"
-								name="searchKeyword" placeholder="검색어"
+				<div class="row options">
+					<form name="inquire-search-form" class="inquire-search-form">
+						<div class="col-md-10 col-xs-12">
+							<div class="glyphicon glyphicon-search"></div>
+							<input type="text" class="inquireKeyword" name="searchKeyword" placeholder="검색어를 입력해주세요"
 								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+							<input style="display:none;">
+
+							<div class="row check-boxes">
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="searchCondition" class="conditions"
+										value="0"><label class="cons-label" id="inclCon">
+										유저 아이디로 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="searchCondition" class="conditions"
+										value="1"><label class="cons-label" id="beginCon">
+										유저명으로 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="checkbox" name="noChecked" class="conditions"
+										value="quitNot"><label class="cons-label" id="noChecked">
+										탈퇴회원제외</label>
+								</div>
+							</div>
+							<div class="row order-option">
+							
+								<div class="col-md-6 option-align">
+									<div>최신순</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+								
+								<div class="col-md-6 option-align">
+									<div>종류별</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+								
+							</div>
 						</div>
-
-						<button type="button" class="btn btn-default">검색</button>
-
 						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
 						<input type="hidden" id="currentPage" name="currentPage" value="" />
-
+						
 					</form>
 				</div>
-
 			</div>
-			<table class="table">
-				<tr class="firstLine">
-					<th>회원아이디</th>
-					<th>회원이름</th>
-					<th>검색공개유무</th>
-					<th>가입일</th>
-					<th>마지막 접속일</th>
-					<th>유저상태</th>
-					<th>유저 아이피</th>
-				</tr>
-				<c:set var="i" value="0" />
-				<c:forEach var="user" items="${list}">
-					<c:set var="i" value="${ i+1 }" />
-					<tr id="list${i}" class="texts">
-						<td>${user.userId}</td>
-						<td>${user.userName}</td>
-						<td>${user.infoOption==0 ? "공개" : "비공개"}</td>
-						<td>${user.regDate}</td>
-						<td>${user.lastLogin}</td>
-						<td>${user.status==0 ? "정상" : (user.status == 1 ? "차단" : "탈퇴")}</td>
-						<td>${user.ip}</td>
-					</tr>
-					<tr>
-						<td colspan="7" class="${i}">
-							<div class="inquireBody">
-								<div class="inquire-detail-title">${inquire.inquireNo}번
-									문의내용 상세보기</div>
-
-								<ul>
-
-									<li>문의글 작성 유저 아이디 : ${inquire.userId}
-										<button class="logbutton userInqLog" data-toggle="modal"
-											data-target="#modal2" name="${inquire.userId}">활동보기</button>
-									</li>
-
-									<c:if test="${inquire.inquireCode==0}">
-										<li>신고된 해당 유저 아이디 : ${inquire.reportUserId}
-											<button class="logbutton userReportLog" data-toggle="modal"
-												data-target="#modal2" name="${inquire.reportUserId}">활동보기</button>
-										</li>
-									</c:if>
-
-									<c:if test="${inquire.inquireCode > 0}">
-										<li>링크 : ${inquire.inquireLink}</li>
-									</c:if>
-
-									<li>신고 내용 : ${inquire.inquireWrite}</li>
-									<li>첨부 파일</li>
-
-								</ul>
-
-								<img src="/images/inquire/${inquire.inquireFile1}"
-									style="width: 100px; height: 100px;">
-
-								<c:if test="${inquire.inquireChkCode==0}">
-									<button class="btn btn-primary inquirebutton" id="${i}"
-										data-toggle="modal" data-target="#Modal1">신고처리하기</button>
-								</c:if>
-
-							</div>
-						</td>
-					<tr>
-				</c:forEach>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
 		</div>
-		<!-- PageNavigation Start... -->
-		<jsp:include page="../common/pageNavigator.jsp" />
-		<!-- PageNavigation End... -->
-	</c:if>
-
-	
-
-	<!-- 신고처리 Modal content-->
-	<div class="modal fade" id="Modal1" role="dialog">
-		<div class="modal-dialog">
-
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">신고처리</h4>
-				</div>
-				<div class="modal-body">
-					<div class="inquireTransaction">
-						회원님의 <span class="inquiredCode"></span>번 <span></span> 문의는 <select
-							class="inquireChkCode">
-							<option value="1">정상처리</option>
-							<option value="2">보류처리</option>
-						</select> 되었습니다.
+		<div class="row inquire-lists">
+			<div class="col-md-12 col-xs-12">
+				<c:if test="${list.size()==0}">
+					<div class="non-inquire">
+						<div>조회된 회원목록이 없습니다.</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary sended">보내기</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫
-						기</button>
-				</div>
+				</c:if>
+				<c:if test="${list.size() > 0}">
+					<div class="tableset">
+						<div class="row">
+							<div class="col-md-6 text-right">
+								<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
+									${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
+							</div>
+						</div>
+						<table class="table">
+							<tr class="firstLine">
+								<th>회원아이디</th>
+								<th>회원이름</th>
+								<th>검색공개유무</th>
+								<th>가입일</th>
+								<th>유저상태</th>
+							</tr>
+							<c:set var="i" value="0" />
+							<c:forEach var="user" items="${list}">
+								<c:set var="i" value="${ i+1 }" />
+								<tr id="inq${i}" class="texts">
+									<td>${user.userId}</td>
+									<td>${user.userName}</td>
+									<td>${user.infoOption==0 ? "공개" : "비공개"}</td>
+									<td>${user.regDate}</td>
+									<td>${user.status==0 ? "정상" : (user.status == 1 ? "차단" : "탈퇴")}</td>
+								</tr>
+								<tr>
+									<td colspan="7" class="${i} body-box">
+										<div class="inquireBody">
+											<div class="inquire-detail-title">
+											<div class="user-profile-img" style="border: 5px solid #33aef7; width:50px; height:50px; border-radius:50%; background:url('/images/profile/${user.profileImg}') no-repeat; background-size : cover;"></div>
+											${user.userName}(${user.userId})회원정보 상세보기
+											</div>
+											<ul>
+												<li class="ele-inquire">이메일 : ${user.email} </li>
+												<li class="ele-inquire">성별 : ${user.sex} </li>
+												<li class="ele-inquire">휴대전화번호 : ${user.phone} </li>
+												<li class="ele-inquire">나이 : ${user.age} </li>
+												<li class="ele-inquire">자기소개 : ${user.introduce} </li>
+												<c:if test="${user.status==2}">
+												<li class="ele-inquire">탈퇴일 : ${user.quitDate} </li>
+												<li class="ele-inquire">탈퇴사유 : ${user.quitReason} </li>
+												</c:if>
+											</ul>
+										</div>
+									</td>
+								<tr>
+							</c:forEach>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					<!-- PageNavigation Start... -->
+					<jsp:include page="../common/pageNavigator.jsp" />
+					<!-- PageNavigation End... -->
+				</c:if>
 			</div>
-
-
 		</div>
 	</div>
 
-	<!-- 회원활동확인 Modal content-->
-	<div class="modal fade" id="modal2" role="dialog">
-		<div class="modal-dialog">
+	<!-- modal start (do not mess with below) -->
 
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">
-						<span class="userIdLog"></span>회원활동
-					</h4>
+
+	<div class="modal fade" id="modal2" role="dialog">
+
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					<span class="userIdLog"></span> 회원님의 활동 정보입니다.
 				</div>
-				<div class="modal-body">
-					<div class="duration-log">
+				<div class="modal-body chart-body">
+					<div id="chart_div"></div>
+					<div class="chart-duration">
 						<select name="duration" class="duration">
 							<option value="all">전체</option>
-							<option value="week">이번주</option>
-							<option value="month">이번달</option>
+							<option value="week">주간</option>
+							<option value="month">월간</option>
 						</select>
 					</div>
-
-					<div id="chart_div"></div>
-
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger block-user"
-						data-dismiss="modal">유저차단하기</button>
-					<button type="button" class="btn btn-default modal-close"
-						data-dismiss="modal">닫기</button>
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
+						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
+					</div>
 				</div>
 			</div>
-
-
 		</div>
+
+	</div>
+	
+	<div class="modal fade" id="modal3" role="dialog">
+
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					<span class="userIdLog"></span> 회원을 정말로 차단하시겠습니까?
+				</div>
+				<div class="modal-body chart-body">
+					차단확인 혹은 취소를 눌러주세요.
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-fine">차단확인</button>
+						<button class="btn btn-default closer" data-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="modal fade" id="inquire-taken" role="dialog">
+
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					신고 내역 처리하기
+				</div>
+				<div class="modal-body chart-body">
+					
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
+						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </body>

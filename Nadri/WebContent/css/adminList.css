@@ -1,0 +1,413 @@
+@charset "EUC-KR";
+
+body{
+	
+}
+
+.row{
+	margin:0;
+}
+
+.option-box > div{
+	height:50px;
+	background:white;
+	box-shadow:0px 0px 10px 1px #bec6d22b;
+	margin:10px;
+	margin-top:50px;
+	border-radius:20px;
+	transition : height 1s;
+	position : relative;
+	padding:10px;
+	overflow:hidden;
+}
+
+.disabled{
+	pointer-events: none;
+}
+
+.table{
+	font-size : 12px;
+	margin-top : 20px;
+	text-align: center;
+}
+
+.firstLine{
+	background : #c9dbe6;
+}
+
+.firstLine > th{
+	text-align: center;
+}
+
+.body-box{
+	text-align : left;
+	padding : 15px;
+}
+
+.inquire-detail-title{
+	font-size : 15px;
+	margin-bottom : 10px;
+	font-weight: 700;
+}
+
+.ele-inquire{
+	padding : 5px;
+}
+
+.inquire-lists > div{
+	background:white;
+	box-shadow:0px 0px 10px 1px #bec6d22b;
+	margin:10px;
+	border-radius:20px;
+	margin-bottom:50px;
+	padding:20px;
+	font-size : 15px;
+}
+
+.open-searcher{
+	position:absolute;
+	height:30%;
+	display:flex;
+	top:10px;
+	right:1%;
+}
+
+.inquire-title{
+	font-size:22px;
+	font-weight: 700;
+	color:#5f5f5f;
+	text-align: left;
+	transition : all 1s;
+	margin-left:40%;
+	position:absolute;
+	display:inline-block;
+}
+
+.inquire-detail-bottom{
+	display : flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	padding : 0px 50px 10px 50px;
+}
+
+.options{
+	display: flex;
+	justify-content: space-around;
+	height:150px;
+	width : 100%;
+	position:absolute;
+	top:45px;
+}
+
+.options> div{
+	border-radius:10px;
+	border:1px solid #c1c1c154;
+	margin:10px 20px;
+	transition:color 1s;
+}
+
+.inquireKeyword{
+	width:70%;
+	position:absolute;
+	height:35px;
+	font-size:15px;
+	padding-left:50px;
+	padding-right:50px;
+	right:15%;
+	top:10px;
+	text-align: center;
+	border:none;
+	border-bottom:1px solid #adadad82;
+	transition:color 1s;
+}
+
+.inquireKeyword:focus{
+	border:none;
+	outline:1px solid white;
+	border:1px solid white;
+	border-bottom:1px solid #1c2144;
+	transition:color 1s;
+}
+
+.glyphicon-search{
+	position:absolute;
+	font-size:20px;
+	z-index:2;
+	left:16%;
+	top:18px;
+	color:#adadad;
+	transition: color 1s;
+}
+
+.check-boxes{
+	font-size:18%;
+	color: #adadad;
+	vertical-align: text-bottom;
+	margin-top:55px;
+}
+
+.check-boxes > div{
+	text-align:center;
+}
+
+.cons-label{
+	vertical-align: 2px;
+	margin-left:10px;
+}
+
+.cons-label:hover{
+	color: #333;
+}
+
+.cons-label:focus{
+	color: #333;
+}
+
+.non-inquire{
+	width:100%;
+	height: 100%;
+	border-radius: 15px;
+	border: 1px solid #c1c1c154;
+	display:flex;
+	align-items:center;
+}
+
+.non-inquire > div{
+	width:100%;
+	height:10%;
+	font-size: 50%;
+	text-align:center;
+	color:#777;
+}
+
+.order-option {
+	font-size : 15px;
+	text-align: center;
+	color : #7d7d7d;
+	letter-spacing : 2px;
+}
+
+.option-align{
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	height:50px;
+}
+
+.option-icons{
+	font-size:10px;
+}
+
+.option-icons:hover{
+	cursor : pointer;
+	color : #33AEF7;
+}
+
+.inquire-search-form{
+	width : 100%;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+}
+
+p.text-primary{
+	margin : 0px;
+}
+
+.text-right{
+	float:right;
+}
+
+.user-modal{
+	background : white;
+	margin-top : 25%;
+	border-radius : 15px;
+	box-shadow : 1px 1px 10px 0px grey;
+}
+
+.inquired-user-header{
+	font-size : 15px;
+}
+
+.chart-body{
+	display : flex;
+	justify-content: center;
+}
+
+.userIdLog{
+	font-weight: 800;
+}
+
+.chart-duration {
+	display : flex;
+}
+
+.duration{
+	height : 10%;
+	font-size : 12px;
+}
+
+.user-log-buttons{
+	font-size : 15px;
+	display : flex;
+	justify-content: space-between;
+}
+
+.block-user{
+	padding : 10px;
+}
+
+/* slider */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #32aff9;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(32px);
+  -ms-transform: translateX(32px);
+  transform: translateX(32px);
+}
+
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+

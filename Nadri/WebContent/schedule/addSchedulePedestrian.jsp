@@ -31,8 +31,7 @@
 <!-- sweet alert를 쓰기위한 CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- T-map 지도를 쓰기위한 선언 -->
-<script
-	src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
+<script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=cadda216-ac54-435a-a8ea-a32ba3bb3356"></script>
 <script src="/javascript/juangeolocationPedestrian.js?ver=1"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
@@ -877,9 +876,9 @@ function findName(fileName,number) {
 		    dayNamesShort: ['일','월','화','수','목','금','토'],
 		    dayNamesMin: ['일','월','화','수','목','금','토'],
 		    showMonthAfterYear: true,
-		    changeMonth: true,
-		    changeYear: true,
-		    yearSuffix: yyyy+'년',
+		    //changeMonth: true,
+		    //changeYear: true,
+		    //yearSuffix: yyyy+'년',
 		    minDate: new Date(today)
 		  }); //end of datepicker
 		  
@@ -912,6 +911,7 @@ function readURL(input){
 		reader.onload = function (e) { 
 			$("#img").empty();
 			$("#img").css('background-image','url('+e.target.result+')');
+			$("#img").css('background-size','cover');
 			$('#scheduleImg').val(img);
 			var c = '';
 			c += '<div class="content">'; 
@@ -1451,10 +1451,9 @@ $(function(){
 						<c:if test="${fn:length(recommand.spotImg) >= 30 }">
 							<img src="${recommand.spotImg}" class="${recommand.spotNo}" width="50"
 								height="50" id="fakeCartImg${i}">
-							<!-- 실제 데이터가 넘어가는 img 태그 --> 
+<%-- 							<!-- 실제 데이터가 넘어가는 img 태그 --> 
 							<img style="display: none;" src="/images/spot/${cart.cartImg}" width="50" height="50"
-							id="cartImg${i}" class="${cart.cartNo}">
-							<div class="cart-titles-box">
+							id="cartImg${i}" class="${cart.cartNo}"> --%>
 						</c:if> 
 						<c:if test="${fn:length(recommand.spotImg) < 30 }">
 							<img src="/images/spot/${recommand.spotImg}" class="${recommand.spotNo}" width="50" 

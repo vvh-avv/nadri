@@ -96,5 +96,10 @@ public class ScheduleServiceImpl implements ScheduleService{
    public List<Schedule> getMyScheduleListRest(String userId) throws Exception{
 	   return scheduleDao.getMyScheduleListRest(userId);
    };
+   
+   // 12. 가장 최근 데이터를 가져옵니다.
+   public int maxScheduleNo() throws Exception{
+	   return scheduleDao.maxScheduleNo();
+   }
 
 }

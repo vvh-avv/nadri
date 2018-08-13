@@ -195,6 +195,10 @@ public class AdminDaoImpl implements AdminDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("SearchLogMapper.getSearchLog", userId);
 	}
+	
+	public String getSearchLog2(String userId){
+		return sqlSession.selectOne("SearchLogMapper.getSearchLog2", userId);
+	}
 
 
 }

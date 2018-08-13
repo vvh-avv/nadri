@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -280,21 +282,6 @@ public class AdminController {
 		model.addAttribute("spot", spot);
 
 		return "forward:/admin/adminUpdateSpotView.jsp";
-	}
-
-	@RequestMapping(value = "deleteSpot")
-	public String deleteSpot(Model model, @RequestParam("spotNo") String spotNo) throws Exception {
-		System.out.println("deleteSpot -> controller 들어옴");
-		spotService.deleteSpot(spotNo);
-
-		List<Spot> list = spotService.getSpotList();
-
-		System.out.println(list);
-
-		model.addAttribute("list", list);
-		model.addAttribute("count", list.size());
-
-		return "forward:/admin/adminSpotList.jsp";
 	}
 	
 	@RequestMapping(value="listGraph")
@@ -772,11 +759,23 @@ public class AdminController {
 
 
 	@RequestMapping(value = "listUser")
-	public String getUserList(Model model,Search search) throws Exception {
+	public String getUserList(Model model,Search search,HttpServletRequest request) throws Exception {
 
 		System.out.println("getUserList -> controller 들어옴");
 		
-		System.out.println(search.getCurruntPage());
+		System.out.println("들어온 페이지 = "+search.getCurruntPage());
+		System.out.println("들어온 검색어/컨디션 : "+search.getSearchKeyword()+" / "+search.getSearchCondition());
+		System.out.println("들어온 체크박스유무 : "+request.getParameter("noChecked"));
+		
+		String condition = search.getSearchCondition();
+		
+		if(request.getParameter("noChecked") != null) {
+			if(condition.equals("0")) {
+				search.setSearchCondition("2");
+			}else if(condition.equals("1")) {
+				search.setSearchCondition("3");
+			}
+		}
 
 		if(search.getCurruntPage() <= 1 ){
 			search.setCurruntPage(0);
@@ -786,8 +785,10 @@ public class AdminController {
 		}
 		search.setPageSize(pageSize);
 		
+		
+		
 		// Business logic 수행
-		Map<String , Object> map=adminService.getUserList(search);
+		Map<String , Object> map = adminService.getUserList(search);
 		
 		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
 		System.out.println(resultPage);

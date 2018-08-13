@@ -8,6 +8,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/images/common/favicon.ico">
@@ -37,6 +38,8 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap"></script>
 <!-- juanMap.js CDN -->
 <script src="/javascript/juanMap.js"></script>
+<!-- sweet alert CDN -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script>
@@ -54,10 +57,7 @@
 	var markers = [];
 
 	//마커 담는 곳
-	var spot = $
-	{
-		cart
-	};
+	var spot = ${cart};
 	for (var i = 0; i < spot.length; i++) {
 		obj = {
 			lat : parseFloat(spot[i].spotY),
@@ -163,7 +163,8 @@
 			});
 			//인덱스를 꺼내오기.. 중요!!
 			markers[i].index = i
-
+		
+			if( locations[i].img.length <= 20){
 			contents[i] = '<div class="grid">'
 					+ '<div class="box box-primary" style="font-family : seoul">'
 					+ '<h4 class="profile-username text-center">'
@@ -181,6 +182,26 @@
 					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
 					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 장소바구니</span></li>'
 					+ '</div>' + '</div>';
+			} else {
+				contents[i] = '<div class="grid">'
+					+ '<div class="box box-primary" style="font-family : seoul">'
+					+ '<h4 class="profile-username text-center">'
+					+ locations[i].title
+					+ '</h4>'
+					+ '<img src="'+locations[i].img+'" height="100" width="100" style="margin-left: auto; margin-right: auto; display: block;">'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-tree-deciduous"></i><b>위치  </b>'
+					+ locations[i].addr
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<i class="glyphicon glyphicon-book"></i><b>상세내용  </b>'
+					+ locations[i].detail
+					+ '</li>'
+					+ '<li class="list-group-item"><i class="glyphicon glyphicon-ok-circle"></i>'
+					+ '<b>Tag&nbsp</b></i> <span class="label label-success"> 장소바구니</span></li>'
+					+ '</div>' + '</div>';
+				
+			}
 
 			// 이벤트 정보 넣기
 			infowindows[i] = new google.maps.InfoWindow({
@@ -200,6 +221,72 @@
 			});
 		}
 	}//end of initmap();
+	
+	
+$(function(){
+	
+	//바구니 수정, 삭제 감지 스크립트
+	   $("button[id^='updateCart']").on("click", function(e){
+		      e.stopPropagation();
+		  var cartNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+	      var cartTitle = $("."+cartNo).find("span[id^='cartTitle']").text();
+	      var cartDetail = $("."+cartNo).find("span[id^='cartDetail']").text();
+
+	      swal({
+	           title: cartTitle+' 장소 설명 수정',
+	           text: '변경을 원하시는 설명문구를 입력해주시길 바랍니다.',
+	           content: {
+	             element: 'input',
+	             attributes: {
+	               defaultValue: cartDetail,
+	             }
+	           }
+	         })
+	         .then(function (inputData){
+	            $.ajax({
+	               url : "/restcart/updateCart/"+cartNo+"/"+escape(encodeURIComponent(inputData)),
+	               method : "POST",
+	               contentType: "application/x-www-form-urlencoded; charset=EUC-KR",
+	               success : function(){
+	                  swal({
+	                       title: "수정 완료!",
+	                       text: inputData+"로 정상 수정되었습니다!",
+	                       icon: "success"
+	                     });
+	               }
+	            }) //e.o.ajax
+	            
+	            $("."+cartNo).find("span[id^='cartDetail']").text(inputData);
+	         })
+	   })
+	   
+	
+	$("button[id^='deleteCart']").on("click", function(e){
+	      e.stopPropagation();
+	      var cartNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+	      swal({
+	            title: "장소를 정말 삭제하시겠습니까?",
+	            text: "삭제하시면 복구가 불가합니다.",
+	            icon: "warning",
+	            buttons: ["취소", "삭제"],
+	            dangerMode: true,
+	          })
+	          .then((willDelete) => {
+	            if (willDelete) {
+	               $.ajax({
+	                  url : "/restcart/deleteCart/"+cartNo,
+	                  method : "POST",
+	                  success : function(){
+	                     swal("삭제되었습니다.");
+	                     $("."+cartNo).remove();
+	                  }
+	               }) //e.o.ajax
+	            } else {
+	              swal("취소하였습니다.");
+	            }
+	         });
+	   })
+});
 </script>
 
 <style>
@@ -273,12 +360,19 @@ article:hover .links {
 	width: 80%
 }
 
-.linksIcon img {
+.linksIcon {
+	opacity: 0;
 	position: absolute;
-	top: -5%;
-	left: -5%;
-	width: 70px;
-	height: 70px;
+	top: 10%;
+	left: 90%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transition: .5s ease;
+}
+
+.linksIcon img {
+	width: 15px;
+	height: 15px;
 }
 
 .map-row {
@@ -296,7 +390,6 @@ article:hover .links {
 
 .cart-contentes{
 	position : relative;
-	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
@@ -351,31 +444,41 @@ article:hover .links {
 								<!-- 썸네일 형식의 장소 이미지 -->
 								<div class="thumbImg" style="width: auto; height: 250px;">
 									<c:if test="${cart.cartImg==null}">
-										<img src="/images/board/posts/no_image.jpg"
+										<img src="/images/spot/no_image.jpg"
 											class="img-thumbnail">
 									</c:if>
-									<c:if test="${cart.cartImg!=null}">
+									<c:if test="${cart.cartImg==null }">
+										<img src="/images/spot/mainSpot.jpg" class="img-thumbnail">
+									</c:if>
+									<c:if test="${cart.cartImg!=null && fn:length(cart.cartImg)>=20 }">
 										<img src="${cart.cartImg}" class="img-thumbnail">
+									</c:if>
+									<c:if test="${cart.cartImg!=null && fn:length(cart.cartImg)<20 }">
+										<img src="/images/spot/${cart.cartImg}" class="img-thumbnail">
 									</c:if>
 								</div>
 								<!-- 방문도장 이미지 -->
 								<c:if test="${cart.stampCode==1}">
 									<div class="linksIcon">
-										<img id="stamp${schedule.scheduleNo}"
-											src="/images/cart/common/stamp.png">
+										<img id="stamp${schedule.scheduleNo}" src="/images/cart/common/stamp.png">
 									</div>
 								</c:if>
 								<!-- 마우스 오버시 보여지는 부분 -->
 								<div class="links" style="text-align: center;">
-									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> <span
-										id="cartAddress">${cart.cartAddress}<br> <br></span>
-									<span id="cartDetail">${cart.cartDetail}</span>
-								</div>
+									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> 
+									<span id="cartAddress">${cart.cartAddress}<br> <br></span>
+									<span id="cartDetail">${cart.cartDetail}</span><br><br>
+									<button type="button" class="btn btn-primary btn-xs"
+										id="updateCart${cart.cartNo}">장바구니 수정하기</button>
+									<br>
+									<button type="button" class="btn btn-warning btn-xs"
+										id="deleteCart${cart.cartNo}">장바구니 삭제하기</button>
+									<br>
 							</article>
 						</c:forEach>
 
 						<c:if test="${empty list}">
-							<span id="defaultText">바구니가
+							<span id="defaultText" style="margin-left: 40%;">바구니가
 								비었습니다. ㅠㅠ</span>
 						</c:if>
 
@@ -384,27 +487,6 @@ article:hover .links {
 
 				</div>
 
-			</div>
-		</div>
-		<!-- HJA 일정등록 transportation navigation -->
-		<!-- 처음 입장시 여러가지 정보를 적는 modal 창 start -->
-		<div class="modal" id="transportationModal" role="dialog">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">나들이는 뭐타고 가시나요?</h4>
-					</div>
-					<div class="modal-body">
-						<button type="button" class="btn btn-primary" id="car">자동차</button>
-						<button type="button" class="btn btn-primary" id="pedestrian">도보</button>
-						<button type="button" class="btn btn-primary" id="transit">대중교통</button>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="waves-effect waves-light btn"
-							id="modalinsert">입력!</button>
-					</div>
-				</div>
 			</div>
 		</div>
 </body>
