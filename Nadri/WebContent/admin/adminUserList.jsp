@@ -45,6 +45,11 @@
 	align-items: center;
 }
 
+.check-boxes{
+	display: flex;
+	justify-content: center;
+}
+
 </style>	
 	
 <script type="text/javascript">
@@ -140,8 +145,8 @@
 		})
 
 		$('.inquireKeyword').on('keydown',function(e){
-			console.log($('input:radio[name=conditions]').is(':checked'));
-			var radio = $('input:radio[name=conditions]').is(':checked');
+			console.log($('input:radio[name=searchCondition]').is(':checked'));
+			var radio = $('input:radio[name=searchCondition]').is(':checked');
 			if(e.which == 13){
 				if(radio){
 					fncGetList(0);	
@@ -190,25 +195,20 @@
 							<div class="glyphicon glyphicon-search"></div>
 							<input type="text" class="inquireKeyword" name="searchKeyword" placeholder="검색어를 입력해주세요"
 								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
-								
+							<input style="display:none;">
+
 							<div class="row check-boxes">
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="userId"><label class="cons-label" id="inclCon">
+									<input type="radio" name="searchCondition" class="conditions"
+										value="0"><label class="cons-label" id="inclCon">
 										유저 아이디로 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="userName"><label class="cons-label" id="beginCon">
+									<input type="radio" name="searchCondition" class="conditions"
+										value="1"><label class="cons-label" id="beginCon">
 										유저명으로 검색 </label>
-								</div>
-
-								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="quitOnly"><label class="cons-label" id="endCon">
-										탈퇴회원만 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">

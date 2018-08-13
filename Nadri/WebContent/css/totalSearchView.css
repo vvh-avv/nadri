@@ -132,6 +132,10 @@
 	color : grey;
 }
 
+.board-more,.see-more{
+	display: none;
+}
+
 .board-more:hover {
 	font-weight : 800;
 	cursor : pointer;

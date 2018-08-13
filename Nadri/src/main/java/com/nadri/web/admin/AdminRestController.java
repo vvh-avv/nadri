@@ -29,8 +29,10 @@ import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
+import com.nadri.service.domain.Spot;
 import com.nadri.service.user.UserService;
 import com.nadri.service.domain.User;
+import com.nadri.service.spot.SpotService;
 
 
 @RestController
@@ -41,6 +43,9 @@ public class AdminRestController {
 	@Qualifier("adminServiceImpl")
 	private AdminService adminService;
 
+	@Autowired
+	@Qualifier("spotServiceImpl")
+	private SpotService spotService;
 	
 	@Autowired
 	@Qualifier("userServiceImpl")
@@ -217,6 +222,25 @@ public class AdminRestController {
 	public User listUser(@ModelAttribute("search") Search search) {
 		System.out.println("getReward -> Restcontroller µé¾î¿È");
 		return null;
+	}
+	
+	@RequestMapping(value = "deleteSpot/{spotNo}")
+	public List deleteSpot(Model model, @PathVariable String spotNo) throws Exception {
+		System.out.println("deleteSpot -> controller µé¾î¿È");
+		spotService.deleteSpot(spotNo);
+
+		List<Spot> list = spotService.getSpotList();
+
+		System.out.println(list);
+
+		model.addAttribute("list", list);
+		model.addAttribute("count", list.size());
+		
+		List<List> returnList = new ArrayList<List>();
+		
+		returnList.add(list);
+
+		return returnList;
 	}
 
 }

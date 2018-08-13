@@ -215,6 +215,12 @@
 					<if test="searchCondition == 1 and searchKeyword !=''">
 		 				user_name LIKE '%${searchKeyword}%'
 					</if>
+					<if test="searchCondition == 2 and searchKeyword !=''">
+		 				user_id LIKE '%${searchKeyword}%' AND status != 2
+					</if>
+					<if test="searchCondition == 3 and searchKeyword !=''">
+		 				user_name LIKE '%${searchKeyword}%' AND status != 2
+					</if>
 				</where>
 			</if>
 			ORDER BY user_id

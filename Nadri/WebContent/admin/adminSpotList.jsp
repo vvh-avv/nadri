@@ -45,6 +45,11 @@
 	text-align : left;
 }
 
+.check-boxes{
+	display: flex;
+	justify-content: center;
+}
+
 </style>	
 	
 <script type="text/javascript">
@@ -57,24 +62,6 @@
 
 	$(function() {
 
-		/* index page animation start */
-
-		$('.admin-sub-navbar > div').on('click', function() {
-			var way = $(this).attr('class');
-			if (way == "inquire") {
-				self.location = '/admin/listInquire';
-			} else if (way == "spot") {
-				self.location = '/admin/listSpot';
-			} else if (way == "graph") {
-				self.location = '/admin/listGraph?duration=day';
-			} else if (way == "userList") {
-				self.location = '/admin/listUser';
-			} else if (way == "userLog") {
-				self.location = '/admin/listLog';
-			}
-		})
-
-		/* index page animation end */
 
 		$('.inquirebutton').on(
 				'click',
@@ -137,10 +124,6 @@
 			$(this).css('opacity', '1');
 		})
 		
-		$("button.btn.btn-default:contains('검색')").on("click", function() {
-			fncGetList(1);
-		});
-		
 		var chk = true;
 		var male;
 		$('.switch').on('change',function(){
@@ -183,6 +166,31 @@
 			self.location = '/admin/updateSpot?spotNo='+number;
 		})
 		
+		$('.inquireKeyword').on('keydown',function(e){
+			console.log($('input:radio[name=searchCondition]').is(':checked'));
+			var radio = $('input:radio[name=searchCondition]').is(':checked');
+			if(e.which == 13){
+				if(radio){
+					fncGetList(0);	
+				}else{
+					alert('검색조건을 하나이상 선택해주세요!');
+				}
+			}
+		})
+		
+		$('.delete-spot').on('click',function(){
+			$('.deleting-spot').text($(this).attr('name'));
+			$('.hiddenNo').val($(this).attr('id'));
+		})
+		
+		$('.delete-fine').on('click',function(){
+			var number = $('.hiddenNo').val();
+			console.log(number);
+			$.get('/restAdmin/deleteSpot/'+number,function(value,status){
+				console.log(status);
+				console.log(value);
+			})
+		})
 
 	});
 </script>
@@ -225,31 +233,21 @@
 							<input type="text" class="inquireKeyword" name="searchKeyword"
 								placeholder="검색어를 입력해주세요"
 								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+								<input style="display:none;">
 							<div class="row check-boxes">
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="inclCon"><label class="cons-label" id="inclCon">
-										검색어를 포함한 검색 </label>
+									<input type="radio" name="searchCondition" class="conditions"
+										value="0"><label class="cons-label" id="inclCon">
+										장소명으로 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="beginCon"><label class="cons-label" id="beginCon">
-										검색어로 시작하는 검색 </label>
+									<input type="radio" name="searchCondition" class="conditions"
+										value="1"><label class="cons-label" id="beginCon">
+										장소번호로 검색 </label>
 								</div>
 
-								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="endCon"><label class="cons-label" id="endCon">
-										검색어로 끝나는 검색 </label>
-								</div>
-
-								<div class="col-md-3 col-xs-3">
-									<input type="checkbox" name="noChecked" class="conditions"
-										value="이름"><label class="cons-label" id="noChecked">
-										처리완료문의제외 </label>
-								</div>
 							</div>
 							<div class="row order-option">
 								<div class="col-md-6 option-align">
@@ -318,7 +316,7 @@
 										<img src="/images/spot/${spot.spotImg}">
 									</div>
 									<button class="btn btn-danger delete-spot" data-toggle="modal"
-										data-target="#modal2">삭제하기</button>
+										data-target="#modal2" name="${spot.spotTitle}" id="${spot.spotNo}">삭제하기</button>
 									<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
 								</td>
 							<tr>
@@ -342,12 +340,12 @@
 
 <!-- 삭제확인 Modal content-->
 	<div class="modal fade" id="modal2" role="dialog">
-		<div class="modal-dialog">
+		<div class="modal-dialog" style="margin-top:20%;">
 
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h5>
-					<span></span>의 정보를 정말로 삭제하시겠습니까? <input type="hidden" name="spotNo"
+				<h5 style="font-size:20px; text-align:center; padding : 15px;">
+					<span class="deleting-spot"></span>의 정보를 정말로 삭제하시겠습니까? <input type="hidden" name="spotNo"
 						value="" class="hiddenNo">
 				</h5>
 				<div
