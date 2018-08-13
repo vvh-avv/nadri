@@ -911,6 +911,7 @@ function readURL(input){
 		reader.onload = function (e) { 
 			$("#img").empty();
 			$("#img").css('background-image','url('+e.target.result+')');
+			$("#img").css('background-size','cover');
 			$('#scheduleImg').val(img);
 			var c = '';
 			c += '<div class="content">'; 

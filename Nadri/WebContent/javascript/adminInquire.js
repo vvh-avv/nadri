@@ -335,7 +335,7 @@
 					$('.block-status').text(' .');
 					$('#modal4').modal('show');
 				}else{
-					console.log(' !');
+					console.log('!');
 					$('.block-status').text(' .');
 					$('#modal4').modal('show');
 				}

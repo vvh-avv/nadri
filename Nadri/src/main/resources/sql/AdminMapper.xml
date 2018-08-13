@@ -205,7 +205,7 @@
 	</select>
 	
 	<select id="getUserList" parameterType="search" resultMap="userMap">
-		SELECT  user_id, user_name, reg_date
+		SELECT  user_id, user_name, reg_date, status, role,last_login,ip,introduce,phone,age,profile_img,email,sex,quit_date,quit_reason,info_option
 			FROM user
 			<if test="searchCondition != null">
 				<where>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
+import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
@@ -210,6 +211,12 @@ public class AdminRestController {
 		adminService.getReward(reward);
 		
 		return "Done";
+	}
+	
+	@RequestMapping(value="listUser",method=RequestMethod.POST)
+	public User listUser(@ModelAttribute("search") Search search) {
+		System.out.println("getReward -> Restcontroller µé¾î¿È");
+		return null;
 	}
 
 }

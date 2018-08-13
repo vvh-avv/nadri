@@ -77,7 +77,7 @@
 						</div>
 					</div>
 					<div class="col-md-6 col-xs-12">
-						<img src="https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg" class="placeImg" style="background-color: black; width: 100%; height: 300px;">
+						<img src="/images/common/no_image.jpg" class="placeImg" style="background-color: black; width: 100%; height: 300px;">
 					</div>
 				</div>
 			</div>
@@ -157,9 +157,7 @@
 				<c:forEach var="insta" items="${insta_list}">
 					<c:set var="i" value="${i+1}" />
 					<div class="col-md-3 col-xs-4 insta-box">
-						<a href="https://www.instagram.com/p/${insta.shortLink}"
-							target="_blank"><img src="${insta.img}" class="boardImg"
-							style="width: 100%;"></a>
+						<a href="https://www.instagram.com/p/${insta.shortLink}" target="_blank"><img src="${insta.img}" class="boardImg" style="width: 100%;"></a>
 					</div>
 				</c:forEach>
 			</div>
@@ -202,9 +200,9 @@
 
 			if (size == 0) {
 				console.log('검색결과가 없습니다.');
-				$('.placeTitle').text("검색결과가 없습니다 ㅠㅠ");
-				$('.placeContent').text("미아내오 준비하께오ㅜㅜㅜㅜㅠㅠㅠㅠㅠ");
-				//$('.placeImg').attr("src","https://ih0.redbubble.net/image.133161613.9621/flat,1000x1000,075,f.jpg");
+				$('.placeTitle').text("검색결과가 없습니다.");
+				$('.placeContent').text("검색된 결과의 내용이 없습니다.");
+				$('.placeImg').attr("src","/images/common/no_image.jpg");
 			} else {
 				for (i = 0; i < locations.length; i++) {
 					marker = new google.maps.Marker({

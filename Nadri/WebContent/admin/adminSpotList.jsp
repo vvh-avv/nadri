@@ -11,6 +11,7 @@
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <!-- Bootstrap CDN -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -21,126 +22,33 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<!-- admin index 전용 css  -->
+<!-- admin index 전용  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 <link rel="stylesheet" href="/css/adminIndexSmall.css">
+<link rel="stylesheet" href="/css/adminList.css">
+<link rel="stylesheet" href="/css/adminInquireSmall.css">
 <script src="/javascript/adminIndex.js"></script>
+<script src="/javascript/adminList.js"></script>
 
-<title>너나들이 나들이백과목록</title>
+<title>너나들이 어드민 나들이 백과 목록 페이지</title>
+	
+<style>
 
-</head>
-<style type="text/css">
-html, body {
-	margin: 0px;
-	width: 100%;
-	height: 70vh;
-	font-size: 65px;
+.admin-sub-navbar div:third-child{
+	color : #337ab7;
+	border-bottom : 3px solid #337ab7;
+	cursor: not-allowed;
+ 	pointer-events: none;
 }
 
-.text-center{
-	font-size : 12px;
+.inquire-detail-title{
+	text-align : left;
 }
 
-.tableset {
-	margin: 5% 5%;
-	width: 90%;
-	text-align: right;
-	font-size: 0.2em;
-}
-
-.table{
-	margin-top:5%;
-}
-
-th {
-	font-size: 12px;
-	text-align: center;
-}
-
-.texts:hover {
-	background: #ccc;
-}
-
-td {
-	font-size: 11px;
-	text-align: center;
-}
-
-.firstLine {
-	background: #60a0b37a;
-}
-
-.inquireTransaction {
-	display: flex;
-	align-items: center;
-	font-size: 0.2em;
-}
-
-.inquireTransaction>span {
-	margin: 0px 5px;
-}
-
-.inquireBody {
-	display: flex;
-	align-items: flex-start;
-	flex-direction: column;
-	text-align: left;
-}
-
-.inquire-detail-title {
-	display: block;
-	position: relative;
-	left: 0px;
-	font-size: 2em;
-	font-weight: 800;
-	margin-left: 10vw;
-}
-
-ul {
-	margin: 10px 10vw;
-	padding: 10px;
-}
-
-li {
-	margin: 5px 0px;
-	font-size: 1.3em;
-}
-
-img {
-	display: inline;
-	float: right;
-	margin: auto auto 1% auto;
-}
-
-.logbutton {
-	margin-left: 15px;
-}
-
-.inquirebutton {
-	margin-left: 70%;
-	width: 15%;
-	min-width: 80px;
-	margin-right: 15%;
-}
-
-.modal-content {
-	width: 60%;
-	margin: 20% auto;
-	align-items: center;
-}
-
-h5 {
-	text-align: center;
-}
-
-.tableset-top {
-	display: flex;
-	align-items: center;
-	margin-bottom: 1%;
-	justify-content: flex-end;
-}
-</style>
+</style>	
+	
 <script type="text/javascript">
+	
 	function fncGetList(currentPage) {
 		$("#currentPage").val(currentPage)
 		$("form").attr("method", "POST").attr("action", "/admin/listSpot")
@@ -168,7 +76,25 @@ h5 {
 
 		/* index page animation end */
 
-		$('td[colspan=5]').hide();
+		$('.inquirebutton').on(
+				'click',
+				function() {
+					var id = $(this).attr('id');
+					console.log(id);
+
+					var code = $('#inq' + id + " td:nth-child(2)").text();
+					var no = $('#inq' + id + " td:nth-child(1)").text();
+					$('.inquireTransaction > span:nth-child(2)').text(code);
+					$('.inquireTransaction > span:nth-child(2)').css(
+							'font-weight', '800');
+					$('.inquireTransaction > span:nth-child(1)').text(no);
+					$('.inquireTransaction > span:nth-child(1)').css(
+							'font-weight', '800');
+
+					$('#modal1').modal();
+				});
+
+		$('td[colspan=7]').hide();
 
 		$('.texts').on('click', function() {
 			var id = $(this).attr('id');
@@ -188,51 +114,91 @@ h5 {
 			}
 		})
 
-		$('.delete-spot').on('click', function() {
-			var titleNo = $(this).parent().attr('class');
-			console.log(titleNo);
-			var title = $('#inq' + titleNo + " > td:nth-child(2)").text();
-			var code = $('#inq' + titleNo + " > td:nth-child(1)").text();
-			console.log(title);
-			console.log(code);
-			$('h5 > span').text(title);
-			$('.hiddenNo').val(code);
+		$('.sended').on(
+				'click',
+				function() {
+					var inqCode = $('.inquiredCode').text();
+					var chkCode = $('.inquireChkCode').val();
+					console.log('checked code value = ' + chkCode);
+					self.location = '/admin/updateInquire?inqCode=' + inqCode
+							+ '&chkCode=' + chkCode;
+				})
+
+		$('img').on('mouseover', function() {
+			$(this).css('cursor', 'pointer');
+			$(this).css('opacity', '0.5');
 		})
 
-		$('.delete-fine').on('click', function() {
-			var code = $('.hiddenNo').val();
-			self.location = "/admin/deleteSpot?spotNo=" + code;
+		$('img').on('click', function() {
+			window.open($(this).attr('src'), "_blank");
 		})
 
-		$('#addSpot').on('mouseover', function() {
-			$(this).addClass('btn-primary');
-		})
-
-		$('#addSpot').on('mouseleave', function() {
-			$(this).removeClass('btn-primary');
-		})
-
-		$('#addSpot').on('click', function() {
-			self.location = "/admin/addSpot";
-		})
-
-		$('.modify-spot').on('click', function() {
-			var no = $(this).attr('name');
-			self.location = "/admin/updateSpot?spotNo=" + no;
+		$('img').on('mouseleave', function() {
+			$(this).css('opacity', '1');
 		})
 		
 		$("button.btn.btn-default:contains('검색')").on("click", function() {
 			fncGetList(1);
 		});
-	})
+		
+		var chk = true;
+		var male;
+		$('.switch').on('change',function(){
+			
+			
+			if(chk){
+				console.log("hihi");
+				$('.option-box > div').css('height','200px');
+				console.log($('.inquire-title').css('margin-left'));
+				male = $('.inquire-title').css('margin-left');
+				$('.inquire-title').css('margin-left','0%');
+				chk = false;
+			}else{
+				console.log("byebye");
+				$('.option-box > div').css('height','50px');
+				$('.inquire-title').css('margin-left',male);
+				
+				chk = true;
+			}
+		})
+		
+		$('.inquireKeyword').on('focusin',function(){
+			$('.inquireKeyword').attr('placeholder','');
+			$('.glyphicon-search').css('color','#1c2144');
+			$('.options > div').css('border','1px solid #1c2144');
+		})
+		
+		$('.inquireKeyword').on('focusout',function(){
+			$('.inquireKeyword').attr('placeholder','검색어를 입력해주세요');
+			$('.glyphicon-search').css('color','#adadad');
+			$('.options > div').css('border','1px solid #c1c1c154');
+		})
+		
+		$('#addSpot').on('click',function(){
+			self.location = '/admin/addSpot';
+		})
+
+		$('.modify-spot').on('click',function(){
+			var number = $(this).attr('name');
+			self.location = '/admin/updateSpot?spotNo='+number;
+		})
+		
+
+	});
 </script>
+
+</head>
+
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
 <body>
 
 	<nav class="admin-navbar">
 		<a href="/admin/adminIndex"><h2 class="title">너나들이 Admin</h2></a>
 		<div class="navbar-side">
 			<a href="/"><div class="glyphicon glyphicon-home"></div></a>
-			<div class="profile-photo" style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
+			<div class="profile-photo"
+				style="background:url(/images/profile/${user.profileImg}); background-size:contain;">
 			</div>
 		</div>
 	</nav>
@@ -243,99 +209,138 @@ h5 {
 		<div class="inquire">문의관리</div>
 	</nav>
 
-	<c:if test="${list.size()==0}">
-		<div class="container">
-			<div>나들이 목록이 하나도 없어요.</div>
-		</div>
-	</c:if>
-
-	<c:if test="${list.size() > 0}">
-
-		<div class="tableset">
-			<div class="tableset-top">
-				<div class="col-md-6 text-left">
-					<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
-						${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
+	<div class="container">
+		<div class="row option-box">
+			<div class="col-md-12 col-xs-12">
+				<div class="inquire-title">백과목록 조회하기</div>
+				<div class="open-searcher">
+					<label class="switch"> <input type="checkbox"> <span
+						class="slider round"></span>
+					</label>
 				</div>
-
-				<div class="col-md-6 text-right">
-					<form class="form-inline" name="detailForm">
-
-						<div class="form-group">
-							<select class="form-control" name="searchCondition">
-								<option value="0"
-									${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>장소명</option>
-								<option value="1"
-									${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>장소번호</option>
-							</select>
-
-							<label class="sr-only" for="searchKeyword">검색어</label> <input
-								type="text" class="form-control" id="searchKeyword"
-								name="searchKeyword" placeholder="검색어"
+				<div class="row options">
+					<form name="inquire-search-form" class="inquire-search-form">
+						<div class="col-md-10 col-xs-12">
+							<div class="glyphicon glyphicon-search"></div>
+							<input type="text" class="inquireKeyword" name="searchKeyword"
+								placeholder="검색어를 입력해주세요"
 								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+							<div class="row check-boxes">
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="inclCon"><label class="cons-label" id="inclCon">
+										검색어를 포함한 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="beginCon"><label class="cons-label" id="beginCon">
+										검색어로 시작하는 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="radio" name="conditions" class="conditions"
+										value="endCon"><label class="cons-label" id="endCon">
+										검색어로 끝나는 검색 </label>
+								</div>
+
+								<div class="col-md-3 col-xs-3">
+									<input type="checkbox" name="noChecked" class="conditions"
+										value="이름"><label class="cons-label" id="noChecked">
+										처리완료문의제외 </label>
+								</div>
+							</div>
+							<div class="row order-option">
+								<div class="col-md-6 option-align">
+									<div>최신순</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+								<div class="col-md-6 option-align">
+									<div>종류별</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+							</div>
 						</div>
-
-						<button type="button" class="btn btn-default">검색</button>
-
 						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
 						<input type="hidden" id="currentPage" name="currentPage" value="" />
-
 					</form>
 				</div>
-				<button id="addSpot" class="btn btn-default">추가하기</button>
 			</div>
-			<table class="table">
-				<tr class="firstLine">
-					<th>장소번호</th>
-					<th>장소이름</th>
-					<th>장소주소</th>
-					<th>장소등록일</th>
-					<th>최종수정일</th>
-				</tr>
-				<c:set var="i" value="0" />
-				<c:forEach var="spot" items="${list}">
-					<c:set var="i" value="${ i+1 }" />
-					<tr id="inq${i}" class="texts">
-						<td>${spot.spotNo}</td>
-						<td>${spot.spotTitle}</td>
-						<td>${spot.spotAddress}</td>
-						<td>${spot.spotCreateTime}</td>
-						<td>${spot.spotModifyTime}</td>
-					</tr>
-					<tr>
-						<td colspan="5" class="${i}">
-							<div class="inquireBody">
-								<div class="inquire-detail-title">
-									<span>${spot.spotTitle}</span> 상세보기
-								</div>
-								<ul>
-									<li>주소지 : ${spot.spotAddress}</li>
-									<li>설 &nbsp;&nbsp;&nbsp;명 : ${spot.spotDetail}</li>
-									<li>장소 이미지</li>
-								</ul>
-								<img src="/images/spot/${spot.spotImg}">
-							</div>
-							<button class="btn btn-danger delete-spot" data-toggle="modal"
-								data-target="#modal2">삭제하기</button>
-							<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
-						</td>
-					<tr>
-				</c:forEach>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
 		</div>
-		<!-- PageNavigation Start... -->
-		<jsp:include page="../common/pageNavigator.jsp" />
-		<!-- PageNavigation End... -->
-	</c:if>
+		<div class="row inquire-lists">
+			<div class="col-md-12 col-xs-12">
+				<c:if test="${list.size()==0}">
+					<div class="non-inquire">
+						<div>나들이 목록이 하나도 없어요.</div>
+					</div>
+				</c:if>
+				<c:if test="${list.size() > 0}">
+					<div class="tableset">
+						<div class="row">
+						<button id="addSpot" class="btn btn-default">추가하기</button>
+							<div class="col-md-6 text-right">
+								<p class="text-primary">전체 ${resultPage.totalCount } 건수, 현재
+									${resultPage.currentPage == 0 ? 1 : resultPage.currentPage} 페이지</p>
+							</div>
+						</div>
+						<table class="table">
+							<tr class="firstLine">
+								<th>장소번호</th>
+								<th>장소이름</th>
+								<th>장소주소</th>
+								<th>장소등록일</th>
+								<th>최종수정일</th>
+							</tr>
+							<c:set var="i" value="0" />
+							<c:forEach var="spot" items="${list}">
+								<c:set var="i" value="${ i+1 }" />
+								<tr id="inq${i}" class="texts">
+								<td>${spot.spotNo}</td>
+								<td>${spot.spotTitle}</td>
+								<td>${spot.spotAddress}</td>
+								<td>${spot.spotCreateTime}</td>
+								<td>${spot.spotModifyTime}</td>
+							</tr>
+							<tr>
+								<td colspan="5" class="${i}" style="display:none;">
+									<div class="inquireBody">
+										<div class="inquire-detail-title">
+											<span>${spot.spotTitle}</span> 상세보기
+										</div>
+										<ul style="text-align:left">
+											<li>주소지 : ${spot.spotAddress}</li>
+											<li>설 &nbsp;&nbsp;&nbsp;명 : ${spot.spotDetail}</li>
+											<li>장소 이미지</li>
+										</ul>
+										<img src="/images/spot/${spot.spotImg}">
+									</div>
+									<button class="btn btn-danger delete-spot" data-toggle="modal"
+										data-target="#modal2">삭제하기</button>
+									<button class="btn btn-defalut modify-spot" name="${spot.spotNo}">수정하기</button>
+								</td>
+							<tr>
+							</c:forEach>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					<!-- PageNavigation Start... -->
+					<jsp:include page="../common/pageNavigator.jsp" />
+					<!-- PageNavigation End... -->
+				</c:if>
+			</div>
+		</div>
+	</div>
 
-	<!-- 삭제확인 Modal content-->
+<!-- 삭제확인 Modal content-->
 	<div class="modal fade" id="modal2" role="dialog">
 		<div class="modal-dialog">
 
@@ -354,8 +359,6 @@ h5 {
 
 		</div>
 	</div>
-
-
 
 </body>
 </html>

@@ -236,7 +236,7 @@
 				</div>
 				<div class="modal-footer">
 					<div class="user-log-buttons">
-						<button class="btn btn-danger block-user">차단하기</button>
+						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
 						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
 					</div>
 				</div>
@@ -244,176 +244,48 @@
 		</div>
 
 	</div>
+	
+	<div class="modal fade" id="modal3" role="dialog">
 
-	<!-- 
-<div class="modal fade" id="inquire-taken" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-5">
-            Carousel Wrapper
-            <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel">
-                Slides
-                <div class="carousel-inner" role="listbox">
-                    <div class="carousel-item active">
-                        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(23).jpg" alt="First slide">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(24).jpg" alt="Second slide">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(25).jpg" alt="Third slide">
-                    </div>
-                </div>
-                /.Slides
-                Controls
-                <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-                /.Controls
-                <ol class="carousel-indicators">
-                    <li data-target="#carousel-thumb" data-slide-to="0" class="active"> <img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(23).jpg" class="img-fluid"></li>
-                    <li data-target="#carousel-thumb" data-slide-to="1"><img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(24).jpg" class="img-fluid"></li>
-                    <li data-target="#carousel-thumb" data-slide-to="2"><img class="d-block" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/img%20(25).jpg" class="img-fluid"></li>
-                </ol>
-            </div>
-            /.Carousel Wrapper
-          </div>
-          <div class="col-lg-7">
-            <h2 class="h2-responsive product-name">
-              <strong>Product Name</strong>
-            </h2>
-            <h4 class="h4-responsive">
-              <span class="green-text">
-                <strong>$49</strong>
-              </span>
-              <span class="grey-text">
-                <small>
-                  <s>$89</s>
-                </small>
-              </span>
-            </h4>
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					<span class="userIdLog"></span> 회원을 정말로 차단하시겠습니까?
+				</div>
+				<div class="modal-body chart-body">
+					차단확인 혹은 취소를 눌러주세요.
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-fine">차단확인</button>
+						<button class="btn btn-default closer" data-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-            Accordion wrapper
-            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+	</div>
+	
+	<div class="modal fade" id="inquire-taken" role="dialog">
 
-                Accordion card
-                <div class="card">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					신고 내역 처리하기
+				</div>
+				<div class="modal-body chart-body">
+					
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
+						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                    Card header
-                    <div class="card-header" role="tab" id="headingOne">
-                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h5 class="mb-0">
-                                Description <i class="fa fa-angle-down rotate-icon"></i>
-                            </h5>
-                        </a>
-                    </div>
-
-                    Card body
-                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" >
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                        </div>
-                    </div>
-                </div>
-                Accordion card
-
-                Accordion card
-                <div class="card">
-
-                    Card header
-                    <div class="card-header" role="tab" id="headingTwo">
-                        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <h5 class="mb-0">
-                                Details <i class="fa fa-angle-down rotate-icon"></i>
-                            </h5>
-                        </a>
-                    </div>
-
-                    Card body
-                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" >
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                        </div>
-                    </div>
-                </div>
-                Accordion card
-
-                Accordion card
-                <div class="card">
-
-                    Card header
-                    <div class="card-header" role="tab" id="headingThree">
-                        <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <h5 class="mb-0">
-                                Shipping <i class="fa fa-angle-down rotate-icon"></i>
-                            </h5>
-                        </a>
-                    </div>
-
-                    Card body
-                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                        </div>
-                    </div>
-                </div>
-                Accordion card
-            </div>
-            /.Accordion wrapper
-
-            Add to Cart
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="md-form">
-                    <select class="mdb-select colorful-select dropdown-primary">
-                      <option value="" disabled selected>Choose your option</option>
-                      <option value="1">White</option>
-                      <option value="2">Black</option>
-                      <option value="3">Pink</option>
-                    </select>
-                    <label>Select color</label>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="md-form">
-                    <select class="mdb-select colorful-select dropdown-primary">
-                      <option value="" disabled selected>Choose your option</option>
-                      <option value="1">XS</option>
-                      <option value="2">S</option>
-                      <option value="3">L</option>
-                    </select>
-                    <label>Select size</label>
-                  </div>
-                </div>
-              </div>
-              <div class="text-center">
-
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary">Add to cart
-                  <i class="fa fa-cart-plus ml-2" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-            /.Add to Cart
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-	<!-- Modal: modalQuickView -->
+	</div>
 
 	<script src="/javascript/adminInquire.js"></script>
 </body>
