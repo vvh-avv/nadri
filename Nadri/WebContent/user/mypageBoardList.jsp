@@ -26,55 +26,11 @@
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script type="text/javascript">
-	//친구 삭제
-	$(function() {
-		$("button[id^='deleteFriend']").on(
-				"click",
-				function() {
-
-					var friendNo = $(this).attr("id").replace(/[^0-9]/g, ""); //td로 나뉘어 있는 것들을 tr로 행 기준으로 삼아서 숫자를 제외한 나머지는 nullstring으로 대체
-					var friendId = $("#" + friendNo).attr('class');
-
-					console.log(friendId);
-
-					$.ajax({
-						url : "/friend/json/deleteFriend?userId=" + userId
-								+ "&friendId=" + friendId,
-						method : "GET",
-						data : "json",
-						success : function(data) {
-							swal("친구가 삭제되었습니다", "success");
-
-							$("#" + friendNo).remove();
-						}
-					})
-				})
+$(function(){
+	$("article").on("click", function(){
+		self.location="/board/getBoard?boardNo="+$(this).attr("class");
 	})
-
-	/* //친구 추가
-	 $(function() {
-	 $( "button[id^='acceptFriend']" ).on("click" , function() {
-
-		 var friendNo = $(this).attr("id").replace(/[^0-9]/g,"");
-		 var friendId = $("#"+friendNo).attr('class'); 
-		 //var userId = ${sessionScope.user.userId};
-		 
-		 console.log(userId);
-		 console.log(friendId);
-		 
-		$.ajax({
-			url:"/friend/json/acceptFriend?userId="+userId+"&friendId="+friendId,
-			method : "GET",
-	 		data:"json",
-			success:function(data){
-			
-					swal("친구가 되었습니다","success");
-					
-					//$("#"+friendNo).remove(); 
-			}
-		})	
-	})	 
-	})   */
+})
 </script>
 
 <style>
@@ -159,14 +115,12 @@ article:hover .links {
 			<div class="col-xs-12 col-md-3">
 				<div class="col-md-12 user-profile-section">
 					<c:if test="${!empty user.profileImg && user.profileImg!=' '}">
-						<img src="/images/profile/${user.profileImg}" width="133"
-							height="133" class="img-circle">
+						<img src="/images/profile/${user.profileImg}" width="133" height="133" class="img-circle">
 						<br />
 						<br />
 					</c:if>
 					<c:if test="${ empty user.profileImg} ">
-						<img src="/images/profile/default.png" width="133" height="133"
-							class="img-circle">
+						<img src="/images/profile/default.png" width="133" height="133" class="img-circle">
 					</c:if>
 		
 					<br /> <a href="/user/getUser">내 정보 보기</a><br /> <br /> 
@@ -189,34 +143,31 @@ article:hover .links {
 							<!-- 썸네일 형식의 작성한 글 이미지 -->
 							<div class="thumbImg" style="width: auto; height: 250px;">
 								<c:if test="${board.boardImg==null}">
-									<img src="/images/board/posts/no_image.jpg"
-										class="img-thumbnail">
+									<img src="/images/board/posts/no_image.jpg" class="img-thumbnail">
 								</c:if>
 								<c:if test="${board.boardImg!=null}">
+									<c:if test="${board.boardCode!=0}">
+										<img src="/images/spot/uploadFiles/${board.boardImg}" class="img-thumbnail">
+									</c:if>
 									<c:if test="${(board.boardImg).contains(',')}">
-										<img src="/images/board/posts/${board.boardImg.split(',')[0]}"
-											class="img-thumbnail">
+										<img src="/images/board/posts/${board.boardImg.split(',')[0]}" class="img-thumbnail">
 									</c:if>
 									<c:if test="${!(board.boardImg).contains(',')}">
-										<img src="/images/board/posts/${board.boardImg}"
-											class="img-thumbnail">
+										<img src="/images/board/posts/${board.boardImg}" class="img-thumbnail">
 									</c:if>
 								</c:if>
 							</div>
 							<!-- 마우스 오버시 보여지는 부분 -->
 							<div class="links" style="text-align: center;">
-								<b>${board.boardTitle}</b><br> <img
-									src="/images/board/like_white.png" class="icon">
-								${board.likeCnt}&nbsp;&nbsp; <img
-									src="/images/board/comment_white.png" class="icon">
-								${board.commCnt}
+								<b>${board.boardTitle}</b><br>
+								<img src="/images/board/like_white.png" class="icon"> ${board.likeCnt}&nbsp;&nbsp;
+								<img src="/images/board/comment_white.png" class="icon"> ${board.commCnt} 
 							</div>
 						</article>
 					</c:forEach>
 
 					<c:if test="${empty list}">
-						<span id="defaultText" style="margin-left: 40%;">작성하신 글이
-							없습니다. ㅠㅠ</span>
+						<span id="defaultText" style="margin-left: 40%;">작성하신 글이 없습니다. ㅠㅠ</span>
 					</c:if>
 				</div>
 

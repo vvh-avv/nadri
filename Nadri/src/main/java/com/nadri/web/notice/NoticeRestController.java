@@ -111,7 +111,7 @@ public class NoticeRestController {
 	}
 
 	@PostConstruct
-	@Scheduled(cron="0 0 8 * * *")
+	@Scheduled(cron="0 0,5 * * * *") //(cron="0 0 8 * * *")
 	@RequestMapping( value="json/getFirebaseAlarm", method=RequestMethod.GET )
 	public void getAlarm( ) throws Exception{
 		System.out.println("/notice/json/getFirebaseAlerm");
