@@ -38,6 +38,8 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq2HYLHx3q-LM3MusYKsjXVZUik30YqUI&callback=initMap"></script>
 <!-- juanMap.js CDN -->
 <script src="/javascript/juanMap.js"></script>
+<!-- sweet alert CDN -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!--  ///////////////////////// JavaScript ////////////////////////// -->
 <script>
@@ -219,6 +221,72 @@
 			});
 		}
 	}//end of initmap();
+	
+	
+$(function(){
+	
+	//바구니 수정, 삭제 감지 스크립트
+	   $("button[id^='updateCart']").on("click", function(e){
+		      e.stopPropagation();
+		  var cartNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+	      var cartTitle = $("."+cartNo).find("span[id^='cartTitle']").text();
+	      var cartDetail = $("."+cartNo).find("span[id^='cartDetail']").text();
+
+	      swal({
+	           title: cartTitle+' 장소 설명 수정',
+	           text: '변경을 원하시는 설명문구를 입력해주시길 바랍니다.',
+	           content: {
+	             element: 'input',
+	             attributes: {
+	               defaultValue: cartDetail,
+	             }
+	           }
+	         })
+	         .then(function (inputData){
+	            $.ajax({
+	               url : "/restcart/updateCart/"+cartNo+"/"+escape(encodeURIComponent(inputData)),
+	               method : "POST",
+	               contentType: "application/x-www-form-urlencoded; charset=EUC-KR",
+	               success : function(){
+	                  swal({
+	                       title: "수정 완료!",
+	                       text: inputData+"로 정상 수정되었습니다!",
+	                       icon: "success"
+	                     });
+	               }
+	            }) //e.o.ajax
+	            
+	            $("."+cartNo).find("span[id^='cartDetail']").text(inputData);
+	         })
+	   })
+	   
+	
+	$("button[id^='deleteCart']").on("click", function(e){
+	      e.stopPropagation();
+	      var cartNo =  $(this).attr("id").replace(/[^0-9]/g,"");
+	      swal({
+	            title: "장소를 정말 삭제하시겠습니까?",
+	            text: "삭제하시면 복구가 불가합니다.",
+	            icon: "warning",
+	            buttons: ["취소", "삭제"],
+	            dangerMode: true,
+	          })
+	          .then((willDelete) => {
+	            if (willDelete) {
+	               $.ajax({
+	                  url : "/restcart/deleteCart/"+cartNo,
+	                  method : "POST",
+	                  success : function(){
+	                     swal("삭제되었습니다.");
+	                     $("."+cartNo).remove();
+	                  }
+	               }) //e.o.ajax
+	            } else {
+	              swal("취소하였습니다.");
+	            }
+	         });
+	   })
+});
 </script>
 
 <style>
@@ -292,12 +360,19 @@ article:hover .links {
 	width: 80%
 }
 
-.linksIcon img {
+.linksIcon {
+	opacity: 0;
 	position: absolute;
-	top: -5%;
-	left: -5%;
-	width: 70px;
-	height: 70px;
+	top: 10%;
+	left: 90%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transition: .5s ease;
+}
+
+.linksIcon img {
+	width: 15px;
+	height: 15px;
 }
 
 .map-row {
@@ -372,7 +447,9 @@ article:hover .links {
 										<img src="/images/spot/no_image.jpg"
 											class="img-thumbnail">
 									</c:if>
-									
+									<c:if test="${cart.cartImg==null }">
+										<img src="/images/spot/mainSpot.jpg" class="img-thumbnail">
+									</c:if>
 									<c:if test="${cart.cartImg!=null && fn:length(cart.cartImg)>=20 }">
 										<img src="${cart.cartImg}" class="img-thumbnail">
 									</c:if>
@@ -388,9 +465,15 @@ article:hover .links {
 								</c:if>
 								<!-- 마우스 오버시 보여지는 부분 -->
 								<div class="links" style="text-align: center;">
-									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> <span id="cartAddress">${cart.cartAddress}<br> <br></span>
-									<span id="cartDetail">${cart.cartDetail}</span>
-								</div>
+									<span id="cartTitle"><b>${cart.cartTitle}</b><br></span> 
+									<span id="cartAddress">${cart.cartAddress}<br> <br></span>
+									<span id="cartDetail">${cart.cartDetail}</span><br><br>
+									<button type="button" class="btn btn-primary btn-xs"
+										id="updateCart${cart.cartNo}">장바구니 수정하기</button>
+									<br>
+									<button type="button" class="btn btn-warning btn-xs"
+										id="deleteCart${cart.cartNo}">장바구니 삭제하기</button>
+									<br>
 							</article>
 						</c:forEach>
 

@@ -94,7 +94,13 @@
 		//이메일 창에 쓰여진 메일 형식 확인
 		function check_email(email) {
 			var email= email ; 
-			alert(email);
+			//alert(email);
+			swal({
+            title: "이메일 전송!",
+            text: "이메일을 확인하고 승인번호를 입력하세요!",
+            icon: "success",
+            buttons: false,
+          });
 		    if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1)){
 		    	alert("이메일 형식이 아닙니다.");
 				return false;
