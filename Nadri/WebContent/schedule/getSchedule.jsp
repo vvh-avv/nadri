@@ -354,7 +354,7 @@ $(function(){
 				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(/images/spot/${waypoint.wayPointImg}); width:100px ; height:100px" onclick="doImgPop('/images/spot/${waypoint.wayPointImg}')" />
 			</c:if>
  			<c:if test="${fn:length(waypoint.wayPointImg) > 10}"> 
-				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px" onclick="doImgPop('/images/spot/${waypoint.wayPointImg}')"/>
+				<div class="cd-timeline__img cd-timeline__img--movie js-cd-img materialboxed" style ="background-image: url(${waypoint.wayPointImg});width:100px ; height:100px" onclick="doImgPop('${waypoint.wayPointImg}')"/>
 			</c:if>
 				<img src="/images/spot/icon/cd-icon-picture.svg" alt="Movie">
 			</div>

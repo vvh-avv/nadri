@@ -201,7 +201,7 @@ public class AdminController {
 		System.out.println("addSpot -> controller 들어옴");
 		System.out.println("들어온 Spot : " + spot);
 
-		String path = "C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\";
+		String path = "C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\";
 		if (!file.isEmpty()) {
 
 			String fileOriginName = ""; // 각 원본파일명
