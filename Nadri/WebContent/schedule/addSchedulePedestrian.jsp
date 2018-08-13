@@ -1451,10 +1451,9 @@ $(function(){
 						<c:if test="${fn:length(recommand.spotImg) >= 30 }">
 							<img src="${recommand.spotImg}" class="${recommand.spotNo}" width="50"
 								height="50" id="fakeCartImg${i}">
-							<!-- 실제 데이터가 넘어가는 img 태그 --> 
+<%-- 							<!-- 실제 데이터가 넘어가는 img 태그 --> 
 							<img style="display: none;" src="/images/spot/${cart.cartImg}" width="50" height="50"
-							id="cartImg${i}" class="${cart.cartNo}">
-							<div class="cart-titles-box">
+							id="cartImg${i}" class="${cart.cartNo}"> --%>
 						</c:if> 
 						<c:if test="${fn:length(recommand.spotImg) < 30 }">
 							<img src="/images/spot/${recommand.spotImg}" class="${recommand.spotNo}" width="50" 
