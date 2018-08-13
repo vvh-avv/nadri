@@ -10,6 +10,7 @@
 		<result property="reportUserId" column="reported_user_id" jdbcType="VARCHAR" />
 		<result property="inquireCode" column="inquire_code" jdbcType="VARCHAR" />
 		<result property="inquireChkCode" column="inquire_chk_code" jdbcType="VARCHAR" />
+		<result property="inquireChkReason" column="inquire_chk_reason" jdbcType="VARCHAR"/>
 		<result property="inquireTitle" column="inquire_title" jdbcType="VARCHAR" />
 		<result property="inquireWrite" column="inquire_detail" jdbcType="VARCHAR" />
 		<result property="inquireLink" column="inquire_link" jdbcType="VARCHAR" />
@@ -63,6 +64,17 @@
 		<result property="spotReadCnt" 		column="spot_readcnt" 			jdbcType="NUMERIC"/>
 	</resultMap>
 	
+	<resultMap type="comment" id="commentMap">
+		<result property="commentNo" column="comment_no" jdbcType="INTEGER"/>
+		<result property="boardNo" column="board_no" jdbcType="INTEGER"/>
+		<result property="commentTime" column="comm_time" jdbcType="DATE"/>
+		<result property="commentContent" column="comm_content" jdbcType="VARCHAR"/>
+		
+		<association property="user" javaType="user">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
 	<insert id="insertInquire" parameterType="inquire">
 		INSERT
 		<if test="reportUserId != null">
@@ -81,15 +93,27 @@
 			<if test="searchCondition != null">
 				<where>
 					<if test="searchCondition == 0 and searchKeyword !=''">
-		 				user_id LIKE '%${searchKeyword}%'
+		 				inquire_title LIKE '%${searchKeyword}%'
 					</if>
 					<if test="searchCondition == 1 and searchKeyword !=''">
-		 				inquire_title LIKE '%${searchKeyword}%'
+		 				inquire_detail LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 2 and searchKeyword !=''">
+		 				user_id LIKE '%${searchKeyword}%'
+					</if>
+					<if test="searchCondition == 3 and searchKeyword !=''">
+		 				inquire_title LIKE '%${searchKeyword}%' AND inquire_code = '0'
+					</if>
+					<if test="searchCondition == 4 and searchKeyword !=''">
+		 				inquire_detail LIKE '%${searchKeyword}%' AND inquire_code = '0'
+					</if>
+					<if test="searchCondition == 5 and searchKeyword !=''">
+		 				user_id LIKE '%${searchKeyword}%' AND inquire_code = '0'
 					</if>
 				</where>
 			</if>
 			ORDER BY inquire_no DESC
-		limit #{startRowNum}, 5
+		limit #{startRowNum}, 10
 	</select>
 	
 	<select  id="getInquireCount"  parameterType="search"	 resultType="int">
@@ -114,9 +138,16 @@
 		WHERE inquire_no = #{value}
 	</select>
 	
+	<select id="getReply" parameterType="int" resultMap="commentMap">
+		SELECT *
+		FROM COMMENT
+		WHERE comment_no = #{value}
+	</select>
+	
 	<update id="updateInquire" parameterType="inquire">
 		UPDATE inquire
-		SET inquire_chk_code = #{inquireChkCode}
+		SET inquire_chk_code = #{inquireChkCode} ,
+			inquire_chk_reason = #{inquireChkReason}
 		WHERE inquire_no = #{inquireNo}
 	</update>
 	

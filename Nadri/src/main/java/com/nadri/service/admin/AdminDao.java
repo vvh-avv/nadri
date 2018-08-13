@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.nadri.common.Search;
+import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
@@ -44,5 +45,7 @@ public interface AdminDao {
 	public List<String> getSearchLog(String userId);
 	
 	public String getSearchLog2(String userId);
+	
+	public Comment getReply(String inquireLink);
 
 }

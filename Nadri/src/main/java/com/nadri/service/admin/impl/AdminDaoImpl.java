@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminDao;
+import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
@@ -198,6 +199,12 @@ public class AdminDaoImpl implements AdminDao{
 	
 	public String getSearchLog2(String userId){
 		return sqlSession.selectOne("SearchLogMapper.getSearchLog2", userId);
+	}
+
+	@Override
+	public Comment getReply(String inquireLink) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("AdminMapper.getReply",Integer.parseInt(inquireLink));
 	}
 
 

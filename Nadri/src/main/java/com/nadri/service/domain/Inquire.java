@@ -8,6 +8,7 @@ public class Inquire {
 	private String userId;
 	private String reportUserId;
 	private String inquireChkCode;
+	private String inquireChkReason;
 	private String inquireTitle;
 	private String inquireWrite;
 	private String inquireLink;
@@ -130,6 +131,14 @@ public class Inquire {
 
 	public void setInquireNo(int inquireNo) {
 		this.inquireNo = inquireNo;
+	}
+
+	public String getInquireChkReason() {
+		return inquireChkReason;
+	}
+
+	public void setInquireChkReason(String inquireChkReason) {
+		this.inquireChkReason = inquireChkReason;
 	}
 	
 	

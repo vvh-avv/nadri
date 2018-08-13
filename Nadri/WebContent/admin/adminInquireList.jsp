@@ -69,43 +69,54 @@
 							<input type="text" class="inquireKeyword" name="searchKeyword"
 								placeholder="검색어를 입력해주세요"
 								value="${! empty search.searchKeyword ? search.searchKeyword : '' }">
+							<input type="hidden" name="listing" class="listing" value="${empty lister ? 'not_listed' : lister }">
+							<input style="display: none;">
 							<div class="row check-boxes">
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="inclCon"><label class="cons-label" id="inclCon">
-										검색어를 포함한 검색 </label>
+									<input type="radio" name="searchCondition" class="conditions"
+										value="0"><label class="cons-label" id="inclCon">
+										문의명으로 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="beginCon"><label class="cons-label" id="beginCon">
-										검색어로 시작하는 검색 </label>
+									<input type="radio" name="searchCondition" class="conditions"
+										value="1"><label class="cons-label" id="beginCon">
+										문의내용 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">
-									<input type="radio" name="conditions" class="conditions"
-										value="endCon"><label class="cons-label" id="endCon">
-										검색어로 끝나는 검색 </label>
+									<input type="radio" name="searchCondition" class="conditions"
+										value="2"><label class="cons-label" id="endCon">
+										문의유저 검색 </label>
 								</div>
 
 								<div class="col-md-3 col-xs-3">
 									<input type="checkbox" name="noChecked" class="conditions"
-										value="이름"><label class="cons-label" id="noChecked">
-										처리완료문의제외 </label>
+										value="doneNot"><label class="cons-label"
+										id="noChecked"> 처리완료문의제외 </label>
 								</div>
 							</div>
 							<div class="row order-option">
-								<div class="col-md-6 option-align">
+
+								<div class="col-md-4 option-align">
 									<div>최신순</div>
 									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
 									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
 								</div>
-								<div class="col-md-6 option-align">
+
+								<div class="col-md-4 option-align">
 									<div>종류별</div>
 									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
 									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
 								</div>
+
+								<div class="col-md-4 option-align">
+									<div>처리순</div>
+									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
+									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
+								</div>
+
 							</div>
 						</div>
 						<!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
@@ -144,7 +155,7 @@
 								<c:set var="i" value="${ i+1 }" />
 								<tr id="inq${i}" class="texts">
 									<td>${inquire.inquireNo}</td>
-									<td>${inquire.inquireCode=="0" ? "유저신고" : (inquire.inquireCode=="1" ? "댓글신고" : (inquire.inquireCode=="2" ? "게시글신고" : (inquire.inquireCode=="3" ? "정정신청" : "기타문의" )) )}</td>
+									<td>${inquire.inquireCode=="0" ? "유저신고" : (inquire.inquireCode=="1" ? "게시글신고" : (inquire.inquireCode=="2" ? "댓글신고" : (inquire.inquireCode=="3" ? "정정신청" : "기타문의" )) )}</td>
 									<td>${inquire.inquireTitle}</td>
 									<td>${inquire.inquireWrite}</td>
 									<td>${inquire.userId}</td>
@@ -174,10 +185,30 @@
 												</c:if>
 
 												<c:if test="${inquire.inquireCode > 0}">
-													<li class="ele-inquire">링크 : ${inquire.inquireLink}</li>
+													<li class="ele-inquire">
+													링크 : ${inquire.inquireLink}
+													<c:if test="${inquire.inquireCode == 1}">
+													<button class="logbutton inquire-detail-view"
+															data-toggle="modal" data-target="#inquire-detail-modal"
+															name="${inquire.inquireLink}" id="${inquire.inquireCode}">내용보기</button>
+													</c:if>
+													<c:if test="${inquire.inquireCode == 2}">
+													<button class="logbutton inquire-detail-view"
+															data-toggle="modal" data-target="#inquire-detail-modal"
+															name="${inquire.inquireLink}" id="${inquire.inquireCode}">내용보기</button>
+													</c:if>
+													<c:if test="${inquire.inquireCode == 3}">
+													<button class="logbutton inquire-detail-view"
+															data-toggle="modal" data-target="#inquire-detail-modal"
+															name="${inquire.inquireLink}" id="${inquire.inquireCode}">내용보기</button>
+													</c:if>
+													</li>
 												</c:if>
 
 												<li class="ele-inquire">신고 내용 : ${inquire.inquireWrite}</li>
+												<c:if test="${inquire.inquireChkCode > 0}">
+													<li class="ele-inquire">처리 사유 : ${inquire.inquireChkReason}</li>
+												</c:if>
 												<li class="ele-inquire">첨부 파일</li>
 
 											</ul>
@@ -187,7 +218,7 @@
 													style="width: 100px; height: 100px;">
 
 												<c:if test="${inquire.inquireChkCode==0}">
-													<button class="btn btn-primary inquirebutton" id="${i}"
+													<button class="btn btn-primary inquirebutton" id="${inquire.inquireNo}"
 														data-toggle="modal" data-target="#inquire-taken">신고처리하기</button>
 												</c:if>
 											</div>
@@ -228,6 +259,7 @@
 					<div id="chart_div"></div>
 					<div class="chart-duration">
 						<select name="duration" class="duration">
+							<option value="" hidden>기간</option>
 							<option value="all">전체</option>
 							<option value="week">주간</option>
 							<option value="month">월간</option>
@@ -236,7 +268,8 @@
 				</div>
 				<div class="modal-footer">
 					<div class="user-log-buttons">
-						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
+						<button class="btn btn-danger block-user" data-toggle="modal"
+							data-target="#modal3">차단하기</button>
 						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
 					</div>
 				</div>
@@ -245,16 +278,36 @@
 
 	</div>
 	
+	<div class="modal fade" id="inquire-detail-modal" role="dialog">
+
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content user-modal">
+				<div class="modal-header inquired-user-header">
+					신고된 게시글의 내용
+				</div>
+				<div class="modal-body chart-body">
+					<div class="reply-detail" style="font-size:15px;"></div>
+				</div>
+				<div class="modal-footer">
+					<div class="user-log-buttons">
+						<button class="btn btn-danger block-user" data-toggle="modal"
+							data-target="#modal3">차단하기</button>
+						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 	<div class="modal fade" id="modal3" role="dialog">
 
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content user-modal">
 				<div class="modal-header inquired-user-header">
-					<span class="userIdLog"></span> 회원을 정말로 차단하시겠습니까?
+					<span class="userIdLog-check"></span> 회원을 정말로 차단하시겠습니까?
 				</div>
-				<div class="modal-body chart-body">
-					차단확인 혹은 취소를 눌러주세요.
-				</div>
+				<div class="modal-body chart-body" style="font-size:15px; letter-spacing:2px;">차단확인 혹은 취소를 눌러주세요.</div>
 				<div class="modal-footer">
 					<div class="user-log-buttons">
 						<button class="btn btn-danger block-fine">차단확인</button>
@@ -265,20 +318,39 @@
 		</div>
 
 	</div>
-	
+
 	<div class="modal fade" id="inquire-taken" role="dialog">
 
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content user-modal">
-				<div class="modal-header inquired-user-header">
-					신고 내역 처리하기
-				</div>
-				<div class="modal-body chart-body">
-					
+				<div class="modal-header inquired-user-header">신고 내역 처리하기</div>
+				<div class="modal-body chart-body" style=" font-size:12px">
+					<div class="chart-duration" style="align-items:center; width : 60%; justify-content:space-evenly">
+						<div><span class="inquire-chk-userId"></span>회원님의 신고는</div>
+						<div>
+						<input type="hidden" name="inquireCode" class="inquireCodeHidden" value="">
+							<select name="inquireChkReason" class="inquireChkReason" style="height:30px">
+								<option value="" hidden>처리사유선택</option>
+								<option value="0">약관위배</option>
+								<option value="1">욕설 및 도배</option>
+								<option value="2">허위사실게재</option>
+								<option value="3">광고글 게시</option>
+							</select>
+						</div>
+						 사유에 의해서 
+						<div>
+							<select name="inquireChkCode" class="inquireChkCode" style="height:30px">
+								<option value="" hidden>처리종류선택</option>
+								<option value="1">정상처리</option>
+								<option value="2">보류처리</option>
+							</select>
+						</div>
+						<div>되었습니다.</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="user-log-buttons">
-						<button class="btn btn-danger block-user" data-toggle="modal" data-target="#modal3">차단하기</button>
+						<button class="btn btn-primary sended">처리하기</button>
 						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
 					</div>
 				</div>

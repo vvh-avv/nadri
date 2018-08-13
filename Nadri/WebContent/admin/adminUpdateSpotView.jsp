@@ -29,7 +29,7 @@
 <script src="/javascript/adminIndex.js"></script>
 <script src="/javascript/adminList.js"></script>
 	
-<title>나들이 백과 추가</title>
+<title>나들이 백과 수정 확인</title>
 
 </head>
 <style type="text/css">
