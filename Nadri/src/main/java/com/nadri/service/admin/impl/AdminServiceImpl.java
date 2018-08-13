@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminDao;
 import com.nadri.service.admin.AdminService;
+import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
@@ -127,6 +128,12 @@ public class AdminServiceImpl implements AdminService{
 	public String getSearchLog2(String userId) {
 		// TODO Auto-generated method stub
 		return adminDao.getSearchLog2(userId);
+	}
+
+	@Override
+	public Comment getReply(String inquireLink) {
+		// TODO Auto-generated method stub
+		return adminDao.getReply(inquireLink);
 	}
 	
 

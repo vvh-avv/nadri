@@ -63,10 +63,10 @@ public class AdminController {
 		System.out.println(this.getClass());
 	}
 	
-	@Value("#{commonProperties['pageUnit']}")
-	int pageUnit;
 	
-	int pageSize = 5;
+	int pageUnit = 5;
+	
+	int pageSize = 10;
 
 	@Value("#{provinceProperties}")
 	Map<String, String> map = new HashMap<String, String>();
@@ -103,12 +103,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "listInquire")
-	public String getInquireList(Model model,Search search) {
+	public String getInquireList(Model model,Search search,HttpServletRequest request) {
 		
 		System.out.println("listInquire -> controller 들어옴");
 		
 		System.out.println("들어온 검색어 : "+search.getSearchKeyword());
+		
+		System.out.println("들어온 검색 조건 : "+search.getSearchCondition()+" / "+request.getParameter("noChecked"));
 
+		String chk = request.getParameter("noChecked");
+		
 		if(search.getCurruntPage() <= 1 ){
 			search.setCurruntPage(0);
 			search.setStartRowNum(0);
@@ -117,10 +121,16 @@ public class AdminController {
 		}
 		search.setPageSize(pageSize);
 		
+		if(chk != null) {
+			int i = Integer.parseInt(search.getSearchCondition());
+			i = i+3;
+			search.setSearchCondition(String.valueOf(i));
+		}
+		
 		// Business logic 수행
 		Map<String , Object> map=adminService.getInquireList(search);
 		List<Inquire> list = new ArrayList<Inquire>();
-		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), 5, 10);
 		list = (List<Inquire>) map.get("list");
 		
 		System.out.println(resultPage);
@@ -790,7 +800,7 @@ public class AdminController {
 		// Business logic 수행
 		Map<String , Object> map = adminService.getUserList(search);
 		
-		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 5);
+		Page resultPage = new Page( search.getCurruntPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, 10);
 		System.out.println(resultPage);
 		
 		// Model 과 View 연결

@@ -220,13 +220,13 @@
 							<div class="row order-option">
 							
 								<div class="col-md-6 option-align">
-									<div>최신순</div>
+									<div>가입일순</div>
 									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
 									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
 								</div>
 								
 								<div class="col-md-6 option-align">
-									<div>종류별</div>
+									<div>아이디순</div>
 									<div class="glyphicon glyphicon-arrow-up option-icons"></div>
 									<div class="glyphicon glyphicon-arrow-down option-icons"></div>
 								</div>

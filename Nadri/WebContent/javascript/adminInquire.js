@@ -11,6 +11,14 @@
 
 	$(function() {
 		
+		var lister = $('.listing').val();
+		
+		if(lister == 'not_listed'){
+			console.log('not listed');
+		}else{
+			console.log('listed');
+		}
+		
 		$('.inquireKeyword').on('keydown',function(e){
 			if(e.which == 13){
 				console.log('검색어 = '+$(this).val());
@@ -34,17 +42,7 @@
 				function() {
 					var id = $(this).attr('id');
 					console.log(id);
-
-					var code = $('#inq' + id + " td:nth-child(2)").text();
-					var no = $('#inq' + id + " td:nth-child(1)").text();
-					$('.inquireTransaction > span:nth-child(2)').text(code);
-					$('.inquireTransaction > span:nth-child(2)').css(
-							'font-weight', '800');
-					$('.inquireTransaction > span:nth-child(1)').text(no);
-					$('.inquireTransaction > span:nth-child(1)').css(
-							'font-weight', '800');
-
-					$('#modal1').modal();
+					$('.inquireCodeHidden').val(id);
 				});
 
 		$('td[colspan=7]').hide();
@@ -70,11 +68,17 @@
 		$('.sended').on(
 				'click',
 				function() {
-					var inqCode = $('.inquiredCode').text();
+					var inqCode = $('.inquireCodeHidden').val();
 					var chkCode = $('.inquireChkCode').val();
+					var reason = $('.inquireChkReason').val();
 					console.log('checked code value = ' + chkCode);
-					self.location = '/admin/updateInquire?inqCode=' + inqCode
-							+ '&chkCode=' + chkCode;
+					$.get('/restAdmin/updateInquire/'+inqCode+'/'+chkCode+'/'+reason,function(data,status){
+						if(status == 'success'){
+							console.log(data);
+							self.location = '/admin/listInquire';
+						}
+					})
+					
 				})
 
 		$('img').on('mouseover', function() {
@@ -98,7 +102,7 @@
 
 			var duration = "all";
 			$('.userIdLog').text(id);
-			$('.duration').val('전체');
+			$('.duration').val('');
 
 			$.get("/restAdmin/userLog/" + id + "/" + duration,function(jdata, status) {
 				console.log(status);
@@ -142,13 +146,14 @@
 							
 			$('.block-user').css('visibility','visible');
 			
-			$('.duration').val('전체');
+			$('.duration').val('');
 							
 			var id = $(this).attr('name');
 			console.log(id);
 
-			var duration = "all";
+			var duration = "전체";
 			$('.userIdLog').text(id);
+			$('.userIdLog-check').text(id);
 
 			$.get("/restAdmin/userLog/" + id + "/"+ duration,function(jdata, status) {
 				console.log(status);
@@ -321,25 +326,54 @@
 		$('.block-user').on('click',function(){
 			var id = $('.userIdLog').text();
 			console.log(" "+id+" .");
-			$('.blockedUser').text(id);
+			$('.userIdLog-check').text(id);
 			$('.blockedUserFine').val(id);
 		})
 		
 		$('.block-fine').on('click',function(){
-			$('#modal3').modal('hide');
-			var id = $('.blockedUserFine').val();
+			var id = $('.userIdLog-check').text();
 			$.get('/restAdmin/blockUser/'+id,function(data){
 				console.log(data);
 				if(data == 'success'){
-					console.log('!');
-					$('.block-status').text(' .');
-					$('#modal4').modal('show');
+					console.log('처리완료!');
+					alert('정상적으로 차단되었습니다!');
+					$('#modal3').modal('hide');
 				}else{
-					console.log('!');
-					$('.block-status').text(' .');
+					console.log('처리실패!');
+					alert('차단에 실패하였습니다!');
 					$('#modal4').modal('show');
 				}
 			})
+		})
+		
+		$('.inquire-detail-view').on('click',function(){
+			var inquirecode = $(this).attr('id');
+			var inquirelink = $(this).attr('name');
+			
+			console.log(inquirecode+' / '+inquirelink);
+			
+			if(inquirecode == '2'){
+				$.ajax({
+		            type: "GET",
+		            url: '/restAdmin/getReplyDetail/'+inquirelink,
+		            success: function (msg) {
+		            	console.log(msg);
+						$('.reply-detail').text(msg.commContent);
+						$('.userIdLog').text(msg.userId);
+		            },
+		            error: function (errormessage) {
+		                console.log(errormessage);
+		            }
+		        });
+			}else if(inquirecode == '1'){
+				$('#inquire-detail-modal').modal('hide');
+				window.open('/board/getBoard?boardNo='+inquirelink,'_blank');
+			}else if(inquirecode == '3'){
+				$('#inquire-detail-modal').modal('hide');
+				window.open('/spot/getSpot?spotNo='+inquirelink,'_blank');
+			}
+			
+			
 		})
 /*		
 		$("button.btn.btn-default:contains('')").on("click", function() {
@@ -377,6 +411,18 @@
 			$('.inquireKeyword').attr('placeholder','검색어를 입력해주세요');
 			$('.glyphicon-search').css('color','#adadad');
 			$('.options > div').css('border','1px solid #c1c1c154');
+		})
+		
+		$('.inquireKeyword').on('keydown',function(e){
+			console.log($('input:radio[name=searchCondition]').is(':checked'));
+			var radio = $('input:radio[name=searchCondition]').is(':checked');
+			if(e.which == 13){
+				if(radio){
+					fncGetList(0);	
+				}else{
+					alert('검색조건을 하나이상 선택해주세요!');
+				}
+			}
 		})
 		
 /*		

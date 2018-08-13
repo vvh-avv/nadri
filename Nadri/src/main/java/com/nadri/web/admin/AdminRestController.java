@@ -6,6 +6,7 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
+import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
 import com.nadri.service.domain.Spot;
@@ -241,6 +243,43 @@ public class AdminRestController {
 		returnList.add(list);
 
 		return returnList;
+	}
+	
+	@RequestMapping(value="getReplyDetail/{inquirelink}")
+	public Map getReply(@PathVariable String inquirelink) {
+		
+		System.out.println("getReply -> controller 들어옴");
+		/*adminService.getReply(inquireLink)*/
+		Map<String,String> map = new HashMap<String,String>();
+		Comment comment = adminService.getReply(inquirelink);
+		
+		map.put("commContent", comment.getCommentContent());
+		map.put("userId", comment.getUser().getUserId());
+		return map;
+	}
+	
+	@RequestMapping(value="updateInquire/{inquireCode}/{chkCode}/{inquireChkReason}")
+	public String upadateInquire(@PathVariable String inquireCode ,@PathVariable String chkCode,@PathVariable String inquireChkReason) {
+		System.out.println("upadateInquire -> controller 들어옴");
+		System.out.println("들어온 문의 코드 = "+inquireCode);
+		System.out.println("들어온 문의 체크코드 = "+chkCode);
+		System.out.println("들어온 문의 처리내용 = "+inquireChkReason);
+		Inquire inquire = new Inquire();
+		inquire.setInquireChkCode(chkCode);
+		inquire.setInquireNo(Integer.parseInt(inquireCode));
+		
+		if(inquireChkReason.equals('0')) {			
+			inquire.setInquireChkReason("약관 위배");
+		}else if(inquireChkReason.equals('1')) {
+			inquire.setInquireChkReason("욕설 및 도배");
+		}else if(inquireChkReason.equals('2')) {
+			inquire.setInquireChkReason("허위사실게재");
+		}else if(inquireChkReason.equals('3')) {
+			inquire.setInquireChkReason("광고글 게시");
+		}
+		
+		adminService.updateInquire(inquire);
+		return "done";
 	}
 
 }
