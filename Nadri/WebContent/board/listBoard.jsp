@@ -1128,7 +1128,7 @@ $(function(){
           $('.textCounter1').text(currentLength);
        });        
                
-      $('span[id^="inquireBoard"]').on('click', function() {
+      $(document).on('click','span[id^="inquireBoard"]', function() {
          var counter = $(this).attr('name');
          $('.inquireLink').val(counter);
          $('.inquireLink').attr('disabled', 'disabled');

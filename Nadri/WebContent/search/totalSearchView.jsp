@@ -95,13 +95,13 @@
 				<hr />
 				<c:if test="${!empty list_board}">
 					<c:set var="i" value="0" />
-					<c:forEach var="board" items="${list_board}" end="2">
+					<c:forEach var="board" items="${list_board}" end="5">
 						<c:set var="i" value="${i+1}" />
 						<div class="col-md-4 col-xs-6 board-box">
 							<img src="/images/board/posts/${board.boardImg}"
 								class="boardImg" style="width: 100%; height: 200px;">
 							<div class="boardBox">
-								<h3>${board.boardTitle}</h3>
+								<h3 class="board-link" id="${board.boardNo}">${board.boardTitle}</h3>
 								${board.boardContent}
 							</div>
 						</div>
@@ -129,11 +129,11 @@
 					<c:forEach var="schedule" items="${list_schedule}" end="3">
 						<c:set var="i" value="${i+1}" />
 						<div class="col-md-6 col-xs-12 board-box">
-							<img src="/images/schedule/${schedule.schedule_img}" class="boardImg"
+							<img src="/images/spot/uploadFiles/${schedule.schedule_img}" class="boardImg"
 								style="width: 100%; height: 200px;">
 							<div class="boardBox">
-								<h3>${schedule.title}</h3>
-								${schedule.content}
+								<h3 class="schedule-link" id="${schedule.schedule_no}">${schedule.schedule_title}</h3>
+								${schedule.schedule_detail}
 							</div>
 						</div>
 					</c:forEach>

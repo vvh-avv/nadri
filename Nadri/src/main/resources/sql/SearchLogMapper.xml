@@ -78,6 +78,7 @@
 		    schedule_no,
 		    user_id,
 		    schedule_title,
+		    schedule_detail,
 		    schedule_modifytime,
 		    open_range,
 		    hashtag
