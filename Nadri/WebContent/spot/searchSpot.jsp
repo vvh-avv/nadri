@@ -588,6 +588,12 @@ $(function(){
 
     //카트 등록을 위한 메소드!
     function addCartSpot(){
+    	//alert("들어왔당?!")
+    	// 이부분은 "대한민국"은 티맵에서 인지하지 못하므로 대한민국이란 글짜가 포함시에는 잘라내기합니다!
+    	var realcartAddress = $("#cartAddress").val();
+    	if(realcartAddress.includes("대한민국")){
+    		realcartAddress2 = realcartAddress.substring(5)
+    	}
     	$.ajax({
     				type : 'post', // 요청 method 방식 
     				url : '/restcart/addCartSpot',// 요청할 서버의 url
@@ -601,7 +607,7 @@ $(function(){
     					userId : $("#cartUserId").val(),
     					cartDetail : $("#cartDetail").val(),
     					cartTitle : $("#cartTitle").val(),
-    					cartAddress :$("#cartAddress").val(),
+    					cartAddress :realcartAddress2,
     					cartX : $("#cartX").val(),
     					cartY : $("#cartY").val(),
     					cartImg : $("#cartImg").val()
