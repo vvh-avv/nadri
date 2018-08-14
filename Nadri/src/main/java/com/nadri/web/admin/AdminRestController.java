@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.nadri.common.Search;
 import com.nadri.service.admin.AdminService;
+import com.nadri.service.board.BoardService;
+import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Comment;
 import com.nadri.service.domain.Inquire;
 import com.nadri.service.domain.Reward;
@@ -44,6 +46,10 @@ public class AdminRestController {
 	@Autowired
 	@Qualifier("adminServiceImpl")
 	private AdminService adminService;
+	
+	@Autowired
+	@Qualifier("boardServiceImpl")
+	private BoardService boardService;
 
 	@Autowired
 	@Qualifier("spotServiceImpl")
@@ -282,4 +288,14 @@ public class AdminRestController {
 		return "done";
 	}
 
+	@RequestMapping(value="getWriter/{boardNo}")
+	public String getWriter(@PathVariable String boardNo) throws Exception {
+		System.out.println("upadateInquire -> controller µé¾î¿È");
+		
+		Board board = boardService.getBoard(Integer.parseInt(boardNo));
+		
+		
+		return board.getUser().getUserId();
+	}
+	
 }

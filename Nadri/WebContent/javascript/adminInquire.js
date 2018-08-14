@@ -360,9 +360,15 @@
 		        });
 			}else if(inquirecode == '1'){
 				window.open('/board/getBoard?boardNo='+inquirelink,'_blank');
-				$.get()
+				$.get('/restAdmin/getWriter/'+inquirelink,function(data,status){
+					console.log(data);
+					console.log(status);
+					$('.reply-detail').text('작성자를 차단하시려면 차단하기를 눌러주세요.');
+					$('.userIdLog-check').text(data);
+				})
 				$('.block-reported-user').css('display','block');
-				$('.reply-detail').text('작성자를 차단하시려면 차단하기를 눌러주세요.');
+				
+				
 			}else if(inquirecode == '3'){
 				window.open('/spot/getSpot?spotNo='+inquirelink,'_blank');
 				$('.block-reported-user').css('display','none');
