@@ -102,7 +102,7 @@
 								class="boardImg" style="width: 100%; height: 200px;">
 							<div class="boardBox">
 								<h3 class="board-link" id="${board.boardNo}">${board.boardTitle}</h3>
-								${board.boardContent}
+								<div class="board-contents">${board.boardContent}</div>
 							</div>
 						</div>
 					</c:forEach>
@@ -133,7 +133,7 @@
 								style="width: 100%; height: 200px;">
 							<div class="boardBox">
 								<h3 class="schedule-link" id="${schedule.schedule_no}">${schedule.schedule_title}</h3>
-								${schedule.schedule_detail}
+								<div class="board-contents">${schedule.schedule_detail}</div>
 							</div>
 						</div>
 					</c:forEach>
