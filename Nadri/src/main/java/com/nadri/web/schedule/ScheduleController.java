@@ -255,10 +255,10 @@ public class ScheduleController {
 			fileName = format+"."+multipartFile.getOriginalFilename().substring( pos + 1 );
 
 			//기존 파일 삭제 (혹여나 모를 상황 대비)
-			new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
+			new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName).delete();
 			
 			// 파일 객체 생성
-			File file = new File("C:\\Users\\Bit\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
+			File file = new File("C:\\Users\\Bitcamp\\git\\nadri\\Nadri\\WebContent\\images\\spot\\uploadFiles\\"+fileName);
 			multipartFile.transferTo(file);
 			
 			//Business Logic
