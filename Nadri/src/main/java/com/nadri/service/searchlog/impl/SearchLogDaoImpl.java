@@ -36,34 +36,34 @@ public class SearchLogDaoImpl implements SearchLogDao {
 		List<Board> board_open = sqlSession.selectList("SearchLogMapper.boardSearchResult", search);
 		
 		if(search.getMemberFlag() == 0) {
-	         
-	         int isit = sqlSession.insert("SearchLogMapper.insertKeyword", search);
-	         
-	         System.out.println("insert work = "+isit);
-	         /*board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultUser", search));
-	         board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultSelf", search));*/
-	         
-	         List<Board> boards_1 = sqlSession.selectList("SearchLogMapper.boardSearchResultUser", search);
-	         List<Board> boards_2 = sqlSession.selectList("SearchLogMapper.boardSearchResultSelf", search);
-	         
-	         board_list = Stream.concat(boards_1.stream(), boards_2.stream()).collect(Collectors.toList());
-	         
-	         board_list = Stream.concat(board_list.stream(), board_open.stream()).collect(Collectors.toList());
-	         
-	         System.out.println("뽑아낸 리스트 : "+board_list);
-	         
-	         /*int i = 0;
-	         for(Object list : board_list) {
-	            
-	            if(list.toString().equals("[]")) {
-	               board_list.remove(i);
-	            }
-	            i++;
-	         }*/
+			
+			int isit = sqlSession.insert("SearchLogMapper.insertKeyword", search);
+			
+			System.out.println("insert work = "+isit);
+			/*board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultUser", search));
+			board_list.add(sqlSession.selectList("SearchLogMapper.boardSearchResultSelf", search));*/
+			
+			List<Board> boards_1 = sqlSession.selectList("SearchLogMapper.boardSearchResultUser", search);
+			List<Board> boards_2 = sqlSession.selectList("SearchLogMapper.boardSearchResultSelf", search);
+			
+			board_list = Stream.concat(boards_1.stream(), boards_2.stream()).collect(Collectors.toList());
+			
+			board_list = Stream.concat(board_list.stream(), board_open.stream()).collect(Collectors.toList());
+			
+			System.out.println("뽑아낸 리스트 : "+board_list);
+			
+			/*int i = 0;
+			for(Object list : board_list) {
+				
+				if(list.toString().equals("[]")) {
+					board_list.remove(i);
+				}
+				i++;
+			}*/
 
-	      }else {
-	         board_list = Stream.concat(board_list.stream(), board_open.stream()).collect(Collectors.toList());
-	      }
+		}else {
+			board_list = Stream.concat(board_list.stream(), board_open.stream()).collect(Collectors.toList());
+		}
 		
 		List<Object> spot_list = sqlSession.selectList("SearchLogMapper.spotSearchResult", search.getSearchKeyword());
 		List<Object> schedule_list = sqlSession.selectList("SearchLogMapper.scheduleSearchResult", search.getSearchKeyword());
