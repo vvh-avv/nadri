@@ -765,11 +765,11 @@ function findName(fileName,number) {
 		              oncomplete: function(data) {
 		            	$('.pre-waypoints'+idNo).css('display','none');
 		  				$('.after-waypoints'+idNo).css('display','flex');
-		  				$('#wayPointAddress'+idNo).text(data.address);
+		  				$('input#wayPointAddress'+idNo).attr('value',data.address);
 		  				if(data.buldingName != null){
-		  					$('#wayPointTitle'+idNo).text(data.buildingName);  					
+		  					$('input#wayPointTitle'+idNo).attr('value',data.buildingName);  					
 		  				}else{
-		  					$('#wayPointTitle'+idNo).text('출발지');
+		  					$('input#wayPointTitle'+idNo).attr('value','출발지');
 		  				}
 /* 		                $("#addr").val(data.address); */
 		              }
