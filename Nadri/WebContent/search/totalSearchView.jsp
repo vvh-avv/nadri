@@ -237,10 +237,10 @@
 				$('.placeContent').text(locations[0][4]);
 				//alert( locations[0][5]);
 				////////////////////////////HJA 수정... 공원도 이미지를 보일 수 있도록!!////////////
-				if(locations[i][5].length <= 15){
-					$('.placeImg').attr("src", "/images/spot/" + locations[i][5]);
+				if(locations[0][5].length <= 15){
+					$('.placeImg').attr("src", "/images/spot/" + locations[0][5]);
 				} else {
-			        $('.placeImg').attr("src", locations[i][5]);
+			        $('.placeImg').attr("src", locations[0][5]);
 				}
 				//////////////////////////////////////////////////////////////////////////
 				//$('.placeImg').attr("src", locations[0][5]);
