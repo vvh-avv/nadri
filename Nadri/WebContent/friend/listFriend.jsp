@@ -163,7 +163,7 @@
 							<table class="table table-hover table-striped">
 								<thead>
 									<tr>
-										<th class="text-center">No</th>
+										<!-- <th class="text-center">No</th> -->
 										<th class="text-center">ID</th>
 										<th class="text-center">프로필사진</th>
 										<th class="text-center">친구추가</th>
@@ -176,7 +176,7 @@
 									<c:forEach var="friend" items="${fList2 }">
 
 										<tr id="${friend.friendNo}" class="${friend.friendId }">
-											<td align="center">${friend.friendNo }</td>
+											<%-- <td align="center">${friend.friendNo }</td> --%>
 											<td align="center">${friend.friendId }</td>
 											<td align="center"><img src="/images/profile/${friend.friendId }.png" width="73" height="73" ></td>
 
