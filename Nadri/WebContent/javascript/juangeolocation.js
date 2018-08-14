@@ -220,7 +220,7 @@ function setXY(value, x, y) {
         end_y = y;
         searchAdress("#wayPointAddress1", y, x);
     } else if(value == "w2") {
-       end_x = x;
+        end_x = x;
         end_y = y;
         searchAdress("#wayPointAddress2", y, x);
     } else if(value == "w3") {

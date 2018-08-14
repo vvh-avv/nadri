@@ -34,7 +34,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzvklKOtNYztg8pTj-hSRV0gYisH3zAOY&libraries=geometry,places,drawing">
 </script>
 <!-- 구글맵 매서드가 담긴 주머니 -->
-<script src="/javascript/googlenavigation.js?ver=2"></script>
+<script src="/javascript/googlenavigation.js?ver=1"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- <link rel="stylesheet" href="/css/materialize.css"> -->
 <!-- juanMap.js CDN -->
