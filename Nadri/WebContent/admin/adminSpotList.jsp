@@ -313,7 +313,7 @@
 											<li>설 &nbsp;&nbsp;&nbsp;명 : ${spot.spotDetail}</li>
 											<li>장소 이미지</li>
 										</ul>
-										<img src="/images/spot/${spot.spotImg}">
+										<img src="${spot.spotImg}">
 									</div>
 									<button class="btn btn-danger delete-spot" data-toggle="modal"
 										data-target="#modal2" name="${spot.spotTitle}" id="${spot.spotNo}">삭제하기</button>
