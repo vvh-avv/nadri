@@ -518,7 +518,7 @@ body {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	margin-bottom : 50px;
+	margin-bottom : 120px;
 }
 
 .empty-boards{
@@ -693,7 +693,7 @@ body {
 
 .squar-back{
 	width:100%;
-	height: 1300px;
+	height: 1200px;
 	position:absolute;
 	margin-top:240px;
 	background: #e9f1f3;

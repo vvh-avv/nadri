@@ -68,12 +68,7 @@
 	<div class="log-wrapper">
 		<div class="search-logs">
 			<div class="row log-detail">
-				<div class="col-md-6 col-xs-12 search-history"></div>
-				<div class="col-md-6 col-xs-12 search-recommand">
-					추천검색어
-
-					<div>검색어2</div>
-				</div>
+				<div class="col-md-12 col-xs-12 search-history"></div>
 			</div>
 		</div>
 	</div>

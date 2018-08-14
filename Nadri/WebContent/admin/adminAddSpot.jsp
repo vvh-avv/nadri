@@ -21,7 +21,6 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-<!-- admin index 전용 css  -->
 <!-- admin index 전용  -->
 <link rel="stylesheet" href="/css/adminIndex.css">
 <link rel="stylesheet" href="/css/adminIndexSmall.css">
