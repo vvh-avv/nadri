@@ -18,13 +18,6 @@
 		}else{
 			console.log('listed');
 		}
-		
-		$('.inquireKeyword').on('keydown',function(e){
-			if(e.which == 13){
-				console.log('검색어 = '+$(this).val());
-				fncGetList(0);
-			}
-		})
 
 		$('.texts').on('mouseover', function() {
 			if ($(this).text() == '??') {
@@ -366,11 +359,14 @@
 		            }
 		        });
 			}else if(inquirecode == '1'){
-				$('#inquire-detail-modal').modal('hide');
 				window.open('/board/getBoard?boardNo='+inquirelink,'_blank');
+				$.get()
+				$('.block-reported-user').css('display','block');
+				$('.reply-detail').text('작성자를 차단하시려면 차단하기를 눌러주세요.');
 			}else if(inquirecode == '3'){
-				$('#inquire-detail-modal').modal('hide');
 				window.open('/spot/getSpot?spotNo='+inquirelink,'_blank');
+				$('.block-reported-user').css('display','none');
+				$('.reply-detail').text('신고내용이 확인 되었으면 닫기를 눌러주세요.');
 			}
 			
 			

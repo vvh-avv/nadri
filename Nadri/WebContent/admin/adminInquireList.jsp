@@ -46,6 +46,7 @@
 			</div>
 		</div>
 	</nav>
+	
 	<nav class="admin-sub-navbar">
 		<div class="userList">회원목록</div>
 		<div class="graph">통계보기</div>
@@ -214,9 +215,7 @@
 											</ul>
 
 											<div class="inquire-detail-bottom">
-												<img src="/images/inquire/${inquire.inquireFile1}"
-													style="width: 100px; height: 100px;">
-
+												<img src="/images/inquire/${empty inquire.inquireFile1 ? 'no_image.jpg' : inquire.inquireFile1}" style="width: 100px; height: 100px;">
 												<c:if test="${inquire.inquireChkCode==0}">
 													<button class="btn btn-primary inquirebutton" id="${inquire.inquireNo}"
 														data-toggle="modal" data-target="#inquire-taken">신고처리하기</button>
@@ -283,14 +282,14 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content user-modal">
 				<div class="modal-header inquired-user-header">
-					신고된 게시글의 내용
+					신고된 게시글의 내용확인
 				</div>
 				<div class="modal-body chart-body">
 					<div class="reply-detail" style="font-size:15px;"></div>
 				</div>
 				<div class="modal-footer">
 					<div class="user-log-buttons">
-						<button class="btn btn-danger block-user" data-toggle="modal"
+						<button class="btn btn-danger block-reported-user" data-toggle="modal"
 							data-target="#modal3">차단하기</button>
 						<button class="btn btn-default closer" data-dismiss="modal">닫기</button>
 					</div>

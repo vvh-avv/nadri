@@ -145,8 +145,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "updateInquire")
-	public String updateInquire(Model model, @RequestParam("inqCode") String inqCode,
-			@RequestParam("chkCode") String chkCode,Search search) {
+	public String updateInquire(Model model, @RequestParam("inqCode") String inqCode, @RequestParam("chkCode") String chkCode,Search search) {
 		System.out.println("updateInquire -> controller 들어옴");
 		System.out.println("들어온 문의번호 : " + inqCode);
 		System.out.println("들어온 처리번호 : " + chkCode);
@@ -206,8 +205,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "addSpot", method = RequestMethod.POST)
-	public String addSpot(@RequestParam("file") MultipartFile file, @ModelAttribute("spot") Spot spot, Model model)
-			throws Exception {
+	public String addSpot(@RequestParam("file") MultipartFile file, @ModelAttribute("spot") Spot spot, Model model) throws Exception {
 		System.out.println("addSpot -> controller 들어옴");
 		System.out.println("들어온 Spot : " + spot);
 
@@ -766,7 +764,6 @@ public class AdminController {
 
 		return "forward:/admin/adminGraphList.jsp";
 	}
-
 
 	@RequestMapping(value = "listUser")
 	public String getUserList(Model model,Search search,HttpServletRequest request) throws Exception {
