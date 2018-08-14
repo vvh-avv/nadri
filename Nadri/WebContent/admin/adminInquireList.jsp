@@ -210,12 +210,14 @@
 												<c:if test="${inquire.inquireChkCode > 0}">
 													<li class="ele-inquire">처리 사유 : ${inquire.inquireChkReason}</li>
 												</c:if>
+												<c:if test="${!empty inquire.inquireFile1}">
 												<li class="ele-inquire">첨부 파일</li>
-
+												<img src="/images/inquire/${inquire.inquireFile1}" style="width: 100px; height: 100px;">
+												</c:if>
 											</ul>
 
 											<div class="inquire-detail-bottom">
-												<img src="/images/inquire/${empty inquire.inquireFile1 ? 'no_image.jpg' : inquire.inquireFile1}" style="width: 100px; height: 100px;">
+												
 												<c:if test="${inquire.inquireChkCode==0}">
 													<button class="btn btn-primary inquirebutton" id="${inquire.inquireNo}"
 														data-toggle="modal" data-target="#inquire-taken">신고처리하기</button>
