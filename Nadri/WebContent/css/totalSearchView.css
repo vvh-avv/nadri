@@ -19,6 +19,14 @@
 	box-shadow : 0px 2px 10px 0px #80808026;
 }
 
+.board-contents,.schedule-link,.board-link{
+	overflow : hidden;
+	max-width :  350px;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+	display : block;
+}
+
 #map {
 	height: 500px; /* The height is 400 pixels */
 	width: 100%; /* The width is the width of the web page */
