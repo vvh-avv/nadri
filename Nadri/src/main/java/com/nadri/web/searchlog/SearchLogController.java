@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nadri.common.Search;
+import com.nadri.service.domain.Board;
 import com.nadri.service.domain.Insta;
 import com.nadri.service.domain.User;
 import com.nadri.service.searchlog.SearchLogService;
@@ -190,6 +191,19 @@ public class SearchLogController {
 			}
 			array.get(i).add(json2.get("spot_no"));
 			i++;
+		}
+		
+		int ii = 0;
+		for(Object obj2:list_board) {
+			System.out.println("board_list for loop");
+			Board b = (Board) obj2;
+			System.out.println(b);
+			if(b.getBoardImg() == null) {
+				System.out.println("no_image");
+				b.setBoardImg("no_image2.jpg");
+			}
+			list_board.set(ii, b);
+			ii++;
 		}
 		
 		System.out.println("가져온 스팟 리스트의 결과 : "+array);
