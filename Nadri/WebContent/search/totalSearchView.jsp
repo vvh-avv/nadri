@@ -129,8 +129,7 @@
 					<c:forEach var="schedule" items="${list_schedule}" end="3">
 						<c:set var="i" value="${i+1}" />
 						<div class="col-md-6 col-xs-12 board-box">
-							<img src="/images/spot/uploadFiles/${empty schedule.schedule_img ? 'no_image2.jpg' : schedule.schedule_img} class="boardImg"
-								style="width: 100%; height: 200px;">
+							<img src="/images/spot/uploadFiles/${schedule.schedule_img}" class="boardImg" style="width: 100%; height: 200px;">
 							<div class="boardBox">
 								<h3 class="schedule-link" id="${schedule.schedule_no}">${schedule.schedule_title}</h3>
 								<div class="board-contents">${schedule.schedule_detail}</div>

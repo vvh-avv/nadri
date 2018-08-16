@@ -214,7 +214,7 @@
 	 AND spot3.spot_detail LIKE CONCAT( '%' , #{keyword2} , '%')) OR
 	  (spot3.spot_detail LIKE CONCAT( '%' , #{keyword1} , '%') 
 	 OR spot3.spot_detail LIKE CONCAT( '%' , #{keyword2} , '%'))
-	 Limit 30
+	 Limit 10
 </select>
    
   <!--  안드로이드에서 장소를 가져오기 위한 메서드입니다. -->
