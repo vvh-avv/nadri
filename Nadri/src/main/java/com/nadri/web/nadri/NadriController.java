@@ -94,6 +94,7 @@ public class NadriController {
 			}else {
 				if (board.getBoardImg().contains(",")) {
 					int comma = board.getBoardImg().indexOf(",");
+					System.out.println("comma¿« ¿Œµ¶Ω∫ : "+comma);
 					String imgSingle = board.getBoardImg().substring(0, comma);
 					board.setBoardImg(imgSingle);
 				}else {
